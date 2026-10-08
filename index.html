@@ -993,7 +993,7 @@ function ficha(id,tab){
  const p=parc(c.parc);
  let body="";
  if(TAB==="resumo")body=`<div class="ph" style="border-radius:12px;overflow:hidden">${carSVG(c,1)}</div>
-  ${c.venda?"":`<div class="acts-row"><button type="button" class="btn soft" data-share="${c.id}"><svg class="i"><use href="#i-share"/></svg>Mandar para cliente</button><button type="button" class="btn soft" data-placa="${c.id}"><svg class="i"><use href="#i-print"/></svg>Imprimir placa de preço</button></div>`}
+  ${c.venda?"":`<div class="acts-row"><button type="button" class="btn soft" data-share="${c.id}"><svg class="i"><use href="#i-share"/></svg>Mandar para cliente</button><button type="button" class="btn soft" data-imprimir="${c.id}"><svg class="i"><use href="#i-print"/></svg>Imprimir placa de preço</button></div>`}
   <div class="dgrid">${[["Ano",c.ano],["Km",c.km.toLocaleString("pt-BR")],["Cor",c.pintura],["Combustível",c.comb],["Câmbio",c.cambio],["Placa",c.placa],["Origem",c.origem||"Próprio"],["Dono do carro",p?p.nome:S.loja.nome],["Entrada",fd(c.entrada)+"/2026"]].map(d=>`<div><span class="lbl">${d[0]}</span><b>${esc(d[1])}</b></div>`).join("")}</div>
   <div class="lines num"><div><span>${c.venda?"Vendido por":"Preço anunciado"}</span><span>${R(valorV(c))}</span></div>${dono&&!c.venda?`<div><span>Preço mínimo</span><span>${R(c.minimo||c.preco)}</span></div>`:""}<div><span>Tabela FIPE</span><span>${R(c.fipe)} · ${Math.round(c.preco/c.fipe*100)}%</span></div>
    ${dono?`<div class="tot"><span>${c.venda?"Lucro bruto":"Lucro previsto"}</span><span class="${lucro(c)>=0?"pos":"neg"}">${R(lucro(c))} · ${(lucro(c)/valorV(c)*100).toFixed(1).replace(".",",")}%</span></div>`:""}
@@ -1129,7 +1129,7 @@ document.addEventListener("click",e=>{
  if(t.closest("[data-close]")||t.id==="ov"){fechar();return}
  const wa=t.closest("a[data-wa]");if(wa){const l=S.leads.find(x=>x.id==wa.dataset.wa);if(l&&USER){l.data=HOJE;(l.hist=l.hist||[]).push({data:HOJE,txt:"Chamado no WhatsApp"});salvar();setTimeout(()=>{if(!$("#ov").hidden&&$("#fe"))return;tudo()},400)}return}
  const shb=t.closest("[data-share]");if(shb){compartilhar(+shb.dataset.share);return}
- const plb=t.closest("[data-placa]");if(plb){placaPreco(+plb.dataset.placa);return}
+ const plb=t.closest("[data-imprimir]");if(plb){placaPreco(+plb.dataset.imprimir);return}
  if(t.closest("[data-guia-ocultar]")){S.guia.oculto=true;salvar();renderGuia();return}
  if(t.closest("[data-copiar-link]")){S.guia.link=true;salvar();copiar(siteURL(),"Link do site copiado. Mande no WhatsApp, Instagram e grupos.");renderGuia();return}
  const ver=t.closest("[data-ver]");if(ver){verCarro(ver.dataset.ver);return}
