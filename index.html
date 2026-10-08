@@ -8,29 +8,33 @@
 <title>Painel Pátio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Space+Mono:wght@400;700&family=Inter+Tight:wght@400;500;600;700&display=swap">
 <style>
-/* Layout: três telas na mesma página. Vitrine pública (cor da loja, sem login) → Login do lojista → Painel (menu lateral fixo + conteúdo com resumo antes do detalhe). */
+/* Sistema UI UX Pro Max (revenda de carros): ardósia escura #1E293B + vermelho de ação #DC2626, Syncopate (títulos largos) + Space Mono (números) + Inter Tight (texto). Herói escuro em tela cheia, movimento leve.
+   Layout: três telas na mesma página. Vitrine pública (cor da loja, sem login) → Login do lojista → Painel (menu lateral fixo + conteúdo com resumo antes do detalhe). */
 :root{
-  --bg:#f1f2ef; --surface:#ffffff; --sunk:#e7e9e4; --ink:#17201c; --muted:#5b6560; --line:#d8dbd5;
-  --accent:#0e5c57; --accent-ink:#ffffff; --accent-soft:#dbeae7;
-  --ok:#23704a; --ok-soft:#dff0e6; --warn:#9a5a00; --warn-soft:#fbebd0; --crit:#b3261e; --crit-soft:#f8dedb; --info:#2a5db0; --info-soft:#e0e9f8;
-  --shadow:0 1px 2px rgba(20,30,25,.06),0 6px 18px rgba(20,30,25,.06);
-  --brand:#b4232c; --brand-ink:#ffffff;
-  --f-display:"Barlow Condensed","Arial Narrow",sans-serif;
-  --f-body:"Public Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
-  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --bg:#f8fafc; --surface:#ffffff; --sunk:#eef2f6; --ink:#0f172a; --muted:#475569; --line:#e2e8f0;
+  --primary:#1e293b; --primary-2:#334155; --on-primary:#ffffff; --on-primary-mut:#cbd5e1;
+  --accent:#dc2626; --accent-ink:#ffffff; --accent-soft:#fdecec;
+  --ok:#15803d; --ok-soft:#e3f5ea; --warn:#a15c07; --warn-soft:#fdf0d9; --crit:#b91c1c; --crit-soft:#fde4e4; --info:#1d4ed8; --info-soft:#e3ebfd;
+  --shadow:0 1px 2px rgba(15,23,42,.06),0 10px 24px -12px rgba(15,23,42,.18);
+  --brand:#dc2626; --brand-ink:#ffffff;
+  --f-display:"Syncopate","Arial Black",sans-serif;
+  --f-body:"Inter Tight",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"Space Mono",ui-monospace,Menlo,monospace;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#111614; --surface:#191f1d; --sunk:#222926; --ink:#e6ebe8; --muted:#97a29d; --line:#2e3733;
-  --accent:#4fb3a8; --accent-ink:#0b1513; --accent-soft:#1c3431;
-  --ok:#6cc896; --ok-soft:#1a3225; --warn:#f0b35a; --warn-soft:#382b16; --crit:#f08a80; --crit-soft:#3a1e1b; --info:#8db4f2; --info-soft:#1c2a42;
-  --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 18px rgba(0,0,0,.25); color-scheme:dark}}
+  --bg:#0b1120; --surface:#111a2e; --sunk:#18233a; --ink:#e2e8f0; --muted:#94a3b8; --line:#22304a;
+  --primary:#0f172a; --primary-2:#1e293b; --on-primary:#f1f5f9; --on-primary-mut:#94a3b8;
+  --accent:#ef4444; --accent-ink:#ffffff; --accent-soft:#3a1720;
+  --ok:#4ade80; --ok-soft:#14301f; --warn:#fbbf24; --warn-soft:#3a2c10; --crit:#f87171; --crit-soft:#3a1719; --info:#93b4ff; --info-soft:#18264a;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 24px -12px rgba(0,0,0,.5); color-scheme:dark}}
 :root[data-theme="dark"]{
-  --bg:#111614; --surface:#191f1d; --sunk:#222926; --ink:#e6ebe8; --muted:#97a29d; --line:#2e3733;
-  --accent:#4fb3a8; --accent-ink:#0b1513; --accent-soft:#1c3431;
-  --ok:#6cc896; --ok-soft:#1a3225; --warn:#f0b35a; --warn-soft:#382b16; --crit:#f08a80; --crit-soft:#3a1e1b; --info:#8db4f2; --info-soft:#1c2a42;
-  --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 18px rgba(0,0,0,.25); color-scheme:dark}
+  --bg:#0b1120; --surface:#111a2e; --sunk:#18233a; --ink:#e2e8f0; --muted:#94a3b8; --line:#22304a;
+  --primary:#0f172a; --primary-2:#1e293b; --on-primary:#f1f5f9; --on-primary-mut:#94a3b8;
+  --accent:#ef4444; --accent-ink:#ffffff; --accent-soft:#3a1720;
+  --ok:#4ade80; --ok-soft:#14301f; --warn:#fbbf24; --warn-soft:#3a2c10; --crit:#f87171; --crit-soft:#3a1719; --info:#93b4ff; --info-soft:#18264a;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 24px -12px rgba(0,0,0,.5); color-scheme:dark}
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 html,body{min-height:100%}
@@ -236,6 +240,84 @@ tbody tr.click{cursor:pointer}tbody tr.click:hover{background:var(--sunk)}
 }
 @media (max-width:520px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))!important}.v-name{font-size:20px}.v-stats{gap:14px}.v-stats b{font-size:20px}.topbar .acts{width:100%}.topbar .acts .btn{flex:1;justify-content:center}.form{grid-template-columns:1fr}.specgrid{grid-template-columns:1fr 1fr}h1{font-size:30px}.kpi .v{font-size:24px}.hbar .r{grid-template-columns:80px minmax(0,1fr) 72px}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* ======== camada visual UI UX Pro Max ======== */
+::selection{background:var(--accent);color:var(--accent-ink)}
+h1{font-family:var(--f-display);font-weight:700;text-transform:uppercase;font-size:clamp(22px,3vw,34px);letter-spacing:0;line-height:1.12}
+h2{font-family:var(--f-display);font-weight:700;text-transform:uppercase;font-size:15px;letter-spacing:.04em;line-height:1.3}
+.num,.kpi .v,.pr,.sim .big,.plate,td.r{font-family:var(--f-mono)}
+.btn{border-radius:8px;transition:transform .25s ease-out,box-shadow .25s ease-out,filter .2s}
+.btn:hover{filter:none;transform:translateY(-1px);box-shadow:0 10px 20px -10px color-mix(in srgb,var(--accent) 70%,transparent)}
+.btn.ghost:hover,.btn.soft:hover{box-shadow:none}
+.btn.ghost{border-color:var(--line)}
+.kpi{border-radius:12px;position:relative;overflow:hidden}
+.kpi .v{font-size:24px;font-weight:700;letter-spacing:-.02em}
+.kpi::after{content:"";position:absolute;left:0;top:0;bottom:0;width:0}
+.panel{border-radius:12px}
+/* figura do carro: painel com nome do modelo, foto real entra aqui */
+.pic{position:relative;width:100%;height:100%;container-type:inline-size;overflow:hidden;background:radial-gradient(120% 90% at 85% 110%,color-mix(in srgb,var(--paint) 55%,transparent),transparent 60%),linear-gradient(135deg,#334155,#1e293b);display:flex;align-items:flex-end}
+.pic span{font-family:var(--f-display);font-weight:700;text-transform:uppercase;color:rgba(255,255,255,.16);font-size:21cqw;line-height:.78;white-space:nowrap;padding:0 0 4cqw 4cqw;letter-spacing:-.01em}
+.pic i{position:absolute;right:4cqw;top:4cqw;font-style:normal;font-family:var(--f-mono);font-size:max(9px,3.6cqw);color:rgba(255,255,255,.55)}
+.pic b{position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--paint)}
+/* vitrine */
+.v-top{background:var(--primary);color:var(--on-primary)}
+.v-logo{border-radius:8px;background:var(--brand);color:var(--brand-ink);font-family:var(--f-display);font-size:14px;letter-spacing:.06em}
+.v-name{font-family:var(--f-display);font-size:15px;letter-spacing:.12em;text-transform:uppercase}
+.v-name small{font-family:var(--f-body);letter-spacing:0;text-transform:none;font-size:12.5px;opacity:.75}
+.v-top nav a,.v-top nav button{color:var(--on-primary);border-color:rgba(255,255,255,.22);border-radius:8px}
+.v-hero{background:var(--primary);position:relative;overflow:hidden}
+.v-hero::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 60% 70% at 80% 90%,color-mix(in srgb,var(--brand) 38%,transparent),transparent 62%);pointer-events:none}
+.v-hero .in{position:relative;color:var(--on-primary);text-align:center;padding-block:46px 0}
+.v-hero h1{font-size:clamp(26px,4.4vw,52px);max-width:18ch;margin-inline:auto;line-height:1.06}
+.v-hero p{margin-inline:auto;color:var(--on-primary-mut);opacity:1}
+.v-hero .lbl{color:var(--on-primary-mut)!important;opacity:1!important}
+.v-stats{justify-content:center;gap:36px;color:var(--on-primary-mut)}
+.v-stats b{font-family:var(--f-mono);font-size:22px;color:var(--on-primary)}
+.v-search{border-radius:12px;text-align:left}
+.cards{gap:20px}
+.card{border-radius:12px;transition:transform .3s ease-out,box-shadow .3s ease-out}
+.card:hover{transform:translateY(-4px);box-shadow:0 22px 40px -24px rgba(15,23,42,.45)}
+.ph{aspect-ratio:16/10}
+.card .nm{font-weight:600;font-size:17px}
+.pr{font-size:22px;font-weight:700;letter-spacing:-.01em}
+.v-box{border-radius:12px}
+.det .ph{aspect-ratio:16/10}
+.sim .big{font-size:26px}
+/* login */
+#login{background:var(--primary);background-image:radial-gradient(ellipse 60% 60% at 80% 100%,rgba(220,38,38,.3),transparent 60%)}
+.login-box .brand,.side .brand{font-family:var(--f-display);font-size:17px;letter-spacing:.14em;text-transform:uppercase}
+.mk{background:var(--accent);border-radius:7px}
+.roles label{border-radius:10px}
+/* painel */
+.side{background:var(--primary);color:var(--on-primary);border-right:0}
+.side .brand{color:var(--on-primary)}
+.store{background:rgba(255,255,255,.06)}
+.store small{color:var(--on-primary-mut)}
+.nav{color:var(--on-primary-mut);position:relative}
+.nav:hover{background:rgba(255,255,255,.06);color:var(--on-primary)}
+.nav[aria-current="true"]{background:rgba(255,255,255,.09);color:var(--on-primary)}
+.nav[aria-current="true"]::before{content:"";position:absolute;left:-12px;top:8px;bottom:8px;width:3px;border-radius:0 3px 3px 0;background:var(--accent)}
+.side .grp{color:var(--on-primary-mut)}
+.side .me{border-top-color:rgba(255,255,255,.1)}
+.me .who .muted{color:var(--on-primary-mut)!important}
+.av{background:var(--accent-soft);color:var(--accent)}
+.side .av{background:rgba(255,255,255,.1);color:var(--on-primary)}
+.thumb{width:64px;height:40px;border-radius:7px}
+.tabs button[aria-selected="true"]{border-color:var(--accent)}
+.seg button[aria-pressed="true"]{box-shadow:var(--shadow)}
+.col,.day{border-radius:12px}
+.day.today{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.ev{background:var(--sunk);border-left:0;position:relative}
+.ev.td{background:var(--info-soft)}
+.hbar .trk i{background:var(--primary-2)}
+:root[data-theme="dark"] .hbar .trk i{background:var(--muted)}
+.mtop{background:var(--primary);color:var(--on-primary);border-bottom:0}
+.mtop .btn.soft{background:rgba(255,255,255,.1);color:var(--on-primary)}
+.toast{border-radius:10px}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .hbar .trk i{background:var(--muted)}}
+@media (prefers-reduced-motion:no-preference){.card,.kpi,.panel{animation:rise .5s cubic-bezier(.16,1,.3,1) both}}
+@keyframes rise{from{transform:translateY(8px)}to{transform:none}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 
 </head>
@@ -444,9 +526,9 @@ tbody tr.click{cursor:pointer}tbody tr.click:hover{background:var(--sunk)}
 const HOJE="2026-10-08";
 const PINTURA={Prata:"#9aa0a4",Branco:"#ebe8e1",Preto:"#22262a",Vermelho:"#9e1d25",Azul:"#2b4f7e",Cinza:"#5f6468",Verde:"#4f6247",Bege:"#c9b99a"};
 const ETAPAS=["Novo","Em negociação","Visita marcada","Vendido","Perdido"];
-const SWATCH=["#b4232c","#0e5c57","#1f3f8f","#111827","#c2410c","#6d28d9","#047857","#a16207"];
+const SWATCH=["#dc2626","#0e5c57","#1f3f8f","#111827","#c2410c","#6d28d9","#047857","#a16207"];
 function seed(){return{
- loja:{nome:"Auto Sul Veículos",slug:"autosul",slogan:"Seminovos revisados, com procedência e garantia",cid:"Pelotas/RS",wpp:"(53) 99999-0000",end:"Av. Bento Gonçalves, 3200 · Centro",hor:"Seg a sex 8h30–18h30 · Sáb 9h–13h",sobre:"Loja de seminovos desde 2012. Todos os carros passam por revisão e laudo cautelar antes de ir para o pátio, e saem com 3 meses de garantia de motor e câmbio.",cor:"#b4232c"},
+ loja:{nome:"Auto Sul Veículos",slug:"autosul",slogan:"Seminovos revisados em Pelotas",cid:"Pelotas/RS",wpp:"(53) 99999-0000",end:"Av. Bento Gonçalves, 3200 · Centro",hor:"Seg a sex 8h30–18h30 · Sáb 9h–13h",sobre:"Loja de seminovos desde 2012. Todos os carros passam por revisão e laudo cautelar antes de ir para o pátio, e saem com 3 meses de garantia de motor e câmbio.",cor:"#dc2626"},
  equipe:[{id:1,nome:"Marcos Silva",email:"marcos@autosul.com.br",papel:"Dono",com:0},{id:2,nome:"Fernanda Rocha",email:"fernanda@autosul.com.br",papel:"Vendedor",com:1.5},{id:3,nome:"Lucas Prado",email:"lucas@autosul.com.br",papel:"Vendedor",com:1.5}],
  carros:[
   {id:1,marca:"Chevrolet",modelo:"Onix",versao:"LT 1.0 Turbo",ano:2020,km:58200,placa:"IST4E21",pintura:"Prata",comb:"Flex",cambio:"Manual",compra:52000,gastos:[["Polimento e higienização",650],["Pneus dianteiros",980]],preco:64900,fipe:66400,entrada:"2026-09-21",status:"Disponível",docs:{laudo:true,manual:true,chave:true,ipva:true},visitas:312},
@@ -489,10 +571,10 @@ function seed(){return{
  ],
  hist:[["Mai",3,13100],["Jun",4,17800],["Jul",2,9400],["Ago",5,22600],["Set",4,18900]]
 }}
-let S;try{S=JSON.parse(localStorage.getItem("patio-demo-v2"))}catch(e){}
+let S;try{S=JSON.parse(localStorage.getItem("patio-demo-v3"))}catch(e){}
 if(!S||!S.carros)S=seed();
 let USER=null;try{USER=JSON.parse(sessionStorage.getItem("patio-user"))}catch(e){}
-function salvar(){try{localStorage.setItem("patio-demo-v2",JSON.stringify(S))}catch(e){}}
+function salvar(){try{localStorage.setItem("patio-demo-v3",JSON.stringify(S))}catch(e){}}
 
 /* ---------- utilidades ---------- */
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
@@ -517,10 +599,7 @@ const vendaMes=c=>c.venda&&c.venda.data>="2026-10-01";
 function toast(t){const e=$("#toast");e.textContent=t;e.hidden=false;clearTimeout(e._t);e._t=setTimeout(()=>e.hidden=true,2600)}
 function inkFor(hex){const n=parseInt(hex.slice(1),16),r=n>>16,g=n>>8&255,b=n&255;return (0.299*r+0.587*g+0.114*b)>160?"#141414":"#ffffff"}
 function aplicaMarca(){document.documentElement.style.setProperty("--brand",S.loja.cor);document.documentElement.style.setProperty("--brand-ink",inkFor(S.loja.cor))}
-function carSVG(c,big){const cor=PINTURA[c.pintura]||"#888";const suv=/Toro|Tracker|Renegade|T-Cross/.test(c.modelo);
- const body=suv?"M40 122 L58 82 Q66 66 86 64 L210 62 Q230 62 244 78 L262 100 L282 106 Q294 110 294 122 L294 134 L34 134 L34 126Z":"M44 122 L68 88 Q76 76 94 74 L198 72 Q216 72 230 86 L252 106 L278 112 Q290 115 290 126 L290 134 L38 134 L38 128Z";
- const win=suv?"M84 84 Q90 72 104 72 L152 70 L152 98 L72 100Z M160 70 L206 70 Q220 71 230 82 L246 98 L160 98Z":"M90 90 Q96 82 106 82 L152 81 L152 104 L78 106Z M160 81 L198 81 Q210 82 220 92 L234 104 L160 104Z";
- return `<svg viewBox="0 0 320 200" role="img" aria-label="Ilustração do ${esc(c.marca+" "+c.modelo)}"><defs><linearGradient id="sky${c.id}${big?"b":""}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--sunk)"/><stop offset="1" stop-color="var(--surface)"/></linearGradient></defs><rect width="320" height="200" fill="url(#sky${c.id}${big?"b":""})"/><rect y="146" width="320" height="54" fill="var(--line)"/><ellipse cx="166" cy="152" rx="138" ry="9" fill="rgba(0,0,0,.18)"/><path d="${body}" fill="${cor}" stroke="rgba(0,0,0,.35)" stroke-width="2"/><path d="${win}" fill="rgba(170,205,225,.7)"/><path d="M44 120 L290 120" stroke="rgba(255,255,255,.25)" stroke-width="2"/><circle cx="94" cy="138" r="20" fill="#1b1d1e"/><circle cx="94" cy="138" r="8.5" fill="#a2a8ab"/><circle cx="238" cy="138" r="20" fill="#1b1d1e"/><circle cx="238" cy="138" r="8.5" fill="#a2a8ab"/></svg>`}
+function carSVG(c,big){const cor=PINTURA[c.pintura]||"#888";return `<div class="pic" style="--paint:${cor}" role="img" aria-label="${esc(c.marca+" "+c.modelo)}"><i>${big?"foto do carro":""}</i><span>${esc(c.modelo)}</span><b></b></div>`}
 function diasPill(c){const d=dias(c);if(c.venda)return `<span class="pill p-mut">vendeu em ${d} d</span>`;const k=d>90?"p-crit":d>60?"p-warn":"p-ok";return `<span class="pill ${k}">${d} dias</span>`}
 function stPill(s){return `<span class="pill ${{"Disponível":"p-ok","Reservado":"p-warn","Preparação":"p-info","Vendido":"p-mut"}[s]}">${s}</span>`}
 function hbars(el,rows,fmt){const max=Math.max(1,...rows.map(r=>r[1]));$(el).innerHTML=rows.map(r=>`<div class="r"><span>${esc(r[0])}</span><span class="trk"><i style="width:${Math.max(2,r[1]/max*100)}%;${r[2]?"background:"+r[2]:""}"></i></span><span class="num" style="text-align:right">${fmt(r[1])}</span></div>`).join("")||`<p class="muted">Sem dados ainda.</p>`}
