@@ -6,6 +6,8 @@
 <meta name="description" content="Site e painel para lojas de veículos: estoque, contatos, agenda, vendas e financeiro.">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}body{margin:0}img{max-width:100%}</style>
 <title>Painel Pátio</title>
+<meta name="color-scheme" content="light">
+<script>document.documentElement.setAttribute("data-theme","light")</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Space+Mono:wght@400;700&family=Inter+Tight:wght@400;500;600;700&display=swap">
@@ -365,6 +367,27 @@ h2{font-family:var(--f-display);font-weight:700;text-transform:uppercase;font-si
 .btn.xs{padding:4px 9px;font-size:12px;border-radius:7px}
 @media (max-width:900px){.dgrid{grid-template-columns:repeat(2,minmax(0,1fr))}#lanc td,#tab-vres td{white-space:normal}#lanc td.r,#tab-vres td.r{white-space:nowrap}}
 @media (max-width:1100px){.kpis.k5{grid-template-columns:repeat(3,minmax(0,1fr))}}
+
+/* ---------- tema claro neutro (sempre claro, tons de branco e cinza) ---------- */
+:root,:root[data-theme]{color-scheme:light;--primary:#f1f5f9;--primary-2:#e2e8f0;--on-primary:#0f172a;--on-primary-mut:#475569}
+.v-top{background:#ffffff;color:var(--ink);border-bottom:1px solid var(--line)}
+.v-top nav a,.v-top nav button{color:var(--ink);border-color:var(--line)}
+.v-hero{background:#f1f5f9;border-bottom:1px solid var(--line)}
+.v-hero::before{background:radial-gradient(ellipse 60% 70% at 80% 90%,color-mix(in srgb,var(--brand) 10%,transparent),transparent 62%)}
+#login{background:#f1f5f9;background-image:none}
+.side{background:#ffffff;border-right:1px solid var(--line)}
+.nav:hover{background:#f1f5f9}
+.nav[aria-current="true"]{background:#eef2f6;color:var(--ink)}
+.side .av{background:#eef2f6;color:var(--ink)}
+.mtop{background:#ffffff;border-bottom:1px solid var(--line)}
+.mtop .btn.soft{background:#eef2f6;color:var(--ink)}
+.hbar .trk i,:root[data-theme] .hbar .trk i{background:#64748b}
+.side .me{border-top-color:var(--line)}
+.pic{background:radial-gradient(120% 90% at 85% 110%,color-mix(in srgb,var(--paint) 28%,transparent),transparent 60%),linear-gradient(135deg,#f8fafc,#e2e8f0)}
+.pic span{color:rgba(15,23,42,.10)}
+.pic .art{stroke:rgba(15,23,42,.42)}
+@media (max-width:520px){.kpi .v{font-size:20px!important;white-space:normal!important;overflow:visible!important;text-overflow:clip!important}}
+
 </style>
 
 </head>
