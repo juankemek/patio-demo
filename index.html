@@ -393,6 +393,58 @@ h2{font-family:var(--f-display);font-weight:700;text-transform:uppercase;font-si
 input,select,textarea{color-scheme:inherit}
 @media (max-width:520px){.kpi .v{font-size:20px!important;white-space:normal!important;overflow:visible!important;text-overflow:clip!important}}
 
+
+/* ---------- usabilidade ---------- */
+.bbar{display:none}
+.wa{display:grid;place-items:center;flex:0 0 32px;border:1px solid color-mix(in srgb,#16a34a 40%,transparent);background:color-mix(in srgb,#16a34a 12%,transparent);color:#15803d;border-radius:7px;text-decoration:none}
+:root[data-theme="dark"] .wa{color:#4ade80}
+.wa svg{width:15px;height:15px}
+.btn.wa-btn{background:#16a34a;color:#fff;justify-content:center;text-decoration:none}
+.stall{color:var(--warn)!important;font-weight:600}
+.lead .mv{flex-wrap:wrap;align-items:center}.lead .mv button{white-space:nowrap;font-size:11.5px}.lead .mv .wa,.lead .mv button[data-ed]{height:30px;flex:0 0 32px}.lead .mv button[data-mv]{flex:1 1 auto;min-height:30px}
+.toast button{margin-left:12px;background:transparent;color:inherit;border:1.5px solid currentColor;border-radius:7px;padding:3px 10px;font-weight:700;cursor:pointer;font:inherit;font-size:13px}
+.hint{display:block;color:var(--muted);font-size:12px;font-family:var(--f-mono);min-height:0}
+.acts-row{display:flex;gap:8px;flex-wrap:wrap}.acts-row .btn{flex:1 1 140px;justify-content:center}
+.fotobtn{justify-content:center;cursor:pointer;border:1.5px dashed var(--line);padding:16px}
+details.mais{border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+details.mais summary{cursor:pointer;font-weight:600}
+details.mais .form{padding:0;margin-top:12px;border:0;background:none;box-shadow:none}
+.guia{margin-bottom:16px}
+.guia .gbar{height:8px;background:var(--sunk);border-radius:99px;overflow:hidden;margin:6px 0 12px}.guia .gbar i{display:block;height:100%;background:var(--accent);border-radius:99px}
+.gsteps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.gstep{border:1px solid var(--line);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:8px}
+.gstep.ok{opacity:.65}.gstep b{font-size:14px}.gstep .n{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:var(--sunk);font-weight:700;font-size:12px}
+.gstep.ok .n{background:var(--ok);color:#fff}
+.busca-in{width:100%;font-size:17px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink)}
+.bres h3{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:14px 0 6px}
+.nav kbd{margin-left:auto;font-family:var(--f-mono);font-size:11px;border:1px solid var(--line);border-radius:5px;padding:0 5px;color:var(--muted)}
+.sharebox{width:100%;min-height:190px;font:inherit;font-size:14px;padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--sunk);color:var(--ink);resize:vertical}
+#printarea{display:none}
+@media print{
+ @page{size:A4 landscape;margin:12mm}
+ body *{visibility:hidden!important}
+ #printarea,#printarea *{visibility:visible!important}
+ #printarea{display:block!important;position:absolute;left:0;top:0;width:100%}
+}
+.pz{font-family:var(--f-body);color:#111;background:#fff;border:3px solid #111;border-radius:16px;padding:22px 28px;display:flex;flex-direction:column;gap:6px;min-height:170mm}
+.pz-top{display:flex;justify-content:space-between;font-size:16px;border-bottom:2px solid #111;padding-bottom:8px}
+.pz-top b{font-size:20px;letter-spacing:.06em;text-transform:uppercase}
+.pz-mod{font-size:54px;font-weight:800;line-height:1;margin-top:14px}
+.pz-ver{font-size:24px}.pz-specs{font-size:20px;color:#333}
+.pz-preco{font-size:96px;font-weight:800;line-height:1;margin-top:12px}
+.pz-parc{font-size:24px}
+.pz-bot{display:flex;gap:18px;align-items:center;margin-top:auto;font-size:18px}
+#pz-qr img,#pz-qr canvas{width:150px!important;height:150px!important}
+@media (max-width:900px){
+ .bbar{display:grid;grid-template-columns:repeat(5,1fr);position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--surface);border-top:1px solid var(--line);padding:4px 2px calc(4px + env(safe-area-inset-bottom,0px))}
+ .bb{border:0;background:none;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:2px;font:inherit;font-size:11px;font-weight:600;padding:6px 0;cursor:pointer;position:relative}
+ .bb svg{width:22px;height:22px}
+ .bb[aria-current="true"]{color:var(--accent)}
+ .bb .bb-n{position:absolute;top:2px;left:calc(50% + 6px);background:var(--accent);color:var(--accent-ink);font-style:normal;font-size:10px;border-radius:99px;padding:0 5px;line-height:16px}
+ #painel .main{padding-bottom:96px}
+ .toast{bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+ .gsteps{grid-template-columns:1fr 1fr}
+}
 </style>
 
 </head>
@@ -412,6 +464,9 @@ input,select,textarea{color-scheme:inherit}
  <symbol id="i-swap" viewBox="0 0 24 24"><path d="M7 4L3 8l4 4M3 8h14M17 20l4-4-4-4M21 16H7"/></symbol>
  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5z"/></symbol>
  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+ <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></symbol>
+ <symbol id="i-share" viewBox="0 0 24 24"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="M8.2 10.8l7.6-4.4M8.2 13.2l7.6 4.4"/></symbol>
+ <symbol id="i-print" viewBox="0 0 24 24"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></symbol>
  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 20l1.3-3.9A8 8 0 1 1 8 19.2z"/></symbol>
  <symbol id="i-gauge" viewBox="0 0 24 24"><path d="M5.6 18.4A9 9 0 1 1 18.4 18.4"/><path d="M12 13.5l4-4.5"/><circle cx="12" cy="13.5" r="1.4"/></symbol>
@@ -477,11 +532,12 @@ input,select,textarea{color-scheme:inherit}
 
 <!-- ============ PAINEL ============ -->
 <section id="painel" hidden>
-  <div class="mtop"><button class="btn soft sm" id="menu-btn" aria-expanded="false" aria-controls="side">☰ Menu</button><div class="brand-m"><span class="mk" aria-hidden="true"></span><b id="m-loja">Auto Sul Veículos</b></div></div>
+  <div class="mtop"><button class="btn soft sm" id="menu-btn" aria-expanded="false" aria-controls="side">☰ Menu</button><button class="btn soft sm" id="busca-m" type="button" aria-label="Buscar" style="order:3;margin-left:auto"><svg class="i" style="width:18px;height:18px"><use href="#i-search"/></svg></button><div class="brand-m"><span class="mk" aria-hidden="true"></span><b id="m-loja">Auto Sul Veículos</b></div></div>
   <div class="scrim" id="scrim" hidden></div>
   <aside class="side" id="side" aria-label="Menu do painel">
     <div class="brand"><span class="mk" aria-hidden="true"></span>Pátio</div>
     <div class="store"><div class="v-logo" id="p-logo">AS</div><div><b id="p-loja">Auto Sul Veículos</b><small>patio.app/<span id="p-slug">autosul</span></small></div></div>
+    <button class="nav" id="busca-btn" type="button"><svg class="i"><use href="#i-search"/></svg>Buscar<kbd>/</kbd></button>
     <button class="nav" data-sec="geral" aria-current="true"><svg class="i"><use href="#i-home"/></svg>Visão geral</button>
     <button class="nav" data-sec="estoque"><svg class="i"><use href="#i-car"/></svg>Estoque</button>
     <button class="nav" data-sec="contatos"><svg class="i"><use href="#i-chat"/></svg>Contatos<span class="cnt" id="cnt-novos">0</span></button>
@@ -505,6 +561,7 @@ input,select,textarea{color-scheme:inherit}
     <!-- geral -->
     <div class="sec" id="sec-geral">
       <div class="topbar"><div><span class="lbl" id="hoje-lbl">Quinta, 8 de outubro de 2026</span><h1 id="ola">Bom dia, Marcos</h1></div><div class="acts"><button class="btn" data-act="novo-carro"><svg class="i"><use href="#i-plus"/></svg>Cadastrar veículo</button></div></div>
+      <div class="panel guia dono" id="guia" hidden></div>
       <div class="kpis" id="kpis"></div>
       <div class="kpi-note" id="kpi-note"></div>
       <div class="row2">
@@ -513,7 +570,7 @@ input,select,textarea{color-scheme:inherit}
       </div>
       <div class="row3">
         <div class="panel"><div class="panel-h"><h2>Agenda de hoje e amanhã</h2><button class="btn sm soft" data-go="agenda">Ver agenda</button></div><div class="list" id="ag-hoje"></div></div>
-        <div class="panel"><div class="panel-h"><h2>Contatos novos</h2><button class="btn sm soft" data-go="contatos">Ver todos</button></div><div class="list" id="ld-novos"></div></div>
+        <div class="panel"><div class="panel-h"><h2>Chamar hoje</h2><button class="btn sm soft" data-go="contatos">Ver todos</button></div><div class="list" id="ld-novos"></div></div>
         <div class="panel"><div class="panel-h"><h2>Mais vistos no site</h2></div><div class="list" id="top"></div></div>
       </div>
       <div class="row2">
@@ -607,7 +664,7 @@ input,select,textarea{color-scheme:inherit}
             <label class="field">Endereço do site<input id="lj-slug"></label>
             <label class="field full">Frase de destaque<input id="lj-slogan"></label>
             <label class="field">Cidade<input id="lj-cid"></label>
-            <label class="field">WhatsApp<input id="lj-wpp"></label>
+            <label class="field">WhatsApp<input id="lj-wpp" type="tel" inputmode="tel" data-tel autocomplete="tel"></label>
             <label class="field full">Endereço<input id="lj-end"></label>
             <label class="field full">Horário<input id="lj-hor"></label>
             <label class="field full">Sobre a loja<textarea id="lj-sobre" rows="3"></textarea></label>
@@ -620,10 +677,18 @@ input,select,textarea{color-scheme:inherit}
       </div>
     </div>
   </main>
+  <nav class="bbar" aria-label="Atalhos do painel">
+    <button class="bb" data-sec="geral" aria-current="true"><svg class="i"><use href="#i-home"/></svg>Início</button>
+    <button class="bb" data-sec="estoque"><svg class="i"><use href="#i-car"/></svg>Estoque</button>
+    <button class="bb" data-sec="contatos"><svg class="i"><use href="#i-chat"/></svg>Contatos<i class="bb-n" id="bb-n" hidden></i></button>
+    <button class="bb" data-sec="agenda"><svg class="i"><use href="#i-cal"/></svg>Agenda</button>
+    <button class="bb" id="bb-mais" type="button"><svg class="i"><use href="#i-store"/></svg>Mais</button>
+  </nav>
 </section>
 
 <div class="overlay" id="ov" hidden><div class="sheet" role="dialog" aria-modal="true" id="sheet"></div></div>
-<div class="toast" id="toast" hidden></div>
+<div class="toast" id="toast" hidden role="status"></div>
+<div id="printarea"></div>
 
 <script>
 const HOJE="2026-10-08";
@@ -721,7 +786,21 @@ const vencida=x=>x.status==="Pendente"&&x.venc<HOJE;
 function saldoConta(n){return (S.saldoIni[n]||0)+S.contas.filter(x=>x.status==="Pago"&&x.conta===n).reduce((s,x)=>s+(x.tipo==="receber"?x.valor:-x.valor),0)}
 function movs(){const a=[];S.carros.forEach(c=>{a.push({d:c.entrada,k:"in",c,tit:{"Próprio":"Compra","Parceiro":"Entrada de parceiro","Consignado":"Consignação"}[c.origem||"Próprio"],v:c.compra,quem:c.origem==="Próprio"?"Marcos":(parc(c.parc)||{nome:"—"}).nome});if(c.venda)a.push({d:c.venda.data,k:"out",c,tit:"Venda",v:c.venda.valor,quem:(pessoa(c.venda.vend)||{nome:"—"}).nome.split(" ")[0]+" · cliente "+c.venda.cli})});return a.sort((x,y)=>y.d.localeCompare(x.d))}
 function movHTML(m){return `<button class="mov" data-carro="${m.c.id}"><span class="ic ${m.k==="in"?"in":"out"}">${m.k==="in"?"↓":"↑"}</span><span class="t"><b>${esc(nomeCarro(m.c))} · ${esc(m.c.placa)}</b><small>${m.tit} · ${esc(m.quem)}</small></span><span class="v num">${m.k==="out"||isDono()?R(m.v):""}<small>${fd(m.d)}/${m.d.slice(2,4)}</small></span></button>`}
-function toast(t){const e=$("#toast");e.textContent=t;e.hidden=false;clearTimeout(e._t);e._t=setTimeout(()=>e.hidden=true,2600)}
+let UNDO=null;function marca(){UNDO=JSON.stringify(S)}
+function toast(t,undo){const e=$("#toast");e.innerHTML=esc(t)+(undo&&UNDO?'<button type="button" id="undo-btn">Desfazer</button>':"");e.hidden=false;clearTimeout(e._t);e._t=setTimeout(()=>e.hidden=true,undo?6000:2600);const b=$("#undo-btn");if(b)b.onclick=()=>{S=JSON.parse(UNDO);UNDO=null;salvar();fechar();tudo();toast("Pronto, desfeito.")}}
+const telFmt=v=>{const d=v.replace(/\D/g,"").slice(0,11);if(d.length<3)return d;if(d.length<7)return `(${d.slice(0,2)}) ${d.slice(2)}`;if(d.length<11)return `(${d.slice(0,2)}) ${d.slice(2,6)}-${d.slice(6)}`;return `(${d.slice(0,2)}) ${d.slice(2,7)}-${d.slice(7)}`};
+const waLink=(tel,msg)=>"https://wa.me/55"+String(tel).replace(/\D/g,"")+"?text="+encodeURIComponent(msg);
+const desde=d=>Math.round((dt(HOJE)-dt(d))/864e5);
+const PRAZO={"Novo":1,"Em negociação":3,"Visita marcada":2,"Financiamento":3};
+const parado=l=>PRAZO[l.etapa]!=null&&desde(l.data)>=PRAZO[l.etapa];
+function msgLead(l){const c=carro(l.carro),cn=c?c.marca+" "+c.modelo+" "+c.ano:"carro",eu=USER?USER.nome.split(" ")[0]:"a equipe",lj=S.loja.nome,p=l.nome.split(" ")[0];
+ return ({"Novo":`Oi ${p}! Aqui é ${eu}, da ${lj}. Vi que você se interessou pelo ${cn}. Quer que eu mande mais fotos ou simule as parcelas?`,"Em negociação":`Oi ${p}, tudo bem? É ${eu}, da ${lj}. Conseguiu pensar no ${cn}? Se quiser, vejo uma condição melhor pra você.`,"Visita marcada":`Oi ${p}! ${eu} da ${lj} aqui. Passando para confirmar sua visita para ver o ${cn}. Está mantido?`,"Financiamento":`Oi ${p}! É ${eu}, da ${lj}. Tenho novidades sobre a simulação do financiamento do ${cn}. Posso te ligar?`,"Vendido":`Oi ${p}! Aqui é ${eu}, da ${lj}. Tudo certo com o ${cn}? Qualquer coisa, conte com a gente!`,"Perdido":`Oi ${p}, tudo bem? ${eu} da ${lj} aqui. Chegaram carros parecidos com o ${cn}. Quer que eu te mande as opções?`})[l.etapa]||`Oi ${p}! Aqui é ${eu}, da ${lj}.`}
+const waBtn=l=>`<a class="wa" data-wa="${l.id}" href="${waLink(l.tel,msgLead(l))}" target="_blank" rel="noopener" title="Chamar no WhatsApp" aria-label="Chamar ${esc(l.nome)} no WhatsApp"><svg class="i"><use href="#i-chat"/></svg></a>`;
+const siteURL=()=>location.href.split("#")[0].replace(/\/painel\/?$/,"/");
+const carroURL=id=>siteURL()+"#carro-"+id;
+function hintNum(el){const lb=el.closest("label");if(!lb)return;const t=lb.textContent,money=/R\$/.test(t),km=/^\s*Km/i.test(t);if(!money&&!km)return;let h=lb.querySelector(".hint");if(!h){h=document.createElement("small");h.className="hint";lb.appendChild(h)}const v=+el.value;h.textContent=v?(money?R(v):v.toLocaleString("pt-BR")+" km"):""}
+function toast0(t){toast(t)}
+
 function inkFor(hex){const n=parseInt(hex.slice(1),16),r=n>>16,g=n>>8&255,b=n&255;return (0.299*r+0.587*g+0.114*b)>160?"#141414":"#ffffff"}
 function aplicaMarca(){document.documentElement.style.setProperty("--brand",S.loja.cor);document.documentElement.style.setProperty("--brand-ink",inkFor(S.loja.cor))}
 const FOTOS={"Kwid": "Renault Kwid 1.0 Zen (2022) (52721423597).jpg", "T-Cross": "Volkswagen T-Cross IMG001.jpg", "Toro": "2021 Fiat Toro Freedom 1.8 4X2 - (2).jpg", "Onix": "Chevrolet Onix (second generation, front view).jpg", "HB20": "HB20X 2nd Generation Frontal View.jpg", "Corolla": "Toyota Corolla Limousine Hybrid Genf 2019 1Y7A5582.jpg", "Renegade": "Jeep Renegade 1.8 Sport 2018 (43134425314).jpg", "Gol": "VW Gol G8.jpg", "Fit": "Honda FIT 13G (DBA-GK3) front.JPG", "Argo": "Fiat Argo 1.3 Drive ELX 2018 (26635198997).jpg", "Tracker": "Chevrolet Tracker, Front Right, 05-12-2021.jpg"};
@@ -762,7 +841,7 @@ function verCarro(id){
     <div><span class="muted" style="font-size:13px">Parcela estimada</span><div class="big num" id="sim-p"></div><span class="muted" style="font-size:12px">Simulação com taxa de 1,89% ao mês. Sujeita à aprovação de crédito.</span></div></div>
    <a class="btn" style="justify-content:center;background:var(--brand);color:var(--brand-ink)" href="https://wa.me/55${tel}?text=${msg}" target="_blank" rel="noopener"><svg class="i"><use href="#i-chat"/></svg>Falar no WhatsApp</a>
    <details><summary class="btn ghost" style="justify-content:center;list-style:none">Agendar visita ou test drive</summary>
-    <form class="form" id="f-agv" style="margin-top:10px"><label class="field full">Seu nome<input id="agv-n" required></label><label class="field full">WhatsApp<input id="agv-t" required></label><label class="field">Dia<input id="agv-d" type="date" required value="${addD(HOJE,1)}" min="${HOJE}"></label><label class="field">Horário<select id="agv-h"><option>09:00</option><option>10:30</option><option selected>14:00</option><option>15:30</option><option>17:00</option></select></label><label class="field full">Tipo<select id="agv-tp"><option>Test drive</option><option>Visita</option></select></label><button class="btn full" type="submit" style="justify-content:center;background:var(--brand);color:var(--brand-ink)">Pedir agendamento</button></form></details>
+    <form class="form" id="f-agv" style="margin-top:10px"><label class="field full">Seu nome<input id="agv-n" required></label><label class="field full">WhatsApp<input id="agv-t" type="tel" inputmode="tel" data-tel autocomplete="tel" required></label><label class="field">Dia<input id="agv-d" type="date" required value="${addD(HOJE,1)}" min="${HOJE}"></label><label class="field">Horário<select id="agv-h"><option>09:00</option><option>10:30</option><option selected>14:00</option><option>15:30</option><option>17:00</option></select></label><label class="field full">Tipo<select id="agv-tp"><option>Test drive</option><option>Visita</option></select></label><button class="btn full" type="submit" style="justify-content:center;background:var(--brand);color:var(--brand-ink)">Pedir agendamento</button></form></details>
   </div></div>`;
  ov.hidden=false;
  $$("[data-gal]").forEach(b=>b.onclick=()=>{const im=$("#gal-main img");if(im)im.src=c.fotos[+b.dataset.gal];$$("[data-gal]").forEach(x=>x.setAttribute("aria-pressed",x===b))});
@@ -781,7 +860,7 @@ function renderPainel(){
  $("#me-av").textContent=ini(USER.nome);$("#me-nome").textContent=USER.nome;$("#me-papel").textContent=USER.papel;
  {const h=new Date().getHours();$("#ola").textContent=(h<12?"Bom dia, ":h<18?"Boa tarde, ":"Boa noite, ")+USER.nome.split(" ")[0]}
  $$(".dono").forEach(e=>e.hidden=!isDono());
- $("#cnt-novos").textContent=S.leads.filter(l=>l.etapa==="Novo").length;
+ {const n=S.leads.filter(l=>parado(l)||l.etapa==="Novo").length;$("#cnt-novos").textContent=n;$("#bb-n").textContent=n;$("#bb-n").hidden=!n}
  renderGeral();renderEstoque();renderKanban();renderAgenda();renderVendas();renderMov();
  if(isDono()){renderFin();renderRel();renderParc();renderEquipe();renderLoja()}
 }
@@ -808,7 +887,9 @@ function renderGeral(){
  $("#alerts").innerHTML=al.slice(0,5).map(a=>`<button class="item" data-carro="${a[0]}"><span class="t"><b>${esc(a[2])}</b><small>${esc(a[1])}</small></span><span class="pill ${a[3]}">${a[4]}</span></button>`).join("")||`<p class="muted">Tudo em dia.</p>`;
  const ag=S.visitas.filter(v=>v.data===HOJE||v.data===addD(HOJE,1)).sort((a,b)=>(a.data+a.hora).localeCompare(b.data+b.hora));
  $("#ag-hoje").innerHTML=ag.map(v=>`<div class="item" style="cursor:default"><span class="pill ${v.tipo==="Test drive"?"p-info":"p-ok"}">${v.data===HOJE?"Hoje":"Amanhã"} ${v.hora}</span><span class="t"><b>${esc(v.cli)}</b><small>${v.tipo} · ${esc(nomeCarro(carro(v.carro)))}</small></span></div>`).join("")||`<p class="muted">Nada marcado.</p>`;
- $("#ld-novos").innerHTML=S.leads.filter(l=>l.etapa==="Novo").map(l=>`<button class="item" data-go="contatos"><div class="av">${ini(l.nome)}</div><span class="t"><b>${esc(l.nome)}</b><small>${esc(l.origem)} · ${esc(nomeCarro(carro(l.carro)))}</small></span></button>`).join("")||`<p class="muted">Nenhum contato novo.</p>`;
+ {const ch=S.leads.filter(l=>parado(l)||l.etapa==="Novo").sort((a,b)=>parado(b)-parado(a)||a.data.localeCompare(b.data));
+  $("#ld-novos").innerHTML=ch.map(l=>`<div class="item" data-lead="${l.id}" role="button" tabindex="0"><div class="av">${ini(l.nome)}</div><span class="t"><b>${esc(l.nome)}</b><small${parado(l)?' class="stall"':""}>${parado(l)?`${esc(l.etapa)} · sem retorno há ${desde(l.data)} ${desde(l.data)===1?"dia":"dias"}`:esc(l.origem)+" · "+esc(nomeCarro(carro(l.carro)))}</small></span>${waBtn(l)}</div>`).join("")||`<p class="muted">Ninguém esperando resposta. Bom trabalho!</p>`}
+ renderGuia();
  {const pr=est.filter(c=>(c.origem||"Próprio")==="Próprio").length;$("#kpi-note").innerHTML=`<span>Estoque próprio: <b>${pr}</b></span><span>Parceiros e consignados: <b>${est.length-pr}</b></span>`+(isDono()?`<span>A receber: <b class="num">${R(S.contas.filter(x=>x.tipo==="receber"&&x.status==="Pendente").reduce((s,x)=>s+x.valor,0))}</b></span><span>A pagar: <b class="num">${R(S.contas.filter(x=>x.tipo==="pagar"&&x.status==="Pendente").reduce((s,x)=>s+x.valor,0))}</b></span>`:"")}
  $("#mov-geral").innerHTML=movs().slice(0,4).map(movHTML).join("");
  if(isDono())$("#ct-geral").innerHTML=S.contas.filter(x=>x.status==="Pendente").sort((a,b)=>a.venc.localeCompare(b.venc)).slice(0,5).map(x=>`<div class="item" style="cursor:default"><span class="pill ${vencida(x)?"p-crit":x.tipo==="receber"?"p-ok":"p-warn"}">${vencida(x)?"Vencida":fd(x.venc)}</span><span class="t"><b>${esc(x.desc)}</b><small>${x.tipo==="receber"?"A receber":"A pagar"} · ${esc(x.cat)}</small></span><b class="num ${x.tipo==="receber"?"pos":"neg"}" style="white-space:nowrap">${R(x.valor)}</b></div>`).join("")||`<p class="muted">Nada pendente.</p>`;
@@ -827,15 +908,15 @@ function renderEstoque(){
 }
 function renderKanban(){
  $("#kanban").innerHTML=ETAPAS.map((e,i)=>{const ls=S.leads.filter(l=>l.etapa===e).sort((a,b)=>b.data.localeCompare(a.data));
-  return `<div class="col" data-etapa="${e}"><div class="col-h"><span>${e}</span><span class="pill p-mut">${ls.length}</span></div>${ls.map(l=>`<div class="lead" data-lead="${l.id}" draggable="true" tabindex="0" role="button" aria-label="Editar ${esc(l.nome)}"><div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start"><b>${esc(l.nome)}</b><span class="pill ${{WhatsApp:"p-ok",Instagram:"p-warn",Site:"p-info",Loja:"p-mut"}[l.origem]||"p-mut"}">${esc(l.origem)}</span></div><small>${esc(nomeCarro(carro(l.carro)))}</small><small class="num">${esc(l.tel)} · ${fd(l.data)}</small>${l.nota?`<small style="color:var(--ink)">${esc(l.nota)}</small>`:""}<div class="mv"><button data-ed="${l.id}" aria-label="Editar contato" title="Editar"><svg class="i" style="width:14px;height:14px"><use href="#i-pen"/></svg></button>${i>0?`<button data-mv="${l.id}" data-d="-1" aria-label="Voltar etapa">← Voltar</button>`:""}${i<ETAPAS.length-1?`<button data-mv="${l.id}" data-d="1" aria-label="Avançar etapa">${ETAPAS[i+1]} →</button>`:""}</div></div>`).join("")}</div>`}).join("");
+  return `<div class="col" data-etapa="${e}"><div class="col-h"><span>${e}</span><span class="pill p-mut">${ls.length}</span></div>${ls.map(l=>`<div class="lead" data-lead="${l.id}" draggable="true" tabindex="0" role="button" aria-label="Editar ${esc(l.nome)}"><div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start"><b>${esc(l.nome)}</b><span class="pill ${{WhatsApp:"p-ok",Instagram:"p-warn",Site:"p-info",Loja:"p-mut"}[l.origem]||"p-mut"}">${esc(l.origem)}</span></div><small>${esc(nomeCarro(carro(l.carro)))}</small><small class="num">${esc(l.tel)} · ${fd(l.data)}</small>${l.nota?`<small style="color:var(--ink)">${esc(l.nota)}</small>`:""}${parado(l)?`<small class="stall">Sem retorno há ${desde(l.data)} ${desde(l.data)===1?"dia":"dias"}</small>`:""}<div class="mv"><button data-ed="${l.id}" aria-label="Editar contato" title="Editar"><svg class="i" style="width:14px;height:14px"><use href="#i-pen"/></svg></button>${waBtn(l)}${i>0?`<button data-mv="${l.id}" data-d="-1" aria-label="Voltar etapa">← Voltar</button>`:""}${i<ETAPAS.length-1?`<button data-mv="${l.id}" data-d="1" aria-label="Avançar etapa">${ETAPAS[i+1]} →</button>`:""}</div></div>`).join("")}</div>`}).join("");
  $$("#kanban .lead").forEach(el=>{el.ondragstart=ev=>{ev.dataTransfer.setData("text/plain",el.dataset.lead);el.classList.add("dragging")};el.ondragend=()=>el.classList.remove("dragging")});
  $$("#kanban .col").forEach(col=>{col.ondragover=ev=>{ev.preventDefault();col.classList.add("drop")};col.ondragleave=()=>col.classList.remove("drop");
-  col.ondrop=ev=>{ev.preventDefault();col.classList.remove("drop");const l=S.leads.find(x=>x.id==ev.dataTransfer.getData("text/plain")),nv=col.dataset.etapa;if(!l||l.etapa===nv)return;(l.hist=l.hist||[]).push({data:HOJE,txt:l.etapa+" → "+nv});l.etapa=nv;salvar();tudo();toast(l.nome+" → "+nv)}});
+  col.ondrop=ev=>{ev.preventDefault();col.classList.remove("drop");const l=S.leads.find(x=>x.id==ev.dataTransfer.getData("text/plain")),nv=col.dataset.etapa;if(!l||l.etapa===nv)return;marca();(l.hist=l.hist||[]).push({data:HOJE,txt:l.etapa+" → "+nv});l.etapa=nv;l.data=HOJE;salvar();tudo();toast(l.nome+" → "+nv,1)}});
 }
 function renderAgenda(){
  const ds=[...Array(7)].map((_,i)=>addD(HOJE,i)),wd=["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"];
  $("#days").innerHTML=ds.map(d=>{const vs=S.visitas.filter(v=>v.data===d).sort((a,b)=>a.hora.localeCompare(b.hora));
-  return `<div class="day ${d===HOJE?"today":""}"><div class="day-h"><span class="lbl">${wd[dt(d).getDay()]}${d===HOJE?" · hoje":""}</span><b>${d.slice(8)}</b></div>${vs.map(v=>`<div class="ev ${v.tipo==="Test drive"?"td":""}"><b class="num">${v.hora} · ${esc(v.cli)}</b><span>${v.tipo}</span><span class="muted">${esc(nomeCarro(carro(v.carro)))}</span><span class="muted">com ${esc((pessoa(v.vend)||{nome:"—"}).nome.split(" ")[0])}</span></div>`).join("")||`<span class="muted" style="font-size:12.5px">Livre</span>`}</div>`}).join("");
+  return `<div class="day ${d===HOJE?"today":""}"><div class="day-h"><span class="lbl">${wd[dt(d).getDay()]}${d===HOJE?" · hoje":""}</span><b>${d.slice(8)}</b></div>${vs.map(v=>`<div class="ev ${v.tipo==="Test drive"?"td":""}"><b class="num">${v.hora} · ${esc(v.cli)}</b><span>${v.tipo}</span><span class="muted">${esc(nomeCarro(carro(v.carro)))}</span><span class="muted">com ${esc((pessoa(v.vend)||{nome:"—"}).nome.split(" ")[0])}</span>${(ld=>ld?`<a class="btn xs wa-btn" data-wa="${ld.id}" href="${waLink(ld.tel,msgLead(ld))}" target="_blank" rel="noopener" style="margin-top:4px">WhatsApp</a>`:"")(S.leads.find(l=>l.nome===v.cli))}</div>`).join("")||`<span class="muted" style="font-size:12.5px">Livre</span>`}</div>`}).join("");
 }
 function renderVendas(){
  const vs=S.carros.filter(c=>c.venda).sort((a,b)=>b.venda.data.localeCompare(a.venda.data));
@@ -912,28 +993,29 @@ function ficha(id,tab){
  const p=parc(c.parc);
  let body="";
  if(TAB==="resumo")body=`<div class="ph" style="border-radius:12px;overflow:hidden">${carSVG(c,1)}</div>
+  ${c.venda?"":`<div class="acts-row"><button type="button" class="btn soft" data-share="${c.id}"><svg class="i"><use href="#i-share"/></svg>Mandar para cliente</button><button type="button" class="btn soft" data-placa="${c.id}"><svg class="i"><use href="#i-print"/></svg>Imprimir placa de preço</button></div>`}
   <div class="dgrid">${[["Ano",c.ano],["Km",c.km.toLocaleString("pt-BR")],["Cor",c.pintura],["Combustível",c.comb],["Câmbio",c.cambio],["Placa",c.placa],["Origem",c.origem||"Próprio"],["Dono do carro",p?p.nome:S.loja.nome],["Entrada",fd(c.entrada)+"/2026"]].map(d=>`<div><span class="lbl">${d[0]}</span><b>${esc(d[1])}</b></div>`).join("")}</div>
   <div class="lines num"><div><span>${c.venda?"Vendido por":"Preço anunciado"}</span><span>${R(valorV(c))}</span></div>${dono&&!c.venda?`<div><span>Preço mínimo</span><span>${R(c.minimo||c.preco)}</span></div>`:""}<div><span>Tabela FIPE</span><span>${R(c.fipe)} · ${Math.round(c.preco/c.fipe*100)}%</span></div>
    ${dono?`<div class="tot"><span>${c.venda?"Lucro bruto":"Lucro previsto"}</span><span class="${lucro(c)>=0?"pos":"neg"}">${R(lucro(c))} · ${(lucro(c)/valorV(c)*100).toFixed(1).replace(".",",")}%</span></div>`:""}
    <div><span>Dias no pátio</span><span>${dias(c)}</span></div><div><span>Visitas no site</span><span>${c.visitas}</span></div></div>
   ${c.obs?`<p style="font-size:13.5px;background:var(--sunk);border-radius:10px;padding:10px"><b>Observações:</b> ${esc(c.obs)}</p>`:""}
   ${c.venda?`<div class="lines"><div><span>Cliente</span><span>${esc(c.venda.cli)}</span></div><div><span>Vendedor</span><span>${esc((pessoa(c.venda.vend)||{nome:"—"}).nome)}</span></div><div><span>Pagamento</span><span>${esc(c.venda.pag)}</span></div><div><span>Data</span><span>${fd(c.venda.data)}/2026</span></div></div>`:
-  `<form class="form" id="f-preco"><label class="field">Situação<select id="fx-st">${["Disponível","Reservado","Preparação"].map(s=>`<option ${s===c.status?"selected":""}>${s}</option>`).join("")}</select></label><label class="field">Preço anunciado (R$)<input id="fx-preco" type="number" value="${c.preco}" min="0"></label>${dono?`<label class="field">Preço mínimo (R$)<input id="fx-min" type="number" value="${c.minimo||c.preco}" min="0"></label>`:""}<label class="field">Km<input id="fx-km" type="number" value="${c.km}" min="0"></label><label class="field full">Observações<textarea id="fx-obs" rows="2">${esc(c.obs||"")}</textarea></label><button class="btn full" type="submit" style="justify-content:center">Salvar</button></form>
+  `<form class="form" id="f-preco"><label class="field">Situação<select id="fx-st">${["Disponível","Reservado","Preparação"].map(s=>`<option ${s===c.status?"selected":""}>${s}</option>`).join("")}</select></label><label class="field">Preço anunciado (R$)<input id="fx-preco" type="number" inputmode="numeric" value="${c.preco}" min="0"></label>${dono?`<label class="field">Preço mínimo (R$)<input id="fx-min" type="number" inputmode="numeric" value="${c.minimo||c.preco}" min="0"></label>`:""}<label class="field">Km<input id="fx-km" type="number" inputmode="numeric" value="${c.km}" min="0"></label><label class="field full">Observações<textarea id="fx-obs" rows="2">${esc(c.obs||"")}</textarea></label><button class="btn full" type="submit" style="justify-content:center">Salvar</button></form>
    <p class="muted" style="font-size:12.5px">Disponível e Reservado aparecem no site. Em preparação fica escondido até ficar pronto.${dono?" O preço mínimo é o limite para a equipe negociar e só aparece para o dono.":""}</p>`}`;
  if(TAB==="fin"){const mg=(c.preco-custo(c)),mm=((c.minimo||c.preco)-custo(c));
   body=`<div class="lines num"><div><span>${labCompra(c)}</span><span>${R(c.compra)}</span></div>${c.gastos.map(g=>`<div><span>${esc(g[0])}</span><span>${R(g[1])}</span></div>`).join("")}<div class="tot"><span>Custo total</span><span>${R(custo(c))}</span></div></div>
   <div class="lines num"><div><span>Preço anunciado</span><span>${R(c.venda?c.venda.valor:c.preco)}</span></div>${c.venda?"":`<div><span>Preço mínimo</span><span>${R(c.minimo||c.preco)}</span></div>`}<div class="tot"><span>${c.venda?"Lucro na venda":"Margem prevista"}</span><span class="${(c.venda?lucro(c):mg)>=0?"pos":"neg"}">${R(c.venda?lucro(c):mg)} · ${((c.venda?lucro(c):mg)/valorV(c)*100).toFixed(1).replace(".",",")}%</span></div>${c.venda?"":`<div><span>Margem se vender no mínimo</span><span class="${mm>=0?"pos":"neg"}">${R(mm)}</span></div>`}</div>
   ${c.origem&&c.origem!=="Próprio"?`<p class="muted" style="font-size:12.5px">Carro ${c.origem==="Parceiro"?"de parceiro":"consignado"}: o repasse de ${R(c.compra)} para ${esc((p||{nome:"o dono"}).nome)} só é pago quando o carro for vendido.</p>`:""}
-  <form class="form" id="f-gasto"><label class="field full">Novo gasto<input id="g-d" required placeholder="Ex.: troca de pastilhas"></label><label class="field">Valor (R$)<input id="g-v" type="number" required min="1"></label><button class="btn" type="submit" style="align-self:end;justify-content:center">Adicionar gasto</button></form>`}
+  <form class="form" id="f-gasto"><label class="field full">Novo gasto<input id="g-d" required placeholder="Ex.: troca de pastilhas"></label><label class="field">Valor (R$)<input id="g-v" type="number" inputmode="numeric" required min="1"></label><button class="btn" type="submit" style="align-self:end;justify-content:center">Adicionar gasto</button></form>`}
  if(TAB==="fotos")body=`<p class="muted" style="font-size:13.5px">A primeira foto é a capa no site. Dá para tirar pelo celular na hora ou escolher da galeria. Até 12 fotos por carro.</p>
   <label class="btn" style="justify-content:center;cursor:pointer"><svg class="i"><use href="#i-plus"/></svg>Adicionar fotos<input type="file" id="up-fotos" accept="image/*" multiple hidden></label>
   ${(c.fotos||[]).length?`<div class="fgrid">${c.fotos.map((f,i)=>`<div class="fitem"><img src="${f}" alt="Foto ${i+1}">${i===0?'<span class="pill p-ok fcap">Capa</span>':""}<div class="fact">${i>0?`<button type="button" class="btn sm soft" data-capa="${i}">Usar como capa</button>`:""}<button type="button" class="btn sm danger" data-rmf="${i}">Remover</button></div></div>`).join("")}</div>`:`<div class="fempty"><b>Nenhuma foto ainda</b><span class="muted">Enquanto não tiver foto, o site mostra o nome do modelo${FOTOS[c.modelo]?" (nesta demonstração, uma foto ilustrativa)":""}.</span></div>`}`;
- if(TAB==="docs")body=`<form class="form" id="f-doc"><label class="field">Placa<input id="d-placa" value="${esc(c.placa)}" maxlength="8"></label><label class="field">RENAVAM<input id="d-ren" value="${esc(c.renavam||"")}" inputmode="numeric"></label><label class="field full">Chassi<input id="d-cha" value="${esc(c.chassi||"")}" maxlength="17"></label><button class="btn full soft" type="submit" style="justify-content:center">Salvar dados do documento</button></form>
+ if(TAB==="docs")body=`<form class="form" id="f-doc"><label class="field">Placa<input id="d-placa" data-placa autocapitalize="characters" value="${esc(c.placa)}" maxlength="8"></label><label class="field">RENAVAM<input id="d-ren" value="${esc(c.renavam||"")}" inputmode="numeric"></label><label class="field full">Chassi<input id="d-cha" value="${esc(c.chassi||"")}" maxlength="17"></label><button class="btn full soft" type="submit" style="justify-content:center">Salvar dados do documento</button></form>
   <div class="checks">${[["laudo","Laudo cautelar aprovado"],["manual","Manual e livro de revisões"],["chave","Chave reserva"],["ipva","IPVA e licenciamento em dia"]].map(d=>`<label><input type="checkbox" data-doc="${d[0]}" ${c.docs[d[0]]?"checked":""}>${d[1]}</label>`).join("")}</div><p class="muted" style="font-size:12.5px">Itens pendentes aparecem em "Precisam de atenção" na visão geral.</p>`;
  if(TAB==="int")body=ints.length?`<div class="list">${ints.map(l=>`<button class="item" data-lead="${l.id}"><div class="av">${ini(l.nome)}</div><span class="t"><b>${esc(l.nome)}</b><small>${esc(l.etapa)} · ${esc(l.origem)} · ${esc(l.tel)}</small></span><span class="pill p-mut">${fd(l.data)}</span></button>`).join("")}</div>`:`<div class="fempty"><b>Ninguém chamou por este carro ainda</b><span class="muted">Quando alguém pedir informação pelo site ou você cadastrar um contato com interesse nele, aparece aqui.</span></div>`;
  if(TAB==="hist"){const ev=[{data:c.entrada,txt:({"Próprio":"Entrou no pátio (compra)","Parceiro":"Entrou no pátio (carro de parceiro)","Consignado":"Entrou no pátio (consignado)"})[c.origem||"Próprio"],quem:"Marcos"},...(c.hist||[]),...(c.venda?[{data:c.venda.data,txt:"Vendido para "+c.venda.cli+" por "+R(c.venda.valor),quem:(pessoa(c.venda.vend)||{nome:"—"}).nome.split(" ")[0]}]:[])].sort((a,b)=>b.data.localeCompare(a.data));
   body=`<ul class="hist">${ev.map(h=>`<li><b>${fd(h.data)}</b> · ${esc(h.txt)}${h.quem?` <span class="muted">· ${esc(h.quem)}</span>`:""}</li>`).join("")}</ul>`}
- if(TAB==="vender")body=`<form class="form" id="f-venda"><label class="field">Valor da venda (R$)<input id="v-val" type="number" value="${c.preco}" required></label><label class="field">Data<input id="v-dt" type="date" value="${HOJE}" required></label><label class="field full">Cliente<input id="v-cli" required placeholder="Nome do comprador"></label><label class="field">Vendedor<select id="v-vend">${S.equipe.map(p=>`<option value="${p.id}" ${p.nome===USER.nome?"selected":""}>${esc(p.nome)}</option>`).join("")}</select></label><label class="field">Pagamento<select id="v-pag"><option>À vista</option><option>Financiado</option><option>À vista + troca</option><option>Financiado + troca</option></select></label>${dono?`<div class="full lines num"><div><span>Custo do carro</span><span>${R(custo(c))}</span></div><div class="tot"><span>Lucro com esse valor</span><span id="v-luc"></span></div></div>`:""}<p class="muted full" id="v-aviso" style="font-size:12.5px"></p><button class="btn full" type="submit" style="justify-content:center">Confirmar venda</button></form>`;
+ if(TAB==="vender")body=`<form class="form" id="f-venda"><label class="field">Valor da venda (R$)<input id="v-val" type="number" inputmode="numeric" value="${c.preco}" required></label><label class="field">Data<input id="v-dt" type="date" value="${HOJE}" required></label><label class="field full">Cliente<input id="v-cli" required placeholder="Nome do comprador"></label><label class="field">Vendedor<select id="v-vend">${S.equipe.map(p=>`<option value="${p.id}" ${p.nome===USER.nome?"selected":""}>${esc(p.nome)}</option>`).join("")}</select></label><label class="field">Pagamento<select id="v-pag"><option>À vista</option><option>Financiado</option><option>À vista + troca</option><option>Financiado + troca</option></select></label>${dono?`<div class="full lines num"><div><span>Custo do carro</span><span>${R(custo(c))}</span></div><div class="tot"><span>Lucro com esse valor</span><span id="v-luc"></span></div></div>`:""}<p class="muted full" id="v-aviso" style="font-size:12.5px"></p><button class="btn full" type="submit" style="justify-content:center">Confirmar venda</button></form>`;
  $("#sheet").innerHTML=`<div class="sheet-head"><div><span class="lbl">${esc(c.marca)} · ${plate(c.placa)}</span><h2 style="font-size:28px;margin-top:4px">${esc(c.modelo)} ${esc(c.versao)} ${c.ano}</h2><div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap">${stPill(c.status)} ${diasPill(c)} ${origPill(c)}</div></div><button class="x" data-close>Fechar</button></div>
   <div class="tabs" role="tablist">${tabs.map(t=>`<button role="tab" aria-selected="${t[0]===TAB}" data-tab="${t[0]}">${t[1]}</button>`).join("")}</div>${body}`;
  ov.hidden=false;
@@ -944,31 +1026,34 @@ function ficha(id,tab){
  $$("[data-doc]").forEach(x=>x.onchange=()=>{c.docs[x.dataset.doc]=x.checked;salvar();tudo()});
  const up=$("#up-fotos");if(up)up.onchange=async()=>{const n=await lerFotos(up.files);if(!n.length){toast("Não consegui ler essas imagens. Tente fotos JPG ou PNG.");return}c.fotos=[...(c.fotos||[]),...n].slice(0,12);if(salvar())toast(n.length+(n.length===1?" foto adicionada.":" fotos adicionadas."));tudo();ficha(id,"fotos")};
  $$("[data-capa]").forEach(b=>b.onclick=()=>{const i=+b.dataset.capa;c.fotos.unshift(c.fotos.splice(i,1)[0]);salvar();tudo();ficha(id,"fotos");toast("Capa atualizada.")});
- $$("[data-rmf]").forEach(b=>b.onclick=()=>{c.fotos.splice(+b.dataset.rmf,1);salvar();tudo();ficha(id,"fotos");toast("Foto removida.")});
+ $$("[data-rmf]").forEach(b=>b.onclick=()=>{marca();c.fotos.splice(+b.dataset.rmf,1);salvar();tudo();ficha(id,"fotos");toast("Foto removida.",1)});
  const fv=$("#f-venda");if(fv){const up=()=>{const v=+$("#v-val").value||0,e=$("#v-luc");if(e){const l=v-custo(c);e.textContent=R(l);e.className=l>=0?"pos":"neg"}$("#v-aviso").textContent=v&&v<(c.minimo||0)?"Atenção: valor abaixo do preço mínimo combinado ("+R(c.minimo)+").":"";$("#v-aviso").style.color=v<(c.minimo||0)?"var(--crit)":""};$("#v-val").oninput=up;up();
-  fv.onsubmit=e=>{e.preventDefault();c.venda={data:$("#v-dt").value,valor:+$("#v-val").value,vend:+$("#v-vend").value,pag:$("#v-pag").value,cli:$("#v-cli").value.trim()};c.status="Vendido";
+  fv.onsubmit=e=>{e.preventDefault();marca();c.venda={data:$("#v-dt").value,valor:+$("#v-val").value,vend:+$("#v-vend").value,pag:$("#v-pag").value,cli:$("#v-cli").value.trim()};c.status="Vendido";
    const ld=S.leads.find(l=>l.carro===c.id&&l.etapa!=="Perdido");if(ld){(ld.hist=ld.hist||[]).push({data:HOJE,txt:ld.etapa+" → Vendido"});ld.etapa="Vendido"}
    const fin=/Financiado/.test(c.venda.pag),nid=Date.now(),vp=pessoa(c.venda.vend)||{com:0,nome:""};
    S.contas.push(fin?{id:nid,tipo:"receber",desc:"Venda "+nomeCarro(c)+" · "+c.venda.cli+" (banco paga)",cat:"Venda de veículo",valor:c.venda.valor,venc:addD(c.venda.data,7),comp:c.venda.data,status:"Pendente",conta:"Banco",carro:c.id}:{id:nid,tipo:"receber",desc:"Venda "+nomeCarro(c)+" · "+c.venda.cli,cat:"Venda de veículo",valor:c.venda.valor,venc:c.venda.data,comp:c.venda.data,status:"Pago",pago:c.venda.data,conta:"Banco",carro:c.id});
    if(c.origem&&c.origem!=="Próprio")S.contas.push({id:nid+1,tipo:"pagar",desc:"Repasse "+c.modelo+" · "+((parc(c.parc)||{nome:"dono"}).nome),cat:"Repasse a parceiro",valor:c.compra,venc:addD(c.venda.data,5),comp:c.venda.data,status:"Pendente",conta:"Banco",carro:c.id});
    if(vp.com)S.contas.push({id:nid+2,tipo:"pagar",desc:"Comissão "+vp.nome.split(" ")[0]+" · "+c.modelo,cat:"Comissão",valor:Math.round(c.venda.valor*vp.com/100),venc:addD(c.venda.data,5),comp:c.venda.data,status:"Pendente",conta:"Banco"});
-   salvar();tudo();ficha(id,"resumo");toast("Venda registrada. "+(fin?"O valor do banco ficou em contas a receber.":"O valor entrou no caixa.")+(c.origem&&c.origem!=="Próprio"?" O repasse ficou em contas a pagar.":""))}}
+   salvar();tudo();ficha(id,"resumo");toast("Venda registrada. "+(fin?"O valor do banco ficou em contas a receber.":"O valor entrou no caixa.")+(c.origem&&c.origem!=="Próprio"?" O repasse ficou em contas a pagar.":""),1)}}
 }
 function formNovo(tipo){
  const ov=$("#ov");ov.classList.remove("center");let h="",t="";
- if(tipo==="novo-carro"){t="Cadastrar veículo";h=`<form class="form" id="fn"><label class="field">Origem<select id="n-org"><option>Próprio</option><option>Parceiro</option><option>Consignado</option></select></label><label class="field" id="n-parc-w" hidden>Parceiro<select id="n-parc">${S.parceiros.map(p=>`<option value="${p.id}">${esc(p.nome)}</option>`).join("")}</select></label><label class="field">Marca<input id="n-marca" required value="Nissan"></label><label class="field">Modelo<input id="n-modelo" required value="Kicks"></label><label class="field full">Versão<input id="n-versao" value="SV 1.6 CVT"></label><label class="field">Ano<input id="n-ano" type="number" required value="2021"></label><label class="field">Km<input id="n-km" type="number" required value="48000"></label><label class="field">Placa<input id="n-placa" required value="IXP2D45" maxlength="7"></label><label class="field">Cor<select id="n-cor">${Object.keys(PINTURA).map(p=>`<option>${p}</option>`).join("")}</select></label><label class="field">Câmbio<select id="n-cambio"><option>Automático</option><option>Manual</option></select></label><label class="field">Combustível<select id="n-comb"><option>Flex</option><option>Gasolina</option><option>Diesel</option><option>Elétrico</option><option>Híbrido</option></select></label><label class="field">Tabela FIPE (R$)<input id="n-fipe" type="number" required value="96500"></label><label class="field"><span id="n-compra-l">Valor de compra (R$)</span><input id="n-compra" type="number" required value="80000"></label><label class="field">Gasto de preparação (R$)<input id="n-prep" type="number" value="1200"></label><label class="field">Preço anunciado (R$)<input id="n-preco" type="number" required value="93900"></label><label class="field">Preço mínimo (R$)<input id="n-min" type="number" value="90000"></label><label class="field full">Observações<input id="n-obs" placeholder="Ex.: único dono, aceita troca"></label><label class="field full">Situação<select id="n-st"><option>Disponível</option><option>Preparação</option></select></label><label class="field full">Fotos (a primeira vira a capa)<input id="n-fotos" type="file" accept="image/*" multiple></label><button class="btn full" type="submit" style="justify-content:center">Salvar veículo</button></form>`}
- if(tipo==="novo-lead"){t="Novo contato";h=`<form class="form" id="fn"><label class="field full">Nome<input id="n-nome" required></label><label class="field">WhatsApp<input id="n-tel" required></label><label class="field">Origem<select id="n-or"><option>WhatsApp</option><option>Instagram</option><option>Site</option><option>Loja</option></select></label><label class="field full">Interesse<select id="n-car">${S.carros.filter(c=>!c.venda).map(c=>`<option value="${c.id}">${esc(nomeCarro(c))}</option>`).join("")}</select></label><label class="field full">Observação<textarea id="n-nota" rows="2"></textarea></label><button class="btn full" type="submit" style="justify-content:center">Salvar contato</button></form>`}
+ if(tipo==="novo-carro"){t="Cadastrar veículo";h=`<form class="form" id="fn"><label class="btn soft full fotobtn"><svg class="i"><use href="#i-plus"/></svg><span id="n-fotos-l">Tirar ou escolher fotos</span><input id="n-fotos" type="file" accept="image/*" multiple hidden></label><p class="muted full" style="font-size:12.5px;margin-top:-6px">A primeira foto vira a capa no site. Dá para pular e colocar depois.</p><label class="field">Marca<input id="n-marca" required value="Nissan"></label><label class="field">Modelo<input id="n-modelo" required value="Kicks"></label><label class="field">Ano<input id="n-ano" type="number" inputmode="numeric" required value="2021"></label><label class="field">Km<input id="n-km" type="number" inputmode="numeric" required value="48000"></label><label class="field">Placa<input id="n-placa" data-placa autocapitalize="characters" required value="IXP2D45" maxlength="7"></label><label class="field">Preço anunciado (R$)<input id="n-preco" type="number" inputmode="numeric" required value="93900"></label><label class="field">Origem<select id="n-org"><option>Próprio</option><option>Parceiro</option><option>Consignado</option></select></label><label class="field"><span id="n-compra-l">Valor de compra (R$)</span><input id="n-compra" type="number" inputmode="numeric" required value="80000"></label><label class="field full" id="n-parc-w" hidden>Parceiro<select id="n-parc">${S.parceiros.map(p=>`<option value="${p.id}">${esc(p.nome)}</option>`).join("")}</select></label>
+ <details class="full mais"><summary>Mais detalhes (opcional, dá para preencher depois)</summary><div class="form"><label class="field full">Versão<input id="n-versao" value="SV 1.6 CVT"></label><label class="field">Cor<select id="n-cor">${Object.keys(PINTURA).map(p=>`<option>${p}</option>`).join("")}</select></label><label class="field">Câmbio<select id="n-cambio"><option>Automático</option><option>Manual</option></select></label><label class="field">Combustível<select id="n-comb"><option>Flex</option><option>Gasolina</option><option>Diesel</option><option>Elétrico</option><option>Híbrido</option></select></label><label class="field">Tabela FIPE (R$)<input id="n-fipe" type="number" inputmode="numeric" placeholder="igual ao preço"></label><label class="field">Gasto de preparação (R$)<input id="n-prep" type="number" inputmode="numeric" placeholder="0"></label><label class="field">Preço mínimo (R$)<input id="n-min" type="number" inputmode="numeric" placeholder="automático"></label><label class="field">Situação<select id="n-st"><option>Disponível</option><option>Preparação</option></select></label><label class="field full">Observações<input id="n-obs" placeholder="Ex.: único dono, aceita troca"></label></div></details>
+ <button class="btn full" type="submit" style="justify-content:center">Salvar veículo</button></form>`}
+ if(tipo==="novo-lead"){t="Novo contato";h=`<form class="form" id="fn"><label class="field full">Nome<input id="n-nome" required></label><label class="field">WhatsApp<input id="n-tel" type="tel" inputmode="tel" data-tel autocomplete="tel" required></label><label class="field">Origem<select id="n-or"><option>WhatsApp</option><option>Instagram</option><option>Site</option><option>Loja</option></select></label><label class="field full">Interesse<select id="n-car">${S.carros.filter(c=>!c.venda).map(c=>`<option value="${c.id}">${esc(nomeCarro(c))}</option>`).join("")}</select></label><label class="field full">Observação<textarea id="n-nota" rows="2"></textarea></label><button class="btn full" type="submit" style="justify-content:center">Salvar contato</button></form>`}
  if(tipo==="nova-visita"){t="Agendar visita ou test drive";h=`<form class="form" id="fn"><label class="field full">Cliente<input id="n-cli" required></label><label class="field">Dia<input id="n-dia" type="date" required value="${addD(HOJE,1)}"></label><label class="field">Horário<input id="n-hora" type="time" required value="14:00"></label><label class="field">Tipo<select id="n-tp"><option>Test drive</option><option>Visita</option></select></label><label class="field">Vendedor<select id="n-vd">${S.equipe.map(p=>`<option value="${p.id}">${esc(p.nome)}</option>`).join("")}</select></label><label class="field full">Veículo<select id="n-car">${S.carros.filter(c=>!c.venda).map(c=>`<option value="${c.id}">${esc(nomeCarro(c))}</option>`).join("")}</select></label><button class="btn full" type="submit" style="justify-content:center">Agendar</button></form>`}
- if(tipo==="nova-conta"){t="Novo lançamento";h=`<form class="form" id="fn"><label class="field">Tipo<select id="c-tp"><option value="pagar">Conta a pagar</option><option value="receber">Conta a receber</option></select></label><label class="field">Categoria<select id="c-cat">${["Estrutura","Pessoal","Marketing","Administrativo","Documentação","Preparação","Comissão","Outros"].map(x=>`<option>${x}</option>`).join("")}</select></label><label class="field full">Descrição<input id="c-desc" required placeholder="Ex.: aluguel do pátio"></label><label class="field">Valor (R$)<input id="c-val" type="number" min="1" required></label><label class="field">Vencimento<input id="c-venc" type="date" required value="${HOJE}"></label><label class="field">Situação<select id="c-st"><option>Pendente</option><option value="Pago">Já pago ou recebido</option></select></label><label class="field">Conta<select id="c-ct"><option>Banco</option><option>Caixa</option></select></label><button class="btn full" type="submit" style="justify-content:center">Lançar</button></form>`}
- if(tipo==="novo-parceiro"){t="Novo parceiro";h=`<form class="form" id="fn"><label class="field full">Nome<input id="p-nome" required></label><label class="field">Tipo<select id="p-tp"><option>Lojista</option><option>Dono do carro (consignado)</option></select></label><label class="field">WhatsApp<input id="p-tel"></label><label class="field">Cidade<input id="p-cid" value="Pelotas"></label><label class="field full">Combinado<textarea id="p-obs" rows="2" placeholder="Ex.: repasse do valor de custo + 50% do lucro"></textarea></label><button class="btn full" type="submit" style="justify-content:center">Salvar parceiro</button></form>`}
- if(tipo==="nova-despesa"){t="Lançar despesa";h=`<form class="form" id="fn"><label class="field full">Descrição<input id="n-desc" required placeholder="Ex.: lavagem dos carros"></label><label class="field">Categoria<select id="n-cat"><option>Estrutura</option><option>Pessoal</option><option>Marketing</option><option>Administrativo</option><option>Outros</option></select></label><label class="field">Valor (R$)<input id="n-val" type="number" required min="1"></label><label class="field full">Data<input id="n-dt" type="date" required value="${HOJE}"></label><button class="btn full" type="submit" style="justify-content:center">Lançar</button></form>`}
+ if(tipo==="nova-conta"){t="Novo lançamento";h=`<form class="form" id="fn"><label class="field">Tipo<select id="c-tp"><option value="pagar">Conta a pagar</option><option value="receber">Conta a receber</option></select></label><label class="field">Categoria<select id="c-cat">${["Estrutura","Pessoal","Marketing","Administrativo","Documentação","Preparação","Comissão","Outros"].map(x=>`<option>${x}</option>`).join("")}</select></label><label class="field full">Descrição<input id="c-desc" required placeholder="Ex.: aluguel do pátio"></label><label class="field">Valor (R$)<input id="c-val" type="number" inputmode="numeric" min="1" required></label><label class="field">Vencimento<input id="c-venc" type="date" required value="${HOJE}"></label><label class="field">Situação<select id="c-st"><option>Pendente</option><option value="Pago">Já pago ou recebido</option></select></label><label class="field">Conta<select id="c-ct"><option>Banco</option><option>Caixa</option></select></label><button class="btn full" type="submit" style="justify-content:center">Lançar</button></form>`}
+ if(tipo==="novo-parceiro"){t="Novo parceiro";h=`<form class="form" id="fn"><label class="field full">Nome<input id="p-nome" required></label><label class="field">Tipo<select id="p-tp"><option>Lojista</option><option>Dono do carro (consignado)</option></select></label><label class="field">WhatsApp<input id="p-tel" type="tel" inputmode="tel" data-tel autocomplete="tel"></label><label class="field">Cidade<input id="p-cid" value="Pelotas"></label><label class="field full">Combinado<textarea id="p-obs" rows="2" placeholder="Ex.: repasse do valor de custo + 50% do lucro"></textarea></label><button class="btn full" type="submit" style="justify-content:center">Salvar parceiro</button></form>`}
+ if(tipo==="nova-despesa"){t="Lançar despesa";h=`<form class="form" id="fn"><label class="field full">Descrição<input id="n-desc" required placeholder="Ex.: lavagem dos carros"></label><label class="field">Categoria<select id="n-cat"><option>Estrutura</option><option>Pessoal</option><option>Marketing</option><option>Administrativo</option><option>Outros</option></select></label><label class="field">Valor (R$)<input id="n-val" type="number" inputmode="numeric" required min="1"></label><label class="field full">Data<input id="n-dt" type="date" required value="${HOJE}"></label><button class="btn full" type="submit" style="justify-content:center">Lançar</button></form>`}
  if(tipo==="convidar"){t="Convidar pessoa";h=`<form class="form" id="fn"><label class="field full">Nome<input id="n-nome" required></label><label class="field full">E-mail<input id="n-email" type="email" required></label><label class="field">Papel<select id="n-papel"><option>Vendedor</option><option>Gerente</option><option>Financeiro</option><option>Dono</option></select></label><label class="field">Comissão (%)<input id="n-com" type="number" step="0.5" value="1.5"></label><button class="btn full" type="submit" style="justify-content:center">Adicionar à equipe</button><p class="muted full" style="font-size:12.5px">No sistema real, a pessoa recebe um e-mail para criar a própria senha.</p></form>`}
  $("#sheet").innerHTML=`<div class="sheet-head"><h2 style="font-size:28px">${t}</h2><button class="x" data-close>Fechar</button></div>${h}`;ov.hidden=false;
  const v=id=>$("#"+id).value;
+ if(tipo==="novo-carro")$("#n-fotos").onchange=()=>{const n=$("#n-fotos").files.length;$("#n-fotos-l").textContent=n?n+(n===1?" foto escolhida":" fotos escolhidas")+" · trocar":"Tirar ou escolher fotos"};
  if(tipo==="novo-carro")$("#n-org").onchange=()=>{const o=v("n-org");$("#n-parc-w").hidden=o==="Próprio";$("#n-compra-l").textContent=o==="Próprio"?"Valor de compra (R$)":"Repasse na venda (R$)"};
  if(tipo==="nova-conta")$("#c-tp").onchange=()=>{$("#c-cat").innerHTML=(v("c-tp")==="pagar"?["Estrutura","Pessoal","Marketing","Administrativo","Documentação","Preparação","Comissão","Outros"]:["Venda de veículo","Sinal de reserva","Serviços","Outros"]).map(x=>`<option>${x}</option>`).join("")};
  $("#fn").onsubmit=async e=>{e.preventDefault();const id=Date.now();let msg="";const fotosN=$("#n-fotos")?await lerFotos($("#n-fotos").files):[];
-  if(tipo==="novo-carro"){const org=v("n-org");S.carros.push({id,origem:org,parc:org==="Próprio"?0:+v("n-parc"),minimo:+v("n-min")||+v("n-preco"),renavam:"",chassi:"",obs:v("n-obs"),marca:v("n-marca"),modelo:v("n-modelo"),versao:v("n-versao"),ano:+v("n-ano"),km:+v("n-km"),placa:v("n-placa").toUpperCase(),pintura:v("n-cor"),comb:v("n-comb"),cambio:v("n-cambio"),compra:+v("n-compra"),gastos:[["Preparação",+v("n-prep")||0]],preco:+v("n-preco"),fipe:+v("n-fipe"),entrada:HOJE,status:v("n-st"),docs:{laudo:false,manual:true,chave:true,ipva:true},visitas:0,fotos:fotosN});msg=v("n-st")==="Disponível"?"Veículo salvo e publicado no site.":"Veículo salvo. Fica fora do site até ficar disponível."}
+  if(tipo==="novo-carro"){const org=v("n-org");S.carros.push({id,origem:org,parc:org==="Próprio"?0:+v("n-parc"),minimo:+v("n-min")||Math.round(+v("n-preco")*0.955/500)*500,renavam:"",chassi:"",obs:v("n-obs"),marca:v("n-marca"),modelo:v("n-modelo"),versao:v("n-versao"),ano:+v("n-ano"),km:+v("n-km"),placa:v("n-placa").toUpperCase(),pintura:v("n-cor"),comb:v("n-comb"),cambio:v("n-cambio"),compra:+v("n-compra"),gastos:[["Preparação",+v("n-prep")||0]],preco:+v("n-preco"),fipe:+v("n-fipe")||+v("n-preco"),entrada:HOJE,status:v("n-st"),docs:{laudo:false,manual:true,chave:true,ipva:true},visitas:0,fotos:fotosN});msg=v("n-st")==="Disponível"?"Veículo salvo e publicado no site.":"Veículo salvo. Fica fora do site até ficar disponível."}
   if(tipo==="novo-lead"){S.leads.push({id,nome:v("n-nome"),tel:v("n-tel"),carro:+v("n-car"),origem:v("n-or"),etapa:"Novo",data:HOJE,nota:v("n-nota")});msg="Contato salvo em Novo."}
   if(tipo==="nova-visita"){S.visitas.push({id,data:v("n-dia"),hora:v("n-hora"),cli:v("n-cli"),carro:+v("n-car"),tipo:v("n-tp"),vend:+v("n-vd")});msg="Agendado."}
   if(tipo==="novo-carro"&&v("n-org")==="Próprio")S.contas.push({id:id+1,tipo:"pagar",desc:"Compra "+v("n-marca")+" "+v("n-modelo"),cat:"Compra de veículo",valor:+v("n-compra"),venc:HOJE,comp:HOJE,status:"Pendente",conta:"Banco",carro:id});
@@ -984,34 +1069,77 @@ function editarLead(id){
  const carros=S.carros.map(c=>`<option value="${c.id}"${c.id===l.carro?" selected":""}>${esc(nomeCarro(c))}${c.venda?" (vendido)":""}</option>`).join("");
  const hist=(l.hist||[]).slice().reverse();
  $("#sheet").innerHTML=`<div class="sheet-head"><h2 style="font-size:28px">Editar contato</h2><button class="x" data-close>Fechar</button></div>
- <form class="form" id="fe"><label class="field full">Nome<input id="e-nome" required value="${esc(l.nome)}"></label><label class="field">WhatsApp<input id="e-tel" required value="${esc(l.tel)}"></label><label class="field">Origem<select id="e-or">${op(["WhatsApp","Instagram","Site","Loja"],l.origem)}</select></label><label class="field full">Etapa<select id="e-et">${op(ETAPAS,l.etapa)}</select></label><label class="field full">Interesse<select id="e-car">${carros}</select></label><label class="field full">Observação<textarea id="e-nota" rows="3">${esc(l.nota||"")}</textarea></label><button class="btn full" type="submit" style="justify-content:center">Salvar alterações</button><button class="btn btn-del full" type="button" id="e-del" style="justify-content:center">Excluir contato</button></form>
+ <form class="form" id="fe"><label class="field full">Nome<input id="e-nome" required value="${esc(l.nome)}"></label><label class="field">WhatsApp<input id="e-tel" type="tel" inputmode="tel" data-tel autocomplete="tel" required value="${esc(l.tel)}"></label><label class="field">Origem<select id="e-or">${op(["WhatsApp","Instagram","Site","Loja"],l.origem)}</select></label><label class="field full">Etapa<select id="e-et">${op(ETAPAS,l.etapa)}</select></label><label class="field full">Interesse<select id="e-car">${carros}</select></label><label class="field full">Observação<textarea id="e-nota" rows="3">${esc(l.nota||"")}</textarea></label><button class="btn full" type="submit" style="justify-content:center">Salvar alterações</button><a class="btn full wa-btn" data-wa="${l.id}" href="${waLink(l.tel,msgLead(l))}" target="_blank" rel="noopener"><svg class="i"><use href="#i-chat"/></svg>Chamar no WhatsApp</a><button class="btn btn-del full" type="button" id="e-del" style="justify-content:center">Excluir contato</button></form>
  ${hist.length?`<h3 style="font-size:13px;margin:22px 0 8px;text-transform:uppercase;letter-spacing:.06em">Histórico</h3><ul class="hist">${hist.map(h=>`<li><b>${fd(h.data)}</b> · ${esc(h.txt)}</li>`).join("")}</ul>`:""}`;
  ov.hidden=false;
- $("#fe").onsubmit=e=>{e.preventDefault();const g=k=>$("#"+k).value.trim(),nova=g("e-et");
+ $("#fe").onsubmit=e=>{e.preventDefault();marca();const g=k=>$("#"+k).value.trim(),nova=g("e-et");
   if(nova!==l.etapa){(l.hist=l.hist||[]).push({data:HOJE,txt:l.etapa+" → "+nova});l.etapa=nova;l.data=HOJE}
   Object.assign(l,{nome:g("e-nome"),tel:g("e-tel"),origem:g("e-or"),carro:+g("e-car"),nota:g("e-nota")});
-  salvar();tudo();fechar();toast("Contato atualizado: "+l.nome+" em "+l.etapa+".")};
+  salvar();tudo();fechar();toast("Contato atualizado: "+l.nome+" em "+l.etapa+".",1)};
  const del=$("#e-del");del.onclick=()=>{if(!del.classList.contains("sure")){del.classList.add("sure");del.textContent="Toque de novo para excluir";setTimeout(()=>{if(del.isConnected){del.classList.remove("sure");del.textContent="Excluir contato"}},4000);return}
-  S.leads=S.leads.filter(x=>x!==l);salvar();tudo();fechar();toast("Contato excluído.")};
+  marca();S.leads=S.leads.filter(x=>x!==l);salvar();tudo();fechar();toast("Contato excluído.",1)};
 }
+function renderGuia(){const g=S.guia=S.guia||{},el=$("#guia");if(!isDono()||g.oculto){el.hidden=true;return}
+ const st=[["Cadastre seu primeiro carro",S.carros.length>0,`<button class="btn sm soft" data-act="novo-carro">Cadastrar</button>`],["Coloque fotos nos carros",S.carros.some(c=>(c.fotos||[]).length),`<button class="btn sm soft" data-go="estoque">Ir para o estoque</button>`],["Confira os dados da loja",!!g.loja,`<button class="btn sm soft" data-go="loja">Abrir Minha loja</button>`],["Compartilhe o link do seu site",!!g.link,`<button class="btn sm soft" data-copiar-link>Copiar link</button>`]],ok=st.filter(x=>x[1]).length;
+ el.hidden=false;el.innerHTML=`<div class="panel-h"><h2>${ok===st.length?"Tudo pronto!":"Primeiros passos"}</h2><button class="btn sm ghost" data-guia-ocultar>${ok===st.length?"Fechar":"Esconder"}</button></div><span class="muted" style="font-size:13px">${ok} de ${st.length} concluídos</span><div class="gbar"><i style="width:${ok/st.length*100}%"></i></div><div class="gsteps">${st.map((x,i)=>`<div class="gstep ${x[1]?"ok":""}"><span class="n">${x[1]?"✓":i+1}</span><b>${x[0]}</b>${x[1]?'<span class="muted" style="font-size:12.5px">Feito</span>':x[2]}</div>`).join("")}</div>`}
+function copiar(txt,msg){const ok=()=>toast(msg||"Copiado.");if(navigator.clipboard&&window.isSecureContext)navigator.clipboard.writeText(txt).then(ok,()=>fb());else fb();function fb(){const ta=document.createElement("textarea");ta.value=txt;ta.style.position="fixed";ta.style.opacity="0";document.body.appendChild(ta);ta.select();try{document.execCommand("copy");ok()}catch(e){toast("Não consegui copiar. Selecione o texto e copie.")}ta.remove()}}
+function textoCarro(c){const L=S.loja;return `🚗 ${c.marca} ${c.modelo} ${c.versao} ${c.ano}\n${c.km.toLocaleString("pt-BR")} km · ${c.cambio} · ${c.comb} · ${c.pintura}\n\n💰 ${R(c.preco)} à vista\nou 48x de ${R(pmt(c.preco*0.7,0.0189,48))} (30% de entrada)\n\n✅ Revisado, com laudo cautelar e 3 meses de garantia de motor e câmbio${c.obs?"\n📝 "+c.obs:""}\n\n📍 ${L.nome} · ${L.cid}\n📞 ${L.wpp}\n👉 Fotos e simulação: ${carroURL(c.id)}`}
+function compartilhar(id){const c=carro(id);if(!c)return;const tx=textoCarro(c);
+ $("#sheet").innerHTML=`<div class="sheet-head"><div><span class="lbl">Mandar para cliente</span><h2 style="font-size:24px;margin-top:4px">${esc(c.modelo)} ${c.ano}</h2></div><button class="x" data-close>Fechar</button></div>
+ <p class="muted" style="font-size:13.5px">Texto pronto para enviar no WhatsApp ou colar no Marketplace, na OLX e no Instagram. Dá para editar antes.</p>
+ <textarea class="sharebox" id="sh-tx">${esc(tx)}</textarea>
+ <a class="btn wa-btn" id="sh-wa" href="https://wa.me/?text=${encodeURIComponent(tx)}" target="_blank" rel="noopener"><svg class="i"><use href="#i-chat"/></svg>Enviar no WhatsApp</a>
+ <div class="acts-row"><button type="button" class="btn soft" id="sh-cp">Copiar texto</button>${navigator.share?'<button type="button" class="btn soft" id="sh-nat">Outros aplicativos</button>':""}</div>
+ <button type="button" class="btn ghost" id="sh-back" style="justify-content:center">← Voltar para a ficha</button>`;
+ $("#ov").hidden=false;
+ const cur=()=>$("#sh-tx").value;$("#sh-tx").oninput=()=>{$("#sh-wa").href="https://wa.me/?text="+encodeURIComponent(cur())};
+ $("#sh-cp").onclick=()=>copiar(cur(),"Texto copiado. É só colar onde quiser.");
+ const nb=$("#sh-nat");if(nb)nb.onclick=()=>navigator.share({title:c.marca+" "+c.modelo,text:cur()}).catch(()=>{});
+ $("#sh-back").onclick=()=>ficha(id,"resumo")}
+let QRP=null;function qrLib(){if(window.QRCode)return Promise.resolve();if(QRP)return QRP;QRP=new Promise((ok,no)=>{const sc=document.createElement("script");sc.src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js";sc.onload=ok;sc.onerror=no;document.head.appendChild(sc)});return QRP}
+function placaPreco(id){const c=carro(id),L=S.loja;if(!c)return;const url=carroURL(c.id);
+ $("#printarea").innerHTML=`<div class="pz"><div class="pz-top"><b>${esc(L.nome)}</b><span>${esc(L.cid)} · WhatsApp ${esc(L.wpp)}</span></div><div class="pz-mod">${esc(c.marca)} ${esc(c.modelo)}</div><div class="pz-ver">${esc(c.versao)} · ${c.ano}</div><div class="pz-specs">${c.km.toLocaleString("pt-BR")} km · ${esc(c.cambio)} · ${esc(c.comb)} · ${esc(c.pintura)}</div><div class="pz-preco">${R(c.preco)}</div><div class="pz-parc">ou 48x de ${R(pmt(c.preco*0.7,0.0189,48))} com 30% de entrada</div><div class="pz-bot"><div id="pz-qr"></div><div>Aponte a câmera do celular para ver as fotos,<br>simular as parcelas e falar com a gente.<br><small style="color:#555">${esc(url)}</small></div></div></div>`;
+ toast("Preparando a placa para imprimir…");
+ qrLib().then(()=>{new QRCode($("#pz-qr"),{text:url,width:300,height:300,correctLevel:QRCode.CorrectLevel.M})}).catch(()=>{}).finally(()=>setTimeout(()=>{try{window.print()}catch(e){toast("Seu navegador bloqueou a impressão aqui.")}},450))}
+function busca(){const ov=$("#ov");ov.classList.add("center");
+ $("#sheet").innerHTML=`<div class="sheet-head"><h2 style="font-size:24px">Buscar</h2><button class="x" data-close>Fechar</button></div><input class="busca-in" id="bq" type="search" placeholder="Placa, modelo, nome ou telefone" autocomplete="off"><div class="bres" id="br"></div>`;
+ ov.hidden=false;const q=$("#bq");q.focus();
+ const run=()=>{const v=q.value.trim().toLowerCase(),vd=v.replace(/\D/g,"");if(!v){$("#br").innerHTML=`<p class="muted" style="margin-top:12px">Digite pelo menos uma parte: "onix", "IST", "Carla", "98111"…</p>`;return}
+  const cs=S.carros.filter(c=>(c.marca+" "+c.modelo+" "+c.versao+" "+c.ano+" "+c.placa).toLowerCase().includes(v)).slice(0,6);
+  const ls=S.leads.filter(l=>l.nome.toLowerCase().includes(v)||(vd.length>=3&&l.tel.replace(/\D/g,"").includes(vd))).slice(0,6);
+  const ps=isDono()?S.parceiros.filter(p=>p.nome.toLowerCase().includes(v)).slice(0,4):[];
+  const ct=isDono()?S.contas.filter(x=>x.desc.toLowerCase().includes(v)).slice(0,4):[];
+  let h="";
+  if(cs.length)h+=`<h3>Carros</h3>`+cs.map(c=>`<button class="item" data-r="c${c.id}"><div class="thumb">${carSVG(c)}</div><span class="t"><b>${esc(nomeCarro(c))}</b><small>${esc(c.placa)} · ${c.venda?"vendido":esc(c.status)} · ${R(valorV(c))}</small></span></button>`).join("");
+  if(ls.length)h+=`<h3>Contatos</h3>`+ls.map(l=>`<button class="item" data-r="l${l.id}"><div class="av">${ini(l.nome)}</div><span class="t"><b>${esc(l.nome)}</b><small>${esc(l.tel)} · ${esc(l.etapa)}</small></span></button>`).join("");
+  if(ps.length)h+=`<h3>Parceiros</h3>`+ps.map(p=>`<button class="item" data-r="p${p.id}"><div class="av">${ini(p.nome)}</div><span class="t"><b>${esc(p.nome)}</b><small>${esc(p.tipo)}</small></span></button>`).join("");
+  if(ct.length)h+=`<h3>Contas</h3>`+ct.map(x=>`<button class="item" data-r="f${x.id}"><span class="t"><b>${esc(x.desc)}</b><small>${x.tipo==="receber"?"A receber":"A pagar"} · ${R(x.valor)} · ${x.status==="Pago"?"pago":"vence "+fd(x.venc)}</small></span></button>`).join("");
+  $("#br").innerHTML=h||`<p class="muted" style="margin-top:12px">Nada encontrado para "${esc(q.value)}".</p>`;
+  $$("#br [data-r]").forEach(b=>b.onclick=()=>{const k=b.dataset.r[0],id=b.dataset.r.slice(1);if(k==="c"){TAB="resumo";ficha(id)}else if(k==="l")editarLead(id);else{fechar();secao(k==="p"?"parc":"fin")}})};
+ q.oninput=run;run()}
 function fechar(){$("#ov").hidden=true}
 function tudo(){renderVitrine();if(USER)renderPainel()}
 function tela(t){["vitrine","login","painel"].forEach(x=>$("#"+x).hidden=x!==t);$("#back-painel").hidden=!(t==="vitrine"&&USER);menu(false);scrollTo(0,0)}
 function menu(o){$("#side").classList.toggle("open",o);$("#scrim").hidden=!o;$("#menu-btn").setAttribute("aria-expanded",o)}
-function secao(s){menu(false);$$(".nav[data-sec]").forEach(b=>b.setAttribute("aria-current",b.dataset.sec===s));$$(".sec").forEach(x=>x.hidden=x.id!=="sec-"+s||(x.classList.contains("dono")&&!isDono()));scrollTo(0,0)}
+function secao(s){menu(false);$$(".nav[data-sec],.bb[data-sec]").forEach(b=>b.setAttribute("aria-current",b.dataset.sec===s));$$(".sec").forEach(x=>x.hidden=x.id!=="sec-"+s||(x.classList.contains("dono")&&!isDono()));scrollTo(0,0)}
 
 /* ---------- eventos ---------- */
 document.addEventListener("click",e=>{
  const t=e.target;
  if(t.closest("[data-close]")||t.id==="ov"){fechar();return}
+ const wa=t.closest("a[data-wa]");if(wa){const l=S.leads.find(x=>x.id==wa.dataset.wa);if(l&&USER){l.data=HOJE;(l.hist=l.hist||[]).push({data:HOJE,txt:"Chamado no WhatsApp"});salvar();setTimeout(()=>{if(!$("#ov").hidden&&$("#fe"))return;tudo()},400)}return}
+ const shb=t.closest("[data-share]");if(shb){compartilhar(+shb.dataset.share);return}
+ const plb=t.closest("[data-placa]");if(plb){placaPreco(+plb.dataset.placa);return}
+ if(t.closest("[data-guia-ocultar]")){S.guia.oculto=true;salvar();renderGuia();return}
+ if(t.closest("[data-copiar-link]")){S.guia.link=true;salvar();copiar(siteURL(),"Link do site copiado. Mande no WhatsApp, Instagram e grupos.");renderGuia();return}
  const ver=t.closest("[data-ver]");if(ver){verCarro(ver.dataset.ver);return}
  const cr=t.closest("[data-carro]");if(cr&&!t.closest(".sheet")){TAB="resumo";ficha(cr.dataset.carro);return}
  const go=t.closest("[data-go]");if(go){secao(go.dataset.go);return}
  const ac=t.closest("[data-act]");if(ac){formNovo(ac.dataset.act);return}
  const ed=t.closest("[data-ed]");if(ed){editarLead(ed.dataset.ed);return}
- const mv=t.closest("[data-mv]");if(mv){const l=S.leads.find(x=>x.id==mv.dataset.mv),i=ETAPAS.indexOf(l.etapa)+ +mv.dataset.d;const nv=ETAPAS[Math.max(0,Math.min(ETAPAS.length-1,i))];if(nv!==l.etapa){(l.hist=l.hist||[]).push({data:HOJE,txt:l.etapa+" → "+nv});l.etapa=nv}salvar();tudo();toast(l.nome+" → "+l.etapa);return}
+ const mv=t.closest("[data-mv]");if(mv){marca();const l=S.leads.find(x=>x.id==mv.dataset.mv),i=ETAPAS.indexOf(l.etapa)+ +mv.dataset.d;const nv=ETAPAS[Math.max(0,Math.min(ETAPAS.length-1,i))];if(nv!==l.etapa){(l.hist=l.hist||[]).push({data:HOJE,txt:l.etapa+" → "+nv});l.etapa=nv;l.data=HOJE}salvar();tudo();toast(l.nome+" → "+l.etapa,1);return}
  const ld=t.closest("[data-lead]");if(ld&&(!t.closest(".sheet")||ld.classList.contains("item"))){editarLead(ld.dataset.lead);return}
- const bx=t.closest("[data-baixa]");if(bx){const x=S.contas.find(y=>y.id==bx.dataset.baixa);x.status="Pago";x.pago=HOJE;salvar();tudo();toast((x.tipo==="receber"?"Recebimento":"Pagamento")+" registrado: "+R(x.valor)+" ("+x.conta.toLowerCase()+").");return}
+ const bx=t.closest("[data-baixa]");if(bx){const x=S.contas.find(y=>y.id==bx.dataset.baixa);marca();x.status="Pago";x.pago=HOJE;salvar();tudo();toast((x.tipo==="receber"?"Recebimento":"Pagamento")+" registrado: "+R(x.valor)+" ("+x.conta.toLowerCase()+").",1);return}
  const es=t.closest("[data-estorno]");if(es){const x=S.contas.find(y=>y.id==es.dataset.estorno);x.status="Pendente";delete x.pago;salvar();tudo();toast("Baixa desfeita. A conta voltou para pendente.");return}
  const ft=t.closest("[data-ft]");if(ft){FT=ft.dataset.ft;renderFin();return}
  const sm=t.closest("#seg-mov button");if(sm){MOVF=sm.dataset.v;$$("#seg-mov button").forEach(b=>b.setAttribute("aria-pressed",b===sm));renderMov();return}
@@ -1021,6 +1149,12 @@ document.addEventListener("click",e=>{
 document.addEventListener("keydown",e=>{if(e.key==="Escape")fechar();const ld=e.target.closest&&e.target.closest("[data-lead]");if(ld&&e.target===ld&&(e.key==="Enter"||e.key===" ")){e.preventDefault();editarLead(ld.dataset.lead)}});
 $$(".nav[data-sec]").forEach(b=>b.addEventListener("click",()=>secao(b.dataset.sec)));
 ["s-q","s-marca","s-preco","s-cambio","s-ord"].forEach(id=>$("#"+id).addEventListener(id==="s-q"?"input":"change",renderVitrine));
+$$(".bb[data-sec]").forEach(b=>b.addEventListener("click",()=>{fechar();secao(b.dataset.sec)}));
+$("#bb-mais").onclick=()=>menu(true);
+$("#busca-btn").onclick=()=>{menu(false);busca()};$("#busca-m").onclick=busca;
+document.addEventListener("keydown",e=>{if(!USER||$("#painel").hidden)return;const tg=e.target.tagName;if((e.key==="/"&&!/INPUT|TEXTAREA|SELECT/.test(tg))||((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k")){e.preventDefault();busca()}});
+document.addEventListener("input",e=>{const el=e.target;if(el.matches&&el.matches("[data-tel]"))el.value=telFmt(el.value);if(el.matches&&el.matches("[data-placa]"))el.value=el.value.toUpperCase().replace(/[^A-Z0-9]/g,"").slice(0,7);if(el.type==="number")hintNum(el)});
+document.addEventListener("focusin",e=>{if(e.target.type==="number")hintNum(e.target)});
 $("#e-q").addEventListener("input",renderEstoque);$("#e-or").addEventListener("change",renderEstoque);
 $("#l-voltar").onclick=()=>{renderVitrine();tela("vitrine")};
 $("#menu-btn").onclick=()=>menu(!$("#side").classList.contains("open"));$("#scrim").onclick=()=>menu(false);
@@ -1029,13 +1163,13 @@ $("#f-login").onsubmit=e=>{e.preventDefault();const p=document.querySelector("[n
 $("#sair").onclick=()=>{USER=null;try{sessionStorage.removeItem("patio-user")}catch(e){}tela("login")};
 $("#ver-site").onclick=$("#ver-site2").onclick=()=>{renderVitrine();tela("vitrine");toast("Este é o site que o comprador vê. O botão de voltar ao painel só aparece para você.")};
 ["lj-nome","lj-slug","lj-slogan","lj-cid","lj-cor"].forEach(id=>$("#"+id).addEventListener("input",prevLoja));
-$("#f-loja").onsubmit=e=>{e.preventDefault();["nome","slug","slogan","cid","wpp","end","hor","sobre"].forEach(k=>S.loja[k]=$("#lj-"+k).value.trim()||S.loja[k]);S.loja.slug=S.loja.slug.toLowerCase().replace(/[^a-z0-9-]/g,"");S.loja.cor=$("#lj-cor").value;salvar();tudo();toast("Loja atualizada. O site já está com os dados novos.")};
+$("#f-loja").onsubmit=e=>{e.preventDefault();S.guia=S.guia||{};S.guia.loja=true;["nome","slug","slogan","cid","wpp","end","hor","sobre"].forEach(k=>S.loja[k]=$("#lj-"+k).value.trim()||S.loja[k]);S.loja.slug=S.loja.slug.toLowerCase().replace(/[^a-z0-9-]/g,"");S.loja.cor=$("#lj-cor").value;salvar();tudo();toast("Loja atualizada. O site já está com os dados novos.")};
 let resetArm=0;$("#reset").onclick=e=>{if(!resetArm){resetArm=1;e.target.textContent="Clique de novo para confirmar";setTimeout(()=>{resetArm=0;e.target.textContent="Restaurar dados de exemplo"},3000);return}S=seed();salvar();resetArm=0;e.target.textContent="Restaurar dados de exemplo";tudo();toast("Dados de exemplo restaurados.")};
 function temaUI(){const d=document.documentElement.getAttribute("data-theme")==="dark";$$("[data-tema]").forEach(b=>{const u=b.querySelector("use");if(u)u.setAttribute("href",d?"#i-sun":"#i-moon");const t=b.querySelector(".tema-txt");if(t)t.textContent=b.classList.contains("tema-btn")?(d?"Claro":"Escuro"):(d?"Modo claro":"Modo escuro");b.setAttribute("aria-label",d?"Mudar para o modo claro":"Mudar para o modo escuro")})}
 function alternaTema(){const d=document.documentElement.getAttribute("data-theme")!=="dark";document.documentElement.setAttribute("data-theme",d?"dark":"light");try{localStorage.setItem("tema",d?"escuro":"claro")}catch(e){}temaUI();if(USER)renderPainel()}
 document.addEventListener("click",e=>{if(e.target.closest("[data-tema]")){alternaTema()}});
 temaUI();
-function rota(){const loj=/\/painel\/?$/.test(location.pathname)||location.hash==="#painel";renderVitrine();
+function rota(){const mc=location.hash.match(/^#carro-(\d+)$/);if(mc){renderVitrine();tela("vitrine");verCarro(+mc[1]);return}const loj=/\/painel\/?$/.test(location.pathname)||location.hash==="#painel";renderVitrine();
  if(loj){if(USER){tela("painel");renderPainel();secao("geral")}else tela("login")}else tela("vitrine")}
 addEventListener("hashchange",rota);rota();
 </script>
