@@ -184,11 +184,11 @@ tbody tr.click{cursor:pointer}tbody tr.click:hover{background:var(--sunk)}
 .thumb{width:58px;height:36px;border-radius:7px;overflow:hidden;flex:none;background:var(--sunk)}
 .thumb svg{width:100%;height:100%;display:block}
 .car small{color:var(--muted);display:block}
-.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}.filters .sel{padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);font:inherit;font-size:14px}
 .seg{display:inline-flex;background:var(--sunk);border-radius:10px;padding:3px;max-width:100%;overflow-x:auto}
 .seg button{border:0;background:none;padding:6px 12px;border-radius:8px;cursor:pointer;font-weight:600;font-size:13px;color:var(--muted)}
 .seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.1)}
-.kanban{display:grid;grid-template-columns:repeat(5,minmax(210px,1fr));gap:12px;overflow-x:auto;padding-bottom:6px}
+.kanban{display:grid;grid-template-columns:repeat(6,minmax(200px,1fr));gap:12px;overflow-x:auto;padding-bottom:6px}
 .col{background:var(--sunk);border-radius:14px;padding:10px;display:flex;flex-direction:column;gap:8px;min-height:120px}
 .col-h{display:flex;justify-content:space-between;align-items:center;font-weight:700;font-size:13px;padding:2px 4px}
 .lead{background:var(--surface);border:1px solid var(--line);border-radius:11px;padding:10px;display:flex;flex-direction:column;gap:6px}
@@ -233,7 +233,7 @@ tbody tr.click{cursor:pointer}tbody tr.click:hover{background:var(--sunk)}
   .show-m{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:6px;font-size:13px;white-space:normal}
   #tab td{white-space:normal}
   .topbar h1{font-size:30px}
-  .kanban{grid-template-columns:repeat(5,minmax(240px,82vw));scroll-snap-type:x mandatory}.col{scroll-snap-align:start}
+  .kanban{grid-template-columns:repeat(6,minmax(240px,82vw));scroll-snap-type:x mandatory}.col{scroll-snap-align:start}
   .days{grid-template-columns:repeat(7,minmax(150px,70vw));scroll-snap-type:x mandatory}.day{scroll-snap-align:start}
   .v-top nav a{padding:6px 10px}
   .overlay.center{padding:0}.overlay.center .sheet{border-radius:0;min-height:100%}
@@ -334,6 +334,37 @@ h2{font-family:var(--f-display);font-weight:700;text-transform:uppercase;font-si
 @media (prefers-reduced-motion:no-preference){.card,.kpi,.panel{animation:rise .5s cubic-bezier(.16,1,.3,1) both}}
 @keyframes rise{from{transform:translateY(8px)}to{transform:none}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* ---------- gestão completa ---------- */
+.sheet>*{flex-shrink:0}
+.col.drop{outline:2px dashed var(--accent);outline-offset:-4px}
+.lead[draggable="true"]{cursor:grab}
+.lead.dragging{opacity:.45}
+.kpi-note{display:flex;gap:16px;flex-wrap:wrap;font-size:12.5px;color:var(--muted);margin:-8px 0 16px}
+.kpi-note b{color:var(--ink)}
+.kpis.k5{grid-template-columns:repeat(5,minmax(0,1fr))}
+.kpi.neg-bg{background:var(--crit-soft);border-color:color-mix(in srgb,var(--crit) 30%,transparent)}
+.dgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.dgrid div{background:var(--sunk);border-radius:10px;padding:8px 10px;min-width:0}
+.dgrid b{display:block;font-size:13.5px;overflow-wrap:anywhere}
+.mov{display:flex;align-items:center;gap:10px;padding:10px 4px;border-bottom:1px solid var(--line);cursor:pointer;background:none;border-left:0;border-right:0;border-top:0;width:100%;text-align:left;color:inherit;font:inherit}
+.mov:last-child{border-bottom:0}
+.mov .ic{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;flex:none;font-weight:700}
+.mov .ic.in{background:var(--ok-soft);color:var(--ok)}.mov .ic.out{background:var(--crit-soft);color:var(--crit)}
+.mov .t{flex:1;min-width:0}.mov .t b{display:block;font-size:14px}.mov .t small{color:var(--muted);font-size:12.5px}
+.mov .v{text-align:right;font-size:13px}.mov .v small{display:block;color:var(--muted)}
+.pcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+.pcard{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:6px}
+.pcard .stats{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;margin-top:4px}
+.dre{max-width:560px;margin:0 auto}
+.dre>div{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid var(--line)}
+.dre .tot{font-weight:700}.dre>div>span:last-child{white-space:nowrap;font-family:var(--f-mono);text-align:right}.kpis.k5 .kpi .v{font-size:clamp(18px,4.6vw,26px);white-space:nowrap;overflow:visible}td .btn{font-family:var(--f-body)}
+.acc{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.acc div{border:1px solid var(--line);border-radius:12px;padding:14px}
+.acc b{display:block;font-size:22px;margin-top:6px}
+.btn.xs{padding:4px 9px;font-size:12px;border-radius:7px}
+@media (max-width:900px){.dgrid{grid-template-columns:repeat(2,minmax(0,1fr))}#lanc td,#tab-vres td{white-space:normal}#lanc td.r,#tab-vres td.r{white-space:nowrap}}
+@media (max-width:1100px){.kpis.k5{grid-template-columns:repeat(3,minmax(0,1fr))}}
 </style>
 
 </head>
@@ -350,6 +381,7 @@ h2{font-family:var(--f-display);font-weight:700;text-transform:uppercase;font-si
  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></symbol>
  <symbol id="i-out" viewBox="0 0 24 24"><path d="M15 4h4a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1h-4M10 16l-4-4 4-4M6 12h10"/></symbol>
  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+ <symbol id="i-swap" viewBox="0 0 24 24"><path d="M7 4L3 8l4 4M3 8h14M17 20l4-4-4-4M21 16H7"/></symbol>
  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 20l1.3-3.9A8 8 0 1 1 8 19.2z"/></symbol>
  <symbol id="i-gauge" viewBox="0 0 24 24"><path d="M5.6 18.4A9 9 0 1 1 18.4 18.4"/><path d="M12 13.5l4-4.5"/><circle cx="12" cy="13.5" r="1.4"/></symbol>
@@ -424,9 +456,11 @@ h2{font-family:var(--f-display);font-weight:700;text-transform:uppercase;font-si
     <button class="nav" data-sec="contatos"><svg class="i"><use href="#i-chat"/></svg>Contatos<span class="cnt" id="cnt-novos">0</span></button>
     <button class="nav" data-sec="agenda"><svg class="i"><use href="#i-cal"/></svg>Agenda</button>
     <button class="nav" data-sec="vendas"><svg class="i"><use href="#i-tag"/></svg>Vendas</button>
+    <button class="nav" data-sec="mov"><svg class="i"><use href="#i-swap"/></svg>Entradas e saídas</button>
     <div class="grp lbl dono">Gestão</div>
     <button class="nav dono" data-sec="fin"><svg class="i"><use href="#i-wallet"/></svg>Financeiro</button>
     <button class="nav dono" data-sec="rel"><svg class="i"><use href="#i-chart"/></svg>Relatórios</button>
+    <button class="nav dono" data-sec="parc"><svg class="i"><use href="#i-users"/></svg>Parceiros</button>
     <button class="nav dono" data-sec="equipe"><svg class="i"><use href="#i-shield"/></svg>Equipe e acessos</button>
     <button class="nav dono" data-sec="loja"><svg class="i"><use href="#i-store"/></svg>Minha loja</button>
     <div class="me">
@@ -440,6 +474,7 @@ h2{font-family:var(--f-display);font-weight:700;text-transform:uppercase;font-si
     <div class="sec" id="sec-geral">
       <div class="topbar"><div><span class="lbl" id="hoje-lbl">Quinta, 8 de outubro de 2026</span><h1 id="ola">Bom dia, Marcos</h1></div><div class="acts"><button class="btn" data-act="novo-carro"><svg class="i"><use href="#i-plus"/></svg>Cadastrar veículo</button></div></div>
       <div class="kpis" id="kpis"></div>
+      <div class="kpi-note" id="kpi-note"></div>
       <div class="row2">
         <div class="panel dono"><div class="panel-h"><h2>Lucro bruto por mês</h2><span class="muted" style="font-size:13px">unidades vendidas em cima de cada barra</span></div><div id="chart"></div></div>
         <div class="panel"><div class="panel-h"><h2>Precisam de atenção</h2><span class="pill p-mut" id="al-n"></span></div><div class="list" id="alerts"></div></div>
@@ -449,12 +484,17 @@ h2{font-family:var(--f-display);font-weight:700;text-transform:uppercase;font-si
         <div class="panel"><div class="panel-h"><h2>Contatos novos</h2><button class="btn sm soft" data-go="contatos">Ver todos</button></div><div class="list" id="ld-novos"></div></div>
         <div class="panel"><div class="panel-h"><h2>Mais vistos no site</h2></div><div class="list" id="top"></div></div>
       </div>
+      <div class="row2">
+        <div class="panel"><div class="panel-h"><h2>Últimas entradas e saídas</h2><button class="btn sm soft" data-go="mov">Ver todas</button></div><div id="mov-geral"></div></div>
+        <div class="panel dono"><div class="panel-h"><h2>Contas a vencer</h2><button class="btn sm soft" data-go="fin">Financeiro</button></div><div class="list" id="ct-geral"></div></div>
+      </div>
     </div>
     <!-- estoque -->
     <div class="sec" id="sec-estoque" hidden>
       <div class="topbar"><div><span class="lbl">Pátio</span><h1>Estoque</h1></div><div class="acts"><button class="btn" data-act="novo-carro"><svg class="i"><use href="#i-plus"/></svg>Cadastrar veículo</button></div></div>
       <div class="filters">
         <div class="seg" id="seg-st"><button aria-pressed="true" data-v="">Todos</button><button aria-pressed="false" data-v="Disponível">Disponíveis</button><button aria-pressed="false" data-v="Reservado">Reservados</button><button aria-pressed="false" data-v="Preparação">Em preparação</button><button aria-pressed="false" data-v="Vendido">Vendidos</button></div>
+        <select id="e-or" aria-label="Origem" class="sel"><option value="">Todas as origens</option><option>Próprio</option><option>Parceiro</option><option>Consignado</option></select>
         <input id="e-q" type="search" placeholder="Buscar modelo ou placa" aria-label="Buscar no estoque">
       </div>
       <div class="panel"><div class="tablewrap"><table id="tab"></table></div></div>
@@ -462,7 +502,7 @@ h2{font-family:var(--f-display);font-weight:700;text-transform:uppercase;font-si
     <!-- contatos -->
     <div class="sec" id="sec-contatos" hidden>
       <div class="topbar"><div><span class="lbl">Funil de vendas</span><h1>Contatos</h1></div><div class="acts"><button class="btn" data-act="novo-lead"><svg class="i"><use href="#i-plus"/></svg>Novo contato</button></div></div>
-      <p class="muted" style="margin:-8px 0 14px">Quem chamou no WhatsApp, no Instagram, pelo site ou passou na loja. Mova cada contato de etapa conforme a negociação anda. Toque no card para editar dados, etapa ou observação.</p>
+      <p class="muted" style="margin:-8px 0 14px">Quem chamou no WhatsApp, no Instagram, pelo site ou passou na loja. Arraste o card para outra coluna (ou use os botões) conforme a negociação anda. Toque no card para editar dados, etapa ou observação.</p>
       <div class="kanban" id="kanban"></div>
     </div>
     <!-- agenda -->
@@ -478,19 +518,24 @@ h2{font-family:var(--f-display);font-weight:700;text-transform:uppercase;font-si
         <div class="panel"><div class="panel-h"><h2>Ranking da equipe</h2><span class="muted" style="font-size:13px">outubro</span></div><div class="hbar" id="rank"></div></div>
       </div>
     </div>
+    <!-- entradas e saídas -->
+    <div class="sec" id="sec-mov" hidden>
+      <div class="topbar"><div><span class="lbl">Movimentação de veículos</span><h1>Entradas e saídas</h1></div><div class="acts"><button class="btn" data-act="novo-carro"><svg class="i"><use href="#i-plus"/></svg>Registrar entrada</button></div></div>
+      <p class="muted" style="margin:-8px 0 14px">Cada carro que entra (compra, consignação ou parceiro) e cada carro que sai (venda) fica registrado aqui sozinho, com data e responsável.</p>
+      <div class="filters"><div class="seg" id="seg-mov"><button aria-pressed="true" data-v="">Todas</button><button aria-pressed="false" data-v="in">Entradas</button><button aria-pressed="false" data-v="out">Saídas</button></div></div>
+      <div class="panel" id="mov-lista"></div>
+    </div>
     <!-- financeiro -->
     <div class="sec dono" id="sec-fin" hidden>
-      <div class="topbar"><div><span class="lbl">Outubro de 2026</span><h1>Financeiro</h1></div><div class="acts"><button class="btn" data-act="nova-despesa"><svg class="i"><use href="#i-plus"/></svg>Lançar despesa</button></div></div>
-      <div class="kpis" id="fin-kpis" style="grid-template-columns:repeat(4,minmax(0,1fr))"></div>
-      <div class="row2">
-        <div class="panel"><div class="panel-h"><h2>Lançamentos do mês</h2></div><div class="tablewrap"><table id="lanc"></table></div></div>
-        <div class="panel"><div class="panel-h"><h2>Despesas por categoria</h2></div><div class="hbar" id="cat"></div>
-          <div style="margin-top:18px"><div class="panel-h"><h2>Formas de pagamento</h2></div><div class="hbar" id="pag"></div></div></div>
-      </div>
+      <div class="topbar"><div><span class="lbl">Contas, competência, caixa e resultado</span><h1>Financeiro</h1></div><div class="acts"><button class="btn" data-act="nova-conta"><svg class="i"><use href="#i-plus"/></svg>Novo lançamento</button></div></div>
+      <div class="kpis k5" id="fin-kpis"></div>
+      <div class="tabs" role="tablist" id="fin-tabs" style="margin-bottom:14px"><button role="tab" data-ft="lanc" aria-selected="true">Contas a pagar e receber</button><button role="tab" data-ft="dre" aria-selected="false">DRE do mês</button><button role="tab" data-ft="fluxo" aria-selected="false">Fluxo de caixa</button><button role="tab" data-ft="vres" aria-selected="false">Resultado por carro</button><button role="tab" data-ft="contas" aria-selected="false">Banco e caixa</button></div>
+      <div class="panel" id="fin-body"></div>
     </div>
     <!-- relatorios -->
     <div class="sec dono" id="sec-rel" hidden>
       <div class="topbar"><div><span class="lbl">Desempenho</span><h1>Relatórios</h1></div></div>
+      <div class="kpis" id="rel-kpis" style="grid-template-columns:repeat(4,minmax(0,1fr))"></div>
       <div class="row3">
         <div class="panel"><div class="panel-h"><h2>Idade do estoque</h2></div><div class="hbar" id="r-idade"></div><p class="muted" style="font-size:13px;margin-top:12px">Carro parado custa dinheiro. Acima de 60 dias, vale rever o preço ou anunciar mais.</p></div>
         <div class="panel"><div class="panel-h"><h2>Lucro médio por marca</h2></div><div class="hbar" id="r-marca"></div></div>
@@ -500,6 +545,16 @@ h2{font-family:var(--f-display);font-weight:700;text-transform:uppercase;font-si
         <div class="panel"><div class="panel-h"><h2>De onde vêm os contatos</h2></div><div class="hbar" id="r-origem"></div></div>
         <div class="panel"><div class="panel-h"><h2>Conversão do funil</h2></div><div class="hbar" id="r-funil"></div></div>
       </div>
+      <div class="row2">
+        <div class="panel"><div class="panel-h"><h2>Vendas por vendedor</h2><span class="muted" style="font-size:13px">valor vendido</span></div><div class="hbar" id="r-vend"></div></div>
+        <div class="panel"><div class="panel-h"><h2>Estoque por origem</h2></div><div class="hbar" id="r-orig"></div><p class="muted" style="font-size:13px;margin-top:12px">Carro de parceiro ou consignado não prende o seu dinheiro: você só paga o repasse quando vender.</p></div>
+      </div>
+    </div>
+    <!-- parceiros -->
+    <div class="sec dono" id="sec-parc" hidden>
+      <div class="topbar"><div><span class="lbl">Lojistas e donos de carros consignados</span><h1>Parceiros</h1></div><div class="acts"><button class="btn" data-act="novo-parceiro"><svg class="i"><use href="#i-plus"/></svg>Novo parceiro</button></div></div>
+      <p class="muted" style="margin:-8px 0 14px">Quem deixa carro no seu pátio para vender. O painel mostra quanto você deve repassar quando cada carro sair.</p>
+      <div class="pcards" id="pcards"></div>
     </div>
     <!-- equipe -->
     <div class="sec dono" id="sec-equipe" hidden>
@@ -542,23 +597,23 @@ h2{font-family:var(--f-display);font-weight:700;text-transform:uppercase;font-si
 <script>
 const HOJE="2026-10-08";
 const PINTURA={Prata:"#9aa0a4",Branco:"#ebe8e1",Preto:"#22262a",Vermelho:"#9e1d25",Azul:"#2b4f7e",Cinza:"#5f6468",Verde:"#4f6247",Bege:"#c9b99a"};
-const ETAPAS=["Novo","Em negociação","Visita marcada","Vendido","Perdido"];
+const ETAPAS=["Novo","Em negociação","Visita marcada","Financiamento","Vendido","Perdido"];
 const SWATCH=["#dc2626","#0e5c57","#1f3f8f","#111827","#c2410c","#6d28d9","#047857","#a16207"];
 function seed(){return{
  loja:{nome:"Auto Sul Veículos",slug:"autosul",slogan:"Seminovos revisados em Pelotas",cid:"Pelotas/RS",wpp:"(53) 99999-0000",end:"Av. Bento Gonçalves, 3200 · Centro",hor:"Seg a sex 8h30–18h30 · Sáb 9h–13h",sobre:"Loja de seminovos desde 2012. Todos os carros passam por revisão e laudo cautelar antes de ir para o pátio, e saem com 3 meses de garantia de motor e câmbio.",cor:"#dc2626"},
  equipe:[{id:1,nome:"Marcos Silva",email:"marcos@autosul.com.br",papel:"Dono",com:0},{id:2,nome:"Fernanda Rocha",email:"fernanda@autosul.com.br",papel:"Vendedor",com:1.5},{id:3,nome:"Lucas Prado",email:"lucas@autosul.com.br",papel:"Vendedor",com:1.5}],
  carros:[
-  {id:1,marca:"Chevrolet",modelo:"Onix",versao:"LT 1.0 Turbo",ano:2020,km:58200,placa:"IST4E21",pintura:"Prata",comb:"Flex",cambio:"Manual",compra:52000,gastos:[["Polimento e higienização",650],["Pneus dianteiros",980]],preco:64900,fipe:66400,entrada:"2026-09-21",status:"Disponível",docs:{laudo:true,manual:true,chave:true,ipva:true},visitas:312},
-  {id:2,marca:"Volkswagen",modelo:"Gol",versao:"1.6 MSI",ano:2019,km:71500,placa:"IRT7B03",pintura:"Branco",comb:"Flex",cambio:"Manual",compra:41000,gastos:[["Revisão completa",1200],["Funilaria para-choque",700]],preco:51900,fipe:50800,entrada:"2026-06-02",status:"Disponível",docs:{laudo:true,manual:false,chave:true,ipva:true},visitas:140},
-  {id:3,marca:"Fiat",modelo:"Toro",versao:"Freedom 1.8 AT",ano:2021,km:62000,placa:"JAK2C88",pintura:"Vermelho",comb:"Flex",cambio:"Automático",compra:96000,gastos:[["Higienização",450],["Óleo e filtros",620]],preco:112900,fipe:115300,entrada:"2026-09-02",status:"Reservado",docs:{laudo:true,manual:true,chave:true,ipva:true},visitas:401},
-  {id:4,marca:"Hyundai",modelo:"HB20",versao:"Comfort 1.0",ano:2022,km:33800,placa:"JBC9F14",pintura:"Branco",comb:"Flex",cambio:"Manual",compra:61000,gastos:[["Polimento",500]],preco:72900,fipe:74100,entrada:"2026-08-18",status:"Disponível",docs:{laudo:true,manual:true,chave:false,ipva:true},visitas:276},
-  {id:5,marca:"Toyota",modelo:"Corolla",versao:"XEi 2.0 CVT",ano:2019,km:88300,placa:"IUO3A57",pintura:"Preto",comb:"Flex",cambio:"Automático",compra:98000,gastos:[["Revisão",1500],["Pintura do capô",1100],["Higienização",450]],preco:117900,fipe:119500,entrada:"2026-05-11",status:"Disponível",docs:{laudo:true,manual:true,chave:true,ipva:false},visitas:188},
-  {id:6,marca:"Renault",modelo:"Kwid",versao:"Zen 1.0",ano:2021,km:41200,placa:"JAP6D30",pintura:"Azul",comb:"Flex",cambio:"Manual",compra:38500,gastos:[["Higienização",400]],preco:47900,fipe:48700,entrada:"2026-09-30",status:"Disponível",docs:{laudo:true,manual:true,chave:true,ipva:true},visitas:95},
-  {id:7,marca:"Jeep",modelo:"Renegade",versao:"Sport 1.8 AT",ano:2020,km:69900,placa:"IZE8G42",pintura:"Cinza",comb:"Flex",cambio:"Automático",compra:74000,gastos:[["Embreagem",2400],["Polimento",600]],preco:87900,fipe:86900,entrada:"2026-07-14",status:"Disponível",docs:{laudo:true,manual:false,chave:false,ipva:true},visitas:233},
-  {id:8,marca:"Volkswagen",modelo:"T-Cross",versao:"200 TSI AT",ano:2021,km:45300,placa:"JBF1H09",pintura:"Verde",comb:"Flex",cambio:"Automático",compra:91000,gastos:[["Higienização",450]],preco:104900,fipe:107200,entrada:"2026-09-12",status:"Disponível",docs:{laudo:true,manual:true,chave:true,ipva:true},visitas:350},
-  {id:9,marca:"Honda",modelo:"Fit",versao:"EX 1.5 CVT",ano:2018,km:79400,placa:"IQW1L77",pintura:"Bege",comb:"Flex",cambio:"Automático",compra:58000,gastos:[["Suspensão dianteira",1800]],preco:69900,fipe:71200,entrada:"2026-10-05",status:"Preparação",docs:{laudo:false,manual:true,chave:true,ipva:true},visitas:0},
-  {id:10,marca:"Fiat",modelo:"Argo",versao:"Drive 1.0",ano:2020,km:52100,placa:"IVB5J66",pintura:"Prata",comb:"Flex",cambio:"Manual",compra:47000,gastos:[["Pneus",1300]],preco:57900,fipe:58900,entrada:"2026-08-05",status:"Vendido",venda:{data:"2026-10-03",valor:57000,vend:2,pag:"Financiado",cli:"Rogério Alves"},docs:{laudo:true,manual:true,chave:true,ipva:true},visitas:0},
-  {id:11,marca:"Chevrolet",modelo:"Tracker",versao:"LT 1.0 Turbo AT",ano:2021,km:51800,placa:"JAZ0K12",pintura:"Branco",comb:"Flex",cambio:"Automático",compra:89000,gastos:[["Revisão",900],["Higienização",450]],preco:103900,fipe:105600,entrada:"2026-08-26",status:"Vendido",venda:{data:"2026-10-06",valor:102500,vend:3,pag:"À vista + troca",cli:"Juliana Torres"},docs:{laudo:true,manual:true,chave:true,ipva:true},visitas:0}
+  {id:1,marca:"Chevrolet",modelo:"Onix",versao:"LT 1.0 Turbo",ano:2020,km:58200,placa:"IST4E21",pintura:"Prata",comb:"Flex",cambio:"Manual",compra:52000,gastos:[["Polimento e higienização",650],["Pneus dianteiros",980]],preco:64900,fipe:66400,entrada:"2026-09-21",status:"Disponível",docs:{laudo:true,manual:true,chave:true,ipva:true},origem:"Próprio",parc:0,minimo:62000,renavam:"50217784310",chassi:"9BGKS48U0LG112233",obs:"Único dono, revisões na concessionária.",visitas:312},
+  {id:2,marca:"Volkswagen",modelo:"Gol",versao:"1.6 MSI",ano:2019,km:71500,placa:"IRT7B03",pintura:"Branco",comb:"Flex",cambio:"Manual",compra:41000,gastos:[["Revisão completa",1200],["Funilaria para-choque",700]],preco:51900,fipe:50800,entrada:"2026-06-02",status:"Disponível",docs:{laudo:true,manual:false,chave:true,ipva:true},origem:"Próprio",parc:0,minimo:49500,renavam:"01187765402",chassi:"9BWAB45U8KT020111",obs:"Pneus novos.",visitas:140},
+  {id:3,marca:"Fiat",modelo:"Toro",versao:"Freedom 1.8 AT",ano:2021,km:62000,placa:"JAK2C88",pintura:"Vermelho",comb:"Flex",cambio:"Automático",compra:96000,gastos:[["Higienização",450],["Óleo e filtros",620]],preco:112900,fipe:115300,entrada:"2026-09-02",status:"Reservado",docs:{laudo:true,manual:true,chave:true,ipva:true},origem:"Consignado",parc:2,minimo:108000,renavam:"01299887766",chassi:"9BD226180M5100223",obs:"Consignado. Dono aceita troca de menor valor.",visitas:401},
+  {id:4,marca:"Hyundai",modelo:"HB20",versao:"Comfort 1.0",ano:2022,km:33800,placa:"JBC9F14",pintura:"Branco",comb:"Flex",cambio:"Manual",compra:61000,gastos:[["Polimento",500]],preco:72900,fipe:74100,entrada:"2026-08-18",status:"Disponível",docs:{laudo:true,manual:true,chave:false,ipva:true},origem:"Próprio",parc:0,minimo:69500,renavam:"01345566778",chassi:"9BHCN51AANP112233",obs:"",visitas:276},
+  {id:5,marca:"Toyota",modelo:"Corolla",versao:"XEi 2.0 CVT",ano:2019,km:88300,placa:"IUO3A57",pintura:"Preto",comb:"Flex",cambio:"Automático",compra:98000,gastos:[["Revisão",1500],["Pintura do capô",1100],["Higienização",450]],preco:117900,fipe:119500,entrada:"2026-05-11",status:"Disponível",docs:{laudo:true,manual:true,chave:true,ipva:false},origem:"Próprio",parc:0,minimo:112500,renavam:"01122334455",chassi:"9BRBLWHE4K0101010",obs:"Laudo com retoque no capô.",visitas:188},
+  {id:6,marca:"Renault",modelo:"Kwid",versao:"Zen 1.0",ano:2021,km:41200,placa:"JAP6D30",pintura:"Azul",comb:"Flex",cambio:"Manual",compra:38500,gastos:[["Higienização",400]],preco:47900,fipe:48700,entrada:"2026-09-30",status:"Disponível",docs:{laudo:true,manual:true,chave:true,ipva:true},origem:"Próprio",parc:0,minimo:45500,renavam:"01398765432",chassi:"93YRBB001MJ123456",obs:"",visitas:95},
+  {id:7,marca:"Jeep",modelo:"Renegade",versao:"Sport 1.8 AT",ano:2020,km:69900,placa:"IZE8G42",pintura:"Cinza",comb:"Flex",cambio:"Automático",compra:74000,gastos:[["Embreagem",2400],["Polimento",600]],preco:87900,fipe:86900,entrada:"2026-07-14",status:"Disponível",docs:{laudo:true,manual:false,chave:false,ipva:true},origem:"Parceiro",parc:1,minimo:84000,renavam:"01234509876",chassi:"98810011LKK123321",obs:"Carro da Sul Car. Repasse de R$ 74 mil na venda.",visitas:233},
+  {id:8,marca:"Volkswagen",modelo:"T-Cross",versao:"200 TSI AT",ano:2021,km:45300,placa:"JBF1H09",pintura:"Verde",comb:"Flex",cambio:"Automático",compra:91000,gastos:[["Higienização",450]],preco:104900,fipe:107200,entrada:"2026-09-12",status:"Disponível",docs:{laudo:true,manual:true,chave:true,ipva:true},origem:"Próprio",parc:0,minimo:100000,renavam:"01299001122",chassi:"9BWBH6BF6M4012345",obs:"",visitas:350},
+  {id:9,marca:"Honda",modelo:"Fit",versao:"EX 1.5 CVT",ano:2018,km:79400,placa:"IQW1L77",pintura:"Bege",comb:"Flex",cambio:"Automático",compra:58000,gastos:[["Suspensão dianteira",1800]],preco:69900,fipe:71200,entrada:"2026-10-05",status:"Preparação",docs:{laudo:false,manual:true,chave:true,ipva:true},origem:"Próprio",parc:0,minimo:67000,renavam:"01087654321",chassi:"93HGK5860JZ100200",obs:"Chegou para preparação.",visitas:0},
+  {id:10,marca:"Fiat",modelo:"Argo",versao:"Drive 1.0",ano:2020,km:52100,placa:"IVB5J66",pintura:"Prata",comb:"Flex",cambio:"Manual",compra:47000,gastos:[["Pneus",1300]],preco:57900,fipe:58900,entrada:"2026-08-05",status:"Vendido",venda:{data:"2026-10-03",valor:57000,vend:2,pag:"Financiado",cli:"Rogério Alves"},docs:{laudo:true,manual:true,chave:true,ipva:true},origem:"Próprio",parc:0,minimo:55500,renavam:"01211223344",chassi:"9BD358A1NLYJ12345",obs:"",visitas:0},
+  {id:11,marca:"Chevrolet",modelo:"Tracker",versao:"LT 1.0 Turbo AT",ano:2021,km:51800,placa:"JAZ0K12",pintura:"Branco",comb:"Flex",cambio:"Automático",compra:89000,gastos:[["Revisão",900],["Higienização",450]],preco:103900,fipe:105600,entrada:"2026-08-26",status:"Vendido",venda:{data:"2026-10-06",valor:102500,vend:3,pag:"À vista + troca",cli:"Juliana Torres"},docs:{laudo:true,manual:true,chave:true,ipva:true},origem:"Parceiro",parc:1,minimo:99000,renavam:"01266554433",chassi:"9BGEA76H0MB123456",obs:"",visitas:0}
  ],
  leads:[
   {id:1,nome:"Carla Mendes",tel:"(53) 98111-2233",carro:3,origem:"WhatsApp",etapa:"Em negociação",data:"2026-10-07",nota:"Quer trocar um Ka 2016."},
@@ -568,7 +623,7 @@ function seed(){return{
   {id:5,nome:"Rogério Alves",tel:"(53) 99001-2200",carro:10,origem:"Loja",etapa:"Vendido",data:"2026-09-29",nota:""},
   {id:6,nome:"Juliana Torres",tel:"(53) 98222-3344",carro:11,origem:"Site",etapa:"Vendido",data:"2026-10-01",nota:""},
   {id:7,nome:"Anderson Lima",tel:"(53) 99333-4455",carro:5,origem:"WhatsApp",etapa:"Perdido",data:"2026-09-25",nota:"Achou caro, comprou em outra loja."},
-  {id:8,nome:"Tatiane Souza",tel:"(53) 98555-6677",carro:7,origem:"Instagram",etapa:"Em negociação",data:"2026-10-05",nota:"Pediu simulação em 60x."},
+  {id:8,nome:"Tatiane Souza",tel:"(53) 98555-6677",carro:7,origem:"Instagram",etapa:"Financiamento",data:"2026-10-05",nota:"Pediu simulação em 60x."},
   {id:9,nome:"Felipe Rocha",tel:"(53) 99666-7788",carro:6,origem:"Site",etapa:"Novo",data:"2026-10-07",nota:""}
  ],
  visitas:[
@@ -578,20 +633,32 @@ function seed(){return{
   {id:4,data:"2026-10-10",hora:"09:30",cli:"Bruna Lopes",carro:1,tipo:"Test drive",vend:3},
   {id:5,data:"2026-10-13",hora:"14:00",cli:"Paulo Henrique",carro:8,tipo:"Visita",vend:2}
  ],
- despesas:[
-  {id:1,data:"2026-10-05",desc:"Aluguel do pátio",cat:"Estrutura",valor:4800},
-  {id:2,data:"2026-10-05",desc:"Salários fixos",cat:"Pessoal",valor:5200},
-  {id:3,data:"2026-10-06",desc:"Anúncios em portais",cat:"Marketing",valor:890},
-  {id:4,data:"2026-10-07",desc:"Impulsionamento Instagram",cat:"Marketing",valor:350},
-  {id:5,data:"2026-10-08",desc:"Luz, água e internet",cat:"Estrutura",valor:610},
-  {id:6,data:"2026-10-02",desc:"Contador",cat:"Administrativo",valor:700}
+ parceiros:[{id:1,nome:"Sul Car Multimarcas",tipo:"Lojista",tel:"(53) 98877-1100",cid:"Pelotas",obs:"Repasse combinado por carro. Acerto em até 5 dias depois da venda."},{id:2,nome:"Ademir Costa",tipo:"Dono do carro (consignado)",tel:"(53) 99100-2030",cid:"Capão do Leão",obs:"Recebe o valor combinado quando o carro for vendido."}],
+ saldoIni:{Banco:42000,Caixa:3500},
+ contas:[
+  {id:1,tipo:"receber",desc:"Venda Fiat Argo · Rogério Alves (financiado)",cat:"Venda de veículo",valor:57000,venc:"2026-10-05",comp:"2026-10-03",status:"Pago",pago:"2026-10-05",conta:"Banco",carro:10},
+  {id:2,tipo:"receber",desc:"Venda Chevrolet Tracker · Juliana Torres",cat:"Venda de veículo",valor:102500,venc:"2026-10-06",comp:"2026-10-06",status:"Pago",pago:"2026-10-06",conta:"Banco",carro:11},
+  {id:3,tipo:"pagar",desc:"Repasse Tracker · Sul Car Multimarcas",cat:"Repasse a parceiro",valor:89000,venc:"2026-10-11",comp:"2026-10-06",status:"Pendente",conta:"Banco",carro:11},
+  {id:4,tipo:"pagar",desc:"Comissão Fernanda · Argo",cat:"Comissão",valor:855,venc:"2026-10-10",comp:"2026-10-03",status:"Pendente",conta:"Banco"},
+  {id:5,tipo:"pagar",desc:"Comissão Lucas · Tracker",cat:"Comissão",valor:1538,venc:"2026-10-10",comp:"2026-10-06",status:"Pendente",conta:"Banco"},
+  {id:6,tipo:"pagar",desc:"Compra Honda Fit (entrada no pátio)",cat:"Compra de veículo",valor:58000,venc:"2026-10-05",comp:"2026-10-05",status:"Pago",pago:"2026-10-05",conta:"Banco",carro:9},
+  {id:7,tipo:"receber",desc:"Sinal da reserva da Toro · Carla Mendes",cat:"Sinal de reserva",valor:2000,venc:"2026-10-09",comp:"2026-10-07",status:"Pendente",conta:"Caixa",carro:3},
+  {id:8,tipo:"pagar",desc:"Despachante · transferências de setembro",cat:"Documentação",valor:640,venc:"2026-10-03",comp:"2026-09-30",status:"Pendente",conta:"Banco"},
+  {id:9,tipo:"pagar",desc:"IPVA 2026 do Corolla",cat:"Documentação",valor:2100,venc:"2026-10-15",comp:"2026-10-08",status:"Pendente",conta:"Banco",carro:5},
+  {id:10,tipo:"pagar",desc:"Aluguel do pátio",cat:"Estrutura",valor:4800,venc:"2026-10-05",comp:"2026-10-01",status:"Pago",pago:"2026-10-05",conta:"Banco"},
+  {id:11,tipo:"pagar",desc:"Salários fixos",cat:"Pessoal",valor:5200,venc:"2026-10-05",comp:"2026-10-01",status:"Pago",pago:"2026-10-05",conta:"Banco"},
+  {id:12,tipo:"pagar",desc:"Anúncios em portais",cat:"Marketing",valor:890,venc:"2026-10-06",comp:"2026-10-01",status:"Pago",pago:"2026-10-06",conta:"Banco"},
+  {id:13,tipo:"pagar",desc:"Impulsionamento Instagram",cat:"Marketing",valor:350,venc:"2026-10-07",comp:"2026-10-07",status:"Pago",pago:"2026-10-07",conta:"Banco"},
+  {id:14,tipo:"pagar",desc:"Luz, água e internet",cat:"Estrutura",valor:610,venc:"2026-10-12",comp:"2026-10-01",status:"Pendente",conta:"Banco"},
+  {id:15,tipo:"pagar",desc:"Contador",cat:"Administrativo",valor:700,venc:"2026-10-02",comp:"2026-10-01",status:"Pago",pago:"2026-10-02",conta:"Banco"},
+  {id:16,tipo:"pagar",desc:"Lavagem e cafezinho da loja",cat:"Estrutura",valor:180,venc:"2026-10-08",comp:"2026-10-08",status:"Pago",pago:"2026-10-08",conta:"Caixa"}
  ],
  hist:[["Mai",3,13100],["Jun",4,17800],["Jul",2,9400],["Ago",5,22600],["Set",4,18900]]
 }}
-let S;try{S=JSON.parse(localStorage.getItem("patio-demo-v3"))}catch(e){}
-if(!S||!S.carros)S=seed();
+let S;try{S=JSON.parse(localStorage.getItem("patio-demo-v4"))}catch(e){}
+if(!S||!S.carros||!S.contas)S=seed();
 let USER=null;try{USER=JSON.parse(sessionStorage.getItem("patio-user"))}catch(e){}
-function salvar(){try{localStorage.setItem("patio-demo-v3",JSON.stringify(S));return true}catch(e){if(/quota/i.test(e.name+e.message)&&typeof toast==="function")toast("O espaço da demonstração encheu. Remova algumas fotos. No sistema real as fotos ficam guardadas na nuvem, sem esse limite.");return !/quota/i.test(e.name+e.message)}}
+function salvar(){try{localStorage.setItem("patio-demo-v4",JSON.stringify(S));return true}catch(e){if(/quota/i.test(e.name+e.message)&&typeof toast==="function")toast("O espaço da demonstração encheu. Remova algumas fotos. No sistema real as fotos ficam guardadas na nuvem, sem esse limite.");return !/quota/i.test(e.name+e.message)}}
 function lerFotos(files){return Promise.all([...files].filter(f=>f.type.startsWith("image/")).slice(0,12).map(f=>new Promise(res=>{const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const W=1000,sc=Math.min(1,W/im.width),cv=document.createElement("canvas");cv.width=Math.round(im.width*sc);cv.height=Math.round(im.height*sc);cv.getContext("2d").drawImage(im,0,0,cv.width,cv.height);res(cv.toDataURL("image/jpeg",0.72))};im.onerror=()=>res(null);im.src=r.result};r.onerror=()=>res(null);r.readAsDataURL(f)}))).then(a=>a.filter(Boolean))}
 
 /* ---------- utilidades ---------- */
@@ -614,6 +681,15 @@ const isDono=()=>USER&&USER.papel==="Dono";
 const pmt=(p,i,n)=>p*i/(1-Math.pow(1+i,-n));
 const plate=p=>`<span class="plate">${esc(p)}</span>`;
 const vendaMes=c=>c.venda&&c.venda.data>="2026-10-01";
+const isOut=v=>v.startsWith("out");
+const parc=id=>(S.parceiros||[]).find(p=>p.id==id);
+const origPill=c=>c.origem&&c.origem!=="Próprio"?`<span class="pill ${c.origem==="Parceiro"?"p-info":"p-warn"}">${c.origem}</span>`:"";
+const labCompra=c=>c.origem==="Próprio"||!c.origem?"Valor de compra":"Repasse ao "+(c.origem==="Parceiro"?"parceiro":"dono");
+function hist(c,txt){(c.hist=c.hist||[]).push({data:HOJE,txt,quem:USER?USER.nome.split(" ")[0]:"Site"})}
+const vencida=x=>x.status==="Pendente"&&x.venc<HOJE;
+function saldoConta(n){return (S.saldoIni[n]||0)+S.contas.filter(x=>x.status==="Pago"&&x.conta===n).reduce((s,x)=>s+(x.tipo==="receber"?x.valor:-x.valor),0)}
+function movs(){const a=[];S.carros.forEach(c=>{a.push({d:c.entrada,k:"in",c,tit:{"Próprio":"Compra","Parceiro":"Entrada de parceiro","Consignado":"Consignação"}[c.origem||"Próprio"],v:c.compra,quem:c.origem==="Próprio"?"Marcos":(parc(c.parc)||{nome:"—"}).nome});if(c.venda)a.push({d:c.venda.data,k:"out",c,tit:"Venda",v:c.venda.valor,quem:(pessoa(c.venda.vend)||{nome:"—"}).nome.split(" ")[0]+" · cliente "+c.venda.cli})});return a.sort((x,y)=>y.d.localeCompare(x.d))}
+function movHTML(m){return `<button class="mov" data-carro="${m.c.id}"><span class="ic ${m.k==="in"?"in":"out"}">${m.k==="in"?"↓":"↑"}</span><span class="t"><b>${esc(nomeCarro(m.c))} · ${esc(m.c.placa)}</b><small>${m.tit} · ${esc(m.quem)}</small></span><span class="v num">${m.k==="out"||isDono()?R(m.v):""}<small>${fd(m.d)}/${m.d.slice(2,4)}</small></span></button>`}
 function toast(t){const e=$("#toast");e.textContent=t;e.hidden=false;clearTimeout(e._t);e._t=setTimeout(()=>e.hidden=true,2600)}
 function inkFor(hex){const n=parseInt(hex.slice(1),16),r=n>>16,g=n>>8&255,b=n&255;return (0.299*r+0.587*g+0.114*b)>160?"#141414":"#ffffff"}
 function aplicaMarca(){document.documentElement.style.setProperty("--brand",S.loja.cor);document.documentElement.style.setProperty("--brand-ink",inkFor(S.loja.cor))}
@@ -675,8 +751,8 @@ function renderPainel(){
  {const h=new Date().getHours();$("#ola").textContent=(h<12?"Bom dia, ":h<18?"Boa tarde, ":"Boa noite, ")+USER.nome.split(" ")[0]}
  $$(".dono").forEach(e=>e.hidden=!isDono());
  $("#cnt-novos").textContent=S.leads.filter(l=>l.etapa==="Novo").length;
- renderGeral();renderEstoque();renderKanban();renderAgenda();renderVendas();
- if(isDono()){renderFin();renderRel();renderEquipe();renderLoja()}
+ renderGeral();renderEstoque();renderKanban();renderAgenda();renderVendas();renderMov();
+ if(isDono()){renderFin();renderRel();renderParc();renderEquipe();renderLoja()}
 }
 function renderGeral(){
  const est=S.carros.filter(c=>!c.venda),vm=S.carros.filter(vendaMes);
@@ -702,21 +778,28 @@ function renderGeral(){
  const ag=S.visitas.filter(v=>v.data===HOJE||v.data===addD(HOJE,1)).sort((a,b)=>(a.data+a.hora).localeCompare(b.data+b.hora));
  $("#ag-hoje").innerHTML=ag.map(v=>`<div class="item" style="cursor:default"><span class="pill ${v.tipo==="Test drive"?"p-info":"p-ok"}">${v.data===HOJE?"Hoje":"Amanhã"} ${v.hora}</span><span class="t"><b>${esc(v.cli)}</b><small>${v.tipo} · ${esc(nomeCarro(carro(v.carro)))}</small></span></div>`).join("")||`<p class="muted">Nada marcado.</p>`;
  $("#ld-novos").innerHTML=S.leads.filter(l=>l.etapa==="Novo").map(l=>`<button class="item" data-go="contatos"><div class="av">${ini(l.nome)}</div><span class="t"><b>${esc(l.nome)}</b><small>${esc(l.origem)} · ${esc(nomeCarro(carro(l.carro)))}</small></span></button>`).join("")||`<p class="muted">Nenhum contato novo.</p>`;
+ {const pr=est.filter(c=>(c.origem||"Próprio")==="Próprio").length;$("#kpi-note").innerHTML=`<span>Estoque próprio: <b>${pr}</b></span><span>Parceiros e consignados: <b>${est.length-pr}</b></span>`+(isDono()?`<span>A receber: <b class="num">${R(S.contas.filter(x=>x.tipo==="receber"&&x.status==="Pendente").reduce((s,x)=>s+x.valor,0))}</b></span><span>A pagar: <b class="num">${R(S.contas.filter(x=>x.tipo==="pagar"&&x.status==="Pendente").reduce((s,x)=>s+x.valor,0))}</b></span>`:"")}
+ $("#mov-geral").innerHTML=movs().slice(0,4).map(movHTML).join("");
+ if(isDono())$("#ct-geral").innerHTML=S.contas.filter(x=>x.status==="Pendente").sort((a,b)=>a.venc.localeCompare(b.venc)).slice(0,5).map(x=>`<div class="item" style="cursor:default"><span class="pill ${vencida(x)?"p-crit":x.tipo==="receber"?"p-ok":"p-warn"}">${vencida(x)?"Vencida":fd(x.venc)}</span><span class="t"><b>${esc(x.desc)}</b><small>${x.tipo==="receber"?"A receber":"A pagar"} · ${esc(x.cat)}</small></span><b class="num ${x.tipo==="receber"?"pos":"neg"}" style="white-space:nowrap">${R(x.valor)}</b></div>`).join("")||`<p class="muted">Nada pendente.</p>`;
  $("#top").innerHTML=[...est].sort((a,b)=>b.visitas-a.visitas).slice(0,4).map(c=>`<button class="item" data-carro="${c.id}"><div class="thumb">${carSVG(c)}</div><span class="t"><b>${esc(c.modelo)} ${c.ano}</b><small>${c.visitas} visitas · ${(n=>n+(n===1?" contato":" contatos"))(S.leads.filter(l=>l.carro===c.id).length)}</small></span></button>`).join("");
 }
 let EST={st:"",ord:"dias",dir:-1};
 function renderEstoque(){
  const q=$("#e-q").value.trim().toLowerCase();
- let l=S.carros.filter(c=>(!EST.st||c.status===EST.st)&&(!q||(c.marca+" "+c.modelo+" "+c.placa).toLowerCase().includes(q)));
+ const og=$("#e-or").value;
+ let l=S.carros.filter(c=>(!EST.st||c.status===EST.st)&&(!og||(c.origem||"Próprio")===og)&&(!q||(c.marca+" "+c.modelo+" "+c.placa).toLowerCase().includes(q)));
  const key={dias:dias,preco:c=>c.preco,lucro:lucro,fipe:c=>c.preco/c.fipe};
  l.sort((a,b)=>(key[EST.ord](a)-key[EST.ord](b))*EST.dir);
  const th=(k,t)=>`<th class="r"><button data-ord="${k}">${t}${EST.ord===k?(EST.dir<0?" ↓":" ↑"):""}</button></th>`;
  $("#tab").innerHTML=`<thead><tr><th>Veículo</th><th>Situação</th>${th("dias","Tempo de pátio")}${th("preco","Preço")}${th("fipe","% FIPE").replace('<th class="r">','<th class="r hide-m">')}${isDono()?th("lucro","Lucro"):""}<th class="r hide-m">Contatos</th></tr></thead><tbody>`+
- (l.length?l.map(c=>`<tr class="click" data-carro="${c.id}"><td><div class="car"><div class="thumb">${carSVG(c)}</div><div><b>${esc(c.marca)} ${esc(c.modelo)} ${esc(c.versao)}</b><small>${c.ano} · ${c.km.toLocaleString("pt-BR")} km · ${plate(c.placa)}</small><span class="show-m">${stPill(c.status)} ${diasPill(c)} <b class="num">${R(c.venda?c.venda.valor:c.preco)}</b>${isDono()?` · <span class="num ${lucro(c)>=0?"pos":"neg"}">lucro ${R(lucro(c))}</span>`:""}</span></div></div></td><td>${stPill(c.status)}</td><td class="r">${diasPill(c)}</td><td class="r num">${R(c.venda?c.venda.valor:c.preco)}</td><td class="r num hide-m">${Math.round(c.preco/c.fipe*100)}%</td>${isDono()?`<td class="r num ${lucro(c)>=0?"pos":"neg"}">${R(lucro(c))}</td>`:""}<td class="r num hide-m">${S.leads.filter(x=>x.carro===c.id).length}</td></tr>`).join(""):`<tr><td colspan="7" class="muted">Nenhum veículo com esse filtro.</td></tr>`)+"</tbody>";
+ (l.length?l.map(c=>`<tr class="click" data-carro="${c.id}"><td><div class="car"><div class="thumb">${carSVG(c)}</div><div><b>${esc(c.marca)} ${esc(c.modelo)} ${esc(c.versao)} ${origPill(c)}</b><small>${c.ano} · ${c.km.toLocaleString("pt-BR")} km · ${plate(c.placa)}</small><span class="show-m">${stPill(c.status)} ${diasPill(c)} <b class="num">${R(c.venda?c.venda.valor:c.preco)}</b>${isDono()?` · <span class="num ${lucro(c)>=0?"pos":"neg"}">lucro ${R(lucro(c))}</span>`:""}</span></div></div></td><td>${stPill(c.status)}</td><td class="r">${diasPill(c)}</td><td class="r num">${R(c.venda?c.venda.valor:c.preco)}</td><td class="r num hide-m">${Math.round(c.preco/c.fipe*100)}%</td>${isDono()?`<td class="r num ${lucro(c)>=0?"pos":"neg"}">${R(lucro(c))}</td>`:""}<td class="r num hide-m">${S.leads.filter(x=>x.carro===c.id).length}</td></tr>`).join(""):`<tr><td colspan="7" class="muted">Nenhum veículo com esse filtro.</td></tr>`)+"</tbody>";
 }
 function renderKanban(){
  $("#kanban").innerHTML=ETAPAS.map((e,i)=>{const ls=S.leads.filter(l=>l.etapa===e).sort((a,b)=>b.data.localeCompare(a.data));
-  return `<div class="col"><div class="col-h"><span>${e}</span><span class="pill p-mut">${ls.length}</span></div>${ls.map(l=>`<div class="lead" data-lead="${l.id}" tabindex="0" role="button" aria-label="Editar ${esc(l.nome)}"><div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start"><b>${esc(l.nome)}</b><span class="pill ${{WhatsApp:"p-ok",Instagram:"p-warn",Site:"p-info",Loja:"p-mut"}[l.origem]||"p-mut"}">${esc(l.origem)}</span></div><small>${esc(nomeCarro(carro(l.carro)))}</small><small class="num">${esc(l.tel)} · ${fd(l.data)}</small>${l.nota?`<small style="color:var(--ink)">${esc(l.nota)}</small>`:""}<div class="mv"><button data-ed="${l.id}" aria-label="Editar contato" title="Editar"><svg class="i" style="width:14px;height:14px"><use href="#i-pen"/></svg></button>${i>0?`<button data-mv="${l.id}" data-d="-1" aria-label="Voltar etapa">← Voltar</button>`:""}${i<ETAPAS.length-1?`<button data-mv="${l.id}" data-d="1" aria-label="Avançar etapa">${ETAPAS[i+1]} →</button>`:""}</div></div>`).join("")}</div>`}).join("");
+  return `<div class="col" data-etapa="${e}"><div class="col-h"><span>${e}</span><span class="pill p-mut">${ls.length}</span></div>${ls.map(l=>`<div class="lead" data-lead="${l.id}" draggable="true" tabindex="0" role="button" aria-label="Editar ${esc(l.nome)}"><div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start"><b>${esc(l.nome)}</b><span class="pill ${{WhatsApp:"p-ok",Instagram:"p-warn",Site:"p-info",Loja:"p-mut"}[l.origem]||"p-mut"}">${esc(l.origem)}</span></div><small>${esc(nomeCarro(carro(l.carro)))}</small><small class="num">${esc(l.tel)} · ${fd(l.data)}</small>${l.nota?`<small style="color:var(--ink)">${esc(l.nota)}</small>`:""}<div class="mv"><button data-ed="${l.id}" aria-label="Editar contato" title="Editar"><svg class="i" style="width:14px;height:14px"><use href="#i-pen"/></svg></button>${i>0?`<button data-mv="${l.id}" data-d="-1" aria-label="Voltar etapa">← Voltar</button>`:""}${i<ETAPAS.length-1?`<button data-mv="${l.id}" data-d="1" aria-label="Avançar etapa">${ETAPAS[i+1]} →</button>`:""}</div></div>`).join("")}</div>`}).join("");
+ $$("#kanban .lead").forEach(el=>{el.ondragstart=ev=>{ev.dataTransfer.setData("text/plain",el.dataset.lead);el.classList.add("dragging")};el.ondragend=()=>el.classList.remove("dragging")});
+ $$("#kanban .col").forEach(col=>{col.ondragover=ev=>{ev.preventDefault();col.classList.add("drop")};col.ondragleave=()=>col.classList.remove("drop");
+  col.ondrop=ev=>{ev.preventDefault();col.classList.remove("drop");const l=S.leads.find(x=>x.id==ev.dataTransfer.getData("text/plain")),nv=col.dataset.etapa;if(!l||l.etapa===nv)return;(l.hist=l.hist||[]).push({data:HOJE,txt:l.etapa+" → "+nv});l.etapa=nv;salvar();tudo();toast(l.nome+" → "+nv)}});
 }
 function renderAgenda(){
  const ds=[...Array(7)].map((_,i)=>addD(HOJE,i)),wd=["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"];
@@ -728,18 +811,41 @@ function renderVendas(){
  $("#tab-vendas").innerHTML=`<thead><tr><th>Data</th><th>Veículo</th><th class="hide-m">Cliente</th><th class="hide-m">Vendedor</th><th class="hide-m">Pagamento</th><th class="r">Valor</th>${isDono()?'<th class="r">Lucro</th><th class="r">Comissão</th>':""}</tr></thead><tbody>`+(vs.map(c=>{const p=pessoa(c.venda.vend)||{nome:"—",com:0};return `<tr class="click" data-carro="${c.id}"><td class="num">${fd(c.venda.data)}</td><td>${esc(nomeCarro(c))}</td><td class="hide-m">${esc(c.venda.cli)}</td><td class="hide-m">${esc(p.nome)}</td><td class="hide-m">${esc(c.venda.pag)}</td><td class="r num">${R(c.venda.valor)}</td>${isDono()?`<td class="r num ${lucro(c)>=0?"pos":"neg"}">${R(lucro(c))}</td><td class="r num">${R(c.venda.valor*p.com/100)}</td>`:""}</tr>`}).join("")||`<tr><td colspan="8" class="muted">Nenhuma venda ainda.</td></tr>`)+"</tbody>";
  hbars("#rank",S.equipe.map(p=>[p.nome.split(" ")[0],S.carros.filter(c=>vendaMes(c)&&c.venda.vend===p.id).length]),v=>v+(v===1?" venda":" vendas"));
 }
+let MOVF="";
+function renderMov(){const l=movs().filter(m=>!MOVF||m.k===MOVF);$("#mov-lista").innerHTML=l.map(movHTML).join("")||`<p class="muted">Nada registrado.</p>`}
+function renderParc(){$("#pcards").innerHTML=S.parceiros.map(p=>{const cs=S.carros.filter(c=>c.parc===p.id),ei=cs.filter(c=>!c.venda),vd=cs.filter(c=>c.venda),dev=S.contas.filter(x=>x.status==="Pendente"&&x.cat==="Repasse a parceiro"&&cs.some(c=>c.id===x.carro)).reduce((s,x)=>s+x.valor,0);
+ return `<div class="pcard"><div style="display:flex;gap:10px;align-items:center"><div class="av">${ini(p.nome)}</div><div><b>${esc(p.nome)}</b><div class="muted" style="font-size:12.5px">${esc(p.tipo)} · ${esc(p.cid)}</div></div></div><small class="muted num">${esc(p.tel)}</small>${p.obs?`<small>${esc(p.obs)}</small>`:""}<div class="stats"><span><b>${ei.length}</b> no pátio</span><span><b>${vd.length}</b> vendidos</span>${dev?`<span class="neg">repasse pendente <b class="num">${R(dev)}</b></span>`:""}</div>${ei.map(c=>`<button class="item" data-carro="${c.id}"><span class="t"><b>${esc(nomeCarro(c))}</b><small>repasse ${R(c.compra)} · preço ${R(c.preco)}</small></span></button>`).join("")}</div>`}).join("")}
+let FT="lanc",DREM="2026-10";
 function renderFin(){
- const vm=S.carros.filter(vendaMes),ent=vm.reduce((s,c)=>s+c.venda.valor,0),cc=vm.reduce((s,c)=>s+custo(c),0);
- const com=vm.reduce((s,c)=>s+c.venda.valor*((pessoa(c.venda.vend)||{com:0}).com)/100,0),dp=S.despesas.reduce((s,d)=>s+ +d.valor,0),res=ent-cc-com-dp;
- $("#fin-kpis").innerHTML=[["Entradas (vendas)",R(ent),"pos"],["Custo dos carros vendidos",R(cc),"neg"],["Despesas + comissões",R(dp+com),"neg"],["Resultado do mês",R(res),res>=0?"pos":"neg"]].map(k=>`<div class="kpi"><div class="lbl">${k[0]}</div><div class="v num ${k[2]}">${k[1]}</div></div>`).join("");
- const rows=[...vm.map(c=>[c.venda.data,"Venda · "+nomeCarro(c),"Venda",c.venda.valor]),...vm.map(c=>[c.venda.data,"Custo do carro · "+nomeCarro(c),"Estoque",-custo(c)]),...vm.filter(c=>(pessoa(c.venda.vend)||{com:0}).com).map(c=>[c.venda.data,"Comissão · "+pessoa(c.venda.vend).nome,"Pessoal",-c.venda.valor*pessoa(c.venda.vend).com/100]),...S.despesas.map(d=>[d.data,d.desc,d.cat,-d.valor])].sort((a,b)=>b[0].localeCompare(a[0]));
- $("#lanc").innerHTML=`<thead><tr><th>Data</th><th>Descrição</th><th class="hide-m">Categoria</th><th class="r">Valor</th></tr></thead><tbody>`+rows.map(r=>`<tr><td class="num">${fd(r[0])}</td><td>${esc(r[1])}</td><td class="hide-m"><span class="pill p-mut">${esc(r[2])}</span></td><td class="r num ${r[3]>=0?"pos":"neg"}">${r[3]>=0?"+ ":"− "}${R(Math.abs(r[3]))}</td></tr>`).join("")+"</tbody>";
- const cats={};S.despesas.forEach(d=>cats[d.cat]=(cats[d.cat]||0)+ +d.valor);if(com)cats["Comissões"]=com;
- hbars("#cat",Object.entries(cats).sort((a,b)=>b[1]-a[1]),R);
- const pg={};S.carros.filter(c=>c.venda).forEach(c=>pg[c.venda.pag]=(pg[c.venda.pag]||0)+1);
- hbars("#pag",Object.entries(pg),v=>v+(v===1?" venda":" vendas"));
+ const pend=t=>S.contas.filter(x=>x.tipo===t&&x.status==="Pendente").reduce((s,x)=>s+x.valor,0);
+ const venc=S.contas.filter(vencida).reduce((s,x)=>s+(x.tipo==="pagar"?x.valor:0),0),real=saldoConta("Banco")+saldoConta("Caixa"),prev=real+pend("receber")-pend("pagar");
+ $("#fin-kpis").innerHTML=[["A receber",R(pend("receber")),"pos",""],["A pagar",R(pend("pagar")),"neg",""],["Contas vencidas",R(venc),venc?"neg":"",venc?"neg-bg":""],["Saldo hoje",R(real),real>=0?"":"neg",""],["Saldo previsto",R(prev),prev>=0?"":"neg","",]].map(k=>`<div class="kpi ${k[3]}"><div class="lbl">${k[0]}</div><div class="v num ${k[2]}">${k[1]}</div>${k[0]==="Saldo previsto"?"<small>depois de receber e pagar o que está pendente</small>":k[0]==="Saldo hoje"?"<small>banco + caixa</small>":""}</div>`).join("");
+ $$("#fin-tabs [data-ft]").forEach(b=>b.setAttribute("aria-selected",b.dataset.ft===FT));
+ let h="";
+ if(FT==="lanc"){const l=[...S.contas].sort((a,b)=>(a.status==="Pago")-(b.status==="Pago")||a.venc.localeCompare(b.venc));
+  h=`<div class="panel-h"><h2>Contas a pagar e receber</h2><span class="muted" style="font-size:13px">"Dar baixa" marca como pago ou recebido</span></div><div class="tablewrap"><table id="lanc"><thead><tr><th>Vencimento</th><th>Descrição</th><th class="hide-m">Categoria</th><th>Situação</th><th class="r">Valor</th><th class="r">Ação</th></tr></thead><tbody>${l.map(x=>`<tr><td class="num">${fd(x.venc)}</td><td>${esc(x.desc)}<div class="show-m muted" style="font-size:12px">${esc(x.cat)}</div></td><td class="hide-m"><span class="pill p-mut">${esc(x.cat)}</span></td><td><span class="pill ${x.status==="Pago"?"p-ok":vencida(x)?"p-crit":"p-warn"}">${x.status==="Pago"?(x.tipo==="receber"?"Recebido":"Pago"):vencida(x)?"Vencida":"Pendente"}</span></td><td class="r num ${x.tipo==="receber"?"pos":"neg"}">${x.tipo==="receber"?"+ ":"− "}${R(x.valor)}</td><td class="r">${x.status==="Pago"?`<button class="btn xs ghost" data-estorno="${x.id}">Desfazer</button>`:`<button class="btn xs" data-baixa="${x.id}">Dar baixa</button>`}</td></tr>`).join("")}</tbody></table></div>`}
+ if(FT==="dre"){const ms=[...new Set([...S.carros.filter(c=>c.venda).map(c=>c.venda.data.slice(0,7)),...S.contas.map(x=>x.comp.slice(0,7))])].sort().reverse();if(!ms.includes(DREM))DREM=ms[0];
+  const NM=["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"],lab=m=>NM[+m.slice(5)-1]+" de "+m.slice(0,4);
+  const vs=S.carros.filter(c=>c.venda&&c.venda.data.startsWith(DREM)),rec=vs.reduce((s,c)=>s+c.venda.valor,0),cd=vs.reduce((s,c)=>s+custo(c),0),lb=rec-cd;
+  const NAO=["Venda de veículo","Compra de veículo","Repasse a parceiro","Sinal de reserva"],dps=S.contas.filter(x=>x.tipo==="pagar"&&x.comp.startsWith(DREM)&&!NAO.includes(x.cat)),dp=dps.reduce((s,x)=>s+x.valor,0),res=lb-dp,pc=v=>rec?" <small class='muted'>"+(v/rec*100).toFixed(1).replace(".",",")+"%</small>":"";
+  const cats={};dps.forEach(x=>cats[x.cat]=(cats[x.cat]||0)+x.valor);
+  h=`<div class="panel-h"><h2>DRE por competência</h2><label class="field" style="flex-direction:row;align-items:center;gap:8px">Mês<select id="dre-m">${ms.map(m=>`<option value="${m}" ${m===DREM?"selected":""}>${lab(m)}</option>`).join("")}</select></label></div>
+  <div class="dre"><div><span>Receita com vendas (${vs.length} ${vs.length===1?"carro":"carros"})</span><span>${R(rec)}</span></div><div><span>(−) Custo dos carros vendidos</span><span class="neg">−${R(cd)}</span></div><div class="tot"><span>Lucro bruto</span><span>${R(lb)}${pc(lb)}</span></div>${Object.entries(cats).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<div><span>(−) ${esc(k)}</span><span class="neg">−${R(v)}</span></div>`).join("")}<div class="tot"><span>Resultado do mês</span><span class="${res>=0?"pos":"neg"}">${R(res)}${pc(res)}</span></div></div><p class="muted" style="font-size:12.5px;text-align:center;margin-top:10px">Competência é o mês em que a venda ou a despesa aconteceu, mesmo que o dinheiro entre ou saia em outro mês.</p>`}
+ if(FT==="fluxo"){const ini=S.saldoIni.Banco+S.saldoIni.Caixa,pg=S.contas.filter(x=>x.status==="Pago").sort((a,b)=>a.pago.localeCompare(b.pago));let run=ini;const rows=pg.map(x=>{run+=x.tipo==="receber"?x.valor:-x.valor;return [x,run]}).reverse();
+  const ent=pg.filter(x=>x.tipo==="receber").reduce((s,x)=>s+x.valor,0),sai=pg.filter(x=>x.tipo==="pagar").reduce((s,x)=>s+x.valor,0);
+  h=`<div class="kpis" style="grid-template-columns:repeat(4,minmax(0,1fr))">${[["Saldo inicial",R(ini),""],["Entrou",R(ent),"pos"],["Saiu",R(sai),"neg"],["Saldo atual",R(ini+ent-sai),ini+ent-sai>=0?"":"neg"]].map(k=>`<div class="kpi"><div class="lbl">${k[0]}</div><div class="v num ${k[2]}">${k[1]}</div></div>`).join("")}</div>
+  <div class="panel-h"><h2>Dinheiro que já entrou e saiu</h2></div><div class="tablewrap"><table id="lanc"><thead><tr><th>Data</th><th>Descrição</th><th class="hide-m">Conta</th><th class="r">Valor</th><th class="r">Saldo</th></tr></thead><tbody>${rows.map(([x,b])=>`<tr><td class="num">${fd(x.pago)}</td><td>${esc(x.desc)}</td><td class="hide-m">${x.conta}</td><td class="r num ${x.tipo==="receber"?"pos":"neg"}">${x.tipo==="receber"?"+ ":"− "}${R(x.valor)}</td><td class="r num">${R(b)}</td></tr>`).join("")}</tbody></table></div>`}
+ if(FT==="vres"){const l=[...S.carros].sort((a,b)=>!!b.venda-!!a.venda||lucro(b)-lucro(a));
+  h=`<div class="panel-h"><h2>Resultado por carro</h2><span class="muted" style="font-size:13px">vendidos primeiro; em estoque mostra o previsto</span></div><div class="tablewrap"><table id="tab-vres"><thead><tr><th>Veículo</th><th class="r">Custo total</th><th class="r">Venda</th><th class="r">Lucro</th><th class="r">Margem</th></tr></thead><tbody>${l.map(c=>`<tr class="click" data-carro="${c.id}"><td>${esc(nomeCarro(c))} ${c.venda?'<span class="pill p-mut">vendido</span>':'<span class="pill p-info">previsto</span>'}</td><td class="r num">${R(custo(c))}</td><td class="r num">${R(valorV(c))}</td><td class="r num ${lucro(c)>=0?"pos":"neg"}">${R(lucro(c))}</td><td class="r num">${(lucro(c)/valorV(c)*100).toFixed(1).replace(".",",")}%</td></tr>`).join("")}</tbody></table></div>`}
+ if(FT==="contas")h=`<div class="panel-h"><h2>Banco e caixa</h2></div><div class="acc">${["Banco","Caixa"].map(n=>`<div><span class="lbl">${n}</span><b class="num ${saldoConta(n)<0?"neg":""}">${R(saldoConta(n))}</b><small class="muted">começou com ${R(S.saldoIni[n])}</small></div>`).join("")}</div><p class="muted" style="font-size:13px;margin-top:12px">Ao dar baixa numa conta você escolhe se o dinheiro passou pelo banco ou pelo caixa da loja.</p>`;
+ $("#fin-body").innerHTML=h;
+ const dm=$("#dre-m");if(dm)dm.onchange=()=>{DREM=dm.value;renderFin()};
 }
 function renderRel(){
+ {const vd=S.carros.filter(c=>c.venda),tv=vd.reduce((s,c)=>s+c.venda.valor,0),tc=vd.reduce((s,c)=>s+custo(c),0),cv=S.leads.length?S.leads.filter(l=>l.etapa==="Vendido").length/S.leads.length*100:0;
+  $("#rel-kpis").innerHTML=[["Vendas realizadas",vd.length+"",R(tv)],["Custo das vendas",R(tc),"compra ou repasse + preparação"],["Lucro total",R(tv-tc),"margem de "+(tv?((tv-tc)/tv*100).toFixed(1).replace(".",","):0)+"%"],["Conversão de contatos",Math.round(cv)+"%","de quem chamou, quantos compraram"]].map(k=>`<div class="kpi"><div class="lbl">${k[0]}</div><div class="v num">${k[1]}</div><small>${k[2]}</small></div>`).join("");
+  hbars("#r-vend",S.equipe.map(p=>[p.nome.split(" ")[0],vd.filter(c=>c.venda.vend===p.id).reduce((s,c)=>s+c.venda.valor,0)]).sort((a,b)=>b[1]-a[1]),v=>v?Rk(v):"—");
+  const est=S.carros.filter(c=>!c.venda);hbars("#r-orig",["Próprio","Parceiro","Consignado"].map(o=>[o,est.filter(c=>(c.origem||"Próprio")===o).length]),v=>v+(v===1?" carro":" carros"))}
  const est=S.carros.filter(c=>!c.venda),fx=[["0–30 dias",0,30,"var(--ok)"],["31–60 dias",31,60,"var(--ok)"],["61–90 dias",61,90,"var(--warn)"],["90+ dias",91,9999,"var(--crit)"]];
  hbars("#r-idade",fx.map(f=>[f[0],est.filter(c=>dias(c)>=f[1]&&dias(c)<=f[2]).length,f[3]]),v=>v+(v===1?" carro":" carros"));
  const mk={};S.carros.forEach(c=>{(mk[c.marca]=mk[c.marca]||[]).push(lucro(c))});
@@ -748,13 +854,13 @@ function renderRel(){
  hbars("#r-faixa",fp.map(f=>{const a=vend.filter(c=>c.venda.valor>f[1]&&c.venda.valor<=f[2]);return [f[0],a.length?a.reduce((s,c)=>s+dias(c),0)/a.length:0]}),v=>v?Math.round(v)+" dias":"sem vendas");
  const og={};S.leads.forEach(l=>og[l.origem]=(og[l.origem]||0)+1);
  hbars("#r-origem",Object.entries(og).sort((a,b)=>b[1]-a[1]),v=>v+" contatos");
- const n=S.leads.length,ord={"Novo":0,"Em negociação":1,"Visita marcada":2,"Vendido":3,"Perdido":-1};
- hbars("#r-funil",[["Chegaram",n],["Negociaram",S.leads.filter(l=>ord[l.etapa]>=1).length],["Visitaram",S.leads.filter(l=>ord[l.etapa]>=2).length],["Compraram",S.leads.filter(l=>ord[l.etapa]===3).length]],v=>v+" ("+Math.round(v/Math.max(1,n)*100)+"%)");
+ const n=S.leads.length,ord={"Novo":0,"Em negociação":1,"Visita marcada":2,"Financiamento":3,"Vendido":4,"Perdido":-1};
+ hbars("#r-funil",[["Chegaram",n],["Negociaram",S.leads.filter(l=>ord[l.etapa]>=1).length],["Visitaram",S.leads.filter(l=>ord[l.etapa]>=2).length],["Compraram",S.leads.filter(l=>ord[l.etapa]===4).length]],v=>v+" ("+Math.round(v/Math.max(1,n)*100)+"%)");
 }
 function renderEquipe(){
- $("#tab-eq").innerHTML=`<thead><tr><th>Nome</th><th>Papel</th><th class="r">Comissão</th></tr></thead><tbody>`+S.equipe.map(p=>`<tr><td><div class="car"><div class="av">${ini(p.nome)}</div><div><b>${esc(p.nome)}</b><small>${esc(p.email)}</small></div></div></td><td><span class="pill ${p.papel==="Dono"?"p-ok":"p-info"}">${esc(p.papel)}</span></td><td class="r num">${p.com?String(p.com).replace(".",",")+"%":"—"}</td></tr>`).join("")+"</tbody>";
- const P=[["Ver e cadastrar carros",1,1],["Ver custo e lucro dos carros",1,0],["Contatos e agenda",1,1],["Registrar venda",1,1],["Financeiro e relatórios",1,0],["Convidar pessoas",1,0],["Mudar nome, cor e dados do site",1,0]];
- $("#perm").innerHTML=`<thead><tr><th>Permissão</th><th>Dono</th><th>Vendedor</th></tr></thead><tbody>`+P.map(p=>`<tr><td>${p[0]}</td><td class="${p[1]?"yes":"no"}">${p[1]?"✓":"—"}</td><td class="${p[2]?"yes":"no"}">${p[2]?"✓":"—"}</td></tr>`).join("")+"</tbody>";
+ $("#tab-eq").innerHTML=`<thead><tr><th>Nome</th><th>Papel</th><th class="r">Comissão</th></tr></thead><tbody>`+S.equipe.map(p=>`<tr><td><div class="car"><div class="av">${ini(p.nome)}</div><div><b>${esc(p.nome)}</b><small>${esc(p.email)}</small></div></div></td><td><span class="pill ${p.papel==="Dono"?"p-ok":p.papel==="Vendedor"?"p-info":"p-warn"}">${esc(p.papel)}</span></td><td class="r num">${p.com?String(p.com).replace(".",",")+"%":"—"}</td></tr>`).join("")+"</tbody>";
+ const P=[["Ver e cadastrar carros",1,1,1,0],["Ver custo, preço mínimo e lucro",1,1,0,1],["Contatos e agenda",1,1,1,0],["Registrar venda",1,1,1,0],["Financeiro e contas",1,0,0,1],["Relatórios",1,1,0,1],["Parceiros e repasses",1,1,0,1],["Convidar pessoas",1,0,0,0],["Mudar nome, cor e dados do site",1,0,0,0]];
+ $("#perm").innerHTML=`<thead><tr><th>Permissão</th><th>Dono</th><th>Gerente</th><th>Vendedor</th><th>Financeiro</th></tr></thead><tbody>`+P.map(p=>`<tr><td>${p[0]}</td>${[1,2,3,4].map(k=>`<td class="${p[k]?"yes":"no"}">${p[k]?"✓":"—"}</td>`).join("")}</tr>`).join("")+"</tbody>";
 }
 function renderLoja(){
  const L=S.loja;["nome","slug","slogan","cid","wpp","end","hor","sobre"].forEach(k=>{const e=$("#lj-"+k);if(document.activeElement!==e)e.value=L[k]});
@@ -770,51 +876,74 @@ let TAB="resumo";
 function ficha(id,tab){
  const c=carro(id);if(!c)return;TAB=tab||TAB;const dono=isDono();
  const ov=$("#ov");ov.classList.remove("center");
- const tabs=[["resumo","Resumo"],["fotos","Fotos"+((c.fotos||[]).length?" ("+c.fotos.length+")":"")],dono?["gastos","Gastos"]:null,["docs","Documentos"],c.venda?null:["vender","Registrar venda"]].filter(Boolean);
+ const ints=S.leads.filter(l=>l.carro===c.id);
+ const tabs=[["resumo","Resumo"],dono?["fin","Financeiro"]:null,["fotos","Fotos"+((c.fotos||[]).length?" ("+c.fotos.length+")":"")],["docs","Documentos"],["int","Interessados"+(ints.length?" ("+ints.length+")":"")],["hist","Histórico"],c.venda?null:["vender","Registrar venda"]].filter(Boolean);
  if(!tabs.find(t=>t[0]===TAB))TAB="resumo";
+ const p=parc(c.parc);
  let body="";
  if(TAB==="resumo")body=`<div class="ph" style="border-radius:12px;overflow:hidden">${carSVG(c,1)}</div>
-  <div class="lines num">${dono?`<div><span>Valor de compra</span><span>${R(c.compra)}</span></div><div><span>Gastos de preparação</span><span>${R(custo(c)-c.compra)}</span></div><div class="tot"><span>Custo total</span><span>${R(custo(c))}</span></div>`:""}
-   <div><span>${c.venda?"Vendido por":"Preço de venda"}</span><span>${R(valorV(c))}</span></div><div><span>Tabela FIPE</span><span>${R(c.fipe)} · ${Math.round(c.preco/c.fipe*100)}%</span></div>
+  <div class="dgrid">${[["Ano",c.ano],["Km",c.km.toLocaleString("pt-BR")],["Cor",c.pintura],["Combustível",c.comb],["Câmbio",c.cambio],["Placa",c.placa],["Origem",c.origem||"Próprio"],["Dono do carro",p?p.nome:S.loja.nome],["Entrada",fd(c.entrada)+"/2026"]].map(d=>`<div><span class="lbl">${d[0]}</span><b>${esc(d[1])}</b></div>`).join("")}</div>
+  <div class="lines num"><div><span>${c.venda?"Vendido por":"Preço anunciado"}</span><span>${R(valorV(c))}</span></div>${dono&&!c.venda?`<div><span>Preço mínimo</span><span>${R(c.minimo||c.preco)}</span></div>`:""}<div><span>Tabela FIPE</span><span>${R(c.fipe)} · ${Math.round(c.preco/c.fipe*100)}%</span></div>
    ${dono?`<div class="tot"><span>${c.venda?"Lucro bruto":"Lucro previsto"}</span><span class="${lucro(c)>=0?"pos":"neg"}">${R(lucro(c))} · ${(lucro(c)/valorV(c)*100).toFixed(1).replace(".",",")}%</span></div>`:""}
-   <div><span>Entrou no pátio</span><span>${fd(c.entrada)}/2026 · ${dias(c)} dias</span></div><div><span>Visitas no site</span><span>${c.visitas}</span></div></div>
+   <div><span>Dias no pátio</span><span>${dias(c)}</span></div><div><span>Visitas no site</span><span>${c.visitas}</span></div></div>
+  ${c.obs?`<p style="font-size:13.5px;background:var(--sunk);border-radius:10px;padding:10px"><b>Observações:</b> ${esc(c.obs)}</p>`:""}
   ${c.venda?`<div class="lines"><div><span>Cliente</span><span>${esc(c.venda.cli)}</span></div><div><span>Vendedor</span><span>${esc((pessoa(c.venda.vend)||{nome:"—"}).nome)}</span></div><div><span>Pagamento</span><span>${esc(c.venda.pag)}</span></div><div><span>Data</span><span>${fd(c.venda.data)}/2026</span></div></div>`:
-  `<form class="form" id="f-preco"><label class="field">Situação<select id="fx-st">${["Disponível","Reservado","Preparação"].map(s=>`<option ${s===c.status?"selected":""}>${s}</option>`).join("")}</select></label><label class="field">Preço de venda (R$)<input id="fx-preco" type="number" value="${c.preco}" min="0"></label><button class="btn full" type="submit" style="justify-content:center">Salvar</button></form>
-   <p class="muted" style="font-size:12.5px">Disponível e Reservado aparecem no site. Em preparação fica escondido até ficar pronto.</p>`}`;
- if(TAB==="gastos")body=`<div class="lines num"><div><span>Valor de compra</span><span>${R(c.compra)}</span></div>${c.gastos.map((g,i)=>`<div><span>${esc(g[0])}</span><span>${R(g[1])}</span></div>`).join("")}<div class="tot"><span>Custo total</span><span>${R(custo(c))}</span></div></div>
-  <form class="form" id="f-gasto"><label class="field full">Descrição<input id="g-d" required placeholder="Ex.: troca de pastilhas"></label><label class="field">Valor (R$)<input id="g-v" type="number" required min="1"></label><button class="btn" type="submit" style="align-self:end;justify-content:center">Adicionar gasto</button></form>`;
+  `<form class="form" id="f-preco"><label class="field">Situação<select id="fx-st">${["Disponível","Reservado","Preparação"].map(s=>`<option ${s===c.status?"selected":""}>${s}</option>`).join("")}</select></label><label class="field">Preço anunciado (R$)<input id="fx-preco" type="number" value="${c.preco}" min="0"></label>${dono?`<label class="field">Preço mínimo (R$)<input id="fx-min" type="number" value="${c.minimo||c.preco}" min="0"></label>`:""}<label class="field">Km<input id="fx-km" type="number" value="${c.km}" min="0"></label><label class="field full">Observações<textarea id="fx-obs" rows="2">${esc(c.obs||"")}</textarea></label><button class="btn full" type="submit" style="justify-content:center">Salvar</button></form>
+   <p class="muted" style="font-size:12.5px">Disponível e Reservado aparecem no site. Em preparação fica escondido até ficar pronto.${dono?" O preço mínimo é o limite para a equipe negociar e só aparece para o dono.":""}</p>`}`;
+ if(TAB==="fin"){const mg=(c.preco-custo(c)),mm=((c.minimo||c.preco)-custo(c));
+  body=`<div class="lines num"><div><span>${labCompra(c)}</span><span>${R(c.compra)}</span></div>${c.gastos.map(g=>`<div><span>${esc(g[0])}</span><span>${R(g[1])}</span></div>`).join("")}<div class="tot"><span>Custo total</span><span>${R(custo(c))}</span></div></div>
+  <div class="lines num"><div><span>Preço anunciado</span><span>${R(c.venda?c.venda.valor:c.preco)}</span></div>${c.venda?"":`<div><span>Preço mínimo</span><span>${R(c.minimo||c.preco)}</span></div>`}<div class="tot"><span>${c.venda?"Lucro na venda":"Margem prevista"}</span><span class="${(c.venda?lucro(c):mg)>=0?"pos":"neg"}">${R(c.venda?lucro(c):mg)} · ${((c.venda?lucro(c):mg)/valorV(c)*100).toFixed(1).replace(".",",")}%</span></div>${c.venda?"":`<div><span>Margem se vender no mínimo</span><span class="${mm>=0?"pos":"neg"}">${R(mm)}</span></div>`}</div>
+  ${c.origem&&c.origem!=="Próprio"?`<p class="muted" style="font-size:12.5px">Carro ${c.origem==="Parceiro"?"de parceiro":"consignado"}: o repasse de ${R(c.compra)} para ${esc((p||{nome:"o dono"}).nome)} só é pago quando o carro for vendido.</p>`:""}
+  <form class="form" id="f-gasto"><label class="field full">Novo gasto<input id="g-d" required placeholder="Ex.: troca de pastilhas"></label><label class="field">Valor (R$)<input id="g-v" type="number" required min="1"></label><button class="btn" type="submit" style="align-self:end;justify-content:center">Adicionar gasto</button></form>`}
  if(TAB==="fotos")body=`<p class="muted" style="font-size:13.5px">A primeira foto é a capa no site. Dá para tirar pelo celular na hora ou escolher da galeria. Até 12 fotos por carro.</p>
   <label class="btn" style="justify-content:center;cursor:pointer"><svg class="i"><use href="#i-plus"/></svg>Adicionar fotos<input type="file" id="up-fotos" accept="image/*" multiple hidden></label>
   ${(c.fotos||[]).length?`<div class="fgrid">${c.fotos.map((f,i)=>`<div class="fitem"><img src="${f}" alt="Foto ${i+1}">${i===0?'<span class="pill p-ok fcap">Capa</span>':""}<div class="fact">${i>0?`<button type="button" class="btn sm soft" data-capa="${i}">Usar como capa</button>`:""}<button type="button" class="btn sm danger" data-rmf="${i}">Remover</button></div></div>`).join("")}</div>`:`<div class="fempty"><b>Nenhuma foto ainda</b><span class="muted">Enquanto não tiver foto, o site mostra o nome do modelo${FOTOS[c.modelo]?" (nesta demonstração, uma foto ilustrativa)":""}.</span></div>`}`;
- if(TAB==="docs")body=`<div class="checks">${[["laudo","Laudo cautelar aprovado"],["manual","Manual e livro de revisões"],["chave","Chave reserva"],["ipva","IPVA e licenciamento em dia"]].map(d=>`<label><input type="checkbox" data-doc="${d[0]}" ${c.docs[d[0]]?"checked":""}>${d[1]}</label>`).join("")}</div><p class="muted" style="font-size:12.5px">Itens pendentes aparecem em "Precisam de atenção" na visão geral.</p>`;
- if(TAB==="vender")body=`<form class="form" id="f-venda"><label class="field">Valor da venda (R$)<input id="v-val" type="number" value="${c.preco}" required></label><label class="field">Data<input id="v-dt" type="date" value="${HOJE}" required></label><label class="field full">Cliente<input id="v-cli" required placeholder="Nome do comprador"></label><label class="field">Vendedor<select id="v-vend">${S.equipe.map(p=>`<option value="${p.id}" ${p.nome===USER.nome?"selected":""}>${esc(p.nome)}</option>`).join("")}</select></label><label class="field">Pagamento<select id="v-pag"><option>À vista</option><option>Financiado</option><option>À vista + troca</option><option>Financiado + troca</option></select></label>${dono?`<div class="full lines num"><div><span>Custo do carro</span><span>${R(custo(c))}</span></div><div class="tot"><span>Lucro com esse valor</span><span id="v-luc"></span></div></div>`:""}<button class="btn full" type="submit" style="justify-content:center">Confirmar venda</button></form>`;
- $("#sheet").innerHTML=`<div class="sheet-head"><div><span class="lbl">${esc(c.marca)} · ${plate(c.placa)}</span><h2 style="font-size:28px;margin-top:4px">${esc(c.modelo)} ${esc(c.versao)} ${c.ano}</h2><div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap">${stPill(c.status)} ${diasPill(c)}</div></div><button class="x" data-close>Fechar</button></div>
+ if(TAB==="docs")body=`<form class="form" id="f-doc"><label class="field">Placa<input id="d-placa" value="${esc(c.placa)}" maxlength="8"></label><label class="field">RENAVAM<input id="d-ren" value="${esc(c.renavam||"")}" inputmode="numeric"></label><label class="field full">Chassi<input id="d-cha" value="${esc(c.chassi||"")}" maxlength="17"></label><button class="btn full soft" type="submit" style="justify-content:center">Salvar dados do documento</button></form>
+  <div class="checks">${[["laudo","Laudo cautelar aprovado"],["manual","Manual e livro de revisões"],["chave","Chave reserva"],["ipva","IPVA e licenciamento em dia"]].map(d=>`<label><input type="checkbox" data-doc="${d[0]}" ${c.docs[d[0]]?"checked":""}>${d[1]}</label>`).join("")}</div><p class="muted" style="font-size:12.5px">Itens pendentes aparecem em "Precisam de atenção" na visão geral.</p>`;
+ if(TAB==="int")body=ints.length?`<div class="list">${ints.map(l=>`<button class="item" data-lead="${l.id}"><div class="av">${ini(l.nome)}</div><span class="t"><b>${esc(l.nome)}</b><small>${esc(l.etapa)} · ${esc(l.origem)} · ${esc(l.tel)}</small></span><span class="pill p-mut">${fd(l.data)}</span></button>`).join("")}</div>`:`<div class="fempty"><b>Ninguém chamou por este carro ainda</b><span class="muted">Quando alguém pedir informação pelo site ou você cadastrar um contato com interesse nele, aparece aqui.</span></div>`;
+ if(TAB==="hist"){const ev=[{data:c.entrada,txt:({"Próprio":"Entrou no pátio (compra)","Parceiro":"Entrou no pátio (carro de parceiro)","Consignado":"Entrou no pátio (consignado)"})[c.origem||"Próprio"],quem:"Marcos"},...(c.hist||[]),...(c.venda?[{data:c.venda.data,txt:"Vendido para "+c.venda.cli+" por "+R(c.venda.valor),quem:(pessoa(c.venda.vend)||{nome:"—"}).nome.split(" ")[0]}]:[])].sort((a,b)=>b.data.localeCompare(a.data));
+  body=`<ul class="hist">${ev.map(h=>`<li><b>${fd(h.data)}</b> · ${esc(h.txt)}${h.quem?` <span class="muted">· ${esc(h.quem)}</span>`:""}</li>`).join("")}</ul>`}
+ if(TAB==="vender")body=`<form class="form" id="f-venda"><label class="field">Valor da venda (R$)<input id="v-val" type="number" value="${c.preco}" required></label><label class="field">Data<input id="v-dt" type="date" value="${HOJE}" required></label><label class="field full">Cliente<input id="v-cli" required placeholder="Nome do comprador"></label><label class="field">Vendedor<select id="v-vend">${S.equipe.map(p=>`<option value="${p.id}" ${p.nome===USER.nome?"selected":""}>${esc(p.nome)}</option>`).join("")}</select></label><label class="field">Pagamento<select id="v-pag"><option>À vista</option><option>Financiado</option><option>À vista + troca</option><option>Financiado + troca</option></select></label>${dono?`<div class="full lines num"><div><span>Custo do carro</span><span>${R(custo(c))}</span></div><div class="tot"><span>Lucro com esse valor</span><span id="v-luc"></span></div></div>`:""}<p class="muted full" id="v-aviso" style="font-size:12.5px"></p><button class="btn full" type="submit" style="justify-content:center">Confirmar venda</button></form>`;
+ $("#sheet").innerHTML=`<div class="sheet-head"><div><span class="lbl">${esc(c.marca)} · ${plate(c.placa)}</span><h2 style="font-size:28px;margin-top:4px">${esc(c.modelo)} ${esc(c.versao)} ${c.ano}</h2><div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap">${stPill(c.status)} ${diasPill(c)} ${origPill(c)}</div></div><button class="x" data-close>Fechar</button></div>
   <div class="tabs" role="tablist">${tabs.map(t=>`<button role="tab" aria-selected="${t[0]===TAB}" data-tab="${t[0]}">${t[1]}</button>`).join("")}</div>${body}`;
  ov.hidden=false;
  $$("[data-tab]").forEach(b=>b.onclick=()=>ficha(id,b.dataset.tab));
- const fp=$("#f-preco");if(fp)fp.onsubmit=e=>{e.preventDefault();c.status=$("#fx-st").value;c.preco=+$("#fx-preco").value||c.preco;salvar();tudo();ficha(id);toast("Alterações salvas. O site já mostra a versão nova.")};
- const fg=$("#f-gasto");if(fg)fg.onsubmit=e=>{e.preventDefault();c.gastos.push([$("#g-d").value.trim(),+$("#g-v").value]);salvar();tudo();ficha(id);toast("Gasto adicionado ao custo do carro.")};
+ const fp=$("#f-preco");if(fp)fp.onsubmit=e=>{e.preventDefault();const st=$("#fx-st").value,pr=+$("#fx-preco").value||c.preco;if(st!==c.status)hist(c,"Situação: "+c.status+" → "+st);if(pr!==c.preco)hist(c,"Preço: "+R(c.preco)+" → "+R(pr));c.status=st;c.preco=pr;if($("#fx-min")){const mn=+$("#fx-min").value||c.minimo;if(mn!==c.minimo)hist(c,"Preço mínimo ajustado para "+R(mn));c.minimo=mn}c.km=+$("#fx-km").value||c.km;c.obs=$("#fx-obs").value.trim();salvar();tudo();ficha(id);toast("Alterações salvas. O site já mostra a versão nova.")};
+ const fd2=$("#f-doc");if(fd2)fd2.onsubmit=e=>{e.preventDefault();c.placa=$("#d-placa").value.toUpperCase().trim()||c.placa;c.renavam=$("#d-ren").value.trim();c.chassi=$("#d-cha").value.toUpperCase().trim();hist(c,"Dados do documento atualizados");salvar();tudo();ficha(id,"docs");toast("Documento salvo.")};
+ const fg=$("#f-gasto");if(fg)fg.onsubmit=e=>{e.preventDefault();const d=$("#g-d").value.trim(),v=+$("#g-v").value;c.gastos.push([d,v]);hist(c,"Gasto lançado: "+d+" ("+R(v)+")");salvar();tudo();ficha(id,"fin");toast("Gasto adicionado ao custo do carro.")};
  $$("[data-doc]").forEach(x=>x.onchange=()=>{c.docs[x.dataset.doc]=x.checked;salvar();tudo()});
  const up=$("#up-fotos");if(up)up.onchange=async()=>{const n=await lerFotos(up.files);if(!n.length){toast("Não consegui ler essas imagens. Tente fotos JPG ou PNG.");return}c.fotos=[...(c.fotos||[]),...n].slice(0,12);if(salvar())toast(n.length+(n.length===1?" foto adicionada.":" fotos adicionadas."));tudo();ficha(id,"fotos")};
  $$("[data-capa]").forEach(b=>b.onclick=()=>{const i=+b.dataset.capa;c.fotos.unshift(c.fotos.splice(i,1)[0]);salvar();tudo();ficha(id,"fotos");toast("Capa atualizada.")});
  $$("[data-rmf]").forEach(b=>b.onclick=()=>{c.fotos.splice(+b.dataset.rmf,1);salvar();tudo();ficha(id,"fotos");toast("Foto removida.")});
- const fv=$("#f-venda");if(fv){const up=()=>{const e=$("#v-luc");if(e){const l=(+$("#v-val").value||0)-custo(c);e.textContent=R(l);e.className=l>=0?"pos":"neg"}};$("#v-val").oninput=up;up();
+ const fv=$("#f-venda");if(fv){const up=()=>{const v=+$("#v-val").value||0,e=$("#v-luc");if(e){const l=v-custo(c);e.textContent=R(l);e.className=l>=0?"pos":"neg"}$("#v-aviso").textContent=v&&v<(c.minimo||0)?"Atenção: valor abaixo do preço mínimo combinado ("+R(c.minimo)+").":"";$("#v-aviso").style.color=v<(c.minimo||0)?"var(--crit)":""};$("#v-val").oninput=up;up();
   fv.onsubmit=e=>{e.preventDefault();c.venda={data:$("#v-dt").value,valor:+$("#v-val").value,vend:+$("#v-vend").value,pag:$("#v-pag").value,cli:$("#v-cli").value.trim()};c.status="Vendido";
-   const ld=S.leads.find(l=>l.carro===c.id&&l.etapa!=="Perdido");if(ld)ld.etapa="Vendido";salvar();tudo();ficha(id,"resumo");toast("Venda registrada. Saiu do site e entrou no financeiro.")}}
+   const ld=S.leads.find(l=>l.carro===c.id&&l.etapa!=="Perdido");if(ld){(ld.hist=ld.hist||[]).push({data:HOJE,txt:ld.etapa+" → Vendido"});ld.etapa="Vendido"}
+   const fin=/Financiado/.test(c.venda.pag),nid=Date.now(),vp=pessoa(c.venda.vend)||{com:0,nome:""};
+   S.contas.push(fin?{id:nid,tipo:"receber",desc:"Venda "+nomeCarro(c)+" · "+c.venda.cli+" (banco paga)",cat:"Venda de veículo",valor:c.venda.valor,venc:addD(c.venda.data,7),comp:c.venda.data,status:"Pendente",conta:"Banco",carro:c.id}:{id:nid,tipo:"receber",desc:"Venda "+nomeCarro(c)+" · "+c.venda.cli,cat:"Venda de veículo",valor:c.venda.valor,venc:c.venda.data,comp:c.venda.data,status:"Pago",pago:c.venda.data,conta:"Banco",carro:c.id});
+   if(c.origem&&c.origem!=="Próprio")S.contas.push({id:nid+1,tipo:"pagar",desc:"Repasse "+c.modelo+" · "+((parc(c.parc)||{nome:"dono"}).nome),cat:"Repasse a parceiro",valor:c.compra,venc:addD(c.venda.data,5),comp:c.venda.data,status:"Pendente",conta:"Banco",carro:c.id});
+   if(vp.com)S.contas.push({id:nid+2,tipo:"pagar",desc:"Comissão "+vp.nome.split(" ")[0]+" · "+c.modelo,cat:"Comissão",valor:Math.round(c.venda.valor*vp.com/100),venc:addD(c.venda.data,5),comp:c.venda.data,status:"Pendente",conta:"Banco"});
+   salvar();tudo();ficha(id,"resumo");toast("Venda registrada. "+(fin?"O valor do banco ficou em contas a receber.":"O valor entrou no caixa.")+(c.origem&&c.origem!=="Próprio"?" O repasse ficou em contas a pagar.":""))}}
 }
 function formNovo(tipo){
  const ov=$("#ov");ov.classList.remove("center");let h="",t="";
- if(tipo==="novo-carro"){t="Cadastrar veículo";h=`<form class="form" id="fn"><label class="field">Marca<input id="n-marca" required value="Nissan"></label><label class="field">Modelo<input id="n-modelo" required value="Kicks"></label><label class="field full">Versão<input id="n-versao" value="SV 1.6 CVT"></label><label class="field">Ano<input id="n-ano" type="number" required value="2021"></label><label class="field">Km<input id="n-km" type="number" required value="48000"></label><label class="field">Placa<input id="n-placa" required value="IXP2D45" maxlength="7"></label><label class="field">Cor<select id="n-cor">${Object.keys(PINTURA).map(p=>`<option>${p}</option>`).join("")}</select></label><label class="field">Câmbio<select id="n-cambio"><option>Automático</option><option>Manual</option></select></label><label class="field">Tabela FIPE (R$)<input id="n-fipe" type="number" required value="96500"></label><label class="field">Valor de compra (R$)<input id="n-compra" type="number" required value="80000"></label><label class="field">Gasto de preparação (R$)<input id="n-prep" type="number" value="1200"></label><label class="field full">Preço de venda (R$)<input id="n-preco" type="number" required value="93900"></label><label class="field full">Situação<select id="n-st"><option>Disponível</option><option>Preparação</option></select></label><label class="field full">Fotos (a primeira vira a capa)<input id="n-fotos" type="file" accept="image/*" multiple></label><button class="btn full" type="submit" style="justify-content:center">Salvar veículo</button></form>`}
+ if(tipo==="novo-carro"){t="Cadastrar veículo";h=`<form class="form" id="fn"><label class="field">Origem<select id="n-org"><option>Próprio</option><option>Parceiro</option><option>Consignado</option></select></label><label class="field" id="n-parc-w" hidden>Parceiro<select id="n-parc">${S.parceiros.map(p=>`<option value="${p.id}">${esc(p.nome)}</option>`).join("")}</select></label><label class="field">Marca<input id="n-marca" required value="Nissan"></label><label class="field">Modelo<input id="n-modelo" required value="Kicks"></label><label class="field full">Versão<input id="n-versao" value="SV 1.6 CVT"></label><label class="field">Ano<input id="n-ano" type="number" required value="2021"></label><label class="field">Km<input id="n-km" type="number" required value="48000"></label><label class="field">Placa<input id="n-placa" required value="IXP2D45" maxlength="7"></label><label class="field">Cor<select id="n-cor">${Object.keys(PINTURA).map(p=>`<option>${p}</option>`).join("")}</select></label><label class="field">Câmbio<select id="n-cambio"><option>Automático</option><option>Manual</option></select></label><label class="field">Combustível<select id="n-comb"><option>Flex</option><option>Gasolina</option><option>Diesel</option><option>Elétrico</option><option>Híbrido</option></select></label><label class="field">Tabela FIPE (R$)<input id="n-fipe" type="number" required value="96500"></label><label class="field"><span id="n-compra-l">Valor de compra (R$)</span><input id="n-compra" type="number" required value="80000"></label><label class="field">Gasto de preparação (R$)<input id="n-prep" type="number" value="1200"></label><label class="field">Preço anunciado (R$)<input id="n-preco" type="number" required value="93900"></label><label class="field">Preço mínimo (R$)<input id="n-min" type="number" value="90000"></label><label class="field full">Observações<input id="n-obs" placeholder="Ex.: único dono, aceita troca"></label><label class="field full">Situação<select id="n-st"><option>Disponível</option><option>Preparação</option></select></label><label class="field full">Fotos (a primeira vira a capa)<input id="n-fotos" type="file" accept="image/*" multiple></label><button class="btn full" type="submit" style="justify-content:center">Salvar veículo</button></form>`}
  if(tipo==="novo-lead"){t="Novo contato";h=`<form class="form" id="fn"><label class="field full">Nome<input id="n-nome" required></label><label class="field">WhatsApp<input id="n-tel" required></label><label class="field">Origem<select id="n-or"><option>WhatsApp</option><option>Instagram</option><option>Site</option><option>Loja</option></select></label><label class="field full">Interesse<select id="n-car">${S.carros.filter(c=>!c.venda).map(c=>`<option value="${c.id}">${esc(nomeCarro(c))}</option>`).join("")}</select></label><label class="field full">Observação<textarea id="n-nota" rows="2"></textarea></label><button class="btn full" type="submit" style="justify-content:center">Salvar contato</button></form>`}
  if(tipo==="nova-visita"){t="Agendar visita ou test drive";h=`<form class="form" id="fn"><label class="field full">Cliente<input id="n-cli" required></label><label class="field">Dia<input id="n-dia" type="date" required value="${addD(HOJE,1)}"></label><label class="field">Horário<input id="n-hora" type="time" required value="14:00"></label><label class="field">Tipo<select id="n-tp"><option>Test drive</option><option>Visita</option></select></label><label class="field">Vendedor<select id="n-vd">${S.equipe.map(p=>`<option value="${p.id}">${esc(p.nome)}</option>`).join("")}</select></label><label class="field full">Veículo<select id="n-car">${S.carros.filter(c=>!c.venda).map(c=>`<option value="${c.id}">${esc(nomeCarro(c))}</option>`).join("")}</select></label><button class="btn full" type="submit" style="justify-content:center">Agendar</button></form>`}
+ if(tipo==="nova-conta"){t="Novo lançamento";h=`<form class="form" id="fn"><label class="field">Tipo<select id="c-tp"><option value="pagar">Conta a pagar</option><option value="receber">Conta a receber</option></select></label><label class="field">Categoria<select id="c-cat">${["Estrutura","Pessoal","Marketing","Administrativo","Documentação","Preparação","Comissão","Outros"].map(x=>`<option>${x}</option>`).join("")}</select></label><label class="field full">Descrição<input id="c-desc" required placeholder="Ex.: aluguel do pátio"></label><label class="field">Valor (R$)<input id="c-val" type="number" min="1" required></label><label class="field">Vencimento<input id="c-venc" type="date" required value="${HOJE}"></label><label class="field">Situação<select id="c-st"><option>Pendente</option><option value="Pago">Já pago ou recebido</option></select></label><label class="field">Conta<select id="c-ct"><option>Banco</option><option>Caixa</option></select></label><button class="btn full" type="submit" style="justify-content:center">Lançar</button></form>`}
+ if(tipo==="novo-parceiro"){t="Novo parceiro";h=`<form class="form" id="fn"><label class="field full">Nome<input id="p-nome" required></label><label class="field">Tipo<select id="p-tp"><option>Lojista</option><option>Dono do carro (consignado)</option></select></label><label class="field">WhatsApp<input id="p-tel"></label><label class="field">Cidade<input id="p-cid" value="Pelotas"></label><label class="field full">Combinado<textarea id="p-obs" rows="2" placeholder="Ex.: repasse do valor de custo + 50% do lucro"></textarea></label><button class="btn full" type="submit" style="justify-content:center">Salvar parceiro</button></form>`}
  if(tipo==="nova-despesa"){t="Lançar despesa";h=`<form class="form" id="fn"><label class="field full">Descrição<input id="n-desc" required placeholder="Ex.: lavagem dos carros"></label><label class="field">Categoria<select id="n-cat"><option>Estrutura</option><option>Pessoal</option><option>Marketing</option><option>Administrativo</option><option>Outros</option></select></label><label class="field">Valor (R$)<input id="n-val" type="number" required min="1"></label><label class="field full">Data<input id="n-dt" type="date" required value="${HOJE}"></label><button class="btn full" type="submit" style="justify-content:center">Lançar</button></form>`}
- if(tipo==="convidar"){t="Convidar pessoa";h=`<form class="form" id="fn"><label class="field full">Nome<input id="n-nome" required></label><label class="field full">E-mail<input id="n-email" type="email" required></label><label class="field">Papel<select id="n-papel"><option>Vendedor</option><option>Dono</option></select></label><label class="field">Comissão (%)<input id="n-com" type="number" step="0.5" value="1.5"></label><button class="btn full" type="submit" style="justify-content:center">Adicionar à equipe</button><p class="muted full" style="font-size:12.5px">No sistema real, a pessoa recebe um e-mail para criar a própria senha.</p></form>`}
+ if(tipo==="convidar"){t="Convidar pessoa";h=`<form class="form" id="fn"><label class="field full">Nome<input id="n-nome" required></label><label class="field full">E-mail<input id="n-email" type="email" required></label><label class="field">Papel<select id="n-papel"><option>Vendedor</option><option>Gerente</option><option>Financeiro</option><option>Dono</option></select></label><label class="field">Comissão (%)<input id="n-com" type="number" step="0.5" value="1.5"></label><button class="btn full" type="submit" style="justify-content:center">Adicionar à equipe</button><p class="muted full" style="font-size:12.5px">No sistema real, a pessoa recebe um e-mail para criar a própria senha.</p></form>`}
  $("#sheet").innerHTML=`<div class="sheet-head"><h2 style="font-size:28px">${t}</h2><button class="x" data-close>Fechar</button></div>${h}`;ov.hidden=false;
  const v=id=>$("#"+id).value;
+ if(tipo==="novo-carro")$("#n-org").onchange=()=>{const o=v("n-org");$("#n-parc-w").hidden=o==="Próprio";$("#n-compra-l").textContent=o==="Próprio"?"Valor de compra (R$)":"Repasse na venda (R$)"};
+ if(tipo==="nova-conta")$("#c-tp").onchange=()=>{$("#c-cat").innerHTML=(v("c-tp")==="pagar"?["Estrutura","Pessoal","Marketing","Administrativo","Documentação","Preparação","Comissão","Outros"]:["Venda de veículo","Sinal de reserva","Serviços","Outros"]).map(x=>`<option>${x}</option>`).join("")};
  $("#fn").onsubmit=async e=>{e.preventDefault();const id=Date.now();let msg="";const fotosN=$("#n-fotos")?await lerFotos($("#n-fotos").files):[];
-  if(tipo==="novo-carro"){S.carros.push({id,marca:v("n-marca"),modelo:v("n-modelo"),versao:v("n-versao"),ano:+v("n-ano"),km:+v("n-km"),placa:v("n-placa").toUpperCase(),pintura:v("n-cor"),comb:"Flex",cambio:v("n-cambio"),compra:+v("n-compra"),gastos:[["Preparação",+v("n-prep")||0]],preco:+v("n-preco"),fipe:+v("n-fipe"),entrada:HOJE,status:v("n-st"),docs:{laudo:false,manual:true,chave:true,ipva:true},visitas:0,fotos:fotosN});msg=v("n-st")==="Disponível"?"Veículo salvo e publicado no site.":"Veículo salvo. Fica fora do site até ficar disponível."}
+  if(tipo==="novo-carro"){const org=v("n-org");S.carros.push({id,origem:org,parc:org==="Próprio"?0:+v("n-parc"),minimo:+v("n-min")||+v("n-preco"),renavam:"",chassi:"",obs:v("n-obs"),marca:v("n-marca"),modelo:v("n-modelo"),versao:v("n-versao"),ano:+v("n-ano"),km:+v("n-km"),placa:v("n-placa").toUpperCase(),pintura:v("n-cor"),comb:v("n-comb"),cambio:v("n-cambio"),compra:+v("n-compra"),gastos:[["Preparação",+v("n-prep")||0]],preco:+v("n-preco"),fipe:+v("n-fipe"),entrada:HOJE,status:v("n-st"),docs:{laudo:false,manual:true,chave:true,ipva:true},visitas:0,fotos:fotosN});msg=v("n-st")==="Disponível"?"Veículo salvo e publicado no site.":"Veículo salvo. Fica fora do site até ficar disponível."}
   if(tipo==="novo-lead"){S.leads.push({id,nome:v("n-nome"),tel:v("n-tel"),carro:+v("n-car"),origem:v("n-or"),etapa:"Novo",data:HOJE,nota:v("n-nota")});msg="Contato salvo em Novo."}
   if(tipo==="nova-visita"){S.visitas.push({id,data:v("n-dia"),hora:v("n-hora"),cli:v("n-cli"),carro:+v("n-car"),tipo:v("n-tp"),vend:+v("n-vd")});msg="Agendado."}
+  if(tipo==="novo-carro"&&v("n-org")==="Próprio")S.contas.push({id:id+1,tipo:"pagar",desc:"Compra "+v("n-marca")+" "+v("n-modelo"),cat:"Compra de veículo",valor:+v("n-compra"),venc:HOJE,comp:HOJE,status:"Pendente",conta:"Banco",carro:id});
+  if(tipo==="nova-conta"){const pg=v("c-st")==="Pago";S.contas.push({id,tipo:v("c-tp"),desc:v("c-desc"),cat:v("c-cat"),valor:+v("c-val"),venc:v("c-venc"),comp:v("c-venc"),status:pg?"Pago":"Pendente",pago:pg?HOJE:undefined,conta:v("c-ct")});msg="Lançamento salvo."}
+  if(tipo==="novo-parceiro"){S.parceiros.push({id,nome:v("p-nome"),tipo:v("p-tp"),tel:v("p-tel"),cid:v("p-cid"),obs:v("p-obs")});msg="Parceiro cadastrado."}
   if(tipo==="nova-despesa"){S.despesas.push({id,data:v("n-dt"),desc:v("n-desc"),cat:v("n-cat"),valor:+v("n-val")});msg="Despesa lançada."}
   if(tipo==="convidar"){S.equipe.push({id,nome:v("n-nome"),email:v("n-email"),papel:v("n-papel"),com:+v("n-com")||0});msg="Pessoa adicionada à equipe."}
   salvar();tudo();fechar();toast(msg)};
@@ -851,7 +980,11 @@ document.addEventListener("click",e=>{
  const ac=t.closest("[data-act]");if(ac){formNovo(ac.dataset.act);return}
  const ed=t.closest("[data-ed]");if(ed){editarLead(ed.dataset.ed);return}
  const mv=t.closest("[data-mv]");if(mv){const l=S.leads.find(x=>x.id==mv.dataset.mv),i=ETAPAS.indexOf(l.etapa)+ +mv.dataset.d;const nv=ETAPAS[Math.max(0,Math.min(ETAPAS.length-1,i))];if(nv!==l.etapa){(l.hist=l.hist||[]).push({data:HOJE,txt:l.etapa+" → "+nv});l.etapa=nv}salvar();tudo();toast(l.nome+" → "+l.etapa);return}
- const ld=t.closest("[data-lead]");if(ld&&!t.closest(".sheet")){editarLead(ld.dataset.lead);return}
+ const ld=t.closest("[data-lead]");if(ld&&(!t.closest(".sheet")||ld.classList.contains("item"))){editarLead(ld.dataset.lead);return}
+ const bx=t.closest("[data-baixa]");if(bx){const x=S.contas.find(y=>y.id==bx.dataset.baixa);x.status="Pago";x.pago=HOJE;salvar();tudo();toast((x.tipo==="receber"?"Recebimento":"Pagamento")+" registrado: "+R(x.valor)+" ("+x.conta.toLowerCase()+").");return}
+ const es=t.closest("[data-estorno]");if(es){const x=S.contas.find(y=>y.id==es.dataset.estorno);x.status="Pendente";delete x.pago;salvar();tudo();toast("Baixa desfeita. A conta voltou para pendente.");return}
+ const ft=t.closest("[data-ft]");if(ft){FT=ft.dataset.ft;renderFin();return}
+ const sm=t.closest("#seg-mov button");if(sm){MOVF=sm.dataset.v;$$("#seg-mov button").forEach(b=>b.setAttribute("aria-pressed",b===sm));renderMov();return}
  const od=t.closest("[data-ord]");if(od){EST.ord===od.dataset.ord?EST.dir*=-1:(EST={...EST,ord:od.dataset.ord,dir:-1});renderEstoque();return}
  const sg=t.closest("#seg-st button");if(sg){EST.st=sg.dataset.v;$$("#seg-st button").forEach(b=>b.setAttribute("aria-pressed",b===sg));renderEstoque();return}
  const sw=t.closest("[data-cor]");if(sw){$("#lj-cor").value=sw.dataset.cor;$$("#sw button").forEach(b=>b.setAttribute("aria-pressed",b===sw));prevLoja();return}
@@ -859,7 +992,7 @@ document.addEventListener("click",e=>{
 document.addEventListener("keydown",e=>{if(e.key==="Escape")fechar();const ld=e.target.closest&&e.target.closest("[data-lead]");if(ld&&e.target===ld&&(e.key==="Enter"||e.key===" ")){e.preventDefault();editarLead(ld.dataset.lead)}});
 $$(".nav[data-sec]").forEach(b=>b.addEventListener("click",()=>secao(b.dataset.sec)));
 ["s-q","s-marca","s-preco","s-cambio","s-ord"].forEach(id=>$("#"+id).addEventListener(id==="s-q"?"input":"change",renderVitrine));
-$("#e-q").addEventListener("input",renderEstoque);
+$("#e-q").addEventListener("input",renderEstoque);$("#e-or").addEventListener("change",renderEstoque);
 $("#l-voltar").onclick=()=>{renderVitrine();tela("vitrine")};
 $("#menu-btn").onclick=()=>menu(!$("#side").classList.contains("open"));$("#scrim").onclick=()=>menu(false);
 $("#back-painel").onclick=()=>{tela("painel");renderPainel()};
