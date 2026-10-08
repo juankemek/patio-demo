@@ -278,7 +278,7 @@ h2{font-family:var(--f-display);font-weight:700;text-transform:uppercase;font-si
 .v-search{border-radius:12px;text-align:left;position:relative;z-index:1;max-width:980px;margin-inline:auto}
 .v-main{padding-block:32px 40px}
 @media (max-width:900px){.v-hero .in{padding-block:30px 0}.v-stats{gap:18px 28px}.v-search{margin-top:20px}}
-@media (max-width:520px){.v-search{grid-template-columns:1fr 1fr;padding:10px;gap:8px}.v-search input{grid-column:1/-1}.v-search select{font-size:14px;padding:8px}.v-hero p{display:none}.v-hero h1{font-size:28px}.v-hero .in{padding-top:22px}.v-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;font-size:12px;line-height:1.3;margin-top:12px}.v-stats b{font-size:17px}.v-top .in{gap:10px}.v-top nav{margin-left:0;width:100%}.v-top nav a{flex:1;text-align:center}}
+@media (max-width:520px){.v-search{grid-template-columns:1fr 1fr;padding:10px;gap:8px}.v-search input{grid-column:1/-1}.v-search select{font-size:14px;padding:8px}.v-hero p{display:none}.v-hero h1{font-size:28px}.v-hero .in{padding-top:22px}.v-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;font-size:12px;line-height:1.3;margin-top:12px}.v-stats b{font-size:17px}.v-top .in{gap:10px}.v-top .in{flex-wrap:nowrap}.v-top nav{margin-left:auto;flex:none}.v-name{min-width:0}.v-name>span{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}}
 .cards{gap:20px}
 .card{border-radius:12px;transition:transform .3s ease-out,box-shadow .3s ease-out}
 .card:hover{transform:translateY(-4px);box-shadow:0 22px 40px -24px rgba(15,23,42,.45)}
@@ -351,6 +351,7 @@ h2{font-family:var(--f-display);font-weight:700;text-transform:uppercase;font-si
   <header class="v-top"><div class="in">
     <div class="v-logo" id="v-logo">AS</div>
     <div class="v-name"><span id="v-nome">Auto Sul Veículos</span><small id="v-cid">Pelotas/RS</small></div>
+    <nav><a id="v-contato" href="#sobre-v" target="_blank" rel="noopener"><svg class="i" style="width:16px;height:16px;vertical-align:-3px;margin-right:6px"><use href="#i-chat"/></svg>Contato</a></nav>
     
   </div></header>
   <div class="v-hero"><div class="in">
@@ -615,7 +616,7 @@ function hbars(el,rows,fmt){const max=Math.max(1,...rows.map(r=>r[1]));$(el).inn
 function renderVitrine(){
  const L=S.loja;aplicaMarca();
  $("#v-logo").textContent=ini(L.nome);$("#v-nome").textContent=L.nome;$("#v-nome2").textContent=L.nome;$("#v-nome3").textContent=L.nome;
- $("#v-cid").textContent=L.cid;$("#v-eyebrow").textContent="Seminovos em "+L.cid;$("#v-slogan").textContent=L.slogan;$("#v-sobre").textContent=L.sobre;$("#v-end").textContent=L.end;$("#v-hor").textContent=L.hor;$("#v-wpp").textContent=L.wpp;$("#creditos").innerHTML=Object.entries(FOTOS).map(([m,f])=>`<li><a href="https://commons.wikimedia.org/wiki/File:${encodeURIComponent(f.replace(/ /g,"_"))}" target="_blank" rel="noopener">${esc(m)}: ${esc(f)}</a></li>`).join("");$("#l-loja").textContent=L.nome;
+ $("#v-cid").textContent=L.cid;$("#v-eyebrow").textContent="Seminovos em "+L.cid;$("#v-slogan").textContent=L.slogan;$("#v-sobre").textContent=L.sobre;$("#v-end").textContent=L.end;$("#v-hor").textContent=L.hor;$("#v-wpp").textContent=L.wpp;$("#v-contato").href="https://wa.me/55"+L.wpp.replace(/\D/g,"")+"?text="+encodeURIComponent("Olá! Vim pelo site da "+L.nome+".");$("#creditos").innerHTML=Object.entries(FOTOS).map(([m,f])=>`<li><a href="https://commons.wikimedia.org/wiki/File:${encodeURIComponent(f.replace(/ /g,"_"))}" target="_blank" rel="noopener">${esc(m)}: ${esc(f)}</a></li>`).join("");$("#l-loja").textContent=L.nome;
  const pub=S.carros.filter(c=>c.status==="Disponível"||c.status==="Reservado");
  $("#v-qtd").textContent=pub.length;
  const sel=$("#s-marca"),cur=sel.value;sel.innerHTML='<option value="">Marca</option>'+[...new Set(pub.map(c=>c.marca))].sort().map(m=>`<option ${m===cur?"selected":""}>${esc(m)}</option>`).join("");
