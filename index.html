@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="Site e painel para lojas de veículos: estoque, contatos, agenda, vendas e financeiro.">
-<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}body{margin:0}img{max-width:100%}</style>
+<style>:root{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}body{margin:0}img{max-width:100%}</style>
 <title>Painel Pátio</title>
-<meta name="color-scheme" content="light">
-<script>document.documentElement.setAttribute("data-theme","light")</script>
+<meta name="color-scheme" content="light dark">
+<script>(function(){var t="";try{t=localStorage.getItem("tema")||""}catch(e){}document.documentElement.setAttribute("data-theme",t==="escuro"?"dark":"light")})()</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Space+Mono:wght@400;700&family=Inter+Tight:wght@400;500;600;700&display=swap">
@@ -368,24 +368,29 @@ h2{font-family:var(--f-display);font-weight:700;text-transform:uppercase;font-si
 @media (max-width:900px){.dgrid{grid-template-columns:repeat(2,minmax(0,1fr))}#lanc td,#tab-vres td{white-space:normal}#lanc td.r,#tab-vres td.r{white-space:nowrap}}
 @media (max-width:1100px){.kpis.k5{grid-template-columns:repeat(3,minmax(0,1fr))}}
 
-/* ---------- tema claro neutro (sempre claro, tons de branco e cinza) ---------- */
-:root,:root[data-theme]{color-scheme:light;--primary:#f1f5f9;--primary-2:#e2e8f0;--on-primary:#0f172a;--on-primary-mut:#475569}
-.v-top{background:#ffffff;color:var(--ink);border-bottom:1px solid var(--line)}
+/* ---------- temas: claro (padrão) e escuro em cinza ---------- */
+:root{--hero:#f1f5f9;--pic-a:#f8fafc;--pic-b:#e2e8f0;--pic-t:rgba(15,23,42,.10);--pic-s:rgba(15,23,42,.42);--bar:#64748b}
+:root,:root[data-theme="light"]{color-scheme:light;--primary:#f1f5f9;--primary-2:#e2e8f0;--on-primary:#0f172a;--on-primary-mut:#475569}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#18181b;--surface:#232327;--sunk:#2e2e33;--ink:#f4f4f5;--muted:#a1a1aa;--line:#3a3a41;--primary:#232327;--primary-2:#3a3a41;--on-primary:#f4f4f5;--on-primary-mut:#a1a1aa;--accent-soft:#3b1d1d;--ok:#4ade80;--ok-soft:#183024;--warn:#fbbf24;--warn-soft:#382d14;--crit:#f87171;--crit-soft:#3b1d1d;--info:#93b4ff;--info-soft:#1f2940;--hero:#1f1f23;--pic-a:#2e2e33;--pic-b:#1f1f23;--pic-t:rgba(255,255,255,.07);--pic-s:rgba(255,255,255,.5);--bar:#a1a1aa;--shadow:0 1px 2px rgba(0,0,0,.35),0 10px 24px -12px rgba(0,0,0,.55)}
+.v-top{background:var(--surface);color:var(--ink);border-bottom:1px solid var(--line)}
 .v-top nav a,.v-top nav button{color:var(--ink);border-color:var(--line)}
-.v-hero{background:#f1f5f9;border-bottom:1px solid var(--line)}
+.v-hero{background:var(--hero);border-bottom:1px solid var(--line)}
 .v-hero::before{background:radial-gradient(ellipse 60% 70% at 80% 90%,color-mix(in srgb,var(--brand) 10%,transparent),transparent 62%)}
-#login{background:#f1f5f9;background-image:none}
-.side{background:#ffffff;border-right:1px solid var(--line)}
-.nav:hover{background:#f1f5f9}
-.nav[aria-current="true"]{background:#eef2f6;color:var(--ink)}
-.side .av{background:#eef2f6;color:var(--ink)}
-.mtop{background:#ffffff;border-bottom:1px solid var(--line)}
-.mtop .btn.soft{background:#eef2f6;color:var(--ink)}
-.hbar .trk i,:root[data-theme] .hbar .trk i{background:#64748b}
+#login{background:var(--hero);background-image:none}
+.side{background:var(--surface);border-right:1px solid var(--line)}
+.nav:hover{background:var(--sunk)}
+.nav[aria-current="true"]{background:var(--sunk);color:var(--ink)}
+.side .av{background:var(--sunk);color:var(--ink)}
+.mtop{background:var(--surface);border-bottom:1px solid var(--line)}
+.mtop .btn.soft{background:var(--sunk);color:var(--ink)}
+.hbar .trk i,:root[data-theme] .hbar .trk i{background:var(--bar)}
 .side .me{border-top-color:var(--line)}
-.pic{background:radial-gradient(120% 90% at 85% 110%,color-mix(in srgb,var(--paint) 28%,transparent),transparent 60%),linear-gradient(135deg,#f8fafc,#e2e8f0)}
-.pic span{color:rgba(15,23,42,.10)}
-.pic .art{stroke:rgba(15,23,42,.42)}
+.pic{background:radial-gradient(120% 90% at 85% 110%,color-mix(in srgb,var(--paint) 28%,transparent),transparent 60%),linear-gradient(135deg,var(--pic-a),var(--pic-b))}
+.pic span{color:var(--pic-t)}
+.pic .art{stroke:var(--pic-s)}
+.tema-btn{display:inline-flex;align-items:center;gap:6px}
+.tema-btn svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+input,select,textarea{color-scheme:inherit}
 @media (max-width:520px){.kpi .v{font-size:20px!important;white-space:normal!important;overflow:visible!important;text-overflow:clip!important}}
 
 </style>
@@ -405,6 +410,8 @@ h2{font-family:var(--f-display);font-weight:700;text-transform:uppercase;font-si
  <symbol id="i-out" viewBox="0 0 24 24"><path d="M15 4h4a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1h-4M10 16l-4-4 4-4M6 12h10"/></symbol>
  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
  <symbol id="i-swap" viewBox="0 0 24 24"><path d="M7 4L3 8l4 4M3 8h14M17 20l4-4-4-4M21 16H7"/></symbol>
+ <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5z"/></symbol>
+ <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 20l1.3-3.9A8 8 0 1 1 8 19.2z"/></symbol>
  <symbol id="i-gauge" viewBox="0 0 24 24"><path d="M5.6 18.4A9 9 0 1 1 18.4 18.4"/><path d="M12 13.5l4-4.5"/><circle cx="12" cy="13.5" r="1.4"/></symbol>
@@ -417,7 +424,7 @@ h2{font-family:var(--f-display);font-weight:700;text-transform:uppercase;font-si
   <header class="v-top"><div class="in">
     <div class="v-logo" id="v-logo">AS</div>
     <div class="v-name"><span id="v-nome">Auto Sul Veículos</span><small id="v-cid">Pelotas/RS</small></div>
-    <nav><a id="v-contato" href="#sobre-v" target="_blank" rel="noopener"><svg class="i" style="width:16px;height:16px;vertical-align:-3px;margin-right:6px"><use href="#i-chat"/></svg>Contato</a></nav>
+    <nav><button type="button" class="tema-btn" data-tema aria-label="Alternar modo escuro"><svg><use href="#i-moon"/></svg><span class="tema-txt">Escuro</span></button><a id="v-contato" href="#sobre-v" target="_blank" rel="noopener"><svg class="i" style="width:16px;height:16px;vertical-align:-3px;margin-right:6px"><use href="#i-chat"/></svg>Contato</a></nav>
     
   </div></header>
   <div class="v-hero"><div class="in">
@@ -462,6 +469,7 @@ h2{font-family:var(--f-display);font-weight:700;text-transform:uppercase;font-si
         <label><input type="radio" name="papel" value="vendedor"><b>Vendedor</b><small>Estoque, contatos e agenda. Sem valores de custo</small></label>
       </div></div>
     <button class="btn" type="submit" style="justify-content:center">Entrar no painel</button>
+    <button class="btn ghost" type="button" data-tema style="justify-content:center"><svg class="i"><use href="#i-moon"/></svg><span class="tema-txt">Modo escuro</span></button>
     <button class="btn ghost" type="button" id="l-voltar" style="justify-content:center">Ver o site da loja</button>
     <p class="muted" style="font-size:12px">Este endereço é só da equipe da loja e não aparece no site. Demonstração: qualquer senha entra. No sistema real, cada pessoa tem o próprio login e cada loja só vê os próprios dados.</p>
   </form>
@@ -488,6 +496,7 @@ h2{font-family:var(--f-display);font-weight:700;text-transform:uppercase;font-si
     <button class="nav dono" data-sec="loja"><svg class="i"><use href="#i-store"/></svg>Minha loja</button>
     <div class="me">
       <div class="who"><div class="av" id="me-av">MS</div><div><b id="me-nome" style="font-size:14px">Marcos Silva</b><div class="muted" style="font-size:12px" id="me-papel">Dono</div></div></div>
+      <button class="nav" data-tema><svg class="i"><use href="#i-moon"/></svg><span class="tema-txt">Modo escuro</span></button>
       <button class="nav" id="ver-site"><svg class="i"><use href="#i-eye"/></svg>Ver meu site</button>
       <button class="nav" id="sair"><svg class="i"><use href="#i-out"/></svg>Sair</button>
     </div>
@@ -1022,6 +1031,10 @@ $("#ver-site").onclick=$("#ver-site2").onclick=()=>{renderVitrine();tela("vitrin
 ["lj-nome","lj-slug","lj-slogan","lj-cid","lj-cor"].forEach(id=>$("#"+id).addEventListener("input",prevLoja));
 $("#f-loja").onsubmit=e=>{e.preventDefault();["nome","slug","slogan","cid","wpp","end","hor","sobre"].forEach(k=>S.loja[k]=$("#lj-"+k).value.trim()||S.loja[k]);S.loja.slug=S.loja.slug.toLowerCase().replace(/[^a-z0-9-]/g,"");S.loja.cor=$("#lj-cor").value;salvar();tudo();toast("Loja atualizada. O site já está com os dados novos.")};
 let resetArm=0;$("#reset").onclick=e=>{if(!resetArm){resetArm=1;e.target.textContent="Clique de novo para confirmar";setTimeout(()=>{resetArm=0;e.target.textContent="Restaurar dados de exemplo"},3000);return}S=seed();salvar();resetArm=0;e.target.textContent="Restaurar dados de exemplo";tudo();toast("Dados de exemplo restaurados.")};
+function temaUI(){const d=document.documentElement.getAttribute("data-theme")==="dark";$$("[data-tema]").forEach(b=>{const u=b.querySelector("use");if(u)u.setAttribute("href",d?"#i-sun":"#i-moon");const t=b.querySelector(".tema-txt");if(t)t.textContent=b.classList.contains("tema-btn")?(d?"Claro":"Escuro"):(d?"Modo claro":"Modo escuro");b.setAttribute("aria-label",d?"Mudar para o modo claro":"Mudar para o modo escuro")})}
+function alternaTema(){const d=document.documentElement.getAttribute("data-theme")!=="dark";document.documentElement.setAttribute("data-theme",d?"dark":"light");try{localStorage.setItem("tema",d?"escuro":"claro")}catch(e){}temaUI();if(USER)renderPainel()}
+document.addEventListener("click",e=>{if(e.target.closest("[data-tema]")){alternaTema()}});
+temaUI();
 function rota(){const loj=/\/painel\/?$/.test(location.pathname)||location.hash==="#painel";renderVitrine();
  if(loj){if(USER){tela("painel");renderPainel();secao("geral")}else tela("login")}else tela("vitrine")}
 addEventListener("hashchange",rota);rota();
