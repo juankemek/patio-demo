@@ -193,7 +193,7 @@ tbody tr.click{cursor:pointer}tbody tr.click:hover{background:var(--sunk)}
 .col-h{display:flex;justify-content:space-between;align-items:center;font-weight:700;font-size:13px;padding:2px 4px}
 .lead{background:var(--surface);border:1px solid var(--line);border-radius:11px;padding:10px;display:flex;flex-direction:column;gap:6px}
 .lead b{font-size:14px}.lead small{color:var(--muted);font-size:12.5px}
-.lead .mv{display:flex;gap:6px}
+.lead{cursor:pointer;transition:border-color .15s}.lead:hover,.lead:focus-visible{border-color:var(--ink);outline:none}.lead .mv{display:flex;gap:6px;flex-wrap:wrap}.lead .mv button[data-ed]{flex:0 0 32px;display:grid;place-items:center;padding:4px}.lead .mv{flex-wrap:nowrap}.hist{list-style:none;margin:0;padding:0;display:grid;gap:6px;font-size:12.5px;color:var(--muted)}.hist b{color:var(--ink);font-weight:600}.btn-del{background:transparent;color:var(--accent);border:1px solid var(--accent)}.btn-del.sure{background:var(--accent);color:#fff}
 .lead .mv button{flex:1;border:1px solid var(--line);background:var(--bg);border-radius:7px;padding:4px;cursor:pointer;font-size:12px;font-weight:600}
 .days{display:grid;grid-template-columns:repeat(7,minmax(120px,1fr));gap:10px;overflow-x:auto;padding-bottom:6px}
 .day{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px;display:flex;flex-direction:column;gap:8px;min-height:180px}
@@ -354,7 +354,7 @@ h2{font-family:var(--f-display);font-weight:700;text-transform:uppercase;font-si
  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 20l1.3-3.9A8 8 0 1 1 8 19.2z"/></symbol>
  <symbol id="i-gauge" viewBox="0 0 24 24"><path d="M5.6 18.4A9 9 0 1 1 18.4 18.4"/><path d="M12 13.5l4-4.5"/><circle cx="12" cy="13.5" r="1.4"/></symbol>
  <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="6" cy="5" r="1.6"/><circle cx="12" cy="5" r="1.6"/><circle cx="18" cy="5" r="1.6"/><circle cx="6" cy="19" r="1.6"/><circle cx="12" cy="19" r="1.6"/><path d="M6 6.6v10.8M12 6.6v10.8M18 6.6V12H6"/></symbol>
- <symbol id="i-fuel" viewBox="0 0 24 24"><path d="M4 20V5a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v15M3 20h12M4 10h10M14 8l3 2v7a1.5 1.5 0 0 0 3 0V9l-3-3"/></symbol>
+ <symbol id="i-pen" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16v4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M13.5 6.5l4 4" stroke="currentColor" stroke-width="2"/></symbol><symbol id="i-fuel" viewBox="0 0 24 24"><path d="M4 20V5a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v15M3 20h12M4 10h10M14 8l3 2v7a1.5 1.5 0 0 0 3 0V9l-3-3"/></symbol>
 </svg>
 
 <!-- ============ VITRINE ============ -->
@@ -462,7 +462,7 @@ h2{font-family:var(--f-display);font-weight:700;text-transform:uppercase;font-si
     <!-- contatos -->
     <div class="sec" id="sec-contatos" hidden>
       <div class="topbar"><div><span class="lbl">Funil de vendas</span><h1>Contatos</h1></div><div class="acts"><button class="btn" data-act="novo-lead"><svg class="i"><use href="#i-plus"/></svg>Novo contato</button></div></div>
-      <p class="muted" style="margin:-8px 0 14px">Quem chamou no WhatsApp, no Instagram, pelo site ou passou na loja. Mova cada contato de etapa conforme a negociação anda.</p>
+      <p class="muted" style="margin:-8px 0 14px">Quem chamou no WhatsApp, no Instagram, pelo site ou passou na loja. Mova cada contato de etapa conforme a negociação anda. Toque no card para editar dados, etapa ou observação.</p>
       <div class="kanban" id="kanban"></div>
     </div>
     <!-- agenda -->
@@ -716,7 +716,7 @@ function renderEstoque(){
 }
 function renderKanban(){
  $("#kanban").innerHTML=ETAPAS.map((e,i)=>{const ls=S.leads.filter(l=>l.etapa===e).sort((a,b)=>b.data.localeCompare(a.data));
-  return `<div class="col"><div class="col-h"><span>${e}</span><span class="pill p-mut">${ls.length}</span></div>${ls.map(l=>`<div class="lead"><div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start"><b>${esc(l.nome)}</b><span class="pill ${{WhatsApp:"p-ok",Instagram:"p-warn",Site:"p-info",Loja:"p-mut"}[l.origem]||"p-mut"}">${esc(l.origem)}</span></div><small>${esc(nomeCarro(carro(l.carro)))}</small><small class="num">${esc(l.tel)} · ${fd(l.data)}</small>${l.nota?`<small style="color:var(--ink)">${esc(l.nota)}</small>`:""}<div class="mv">${i>0?`<button data-mv="${l.id}" data-d="-1" aria-label="Voltar etapa">← Voltar</button>`:""}${i<ETAPAS.length-1?`<button data-mv="${l.id}" data-d="1" aria-label="Avançar etapa">${ETAPAS[i+1]} →</button>`:""}</div></div>`).join("")}</div>`}).join("");
+  return `<div class="col"><div class="col-h"><span>${e}</span><span class="pill p-mut">${ls.length}</span></div>${ls.map(l=>`<div class="lead" data-lead="${l.id}" tabindex="0" role="button" aria-label="Editar ${esc(l.nome)}"><div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start"><b>${esc(l.nome)}</b><span class="pill ${{WhatsApp:"p-ok",Instagram:"p-warn",Site:"p-info",Loja:"p-mut"}[l.origem]||"p-mut"}">${esc(l.origem)}</span></div><small>${esc(nomeCarro(carro(l.carro)))}</small><small class="num">${esc(l.tel)} · ${fd(l.data)}</small>${l.nota?`<small style="color:var(--ink)">${esc(l.nota)}</small>`:""}<div class="mv"><button data-ed="${l.id}" aria-label="Editar contato" title="Editar"><svg class="i" style="width:14px;height:14px"><use href="#i-pen"/></svg></button>${i>0?`<button data-mv="${l.id}" data-d="-1" aria-label="Voltar etapa">← Voltar</button>`:""}${i<ETAPAS.length-1?`<button data-mv="${l.id}" data-d="1" aria-label="Avançar etapa">${ETAPAS[i+1]} →</button>`:""}</div></div>`).join("")}</div>`}).join("");
 }
 function renderAgenda(){
  const ds=[...Array(7)].map((_,i)=>addD(HOJE,i)),wd=["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"];
@@ -819,6 +819,22 @@ function formNovo(tipo){
   if(tipo==="convidar"){S.equipe.push({id,nome:v("n-nome"),email:v("n-email"),papel:v("n-papel"),com:+v("n-com")||0});msg="Pessoa adicionada à equipe."}
   salvar();tudo();fechar();toast(msg)};
 }
+function editarLead(id){
+ const l=S.leads.find(x=>x.id==id);if(!l)return;const ov=$("#ov");ov.classList.remove("center");
+ const op=(arr,cur)=>arr.map(o=>`<option${o===cur?" selected":""}>${esc(o)}</option>`).join("");
+ const carros=S.carros.map(c=>`<option value="${c.id}"${c.id===l.carro?" selected":""}>${esc(nomeCarro(c))}${c.venda?" (vendido)":""}</option>`).join("");
+ const hist=(l.hist||[]).slice().reverse();
+ $("#sheet").innerHTML=`<div class="sheet-head"><h2 style="font-size:28px">Editar contato</h2><button class="x" data-close>Fechar</button></div>
+ <form class="form" id="fe"><label class="field full">Nome<input id="e-nome" required value="${esc(l.nome)}"></label><label class="field">WhatsApp<input id="e-tel" required value="${esc(l.tel)}"></label><label class="field">Origem<select id="e-or">${op(["WhatsApp","Instagram","Site","Loja"],l.origem)}</select></label><label class="field full">Etapa<select id="e-et">${op(ETAPAS,l.etapa)}</select></label><label class="field full">Interesse<select id="e-car">${carros}</select></label><label class="field full">Observação<textarea id="e-nota" rows="3">${esc(l.nota||"")}</textarea></label><button class="btn full" type="submit" style="justify-content:center">Salvar alterações</button><button class="btn btn-del full" type="button" id="e-del" style="justify-content:center">Excluir contato</button></form>
+ ${hist.length?`<h3 style="font-size:13px;margin:22px 0 8px;text-transform:uppercase;letter-spacing:.06em">Histórico</h3><ul class="hist">${hist.map(h=>`<li><b>${fd(h.data)}</b> · ${esc(h.txt)}</li>`).join("")}</ul>`:""}`;
+ ov.hidden=false;
+ $("#fe").onsubmit=e=>{e.preventDefault();const g=k=>$("#"+k).value.trim(),nova=g("e-et");
+  if(nova!==l.etapa){(l.hist=l.hist||[]).push({data:HOJE,txt:l.etapa+" → "+nova});l.etapa=nova;l.data=HOJE}
+  Object.assign(l,{nome:g("e-nome"),tel:g("e-tel"),origem:g("e-or"),carro:+g("e-car"),nota:g("e-nota")});
+  salvar();tudo();fechar();toast("Contato atualizado: "+l.nome+" em "+l.etapa+".")};
+ const del=$("#e-del");del.onclick=()=>{if(!del.classList.contains("sure")){del.classList.add("sure");del.textContent="Toque de novo para excluir";setTimeout(()=>{if(del.isConnected){del.classList.remove("sure");del.textContent="Excluir contato"}},4000);return}
+  S.leads=S.leads.filter(x=>x!==l);salvar();tudo();fechar();toast("Contato excluído.")};
+}
 function fechar(){$("#ov").hidden=true}
 function tudo(){renderVitrine();if(USER)renderPainel()}
 function tela(t){["vitrine","login","painel"].forEach(x=>$("#"+x).hidden=x!==t);$("#back-painel").hidden=!(t==="vitrine"&&USER);menu(false);scrollTo(0,0)}
@@ -833,12 +849,14 @@ document.addEventListener("click",e=>{
  const cr=t.closest("[data-carro]");if(cr&&!t.closest(".sheet")){TAB="resumo";ficha(cr.dataset.carro);return}
  const go=t.closest("[data-go]");if(go){secao(go.dataset.go);return}
  const ac=t.closest("[data-act]");if(ac){formNovo(ac.dataset.act);return}
- const mv=t.closest("[data-mv]");if(mv){const l=S.leads.find(x=>x.id==mv.dataset.mv),i=ETAPAS.indexOf(l.etapa)+ +mv.dataset.d;l.etapa=ETAPAS[Math.max(0,Math.min(ETAPAS.length-1,i))];salvar();tudo();toast(l.nome+" → "+l.etapa);return}
+ const ed=t.closest("[data-ed]");if(ed){editarLead(ed.dataset.ed);return}
+ const mv=t.closest("[data-mv]");if(mv){const l=S.leads.find(x=>x.id==mv.dataset.mv),i=ETAPAS.indexOf(l.etapa)+ +mv.dataset.d;const nv=ETAPAS[Math.max(0,Math.min(ETAPAS.length-1,i))];if(nv!==l.etapa){(l.hist=l.hist||[]).push({data:HOJE,txt:l.etapa+" → "+nv});l.etapa=nv}salvar();tudo();toast(l.nome+" → "+l.etapa);return}
+ const ld=t.closest("[data-lead]");if(ld&&!t.closest(".sheet")){editarLead(ld.dataset.lead);return}
  const od=t.closest("[data-ord]");if(od){EST.ord===od.dataset.ord?EST.dir*=-1:(EST={...EST,ord:od.dataset.ord,dir:-1});renderEstoque();return}
  const sg=t.closest("#seg-st button");if(sg){EST.st=sg.dataset.v;$$("#seg-st button").forEach(b=>b.setAttribute("aria-pressed",b===sg));renderEstoque();return}
  const sw=t.closest("[data-cor]");if(sw){$("#lj-cor").value=sw.dataset.cor;$$("#sw button").forEach(b=>b.setAttribute("aria-pressed",b===sw));prevLoja();return}
 });
-document.addEventListener("keydown",e=>{if(e.key==="Escape")fechar()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")fechar();const ld=e.target.closest&&e.target.closest("[data-lead]");if(ld&&e.target===ld&&(e.key==="Enter"||e.key===" ")){e.preventDefault();editarLead(ld.dataset.lead)}});
 $$(".nav[data-sec]").forEach(b=>b.addEventListener("click",()=>secao(b.dataset.sec)));
 ["s-q","s-marca","s-preco","s-cambio","s-ord"].forEach(id=>$("#"+id).addEventListener(id==="s-q"?"input":"change",renderVitrine));
 $("#e-q").addEventListener("input",renderEstoque);
