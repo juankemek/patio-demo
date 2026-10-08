@@ -579,13 +579,12 @@ h2{font-family:var(--f-display);font-weight:700;text-transform:uppercase;font-si
             <label class="field full">Endereço<input id="lj-end"></label>
             <label class="field full">Horário<input id="lj-hor"></label>
             <label class="field full">Sobre a loja<textarea id="lj-sobre" rows="3"></textarea></label>
-            <div class="full"><div class="lbl" style="margin-bottom:8px">Cor da marca</div><div class="swatches" id="sw"></div>
-              <label class="field" style="margin-top:10px;max-width:180px">Outra cor<input id="lj-cor" type="color" style="height:40px;padding:3px"></label></div>
+            <input id="lj-cor" type="hidden">
             <div class="full" style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" type="submit">Salvar alterações</button><button class="btn danger" type="button" id="reset">Restaurar dados de exemplo</button></div>
           </form>
         </div>
         <div class="panel"><div class="panel-h"><h2>Prévia do site</h2></div><div class="preview" id="prev"></div>
-          <p class="muted" style="font-size:13px;margin-top:10px">Cada loja tem o próprio endereço, nome e cor. O comprador nunca vê o painel.</p></div>
+          <p class="muted" style="font-size:13px;margin-top:10px">Cada loja tem o próprio endereço e nome. O comprador nunca vê o painel.</p></div>
       </div>
     </div>
   </main>
@@ -859,13 +858,12 @@ function renderRel(){
 }
 function renderEquipe(){
  $("#tab-eq").innerHTML=`<thead><tr><th>Nome</th><th>Papel</th><th class="r">Comissão</th></tr></thead><tbody>`+S.equipe.map(p=>`<tr><td><div class="car"><div class="av">${ini(p.nome)}</div><div><b>${esc(p.nome)}</b><small>${esc(p.email)}</small></div></div></td><td><span class="pill ${p.papel==="Dono"?"p-ok":p.papel==="Vendedor"?"p-info":"p-warn"}">${esc(p.papel)}</span></td><td class="r num">${p.com?String(p.com).replace(".",",")+"%":"—"}</td></tr>`).join("")+"</tbody>";
- const P=[["Ver e cadastrar carros",1,1,1,0],["Ver custo, preço mínimo e lucro",1,1,0,1],["Contatos e agenda",1,1,1,0],["Registrar venda",1,1,1,0],["Financeiro e contas",1,0,0,1],["Relatórios",1,1,0,1],["Parceiros e repasses",1,1,0,1],["Convidar pessoas",1,0,0,0],["Mudar nome, cor e dados do site",1,0,0,0]];
+ const P=[["Ver e cadastrar carros",1,1,1,0],["Ver custo, preço mínimo e lucro",1,1,0,1],["Contatos e agenda",1,1,1,0],["Registrar venda",1,1,1,0],["Financeiro e contas",1,0,0,1],["Relatórios",1,1,0,1],["Parceiros e repasses",1,1,0,1],["Convidar pessoas",1,0,0,0],["Mudar nome e dados do site",1,0,0,0]];
  $("#perm").innerHTML=`<thead><tr><th>Permissão</th><th>Dono</th><th>Gerente</th><th>Vendedor</th><th>Financeiro</th></tr></thead><tbody>`+P.map(p=>`<tr><td>${p[0]}</td>${[1,2,3,4].map(k=>`<td class="${p[k]?"yes":"no"}">${p[k]?"✓":"—"}</td>`).join("")}</tr>`).join("")+"</tbody>";
 }
 function renderLoja(){
  const L=S.loja;["nome","slug","slogan","cid","wpp","end","hor","sobre"].forEach(k=>{const e=$("#lj-"+k);if(document.activeElement!==e)e.value=L[k]});
  $("#lj-cor").value=L.cor;
- $("#sw").innerHTML=SWATCH.map(c=>`<button type="button" data-cor="${c}" style="background:${c}" aria-label="Cor ${c}" aria-pressed="${c===L.cor}"></button>`).join("");
  prevLoja();
 }
 function prevLoja(){const n=$("#lj-nome").value||S.loja.nome,cor=$("#lj-cor").value,ink=inkFor(cor);
@@ -987,7 +985,6 @@ document.addEventListener("click",e=>{
  const sm=t.closest("#seg-mov button");if(sm){MOVF=sm.dataset.v;$$("#seg-mov button").forEach(b=>b.setAttribute("aria-pressed",b===sm));renderMov();return}
  const od=t.closest("[data-ord]");if(od){EST.ord===od.dataset.ord?EST.dir*=-1:(EST={...EST,ord:od.dataset.ord,dir:-1});renderEstoque();return}
  const sg=t.closest("#seg-st button");if(sg){EST.st=sg.dataset.v;$$("#seg-st button").forEach(b=>b.setAttribute("aria-pressed",b===sg));renderEstoque();return}
- const sw=t.closest("[data-cor]");if(sw){$("#lj-cor").value=sw.dataset.cor;$$("#sw button").forEach(b=>b.setAttribute("aria-pressed",b===sw));prevLoja();return}
 });
 document.addEventListener("keydown",e=>{if(e.key==="Escape")fechar();const ld=e.target.closest&&e.target.closest("[data-lead]");if(ld&&e.target===ld&&(e.key==="Enter"||e.key===" ")){e.preventDefault();editarLead(ld.dataset.lead)}});
 $$(".nav[data-sec]").forEach(b=>b.addEventListener("click",()=>secao(b.dataset.sec)));
@@ -1000,7 +997,7 @@ $("#f-login").onsubmit=e=>{e.preventDefault();const p=document.querySelector("[n
 $("#sair").onclick=()=>{USER=null;try{sessionStorage.removeItem("patio-user")}catch(e){}tela("login")};
 $("#ver-site").onclick=$("#ver-site2").onclick=()=>{renderVitrine();tela("vitrine");toast("Este é o site que o comprador vê. O botão de voltar ao painel só aparece para você.")};
 ["lj-nome","lj-slug","lj-slogan","lj-cid","lj-cor"].forEach(id=>$("#"+id).addEventListener("input",prevLoja));
-$("#f-loja").onsubmit=e=>{e.preventDefault();["nome","slug","slogan","cid","wpp","end","hor","sobre"].forEach(k=>S.loja[k]=$("#lj-"+k).value.trim()||S.loja[k]);S.loja.slug=S.loja.slug.toLowerCase().replace(/[^a-z0-9-]/g,"");S.loja.cor=$("#lj-cor").value;salvar();tudo();toast("Loja atualizada. O site já está com o nome e a cor novos.")};
+$("#f-loja").onsubmit=e=>{e.preventDefault();["nome","slug","slogan","cid","wpp","end","hor","sobre"].forEach(k=>S.loja[k]=$("#lj-"+k).value.trim()||S.loja[k]);S.loja.slug=S.loja.slug.toLowerCase().replace(/[^a-z0-9-]/g,"");S.loja.cor=$("#lj-cor").value;salvar();tudo();toast("Loja atualizada. O site já está com os dados novos.")};
 let resetArm=0;$("#reset").onclick=e=>{if(!resetArm){resetArm=1;e.target.textContent="Clique de novo para confirmar";setTimeout(()=>{resetArm=0;e.target.textContent="Restaurar dados de exemplo"},3000);return}S=seed();salvar();resetArm=0;e.target.textContent="Restaurar dados de exemplo";tudo();toast("Dados de exemplo restaurados.")};
 function rota(){const loj=/\/painel\/?$/.test(location.pathname)||location.hash==="#painel";renderVitrine();
  if(loj){if(USER){tela("painel");renderPainel();secao("geral")}else tela("login")}else tela("vitrine")}
