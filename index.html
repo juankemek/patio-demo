@@ -265,15 +265,18 @@ h2{font-family:var(--f-display);font-weight:700;text-transform:uppercase;font-si
 .v-name{font-family:var(--f-display);font-size:15px;letter-spacing:.12em;text-transform:uppercase}
 .v-name small{font-family:var(--f-body);letter-spacing:0;text-transform:none;font-size:12.5px;opacity:.75}
 .v-top nav a,.v-top nav button{color:var(--on-primary);border-color:rgba(255,255,255,.22);border-radius:8px}
-.v-hero{background:var(--primary);position:relative;overflow:hidden}
+.v-hero{background:var(--primary);position:relative;overflow:hidden;padding-bottom:28px}
 .v-hero::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 60% 70% at 80% 90%,color-mix(in srgb,var(--brand) 38%,transparent),transparent 62%);pointer-events:none}
-.v-hero .in{position:relative;color:var(--on-primary);text-align:center;padding-block:46px 0}
+.v-hero .in{position:relative;color:var(--on-primary);text-align:center;padding-block:46px 0;margin-bottom:0}
 .v-hero h1{font-size:clamp(26px,4.4vw,52px);max-width:18ch;margin-inline:auto;line-height:1.06}
 .v-hero p{margin-inline:auto;color:var(--on-primary-mut);opacity:1}
 .v-hero .lbl{color:var(--on-primary-mut)!important;opacity:1!important}
 .v-stats{justify-content:center;gap:36px;color:var(--on-primary-mut)}
 .v-stats b{font-family:var(--f-mono);font-size:22px;color:var(--on-primary)}
-.v-search{border-radius:12px;text-align:left}
+.v-search{border-radius:12px;text-align:left;position:relative;z-index:1;max-width:980px;margin-inline:auto}
+.v-main{padding-block:32px 40px}
+@media (max-width:900px){.v-hero .in{padding-block:30px 0}.v-stats{gap:18px 28px}.v-search{margin-top:20px}}
+@media (max-width:520px){.v-search{grid-template-columns:1fr 1fr;padding:10px;gap:8px}.v-search input{grid-column:1/-1}.v-search select{font-size:14px;padding:8px}.v-hero p{display:none}.v-hero h1{font-size:28px}.v-hero .in{padding-top:22px}.v-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;font-size:12px;line-height:1.3;margin-top:12px}.v-stats b{font-size:17px}.v-top .in{gap:10px}.v-top nav{margin-left:0;width:100%}.v-top nav a{flex:1;text-align:center}}
 .cards{gap:20px}
 .card{border-radius:12px;transition:transform .3s ease-out,box-shadow .3s ease-out}
 .card:hover{transform:translateY(-4px);box-shadow:0 22px 40px -24px rgba(15,23,42,.45)}
@@ -355,9 +358,9 @@ h2{font-family:var(--f-display);font-weight:700;text-transform:uppercase;font-si
     <div class="v-stats"><div><b id="v-qtd">0</b>carros disponíveis</div><div><b>3 meses</b>de garantia de motor e câmbio</div><div><b>Laudo</b>cautelar em todos</div></div>
     <div class="v-search" id="estoque-v">
       <input id="s-q" type="search" placeholder="Buscar marca ou modelo" aria-label="Buscar">
-      <select id="s-marca" aria-label="Marca"><option value="">Todas as marcas</option></select>
-      <select id="s-preco" aria-label="Preço máximo"><option value="">Qualquer preço</option><option value="60000">Até R$ 60 mil</option><option value="90000">Até R$ 90 mil</option><option value="130000">Até R$ 130 mil</option></select>
-      <select id="s-cambio" aria-label="Câmbio"><option value="">Manual ou automático</option><option>Manual</option><option>Automático</option></select>
+      <select id="s-marca" aria-label="Marca"><option value="">Marca</option></select>
+      <select id="s-preco" aria-label="Preço máximo"><option value="">Preço</option><option value="60000">Até R$ 60 mil</option><option value="90000">Até R$ 90 mil</option><option value="130000">Até R$ 130 mil</option></select>
+      <select id="s-cambio" aria-label="Câmbio"><option value="">Câmbio</option><option>Manual</option><option>Automático</option></select>
       <select id="s-ord" aria-label="Ordenar"><option value="rec">Mais recentes</option><option value="menor">Menor preço</option><option value="maior">Maior preço</option><option value="km">Menor km</option></select>
     </div>
   </div></div>
@@ -611,7 +614,7 @@ function renderVitrine(){
  $("#v-cid").textContent=L.cid;$("#v-eyebrow").textContent="Seminovos em "+L.cid;$("#v-slogan").textContent=L.slogan;$("#v-sobre").textContent=L.sobre;$("#v-end").textContent=L.end;$("#v-hor").textContent=L.hor;$("#v-wpp").textContent=L.wpp;$("#l-loja").textContent=L.nome;
  const pub=S.carros.filter(c=>c.status==="Disponível"||c.status==="Reservado");
  $("#v-qtd").textContent=pub.length;
- const sel=$("#s-marca"),cur=sel.value;sel.innerHTML='<option value="">Todas as marcas</option>'+[...new Set(pub.map(c=>c.marca))].sort().map(m=>`<option ${m===cur?"selected":""}>${esc(m)}</option>`).join("");
+ const sel=$("#s-marca"),cur=sel.value;sel.innerHTML='<option value="">Marca</option>'+[...new Set(pub.map(c=>c.marca))].sort().map(m=>`<option ${m===cur?"selected":""}>${esc(m)}</option>`).join("");
  const q=$("#s-q").value.trim().toLowerCase(),m=$("#s-marca").value,p=+$("#s-preco").value||Infinity,cb=$("#s-cambio").value,o=$("#s-ord").value;
  let l=pub.filter(c=>(!q||(c.marca+" "+c.modelo+" "+c.versao).toLowerCase().includes(q))&&(!m||c.marca===m)&&c.preco<=p&&(!cb||c.cambio===cb));
  l.sort({rec:(a,b)=>b.entrada.localeCompare(a.entrada),menor:(a,b)=>a.preco-b.preco,maior:(a,b)=>b.preco-a.preco,km:(a,b)=>a.km-b.km}[o]);
