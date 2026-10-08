@@ -258,7 +258,9 @@ h2{font-family:var(--f-display);font-weight:700;text-transform:uppercase;font-si
 .pic{position:relative;width:100%;height:100%;container-type:inline-size;overflow:hidden;background:radial-gradient(120% 90% at 85% 110%,color-mix(in srgb,var(--paint) 55%,transparent),transparent 60%),linear-gradient(135deg,#334155,#1e293b);display:flex;align-items:flex-end}
 .pic span{font-family:var(--f-display);font-weight:700;text-transform:uppercase;color:rgba(255,255,255,.16);font-size:21cqw;line-height:.78;white-space:nowrap;padding:0 0 4cqw 4cqw;letter-spacing:-.01em}
 .pic i{position:absolute;right:4cqw;top:4cqw;font-style:normal;font-family:var(--f-mono);font-size:max(9px,3.6cqw);color:rgba(255,255,255,.55)}
-.pic b{position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--paint)}
+.pic b{position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--paint);z-index:2}
+.pic img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1}
+.ph .tags{z-index:3}
 /* vitrine */
 .v-top{background:var(--primary);color:var(--on-primary)}
 .v-logo{border-radius:8px;background:var(--brand);color:var(--brand-ink);font-family:var(--f-display);font-size:14px;letter-spacing:.06em}
@@ -339,8 +341,8 @@ h2{font-family:var(--f-display);font-weight:700;text-transform:uppercase;font-si
  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 20l1.3-3.9A8 8 0 1 1 8 19.2z"/></symbol>
- <symbol id="i-gauge" viewBox="0 0 24 24"><path d="M4 18a8 8 0 1 1 16 0"/><path d="M12 18l4-6"/></symbol>
- <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></symbol>
+ <symbol id="i-gauge" viewBox="0 0 24 24"><path d="M5.6 18.4A9 9 0 1 1 18.4 18.4"/><path d="M12 13.5l4-4.5"/><circle cx="12" cy="13.5" r="1.4"/></symbol>
+ <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="6" cy="5" r="1.6"/><circle cx="12" cy="5" r="1.6"/><circle cx="18" cy="5" r="1.6"/><circle cx="6" cy="19" r="1.6"/><circle cx="12" cy="19" r="1.6"/><path d="M6 6.6v10.8M12 6.6v10.8M18 6.6V12H6"/></symbol>
  <symbol id="i-fuel" viewBox="0 0 24 24"><path d="M4 20V5a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v15M3 20h12M4 10h10M14 8l3 2v7a1.5 1.5 0 0 0 3 0V9l-3-3"/></symbol>
 </svg>
 
@@ -375,7 +377,7 @@ h2{font-family:var(--f-display);font-weight:700;text-transform:uppercase;font-si
         <div><b>WhatsApp</b><div class="muted num" id="v-wpp"></div></div>
       </div></div>
     </div>
-    <footer class="v-foot"><span>© 2026 <span id="v-nome3">Auto Sul Veículos</span></span><span>Site feito com Pátio</span></footer>
+    <footer class="v-foot"><span>© 2026 <span id="v-nome3">Auto Sul Veículos</span></span><details><summary style="cursor:pointer">Créditos das fotos</summary><p style="margin-top:8px;max-width:60ch">Fotos ilustrativas da Wikimedia Commons, sob licenças Creative Commons (CC BY / CC BY-SA). Autoria e licença de cada foto na página do arquivo:</p><ul id="creditos" style="margin:6px 0 0;padding-left:18px"></ul></details><span>Site feito com Pátio</span></footer>
   </main>
 </section>
 <button class="btn" id="back-painel" hidden style="position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:30;box-shadow:var(--shadow)">← Voltar ao painel</button>
@@ -602,7 +604,9 @@ const vendaMes=c=>c.venda&&c.venda.data>="2026-10-01";
 function toast(t){const e=$("#toast");e.textContent=t;e.hidden=false;clearTimeout(e._t);e._t=setTimeout(()=>e.hidden=true,2600)}
 function inkFor(hex){const n=parseInt(hex.slice(1),16),r=n>>16,g=n>>8&255,b=n&255;return (0.299*r+0.587*g+0.114*b)>160?"#141414":"#ffffff"}
 function aplicaMarca(){document.documentElement.style.setProperty("--brand",S.loja.cor);document.documentElement.style.setProperty("--brand-ink",inkFor(S.loja.cor))}
-function carSVG(c,big){const cor=PINTURA[c.pintura]||"#888";return `<div class="pic" style="--paint:${cor}" role="img" aria-label="${esc(c.marca+" "+c.modelo)}"><i>${big?"foto do carro":""}</i><span>${esc(c.modelo)}</span><b></b></div>`}
+const FOTOS={"Kwid": "Renault Kwid 1.0 Zen (2022) (52721423597).jpg", "T-Cross": "Volkswagen T-Cross IMG001.jpg", "Toro": "2021 Fiat Toro Freedom 1.8 4X2 - (2).jpg", "Onix": "Chevrolet Onix (second generation, front view).jpg", "HB20": "HB20X 2nd Generation Frontal View.jpg", "Corolla": "Toyota Corolla Limousine Hybrid Genf 2019 1Y7A5582.jpg", "Renegade": "Jeep Renegade 1.8 Sport 2018 (43134425314).jpg", "Gol": "VW Gol G8.jpg", "Fit": "Honda FIT 13G (DBA-GK3) front.JPG", "Argo": "Fiat Argo 1.3 Drive ELX 2018 (26635198997).jpg", "Tracker": "Chevrolet Tracker, Front Right, 05-12-2021.jpg"};
+const fotoURL=(f,w)=>"https://commons.wikimedia.org/wiki/Special:FilePath/"+encodeURIComponent(f.replace(/ /g,"_"))+"?width="+(w||800);
+function carSVG(c,big){const cor=PINTURA[c.pintura]||"#888";const f=FOTOS[c.modelo];return `<div class="pic" style="--paint:${cor}" role="img" aria-label="${esc(c.marca+" "+c.modelo)}"><span>${esc(c.modelo)}</span>${f?`<img src="${fotoURL(f,big?1200:640)}" alt="" loading="lazy" decoding="async" onerror="this.remove()">`:""}<b></b></div>`}
 function diasPill(c){const d=dias(c);if(c.venda)return `<span class="pill p-mut">vendeu em ${d} d</span>`;const k=d>90?"p-crit":d>60?"p-warn":"p-ok";return `<span class="pill ${k}">${d} dias</span>`}
 function stPill(s){return `<span class="pill ${{"Disponível":"p-ok","Reservado":"p-warn","Preparação":"p-info","Vendido":"p-mut"}[s]}">${s}</span>`}
 function hbars(el,rows,fmt){const max=Math.max(1,...rows.map(r=>r[1]));$(el).innerHTML=rows.map(r=>`<div class="r"><span>${esc(r[0])}</span><span class="trk"><i style="width:${Math.max(2,r[1]/max*100)}%;${r[2]?"background:"+r[2]:""}"></i></span><span class="num" style="text-align:right">${fmt(r[1])}</span></div>`).join("")||`<p class="muted">Sem dados ainda.</p>`}
@@ -611,7 +615,7 @@ function hbars(el,rows,fmt){const max=Math.max(1,...rows.map(r=>r[1]));$(el).inn
 function renderVitrine(){
  const L=S.loja;aplicaMarca();
  $("#v-logo").textContent=ini(L.nome);$("#v-nome").textContent=L.nome;$("#v-nome2").textContent=L.nome;$("#v-nome3").textContent=L.nome;
- $("#v-cid").textContent=L.cid;$("#v-eyebrow").textContent="Seminovos em "+L.cid;$("#v-slogan").textContent=L.slogan;$("#v-sobre").textContent=L.sobre;$("#v-end").textContent=L.end;$("#v-hor").textContent=L.hor;$("#v-wpp").textContent=L.wpp;$("#l-loja").textContent=L.nome;
+ $("#v-cid").textContent=L.cid;$("#v-eyebrow").textContent="Seminovos em "+L.cid;$("#v-slogan").textContent=L.slogan;$("#v-sobre").textContent=L.sobre;$("#v-end").textContent=L.end;$("#v-hor").textContent=L.hor;$("#v-wpp").textContent=L.wpp;$("#creditos").innerHTML=Object.entries(FOTOS).map(([m,f])=>`<li><a href="https://commons.wikimedia.org/wiki/File:${encodeURIComponent(f.replace(/ /g,"_"))}" target="_blank" rel="noopener">${esc(m)}: ${esc(f)}</a></li>`).join("");$("#l-loja").textContent=L.nome;
  const pub=S.carros.filter(c=>c.status==="Disponível"||c.status==="Reservado");
  $("#v-qtd").textContent=pub.length;
  const sel=$("#s-marca"),cur=sel.value;sel.innerHTML='<option value="">Marca</option>'+[...new Set(pub.map(c=>c.marca))].sort().map(m=>`<option ${m===cur?"selected":""}>${esc(m)}</option>`).join("");
@@ -654,7 +658,7 @@ function renderPainel(){
  aplicaMarca();
  $("#p-logo").textContent=ini(S.loja.nome);$("#m-loja").textContent=S.loja.nome;$("#p-loja").textContent=S.loja.nome;$("#p-slug").textContent=S.loja.slug;
  $("#me-av").textContent=ini(USER.nome);$("#me-nome").textContent=USER.nome;$("#me-papel").textContent=USER.papel;
- $("#ola").textContent="Bom dia, "+USER.nome.split(" ")[0];
+ {const h=new Date().getHours();$("#ola").textContent=(h<12?"Bom dia, ":h<18?"Boa tarde, ":"Boa noite, ")+USER.nome.split(" ")[0]}
  $$(".dono").forEach(e=>e.hidden=!isDono());
  $("#cnt-novos").textContent=S.leads.filter(l=>l.etapa==="Novo").length;
  renderGeral();renderEstoque();renderKanban();renderAgenda();renderVendas();
@@ -684,7 +688,7 @@ function renderGeral(){
  const ag=S.visitas.filter(v=>v.data===HOJE||v.data===addD(HOJE,1)).sort((a,b)=>(a.data+a.hora).localeCompare(b.data+b.hora));
  $("#ag-hoje").innerHTML=ag.map(v=>`<div class="item" style="cursor:default"><span class="pill ${v.tipo==="Test drive"?"p-info":"p-ok"}">${v.data===HOJE?"Hoje":"Amanhã"} ${v.hora}</span><span class="t"><b>${esc(v.cli)}</b><small>${v.tipo} · ${esc(nomeCarro(carro(v.carro)))}</small></span></div>`).join("")||`<p class="muted">Nada marcado.</p>`;
  $("#ld-novos").innerHTML=S.leads.filter(l=>l.etapa==="Novo").map(l=>`<button class="item" data-go="contatos"><div class="av">${ini(l.nome)}</div><span class="t"><b>${esc(l.nome)}</b><small>${esc(l.origem)} · ${esc(nomeCarro(carro(l.carro)))}</small></span></button>`).join("")||`<p class="muted">Nenhum contato novo.</p>`;
- $("#top").innerHTML=[...est].sort((a,b)=>b.visitas-a.visitas).slice(0,4).map(c=>`<button class="item" data-carro="${c.id}"><div class="thumb">${carSVG(c)}</div><span class="t"><b>${esc(c.modelo)} ${c.ano}</b><small>${c.visitas} visitas · ${S.leads.filter(l=>l.carro===c.id).length} contatos</small></span></button>`).join("");
+ $("#top").innerHTML=[...est].sort((a,b)=>b.visitas-a.visitas).slice(0,4).map(c=>`<button class="item" data-carro="${c.id}"><div class="thumb">${carSVG(c)}</div><span class="t"><b>${esc(c.modelo)} ${c.ano}</b><small>${c.visitas} visitas · ${(n=>n+(n===1?" contato":" contatos"))(S.leads.filter(l=>l.carro===c.id).length)}</small></span></button>`).join("");
 }
 let EST={st:"",ord:"dias",dir:-1};
 function renderEstoque(){
