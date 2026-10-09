@@ -565,6 +565,86 @@ details.mais .form{padding:0;margin-top:12px;border:0;background:none;box-shadow
  .aj{right:0;left:0;bottom:0;width:100%;height:min(78vh,620px);border-radius:18px 18px 0 0;padding-bottom:env(safe-area-inset-bottom,0px)}
 }
 @media print{.aj,.aj-btn{display:none!important}}
+
+/* ---------- menu recolhido ---------- */
+.recolher{margin-left:auto;border:1px solid var(--line);background:var(--surface);color:var(--muted);border-radius:8px;width:30px;height:30px;display:grid;place-items:center;cursor:pointer;font-size:15px;line-height:1}
+.recolher:hover{color:var(--ink)}
+@media (min-width:901px){
+ #painel{transition:grid-template-columns .2s}
+ html.menu-mini #painel{grid-template-columns:72px minmax(0,1fr)}
+ html.menu-mini .side{padding-inline:10px;overflow-x:hidden}
+ html.menu-mini .side .brand{padding:2px 0 14px;justify-content:center;flex-direction:column;gap:10px}
+ html.menu-mini .side .brand .bt{display:none}
+ html.menu-mini .recolher{margin:0}
+ html.menu-mini .store{justify-content:center;padding:8px}
+ html.menu-mini .store>div:last-child,html.menu-mini .side .grp,html.menu-mini .nav kbd,html.menu-mini .me .who>div:last-child{display:none}
+ html.menu-mini .nav{font-size:0;justify-content:center;padding:10px 0;gap:0}
+ html.menu-mini .nav svg{width:20px;height:20px}
+ html.menu-mini .nav .cnt{position:absolute;top:2px;right:6px;font-size:10px}
+ html.menu-mini .me .who{justify-content:center;padding:6px 0}
+ html.menu-mini .nav .tema-txt{display:none}
+}
+@media (max-width:900px){.recolher{display:none}}
+/* ---------- editor do site ---------- */
+.ed{display:grid;grid-template-columns:minmax(300px,400px) minmax(0,1fr);gap:16px;align-items:start}
+.ed-ctrl{display:flex;flex-direction:column;gap:10px}
+.ed-ctrl details{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:0}
+.ed-ctrl summary{cursor:pointer;padding:12px 14px;font-weight:700;font-size:14px;list-style:none;display:flex;justify-content:space-between;align-items:center}
+.ed-ctrl summary::after{content:"+";color:var(--muted);font-size:18px}
+.ed-ctrl details[open] summary::after{content:"–"}
+.ed-ctrl details>.ed-in{padding:0 14px 14px;display:grid;gap:10px}
+.ed-ctrl .field input,.ed-ctrl .field select,.ed-ctrl .field textarea{width:100%}
+.ed-ctrl .dica{font-size:12px;color:var(--muted);margin-top:-4px}
+.ed-sw{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.ed-sw button{width:30px;height:30px;border-radius:50%;border:2px solid var(--surface);box-shadow:0 0 0 1px var(--line);cursor:pointer}
+.ed-sw button[aria-pressed="true"]{box-shadow:0 0 0 2px var(--ink)}
+.ed-sw input[type=color]{width:40px;height:32px;border:1px solid var(--line);border-radius:8px;padding:2px;background:var(--surface)}
+.ed-chk{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13.5px;padding:2px 0}
+.ed-chk input{width:20px;height:20px;accent-color:var(--accent)}
+.ed-img{display:flex;gap:10px;align-items:center}
+.ed-img .mini{width:56px;height:56px;border-radius:10px;border:1px dashed var(--line);background:var(--sunk) center/cover no-repeat;display:grid;place-items:center;font-size:11px;color:var(--muted);flex:none}
+.ed-par{display:grid;grid-template-columns:110px 1fr;gap:6px}
+.ed-prev{position:sticky;top:12px;display:flex;flex-direction:column;gap:8px}
+.ed-bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.ed-url{flex:1;min-width:0;font-family:var(--f-mono);font-size:12px;background:var(--sunk);border:1px solid var(--line);border-radius:99px;padding:6px 12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--muted)}
+.ed-frame{position:relative;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--bg);height:calc(100vh - 190px);min-height:520px}
+.ed-frame.cel{background:var(--sunk);display:flex;justify-content:center;align-items:flex-start;padding-top:14px}
+.ed-frame iframe{border:0;transform-origin:0 0;background:#fff;position:absolute;left:0;top:0}
+.ed-frame.cel iframe{position:relative;border-radius:26px;box-shadow:0 0 0 8px #111,0 20px 40px -10px rgba(0,0,0,.4)}
+.ed-sujo{font-size:12.5px;color:var(--warn);font-weight:600}
+.ed-modo{display:none}
+@media (max-width:1100px){.ed{grid-template-columns:1fr}.ed-prev{position:relative;top:0}.ed-frame{height:640px}}
+@media (max-width:900px){.ed-modo{display:inline-flex;margin-bottom:10px}.ed.so-edit .ed-prev,.ed.so-prev .ed-ctrl{display:none}}
+/* ---------- personalização do site ---------- */
+html.previa #back-painel,html.previa .aj-btn{display:none!important}
+#vitrine.topo-escuro .v-hero{background:#1f1f23;border-bottom-color:#1f1f23}
+#vitrine.topo-escuro .v-hero .in,#vitrine.topo-escuro .v-hero h1,#vitrine.topo-escuro .v-stats b{color:#fff}
+#vitrine.topo-escuro .v-hero p,#vitrine.topo-escuro .v-hero .lbl,#vitrine.topo-escuro .v-stats{color:#d4d4d8!important}
+#vitrine.topo-marca .v-hero{background:var(--brand);border-bottom-color:var(--brand)}
+#vitrine.topo-marca .v-hero .in,#vitrine.topo-marca .v-hero h1,#vitrine.topo-marca .v-stats b,#vitrine.topo-marca .v-hero p,#vitrine.topo-marca .v-hero .lbl,#vitrine.topo-marca .v-stats{color:var(--brand-ink)!important}
+#vitrine.topo-marca .v-hero::before,#vitrine.topo-escuro .v-hero::before,#vitrine.topo-foto .v-hero::before{display:none}
+#vitrine.topo-foto .v-hero{background:#111 var(--foto) center/cover no-repeat;position:relative}
+#vitrine.topo-foto .v-hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,.6));pointer-events:none}
+#vitrine.topo-foto .v-hero .in{position:relative;z-index:1}
+#vitrine.topo-foto .v-hero .in,#vitrine.topo-foto .v-hero h1,#vitrine.topo-foto .v-stats b{color:#fff}
+#vitrine.topo-foto .v-hero p,#vitrine.topo-foto .v-hero .lbl,#vitrine.topo-foto .v-stats{color:#e4e4e7!important}
+#vitrine.alinha-esq .v-hero .in{text-align:left}
+#vitrine.alinha-esq .v-hero h1,#vitrine.alinha-esq .v-hero p{margin-inline:0}
+#vitrine.alinha-esq .v-stats{justify-content:flex-start}
+#vitrine.alinha-esq .v-search{margin-inline:0}
+#vitrine.fonte-classica .v-hero h1,#vitrine.fonte-classica .v-name,#vitrine.fonte-classica .v-res h2,#vitrine.fonte-classica .v-about h2{font-family:Georgia,"Times New Roman",serif;letter-spacing:0;text-transform:none}
+#vitrine.fonte-simples .v-hero h1,#vitrine.fonte-simples .v-name,#vitrine.fonte-simples .v-res h2,#vitrine.fonte-simples .v-about h2{font-family:var(--f-body);letter-spacing:-.01em;text-transform:none;font-weight:800}
+#vitrine.cards-compacto .cards{grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}
+#vitrine.cards-grande .cards{grid-template-columns:repeat(auto-fill,minmax(340px,1fr))}
+#vitrine.sem-busca .v-search,#vitrine.sem-parcela .parc,#vitrine.sem-etiquetas .ph .tags,#vitrine.sem-sobre .v-about{display:none!important}
+.v-logo img{width:100%;height:100%;object-fit:contain;border-radius:inherit;background:#fff}
+.v-logo.tem-img{background:#fff;padding:0;overflow:hidden}
+.v-redes{display:flex;gap:10px}
+.v-redes a{color:inherit}
+.v-zap{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:29;width:56px;height:56px;border-radius:50%;background:#16a34a;color:#fff;display:grid;place-items:center;box-shadow:0 10px 24px -8px rgba(0,0,0,.45)}
+.v-zap svg{width:26px;height:26px}
+#back-painel{right:auto!important;left:16px}
+@media(max-width:640px){.ed-bar .ed-url{order:3;flex:1 1 100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}}
 </style>
 
 </head>
@@ -604,14 +684,14 @@ details.mais .form{padding:0;margin-top:12px;border:0;background:none;box-shadow
   <header class="v-top"><div class="in">
     <div class="v-logo" id="v-logo">AS</div>
     <div class="v-name"><span id="v-nome">Auto Sul Veículos</span><small id="v-cid">Pelotas/RS</small></div>
-    <nav><button type="button" class="tema-btn" data-tema aria-label="Alternar modo escuro"><svg><use href="#i-moon"/></svg><span class="tema-txt">Escuro</span></button><a id="v-contato" href="#sobre-v" target="_blank" rel="noopener"><svg class="i" style="width:16px;height:16px;vertical-align:-3px;margin-right:6px"><use href="#i-chat"/></svg>Contato</a></nav>
+    <nav><button type="button" class="tema-btn" data-tema aria-label="Alternar modo escuro"><svg><use href="#i-moon"/></svg><span class="tema-txt">Escuro</span></button><a id="v-contato" href="#sobre-v" target="_blank" rel="noopener"><svg class="i" style="width:16px;height:16px;vertical-align:-3px;margin-right:6px"><use href="#i-chat"/></svg><span id="v-contato-t">Contato</span></a></nav>
     
   </div></header>
   <div class="v-hero"><div class="in">
     <span class="lbl" style="color:inherit;opacity:.85" id="v-eyebrow">Seminovos em Pelotas/RS</span>
     <h1 id="v-slogan">Seminovos revisados, com procedência e garantia</h1>
-    <p>Escolha seu próximo carro, simule as parcelas e fale com a gente no WhatsApp ou agende um test drive.</p>
-    <div class="v-stats"><div><b id="v-qtd">0</b>carros disponíveis</div><div><b>3 meses</b>de garantia de motor e câmbio</div><div><b>Laudo</b>cautelar em todos</div></div>
+    <p id="v-subt">Escolha seu próximo carro, simule as parcelas e fale com a gente no WhatsApp ou agende um test drive.</p>
+    <div class="v-stats" id="v-stats"></div>
     <div class="v-search" id="estoque-v">
       <input id="s-q" type="search" placeholder="Buscar marca ou modelo" aria-label="Buscar">
       <select id="s-marca" aria-label="Marca"><option value="">Marca</option></select>
@@ -621,7 +701,7 @@ details.mais .form{padding:0;margin-top:12px;border:0;background:none;box-shadow
     </div>
   </div></div>
   <main class="v-main">
-    <div class="v-res"><h2 id="v-cont">Estoque</h2><span class="muted" style="font-size:13px">Preços à vista. Parcelas simuladas com 30% de entrada em 48x.</span></div>
+    <div class="v-res"><h2 id="v-cont">Estoque</h2><span class="muted" style="font-size:13px" id="v-aviso">Preços à vista.</span></div>
     <div class="cards" id="cards"></div>
     <div class="v-about" id="sobre-v">
       <div class="v-box"><span class="lbl">Sobre a loja</span><h2 style="margin:4px 0 8px" id="v-nome2">Auto Sul Veículos</h2><p class="muted" id="v-sobre"></p></div>
@@ -631,7 +711,8 @@ details.mais .form{padding:0;margin-top:12px;border:0;background:none;box-shadow
         <div><b>WhatsApp</b><div class="muted num" id="v-wpp"></div></div>
       </div></div>
     </div>
-    <footer class="v-foot"><span>© 2026 <span id="v-nome3">Auto Sul Veículos</span></span><details><summary style="cursor:pointer">Créditos das fotos</summary><p style="margin-top:8px;max-width:60ch">Fotos ilustrativas da Wikimedia Commons, sob licenças Creative Commons (CC BY / CC BY-SA). Autoria e licença de cada foto na página do arquivo:</p><ul id="creditos" style="margin:6px 0 0;padding-left:18px"></ul></details><span>Site feito com Pátio</span></footer>
+    <footer class="v-foot"><span>© 2026 <span id="v-nome3">Auto Sul Veículos</span></span><details><summary style="cursor:pointer">Créditos das fotos</summary><p style="margin-top:8px;max-width:60ch">Fotos ilustrativas da Wikimedia Commons, sob licenças Creative Commons (CC BY / CC BY-SA). Autoria e licença de cada foto na página do arquivo:</p><ul id="creditos" style="margin:6px 0 0;padding-left:18px"></ul></details><span class="v-redes" id="v-redes"></span><span id="v-rodape"></span><span>Site feito com Pátio</span></footer>
+    <a class="v-zap" id="v-zap" href="#" target="_blank" rel="noopener" aria-label="Falar no WhatsApp" hidden><svg class="i"><use href="#i-chat"/></svg></a>
   </main>
 </section>
 <button class="btn" id="back-painel" hidden style="position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:30;box-shadow:var(--shadow)">← Voltar ao painel</button>
@@ -655,8 +736,8 @@ details.mais .form{padding:0;margin-top:12px;border:0;background:none;box-shadow
   <div class="mtop"><button class="btn soft sm" id="menu-btn" aria-expanded="false" aria-controls="side">☰ Menu</button><button class="btn soft sm" id="busca-m" type="button" aria-label="Buscar" style="order:3;margin-left:auto"><svg class="i" style="width:18px;height:18px"><use href="#i-search"/></svg></button><div class="brand-m"><span class="mk" aria-hidden="true"></span><b id="m-loja">Auto Sul Veículos</b></div></div>
   <div class="scrim" id="scrim" hidden></div>
   <aside class="side" id="side" aria-label="Menu do painel">
-    <div class="brand"><span class="mk" aria-hidden="true"></span>Pátio</div>
-    <div class="store"><div class="v-logo" id="p-logo">AS</div><div><b id="p-loja">Auto Sul Veículos</b><small>patio.app/<span id="p-slug">autosul</span></small></div></div>
+    <div class="brand"><span class="mk" aria-hidden="true"></span><span class="bt">Pátio</span><button class="recolher" id="recolher" type="button" title="Esconder menu" aria-label="Esconder menu">«</button></div>
+    <div class="store"><div class="v-logo" id="p-logo">AS</div><div><b id="p-loja">Auto Sul Veículos</b><small id="p-slug">autosul.patio.app</small></div></div>
     <button class="nav" id="busca-btn" type="button"><svg class="i"><use href="#i-search"/></svg>Buscar<kbd>/</kbd></button>
     <button class="nav" data-sec="geral" aria-current="true"><svg class="i"><use href="#i-home"/></svg>Visão geral</button>
     <button class="nav" data-sec="estoque"><svg class="i"><use href="#i-car"/></svg>Estoque</button>
@@ -793,26 +874,15 @@ details.mais .form{padding:0;margin-top:12px;border:0;background:none;box-shadow
     </div>
     <!-- minha loja -->
     <div class="sec dono" id="sec-loja" hidden>
-      <div class="topbar"><div><span class="lbl">Aparência e dados do site</span><h1>Minha loja</h1></div><div class="acts"><button class="btn ghost" id="ver-site2"><svg class="i"><use href="#i-eye"/></svg>Ver meu site</button></div></div>
-      <div class="row2">
-        <div class="panel">
-          <form class="form" id="f-loja">
-            <label class="field">Nome da loja<input id="lj-nome"></label>
-            <label class="field">Endereço do site<input id="lj-slug"></label>
-            <label class="field full">Frase de destaque<input id="lj-slogan"></label>
-            <label class="field">Cidade<input id="lj-cid"></label>
-            <label class="field">WhatsApp<input id="lj-wpp" type="tel" inputmode="tel" data-tel autocomplete="tel"></label>
-            <label class="field full">Endereço<input id="lj-end"></label>
-            <label class="field full">Horário<input id="lj-hor"></label>
-            <label class="field full">Sobre a loja<textarea id="lj-sobre" rows="3"></textarea></label>
-            <label class="field">CNPJ<input id="lj-cnpj" inputmode="numeric" placeholder="00.000.000/0001-00"></label>
-            <label class="field">E-mail do contador<input id="lj-contador" type="email" placeholder="contador@escritorio.com.br"></label>
-            <input id="lj-cor" type="hidden">
-            <div class="full" style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" type="submit">Salvar alterações</button><button class="btn danger" type="button" id="reset">Restaurar dados de exemplo</button></div>
-          </form>
+      <div class="topbar"><div><span class="lbl">Personalize o seu site</span><h1>Minha loja</h1></div><div class="acts"><span class="ed-sujo" id="ed-sujo" hidden>Alterações não salvas</span><button class="btn ghost" id="ed-desc" type="button">Descartar</button><button class="btn" id="ed-salvar" type="button">Salvar e publicar</button></div></div>
+      <div class="seg ed-modo" id="ed-modo"><button aria-pressed="true" data-v="edit" type="button">Editar</button><button aria-pressed="false" data-v="prev" type="button">Ver prévia</button></div>
+      <div class="ed so-edit" id="ed">
+        <div class="ed-ctrl" id="ed-ctrl"></div>
+        <div class="ed-prev">
+          <div class="ed-bar"><div class="seg" id="ed-disp"><button aria-pressed="true" data-v="pc" type="button">Computador</button><button aria-pressed="false" data-v="cel" type="button">Celular</button></div><div class="ed-url" id="ed-url"></div><button class="btn sm ghost" id="ver-site2" type="button"><svg class="i"><use href="#i-eye"/></svg>Abrir</button></div>
+          <div class="ed-frame" id="ed-frame"><iframe id="ed-if" title="Prévia do site" loading="lazy"></iframe></div>
+          <p class="muted" style="font-size:12.5px">A prévia mostra as mudanças na hora. O site só muda para os clientes quando você tocar em <b>Salvar e publicar</b>.</p>
         </div>
-        <div class="panel"><div class="panel-h"><h2>Prévia do site</h2></div><div class="preview" id="prev"></div>
-          <p class="muted" style="font-size:13px;margin-top:10px">Cada loja tem o próprio endereço e nome. O comprador nunca vê o painel.</p></div>
       </div>
     </div>
   </main>
@@ -905,7 +975,7 @@ if(!S||!S.carros||!S.contas)S=seed();
 const EQ=()=>S.equipe.filter(p=>!p.removido);
 if(!S.regras){const z=seed();S.regras=z.regras;S.aval=S.aval||z.aval}
 let USER=null;try{USER=JSON.parse(sessionStorage.getItem("patio-user"))}catch(e){}
-function salvar(){try{localStorage.setItem("patio-demo-v4",JSON.stringify(S));return true}catch(e){if(/quota/i.test(e.name+e.message)&&typeof toast==="function")toast("O espaço da demonstração encheu. Remova algumas fotos. No sistema real as fotos ficam guardadas na nuvem, sem esse limite.");return !/quota/i.test(e.name+e.message)}}
+function salvar(){if(typeof PREVIA!=="undefined"&&PREVIA)return true;try{localStorage.setItem("patio-demo-v4",JSON.stringify(S));return true}catch(e){if(/quota/i.test(e.name+e.message)&&typeof toast==="function")toast("O espaço da demonstração encheu. Remova algumas fotos. No sistema real as fotos ficam guardadas na nuvem, sem esse limite.");return !/quota/i.test(e.name+e.message)}}
 function lerFotos(files){return Promise.all([...files].filter(f=>f.type.startsWith("image/")).slice(0,12).map(f=>new Promise(res=>{const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const W=1000,sc=Math.min(1,W/im.width),cv=document.createElement("canvas");cv.width=Math.round(im.width*sc);cv.height=Math.round(im.height*sc);cv.getContext("2d").drawImage(im,0,0,cv.width,cv.height);res(cv.toDataURL("image/jpeg",0.72))};im.onerror=()=>res(null);im.src=r.result};r.onerror=()=>res(null);r.readAsDataURL(f)}))).then(a=>a.filter(Boolean))}
 
 /* ---------- utilidades ---------- */
@@ -947,7 +1017,7 @@ const parado=l=>PRAZO[l.etapa]!=null&&desde(l.data)>=PRAZO[l.etapa];
 function msgLead(l){const c=carro(l.carro),cn=c?c.marca+" "+c.modelo+" "+c.ano:"carro",eu=USER?USER.nome.split(" ")[0]:"a equipe",lj=S.loja.nome,p=l.nome.split(" ")[0];
  return ({"Novo":`Oi ${p}! Aqui é ${eu}, da ${lj}. Vi que você se interessou pelo ${cn}. Quer que eu mande mais fotos ou simule as parcelas?`,"Em negociação":`Oi ${p}, tudo bem? É ${eu}, da ${lj}. Conseguiu pensar no ${cn}? Se quiser, vejo uma condição melhor pra você.`,"Visita marcada":`Oi ${p}! ${eu} da ${lj} aqui. Passando para confirmar sua visita para ver o ${cn}. Está mantido?`,"Financiamento":`Oi ${p}! É ${eu}, da ${lj}. Tenho novidades sobre a simulação do financiamento do ${cn}. Posso te ligar?`,"Vendido":`Oi ${p}! Aqui é ${eu}, da ${lj}. Tudo certo com o ${cn}? Qualquer coisa, conte com a gente!`,"Perdido":`Oi ${p}, tudo bem? ${eu} da ${lj} aqui. Chegaram carros parecidos com o ${cn}. Quer que eu te mande as opções?`})[l.etapa]||`Oi ${p}! Aqui é ${eu}, da ${lj}.`}
 const waBtn=l=>`<a class="wa" data-wa="${l.id}" href="${waLink(l.tel,msgLead(l))}" target="_blank" rel="noopener" title="Chamar no WhatsApp" aria-label="Chamar ${esc(l.nome)} no WhatsApp"><svg class="i"><use href="#i-chat"/></svg></a>`;
-const siteURL=()=>location.href.split("#")[0].replace(/\/painel\/?$/,"/");
+const siteURL=()=>{const st=SITE(S.loja);return st.dominio?"https://"+urlSite(S.loja)+"/":location.href.split("#")[0].replace(/\/painel\/?$/,"/")};
 const carroURL=id=>siteURL()+"#carro-"+id;
 function hintNum(el){const lb=el.closest("label");if(!lb)return;const t=lb.textContent,money=/R\$/.test(t),km=/^\s*Km/i.test(t);if(!money&&!km)return;let h=lb.querySelector(".hint");if(!h){h=document.createElement("small");h.className="hint";lb.appendChild(h)}const v=+el.value;h.textContent=v?(money?R(v):v.toLocaleString("pt-BR")+" km"):""}
 function toast0(t){toast(t)}
@@ -962,19 +1032,30 @@ function stPill(s){return `<span class="pill ${{"Disponível":"p-ok","Reservado"
 function hbars(el,rows,fmt){const max=Math.max(1,...rows.map(r=>r[1]));$(el).innerHTML=rows.map(r=>`<div class="r"><span>${esc(r[0])}</span><span class="trk"><i style="width:${Math.max(2,r[1]/max*100)}%;${r[2]?"background:"+r[2]:""}"></i></span><span class="num" style="text-align:right">${fmt(r[1])}</span></div>`).join("")||`<p class="muted">Sem dados ainda.</p>`}
 
 /* ---------- VITRINE ---------- */
+const SITE_PADRAO={dominio:"",logo:"",fonte:"larga",topo:{estilo:"claro",foto:"",alinhar:"centro",eyebrow:"Seminovos em {cidade}",subt:"Escolha seu próximo carro, simule as parcelas e fale com a gente no WhatsApp ou agende um test drive."},
+ destaques:{qtd:true,d2v:"3 meses",d2t:"de garantia de motor e câmbio",d3v:"Laudo",d3t:"cautelar em todos"},mostrar:{busca:true,parcela:true,etiquetas:true,sobre:true,simulador:true,zap:true},
+ fin:{entrada:30,prazo:48,taxa:1.89},cards:"normal",ordem:"rec",textos:{contato:"Contato",aviso:"Preços à vista. Parcelas simuladas com {entrada}% de entrada em {prazo}x.",rodape:"",zap:"Olá! Vim pelo site da {loja}."},redes:{insta:"",face:""}};
+function mescla(a,b){const o=JSON.parse(JSON.stringify(a));Object.keys(b||{}).forEach(k=>{o[k]=(b[k]&&typeof b[k]==="object"&&!Array.isArray(b[k])&&o[k]&&typeof o[k]==="object")?mescla(o[k],b[k]):b[k]});return o}
+const SITE=L=>mescla(SITE_PADRAO,L.site||{});
+const urlSite=L=>{const st=SITE(L);return st.dominio?st.dominio.replace(/^https?:\/\//,"").replace(/\/$/,""):(L.slug||"sualoja")+".patio.app"};
+let ORD_MEXEU=false,PREVIA=false;
 function renderVitrine(){
- const L=S.loja;aplicaMarca();
- $("#v-logo").textContent=ini(L.nome);$("#v-nome").textContent=L.nome;$("#v-nome2").textContent=L.nome;$("#v-nome3").textContent=L.nome;
- $("#v-cid").textContent=L.cid;$("#v-eyebrow").textContent="Seminovos em "+L.cid;$("#v-slogan").textContent=L.slogan;$("#v-sobre").textContent=L.sobre;$("#v-end").textContent=L.end;$("#v-hor").textContent=L.hor;$("#v-wpp").textContent=L.wpp;$("#v-contato").href="https://wa.me/55"+L.wpp.replace(/\D/g,"")+"?text="+encodeURIComponent("Olá! Vim pelo site da "+L.nome+".");$("#creditos").innerHTML=Object.entries(FOTOS).map(([m,f])=>`<li><a href="https://commons.wikimedia.org/wiki/File:${encodeURIComponent(f.replace(/ /g,"_"))}" target="_blank" rel="noopener">${esc(m)}: ${esc(f)}</a></li>`).join("");$("#l-loja").textContent=L.nome;
+ const L=S.loja,st=SITE(L);aplicaMarca();
+ const vt=$("#vitrine");vt.className=["topo-"+st.topo.estilo,st.topo.alinhar==="esquerda"?"alinha-esq":"","fonte-"+st.fonte,"cards-"+st.cards,st.mostrar.busca?"":"sem-busca",st.mostrar.parcela?"":"sem-parcela",st.mostrar.etiquetas?"":"sem-etiquetas",st.mostrar.sobre?"":"sem-sobre"].filter(Boolean).join(" ");
+ vt.style.setProperty("--foto",st.topo.foto?`url("${st.topo.foto}")`:"none");
+ $("#v-logo").classList.toggle("tem-img",!!st.logo);
+ $("#v-logo").innerHTML=st.logo?`<img src="${st.logo}" alt="">`:esc(ini(L.nome));$("#v-nome").textContent=L.nome;$("#v-nome2").textContent=L.nome;$("#v-nome3").textContent=L.nome;
+ $("#v-cid").textContent=L.cid;$("#v-eyebrow").textContent=st.topo.eyebrow.replace("{cidade}",L.cid);$("#v-subt").textContent=st.topo.subt;$("#v-subt").hidden=!st.topo.subt;$("#v-slogan").textContent=L.slogan;$("#v-sobre").textContent=L.sobre;$("#v-end").textContent=L.end;$("#v-hor").textContent=L.hor;$("#v-wpp").textContent=L.wpp;const zp="https://wa.me/55"+L.wpp.replace(/\D/g,"")+"?text="+encodeURIComponent(st.textos.zap.replace("{loja}",L.nome));$("#v-contato").href=zp;$("#v-contato-t").textContent=st.textos.contato||"Contato";$("#v-zap").href=zp;$("#v-zap").hidden=!st.mostrar.zap;$("#v-aviso").textContent=st.textos.aviso.replace("{entrada}",st.fin.entrada).replace("{prazo}",st.fin.prazo);$("#v-rodape").textContent=st.textos.rodape;$("#v-redes").innerHTML=[st.redes.insta?`<a href="${esc(/^https?:/.test(st.redes.insta)?st.redes.insta:"https://instagram.com/"+st.redes.insta.replace("@",""))}" target="_blank" rel="noopener">Instagram</a>`:"",st.redes.face?`<a href="${esc(/^https?:/.test(st.redes.face)?st.redes.face:"https://facebook.com/"+st.redes.face)}" target="_blank" rel="noopener">Facebook</a>`:""].join("");$("#creditos").innerHTML=Object.entries(FOTOS).map(([m,f])=>`<li><a href="https://commons.wikimedia.org/wiki/File:${encodeURIComponent(f.replace(/ /g,"_"))}" target="_blank" rel="noopener">${esc(m)}: ${esc(f)}</a></li>`).join("");$("#l-loja").textContent=L.nome;
  const pub=S.carros.filter(c=>c.status==="Disponível"||c.status==="Reservado");
- $("#v-qtd").textContent=pub.length;
+ $("#v-stats").innerHTML=[st.destaques.qtd?[pub.length,"carros disponíveis"]:null,st.destaques.d2v?[st.destaques.d2v,st.destaques.d2t]:null,st.destaques.d3v?[st.destaques.d3v,st.destaques.d3t]:null].filter(Boolean).map(x=>`<div><b>${esc(x[0])}</b>${esc(x[1])}</div>`).join("");
+ if(!ORD_MEXEU)$("#s-ord").value=st.ordem;
  const sel=$("#s-marca"),cur=sel.value;sel.innerHTML='<option value="">Marca</option>'+[...new Set(pub.map(c=>c.marca))].sort().map(m=>`<option ${m===cur?"selected":""}>${esc(m)}</option>`).join("");
  const q=$("#s-q").value.trim().toLowerCase(),m=$("#s-marca").value,p=+$("#s-preco").value||Infinity,cb=$("#s-cambio").value,o=$("#s-ord").value;
  let l=pub.filter(c=>(!q||(c.marca+" "+c.modelo+" "+c.versao).toLowerCase().includes(q))&&(!m||c.marca===m)&&c.preco<=p&&(!cb||c.cambio===cb));
  l.sort({rec:(a,b)=>b.entrada.localeCompare(a.entrada),menor:(a,b)=>a.preco-b.preco,maior:(a,b)=>b.preco-a.preco,km:(a,b)=>a.km-b.km}[o]);
  $("#v-cont").textContent=l.length+(l.length===1?" carro encontrado":" carros encontrados");
  $("#cards").innerHTML=l.length?l.map(c=>{const tags=[];if(c.status==="Reservado")tags.push('<span class="pill p-warn">Reservado</span>');if(c.preco<c.fipe*0.98)tags.push('<span class="pill p-ok">Abaixo da FIPE</span>');if(c.km/Math.max(1,2026-c.ano)<8500)tags.push('<span class="pill p-info">Baixa km</span>');
-  return `<button class="card" data-ver="${c.id}" type="button"><div class="ph">${carSVG(c)}<div class="tags">${tags.join("")}</div></div><div class="b"><div class="nm">${esc(c.marca)} ${esc(c.modelo)}</div><div class="vs">${esc(c.versao)}</div><div class="spec"><span><svg class="i"><use href="#i-cal"/></svg>${c.ano}</span><span><svg class="i"><use href="#i-gauge"/></svg>${c.km.toLocaleString("pt-BR")} km</span><span><svg class="i"><use href="#i-gear"/></svg>${c.cambio}</span></div><div class="pr num">${R(c.preco)}</div><div class="parc num">ou 48x de ${R(pmt(c.preco*0.7,0.0189,48))}</div></div></button>`}).join(""):`<p class="muted">Nenhum carro com esses filtros. Tente outra busca.</p>`;
+  return `<button class="card" data-ver="${c.id}" type="button"><div class="ph">${carSVG(c)}<div class="tags">${tags.join("")}</div></div><div class="b"><div class="nm">${esc(c.marca)} ${esc(c.modelo)}</div><div class="vs">${esc(c.versao)}</div><div class="spec"><span><svg class="i"><use href="#i-cal"/></svg>${c.ano}</span><span><svg class="i"><use href="#i-gauge"/></svg>${c.km.toLocaleString("pt-BR")} km</span><span><svg class="i"><use href="#i-gear"/></svg>${c.cambio}</span></div><div class="pr num">${R(c.preco)}</div><div class="parc num">ou ${st.fin.prazo}x de ${R(pmt(c.preco*(1-st.fin.entrada/100),st.fin.taxa/100,st.fin.prazo))}</div></div></button>`}).join(""):`<p class="muted">Nenhum carro com esses filtros. Tente outra busca.</p>`;
 }
 function verCarro(id){
  const c=carro(id),L=S.loja;if(!c)return;
@@ -986,17 +1067,17 @@ function verCarro(id){
    <div class="specgrid"><div><span class="lbl">Ano</span><b>${c.ano}</b></div><div><span class="lbl">Km</span><b class="num">${c.km.toLocaleString("pt-BR")}</b></div><div><span class="lbl">Câmbio</span><b>${c.cambio}</b></div><div><span class="lbl">Combustível</span><b>${c.comb}</b></div><div><span class="lbl">Cor</span><b>${c.pintura}</b></div><div><span class="lbl">Final da placa</span><b>${c.placa.slice(-1)}</b></div></div>
    <p class="muted" style="margin-top:12px;font-size:13.5px">Revisado, com laudo cautelar aprovado e 3 meses de garantia de motor e câmbio.</p></div>
   <div style="display:flex;flex-direction:column;gap:12px"><div><div class="pr num" style="font-size:38px;font-family:var(--f-display);font-weight:700">${R(c.preco)}</div><span class="muted" style="font-size:13px">preço à vista</span></div>
-   <div class="sim" id="vitrine-sim" style="--b:var(--brand)"><span class="lbl">Simule o financiamento</span>
-    <label class="field">Entrada: <b id="sim-ent" class="num"></b><input type="range" id="sim-e" min="0" max="80" step="5" value="30"></label>
-    <label class="field">Prazo<select id="sim-n"><option>24</option><option>36</option><option selected>48</option><option>60</option></select></label>
-    <div><span class="muted" style="font-size:13px">Parcela estimada</span><div class="big num" id="sim-p"></div><span class="muted" style="font-size:12px">Simulação com taxa de 1,89% ao mês. Sujeita à aprovação de crédito.</span></div></div>
+   <div class="sim" id="vitrine-sim" style="--b:var(--brand)" ${SITE(L).mostrar.simulador?"":"hidden"}><span class="lbl">Simule o financiamento</span>
+    <label class="field">Entrada: <b id="sim-ent" class="num"></b><input type="range" id="sim-e" min="0" max="80" step="5" value="${SITE(L).fin.entrada}"></label>
+    <label class="field">Prazo<select id="sim-n">${[12,24,36,48,60].map(n=>`<option ${n==SITE(L).fin.prazo?"selected":""}>${n}</option>`).join("")}</select></label>
+    <div><span class="muted" style="font-size:13px">Parcela estimada</span><div class="big num" id="sim-p"></div><span class="muted" style="font-size:12px">Simulação com taxa de ${String(SITE(L).fin.taxa).replace(".",",")}% ao mês. Sujeita à aprovação de crédito.</span></div></div>
    <a class="btn" style="justify-content:center;background:var(--brand);color:var(--brand-ink)" href="https://wa.me/55${tel}?text=${msg}" target="_blank" rel="noopener"><svg class="i"><use href="#i-chat"/></svg>Falar no WhatsApp</a>
    <details><summary class="btn ghost" style="justify-content:center;list-style:none">Agendar visita ou test drive</summary>
     <form class="form" id="f-agv" style="margin-top:10px"><label class="field full">Seu nome<input id="agv-n" required></label><label class="field full">WhatsApp<input id="agv-t" type="tel" inputmode="tel" data-tel autocomplete="tel" required></label><label class="field">Dia<input id="agv-d" type="date" required value="${addD(HOJE,1)}" min="${HOJE}"></label><label class="field">Horário<select id="agv-h"><option>09:00</option><option>10:30</option><option selected>14:00</option><option>15:30</option><option>17:00</option></select></label><label class="field full">Tipo<select id="agv-tp"><option>Test drive</option><option>Visita</option></select></label><button class="btn full" type="submit" style="justify-content:center;background:var(--brand);color:var(--brand-ink)">Pedir agendamento</button></form></details>
   </div></div>`;
  ov.hidden=false;
  $$("[data-gal]").forEach(b=>b.onclick=()=>{const im=$("#gal-main img");if(im)im.src=c.fotos[+b.dataset.gal];$$("[data-gal]").forEach(x=>x.setAttribute("aria-pressed",x===b))});
- const upd=()=>{const e=+$("#sim-e").value/100,n=+$("#sim-n").value;$("#sim-ent").textContent=R(c.preco*e)+" ("+Math.round(e*100)+"%)";$("#sim-p").textContent=n+"x de "+R(pmt(c.preco*(1-e),0.0189,n))};
+ const upd=()=>{const e=+$("#sim-e").value/100,n=+$("#sim-n").value;$("#sim-ent").textContent=R(c.preco*e)+" ("+Math.round(e*100)+"%)";$("#sim-p").textContent=n+"x de "+R(pmt(c.preco*(1-e),SITE(L).fin.taxa/100,n))};
  $("#sim-e").oninput=upd;$("#sim-n").onchange=upd;upd();
  $("#f-agv").onsubmit=e=>{e.preventDefault();const n=$("#agv-n").value.trim(),t=$("#agv-t").value.trim();
   S.leads.push({id:Date.now(),nome:n,tel:t,carro:c.id,origem:"Site",etapa:"Visita marcada",data:HOJE,nota:"Pediu "+$("#agv-tp").value.toLowerCase()+" pelo site."});
@@ -1007,13 +1088,13 @@ function verCarro(id){
 /* ---------- PAINEL ---------- */
 function renderPainel(){
  aplicaMarca();
- $("#p-logo").textContent=ini(S.loja.nome);$("#m-loja").textContent=S.loja.nome;$("#p-loja").textContent=S.loja.nome;$("#p-slug").textContent=S.loja.slug;
+ $("#p-logo").textContent=ini(S.loja.nome);$("#m-loja").textContent=S.loja.nome;$("#p-loja").textContent=S.loja.nome;$("#p-slug").textContent=urlSite(S.loja);
  $("#me-av").textContent=ini(USER.nome);$("#me-nome").textContent=USER.nome;$("#me-papel").textContent=USER.papel;
  {const h=new Date().getHours();$("#ola").textContent=(h<12?"Bom dia, ":h<18?"Boa tarde, ":"Boa noite, ")+USER.nome.split(" ")[0]}
  $$(".dono").forEach(e=>e.hidden=!isDono());
  {const n=S.leads.filter(l=>parado(l)||l.etapa==="Novo").length;$("#cnt-novos").textContent=n;$("#bb-n").textContent=n;$("#bb-n").hidden=!n}
  renderGeral();renderEstoque();renderKanban();renderAgenda();renderVendas();renderMov();renderMapa();renderAval();
- if(isDono()){renderFin();renderRel();renderParc();renderEquipe();renderLoja()}
+ if(isDono()){renderFin();renderRel();renderParc();renderEquipe();if(!$("#sec-loja").hidden)renderLoja()}
 }
 function renderGeral(){
  const est=S.carros.filter(c=>!c.venda),vm=S.carros.filter(vendaMes);
@@ -1125,13 +1206,6 @@ function renderEquipe(){
  const P=[["Ver e cadastrar carros",1,1,1,0],["Ver custo, preço mínimo e lucro",1,1,0,1],["Contatos e agenda",1,1,1,0],["Registrar venda",1,1,1,0],["Avaliar carro na troca",1,1,1,0],["Mudar as regras da avaliação",1,0,0,0],["Financeiro e contas",1,0,0,1],["Relatórios",1,1,0,1],["Parceiros e repasses",1,1,0,1],["Cadastrar e editar a equipe",1,0,0,0],["Mudar nome e dados do site",1,0,0,0]];
  $("#perm").innerHTML=`<thead><tr><th>Permissão</th><th>Dono</th><th>Gerente</th><th>Vendedor</th><th>Financeiro</th></tr></thead><tbody>`+P.map(p=>`<tr><td>${p[0]}</td>${[1,2,3,4].map(k=>`<td class="${p[k]?"yes":"no"}">${p[k]?"✓":"—"}</td>`).join("")}</tr>`).join("")+"</tbody>";
 }
-function renderLoja(){
- const L=S.loja;["nome","slug","slogan","cid","wpp","end","hor","sobre","cnpj","contador"].forEach(k=>{const e=$("#lj-"+k);if(document.activeElement!==e)e.value=L[k]||""});
- $("#lj-cor").value=L.cor;
- prevLoja();
-}
-function prevLoja(){const n=$("#lj-nome").value||S.loja.nome,cor=$("#lj-cor").value,ink=inkFor(cor);
- $("#prev").innerHTML=`<div style="background:${cor};color:${ink};padding:14px"><div style="display:flex;gap:10px;align-items:center"><div class="v-logo" style="background:${ink};color:${cor};width:34px;height:34px;font-size:16px">${esc(ini(n))}</div><div class="v-name" style="font-size:20px">${esc(n)}<small>${esc($("#lj-cid").value)} · patio.app/${esc($("#lj-slug").value)}</small></div></div><div style="font-family:var(--f-display);font-weight:700;font-size:26px;margin-top:14px;line-height:1.05">${esc($("#lj-slogan").value)}</div></div><div style="padding:12px;display:grid;grid-template-columns:1fr 1fr;gap:8px;background:var(--bg)">${S.carros.filter(c=>!c.venda).slice(0,2).map(c=>`<div style="background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden"><div style="aspect-ratio:16/10">${carSVG(c)}</div><div style="padding:6px 8px;font-size:12px"><b>${esc(c.modelo)}</b><div class="num" style="font-family:var(--f-display);font-size:18px;font-weight:700">${R(c.preco)}</div></div></div>`).join("")}</div>`}
 
 /* ---------- FICHA DO CARRO (painel) ---------- */
 let TAB="resumo";
@@ -1551,7 +1625,9 @@ const AJ=[
  {t:"Parceiros e repasses",k:["parceiro","repasse","lojista parceiro","carro de parceiro"],dono:1,r:"Em <b>Parceiros</b> ficam os lojistas e donos de carros consignados, com os carros de cada um e o repasse pendente. O repasse entra em contas a pagar quando o carro vende.",go:["Abrir parceiros",()=>secao("parc")]},
  {t:"Adicionar ou remover vendedor",k:["vendedor novo","funcionario","adicionar vendedor","remover vendedor","equipe","acesso","bloquear","contratar","demitir"],dono:1,r:"<ol><li>Vá em <b>Equipe e acessos</b>.</li><li>Para incluir: <b>Adicionar pessoa</b> (nome, usuário, senha e papel).</li><li>Para mudar ou remover: toque em <b>Editar</b> na pessoa.</li></ol>Em \"Acesso ao painel\" dá para <b>bloquear</b> sem apagar.",go:["Abrir a equipe",()=>secao("equipe")]},
  {t:"Trocar senha ou usuário",k:["senha","trocar senha","esqueci a senha","usuario","login","mudar senha"],r:"O dono troca a senha de qualquer pessoa em <b>Equipe e acessos</b> → <b>Editar</b>. Se você é vendedor e esqueceu a senha, peça para o dono da loja.",go:null},
- {t:"Dados da loja e do site",k:["dados da loja","nome da loja","endereco","horario","cnpj","whatsapp da loja","frase","sobre a loja","minha loja"],dono:1,r:"Em <b>Minha loja</b> você muda nome, frase de destaque, endereço, horário, WhatsApp, CNPJ e o e-mail do contador. Salve e o site muda na hora.",go:["Abrir Minha loja",()=>secao("loja")]},
+ {t:"Personalizar o site",k:["personalizar","customizar","mudar o site","cara do site","cor do site","cor da marca","logo","logotipo","fonte","letra","topo","foto do topo","rodape","redes sociais","instagram","facebook","dados da loja","nome da loja","endereco","horario","cnpj","frase","slogan","sobre a loja","minha loja","previa"],dono:1,r:"Em <b>Minha loja</b> você muda tudo do site: logotipo, cor, letra, topo (claro, escuro, cor ou foto), destaques, vitrine, financiamento, contato, redes sociais, endereço e rodapé. A prévia ao lado mostra na hora, e o cliente só vê depois de <b>Salvar e publicar</b>. No celular, use <b>Editar</b> e <b>Ver prévia</b>.",go:["Abrir Minha loja",()=>secao("loja")]},
+ {t:"Domínio próprio",k:["dominio","dominio proprio","com.br","registro.br","endereco do site","site proprio","url"],dono:1,r:"Se a loja tem um domínio (ex.: <b>sualoja.com.br</b>, comprado no registro.br por cerca de R$ 40 por ano), o site fica nele e o painel em <b>sualoja.com.br/painel</b>. Coloque o domínio em <b>Minha loja → Endereço do site</b>; a gente faz a ligação na implantação. Sem domínio, a loja usa um endereço grátis.",go:["Abrir Minha loja",()=>secao("loja")]},
+ {t:"Esconder o menu lateral",k:["esconder o menu","menu","recolher","esconder menu","recolher menu","menu lateral","barra lateral","mais espaco","tela cheia"],r:"No computador, toque no botão <b>«</b> ao lado do nome no topo do menu para recolher (ficam só os ícones). Toque em <b>»</b> para abrir de novo. O painel lembra sua escolha."},
  {t:"Link do site",k:["link do site","endereco do site","site da loja","divulgar","compartilhar site","ver site"],r:"Toque em <b>Ver meu site</b> no menu para ver como o cliente vê. O dono copia o link em <b>Primeiros passos</b> na Visão geral (botão <b>Copiar link</b>)."},
  {t:"Modo escuro",k:["modo escuro","escuro","tema","cor da tela","claro"],r:"No menu, toque em <b>Modo escuro</b> (ou <b>Modo claro</b> para voltar). O aparelho guarda a escolha."},
  {t:"Desfazer",k:["desfazer","errei","voltar atras","apaguei","sem querer"],r:"Logo depois de mover, editar, excluir, dar baixa ou registrar venda aparece o botão <b>Desfazer</b> embaixo da tela por alguns segundos. Se já passou, é só corrigir na própria tela."},
@@ -1584,11 +1660,94 @@ function ajAbre(abrir){if(abrir)$("#toast").hidden=true;$("#aj").hidden=!abrir;$
  if(abrir&&!$("#aj-m").children.length){ajMsg(`Oi, ${esc(USER.nome.split(" ")[0])}! Sou a ajuda do Pátio. Pergunte do seu jeito, por exemplo: <i>"como anoto uma venda?"</i>`,"bot");
   ajChips(AJ.filter(e=>isDono()?["Registrar uma venda","Cadastrar um carro","Avaliar carro na troca","Enviar para o contador","Adicionar ou remover vendedor","Lucro do mês"].includes(e.t):["Registrar uma venda","Cadastrar um carro","Cadastrar um cliente (contato)","Agendar visita ou test drive","Avaliar carro na troca","Mandar um carro para o cliente"].includes(e.t)))}
  if(abrir)setTimeout(()=>$("#aj-q").focus(),50)}
+/* ---------- editor do site ---------- */
+let DRAFT=null,ED_DISP=matchMedia("(max-width:900px)").matches?"cel":"pc",ED_T=null;
+const gp=(o,p)=>p.split(".").reduce((a,k)=>a==null?a:a[k],o);
+function sp(o,p,v){const ks=p.split(".");let a=o;ks.slice(0,-1).forEach(k=>{if(a[k]==null||typeof a[k]!=="object")a[k]={};a=a[k]});a[ks.at(-1)]=v}
+function edDraft(){if(!DRAFT){DRAFT=JSON.parse(JSON.stringify(S.loja));DRAFT.site=SITE(S.loja)}return DRAFT}
+function edSujo(){const d=edDraft(),o=JSON.parse(JSON.stringify(S.loja));o.site=SITE(S.loja);const suj=JSON.stringify(d)!==JSON.stringify(o);$("#ed-sujo").hidden=!suj;return suj}
+function renderLoja(){const d=edDraft(),st=d.site;
+ const inp=(k,lab,ph,tipo)=>`<label class="field">${lab}<input data-k="${k}" ${tipo?`type="${tipo}"`:""} value="${esc(gp(d,k)??"")}" placeholder="${esc(ph||"")}"></label>`;
+ const area=(k,lab,ph)=>`<label class="field">${lab}<textarea data-k="${k}" rows="3" placeholder="${esc(ph||"")}">${esc(gp(d,k)??"")}</textarea></label>`;
+ const chk=(k,lab)=>`<label class="ed-chk">${lab}<input type="checkbox" data-k="${k}" ${gp(d,k)?"checked":""}></label>`;
+ const seg=(k,ops)=>`<div class="seg" data-segk="${k}">${ops.map(([v,t])=>`<button type="button" data-v="${v}" aria-pressed="${gp(d,k)===v}">${t}</button>`).join("")}</div>`;
+ const num=(k,lab,step)=>`<label class="field">${lab}<input data-k="${k}" type="number" inputmode="decimal" step="${step||1}" value="${gp(d,k)}"></label>`;
+ $("#ed-ctrl").innerHTML=`
+ <details open><summary>Endereço do site</summary><div class="ed-in">
+  ${inp("site.dominio","Domínio próprio (opcional)","autosulveiculos.com.br")}
+  <p class="dica">Se a loja tiver um domínio (comprado no registro.br, por cerca de R$ 40 por ano), o site fica nele e o painel em <b>${esc(urlSite(d))}/painel</b>. A gente faz a ligação do domínio na implantação.</p>
+  ${inp("slug","Endereço grátis (se não tiver domínio)","autosul")}
+  <p class="dica">Sem domínio próprio, o site fica em <b>${esc((d.slug||"sualoja")+".patio.app")}</b>.</p>
+ </div></details>
+ <details open><summary>Identidade</summary><div class="ed-in">
+  ${inp("nome","Nome da loja","Auto Sul Veículos")}
+  <div class="field">Logotipo<div class="ed-img"><span class="mini" id="ed-logo-mini" style="${st.logo?`background-image:url('${st.logo}')`:""}">${st.logo?"":"sem logo"}</span><label class="btn sm soft" style="cursor:pointer">Enviar imagem<input type="file" accept="image/*" id="ed-logo" hidden></label>${st.logo?'<button type="button" class="btn sm ghost" id="ed-logo-rm">Remover</button>':""}</div><p class="dica">Sem logotipo, o site mostra as iniciais do nome.</p></div>
+  <div class="field">Cor da marca<div class="ed-sw" id="ed-sw">${["#dc2626","#1d4ed8","#0f766e","#111827","#c2410c","#6d28d9","#15803d","#a16207"].map(c=>`<button type="button" data-cor="${c}" style="background:${c}" aria-pressed="${c===d.cor}" aria-label="Cor ${c}"></button>`).join("")}<input type="color" data-k="cor" value="${d.cor}" aria-label="Outra cor"></div><p class="dica">Usada nos botões, no logotipo de iniciais e no topo, se você escolher "Cor da marca".</p></div>
+  <div class="field">Letra dos títulos${seg("site.fonte",[["larga","Moderna"],["classica","Clássica"],["simples","Simples"]])}</div>
+ </div></details>
+ <details><summary>Topo do site</summary><div class="ed-in">
+  <div class="field">Fundo do topo${seg("site.topo.estilo",[["claro","Claro"],["escuro","Escuro"],["marca","Cor da marca"],["foto","Foto"]])}</div>
+  <div class="field" ${st.topo.estilo==="foto"?"":"hidden"}>Foto do topo<div class="ed-img"><span class="mini" style="${st.topo.foto?`background-image:url('${st.topo.foto}')`:""}">${st.topo.foto?"":"sem foto"}</span><label class="btn sm soft" style="cursor:pointer">Enviar foto<input type="file" accept="image/*" id="ed-foto" hidden></label></div><p class="dica">Uma foto da fachada ou do pátio fica ótima. Ela escurece um pouco para o texto aparecer.</p></div>
+  <div class="field">Alinhamento${seg("site.topo.alinhar",[["centro","Centralizado"],["esquerda","À esquerda"]])}</div>
+  ${inp("site.topo.eyebrow","Texto pequeno acima do título","Seminovos em {cidade}")}
+  ${inp("slogan","Frase de destaque (título)","Seminovos revisados em Pelotas")}
+  ${area("site.topo.subt","Texto de apoio","Escolha seu próximo carro…")}
+ </div></details>
+ <details><summary>Destaques do topo</summary><div class="ed-in">
+  ${chk("site.destaques.qtd","Mostrar quantos carros estão disponíveis")}
+  <div class="ed-par"><input data-k="site.destaques.d2v" value="${esc(st.destaques.d2v)}" placeholder="3 meses"><input data-k="site.destaques.d2t" value="${esc(st.destaques.d2t)}" placeholder="de garantia"></div>
+  <div class="ed-par"><input data-k="site.destaques.d3v" value="${esc(st.destaques.d3v)}" placeholder="Laudo"><input data-k="site.destaques.d3t" value="${esc(st.destaques.d3t)}" placeholder="cautelar em todos"></div>
+  <p class="dica">Deixe em branco para esconder um destaque.</p>
+ </div></details>
+ <details><summary>Vitrine de carros</summary><div class="ed-in">
+  ${chk("site.mostrar.busca","Mostrar busca e filtros")}
+  ${chk("site.mostrar.parcela","Mostrar parcela nos cartões")}
+  ${chk("site.mostrar.etiquetas","Mostrar etiquetas (Abaixo da FIPE, Baixa km)")}
+  <div class="field">Tamanho dos cartões${seg("site.cards",[["compacto","Pequeno"],["normal","Médio"],["grande","Grande"]])}</div>
+  <label class="field">Ordem dos carros<select data-k="site.ordem">${[["rec","Mais recentes"],["menor","Menor preço"],["maior","Maior preço"],["km","Menor km"]].map(([v,t])=>`<option value="${v}" ${st.ordem===v?"selected":""}>${t}</option>`).join("")}</select></label>
+  ${inp("site.textos.aviso","Aviso sobre os preços","Preços à vista…")}
+  <p class="dica">Use {entrada} e {prazo} para o texto acompanhar o simulador.</p>
+ </div></details>
+ <details><summary>Financiamento</summary><div class="ed-in">
+  ${chk("site.mostrar.simulador","Mostrar simulador na página do carro")}
+  ${num("site.fin.entrada","Entrada padrão (%)")}${num("site.fin.prazo","Prazo padrão (meses)")}${num("site.fin.taxa","Taxa de juros ao mês (%)",0.01)}
+ </div></details>
+ <details><summary>Contato e redes sociais</summary><div class="ed-in">
+  <label class="field">WhatsApp da loja<input data-k="wpp" type="tel" inputmode="tel" data-tel value="${esc(d.wpp)}"></label>
+  ${inp("site.textos.zap","Mensagem que o cliente manda","Olá! Vim pelo site da {loja}.")}
+  ${inp("site.textos.contato","Texto do botão de contato","Contato")}
+  ${chk("site.mostrar.zap","Botão verde do WhatsApp no canto do site")}
+  ${inp("site.redes.insta","Instagram","@sualoja")}${inp("site.redes.face","Facebook","sualoja")}
+ </div></details>
+ <details><summary>Sobre a loja e endereço</summary><div class="ed-in">
+  ${chk("site.mostrar.sobre","Mostrar a parte “Sobre a loja”")}
+  ${area("sobre","Sobre a loja","Conte a história da loja")}
+  ${inp("cid","Cidade","Pelotas/RS")}${inp("end","Endereço","Rua, número, bairro")}${inp("hor","Horário","Seg a sex 8h–18h")}
+ </div></details>
+ <details><summary>Rodapé e dados da empresa</summary><div class="ed-in">
+  ${inp("site.textos.rodape","Texto do rodapé","Ex.: CNPJ e endereço")}
+  ${inp("cnpj","CNPJ","00.000.000/0001-00")}${inp("contador","E-mail do contador","contador@escritorio.com.br","email")}
+ </div></details>
+ <button class="btn danger" type="button" id="reset">Restaurar dados de exemplo</button>`;
+ $("#ed-url").textContent="https://"+urlSite(d);
+ const dz=$("#reset");dz.onclick=resetDemo;
+ const lg=$("#ed-logo");lg.onchange=async()=>{const f=await lerImg(lg.files[0],420);if(f){d.site.logo=f;edMudou(true)}};
+ const rm=$("#ed-logo-rm");if(rm)rm.onclick=()=>{d.site.logo="";edMudou(true)};
+ const ft=$("#ed-foto");ft.onchange=async()=>{const f=await lerImg(ft.files[0],1600);if(f){d.site.topo.foto=f;edMudou(true)}};
+ edFrame();edSujo()}
+function lerImg(file,W){return new Promise(res=>{if(!file)return res(null);const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const sc=Math.min(1,W/im.width),cv=document.createElement("canvas");cv.width=Math.round(im.width*sc);cv.height=Math.round(im.height*sc);const cx=cv.getContext("2d");cx.drawImage(im,0,0,cv.width,cv.height);res(cv.toDataURL(file.type==="image/png"&&W<600?"image/png":"image/jpeg",0.78))};im.onerror=()=>res(null);im.src=r.result};r.readAsDataURL(file)})}
+function edMudou(redesenha){edSujo();if(redesenha){const op=[...$$("#ed-ctrl details")].map(x=>x.open);renderLoja();$$("#ed-ctrl details").forEach((x,i)=>x.open=op[i])}clearTimeout(ED_T);ED_T=setTimeout(edEnvia,120)}
+function edEnvia(){const f=$("#ed-if");if(f&&f.contentWindow)try{f.contentWindow.postMessage({tipo:"patio-previa",loja:edDraft()},"*")}catch(e){}$("#ed-url").textContent="https://"+urlSite(edDraft())}
+let ED_TRY=0;function edFrame(){$$("#ed-disp button").forEach(x=>x.setAttribute("aria-pressed",x.dataset.v===ED_DISP));const f=$("#ed-if"),box=$("#ed-frame");if(!f||!box)return;if(!f.getAttribute("src")){f.src=location.href.split("#")[0]+"#previa"}if(!box.clientWidth){if(ED_TRY++<20&&!$("#sec-loja").hidden)setTimeout(edFrame,100);return}ED_TRY=0;
+ const cel=ED_DISP==="cel",W=cel?390:1280,H=cel?780:900,bw=box.clientWidth-(cel?24:0),bh=box.clientHeight-(cel?28:0),sc=Math.min(1,bw/W,cel?bh/H:9);
+ box.classList.toggle("cel",cel);f.style.width=W+"px";f.style.height=(cel?H:Math.ceil(box.clientHeight/sc))+"px";f.style.transform=`scale(${sc})`;if(cel){f.style.marginBottom=(H*sc-H)+"px";f.style.marginRight=(W*sc-W)+"px"}else{f.style.marginBottom="";f.style.marginRight=""}}
+function resetDemo(e){const b=e.currentTarget;if(!b.dataset.arm){b.dataset.arm=1;b.textContent="Toque de novo para confirmar";setTimeout(()=>{if(b.isConnected){delete b.dataset.arm;b.textContent="Restaurar dados de exemplo"}},3000);return}
+ const eq=S.equipe;S=seed();S.equipe=eq;salvar();DRAFT=null;tudo();toast("Dados de exemplo restaurados. A equipe e as senhas foram mantidas.")}
 function fechar(){$("#ov").hidden=true}
 function tudo(){renderVitrine();if(USER)renderPainel()}
 function tela(t){["vitrine","login","painel"].forEach(x=>$("#"+x).hidden=x!==t);$("#back-painel").hidden=!(t==="vitrine"&&USER);menu(false);scrollTo(0,0)}
 function menu(o){$("#side").classList.toggle("open",o);$("#scrim").hidden=!o;$("#menu-btn").setAttribute("aria-expanded",o)}
-function secao(s){menu(false);$$(".nav[data-sec],.bb[data-sec]").forEach(b=>b.setAttribute("aria-current",b.dataset.sec===s));$$(".sec").forEach(x=>x.hidden=x.id!=="sec-"+s||(x.classList.contains("dono")&&!isDono()));scrollTo(0,0)}
+function secao(s){menu(false);if(s==="loja")setTimeout(()=>{renderLoja();edFrame()},30);$$(".nav[data-sec],.bb[data-sec]").forEach(b=>b.setAttribute("aria-current",b.dataset.sec===s));$$(".sec").forEach(x=>x.hidden=x.id!=="sec-"+s||(x.classList.contains("dono")&&!isDono()));scrollTo(0,0)}
 
 /* ---------- eventos ---------- */
 document.addEventListener("click",e=>{
@@ -1633,6 +1792,20 @@ $("#mapa-q").addEventListener("input",renderMapa);
 $("#mapa-mover").onclick=()=>{MOVER=!MOVER;SEL=null;renderMapa()};
 $("#mapa-cfg").onclick=cfgVagas;
 $("#btn-contador").onclick=contador;
+$("#ed-ctrl").addEventListener("input",e=>{const el=e.target,k=el.dataset&&el.dataset.k;if(!k)return;const d=edDraft();let v=el.type==="checkbox"?el.checked:el.type==="number"?(+el.value||0):el.value;if(k==="slug")v=v.toLowerCase().replace(/[^a-z0-9-]/g,"");sp(d,k,v);if(k==="cor")$$("#ed-sw button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.cor===v));edMudou(false)});
+$("#ed-ctrl").addEventListener("change",e=>{const el=e.target;if(el.dataset&&el.dataset.k&&(el.tagName==="SELECT"||el.type==="checkbox"))edMudou(false)});
+$("#ed-ctrl").addEventListener("click",e=>{const sg=e.target.closest("[data-segk] button");if(sg){sp(edDraft(),sg.parentElement.dataset.segk,sg.dataset.v);edMudou(true);return}
+ const cw=e.target.closest("[data-cor]");if(cw){edDraft().cor=cw.dataset.cor;edMudou(true)}});
+$("#ed-salvar").onclick=()=>{const d=edDraft();d.slug=(d.slug||"").toLowerCase().replace(/[^a-z0-9-]/g,"")||S.loja.slug;if(!d.nome.trim()){toast("Coloque o nome da loja.");return}marca();S.loja=JSON.parse(JSON.stringify(d));S.guia=S.guia||{};S.guia.loja=true;if(!salvar()){S=JSON.parse(UNDO);return}DRAFT=null;tudo();toast("Site publicado com as mudanças.",1)};
+$("#ed-desc").onclick=()=>{DRAFT=null;renderLoja();edEnvia();toast("Mudanças descartadas.")};
+$("#ed-disp").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;ED_DISP=b.dataset.v;$$("#ed-disp button").forEach(x=>x.setAttribute("aria-pressed",x===b));edFrame()});
+$("#ed-modo").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;$$("#ed-modo button").forEach(x=>x.setAttribute("aria-pressed",x===b));$("#ed").className="ed so-"+b.dataset.v;if(b.dataset.v==="prev")setTimeout(edFrame,30)});
+addEventListener("resize",()=>{if(!$("#sec-loja").hidden)edFrame()});
+addEventListener("message",e=>{const m=e.data||{};if(m.tipo==="patio-pronto"&&!PREVIA)edEnvia();if(m.tipo==="patio-previa"&&PREVIA){S.loja=m.loja;renderVitrine()}});
+$("#recolher").onclick=()=>{const mini=!document.documentElement.classList.contains("menu-mini");document.documentElement.classList.toggle("menu-mini",mini);try{localStorage.setItem("patio-menu",mini?"mini":"")}catch(e){}$("#recolher").textContent=mini?"»":"«";$("#recolher").title=mini?"Mostrar menu":"Esconder menu";$("#recolher").setAttribute("aria-label",$("#recolher").title);if(!$("#sec-loja").hidden)setTimeout(edFrame,230)};
+try{if(localStorage.getItem("patio-menu")==="mini"){document.documentElement.classList.add("menu-mini");$("#recolher").textContent="»";$("#recolher").title="Mostrar menu"}}catch(e){}
+$$(".side .nav").forEach(n=>{if(!n.title)n.title=n.textContent.trim()});
+document.addEventListener("input",e=>{if(e.target.id==="s-ord")ORD_MEXEU=true});
 $("#aj-btn").onclick=()=>ajAbre(true);$("#aj-x").onclick=()=>ajAbre(false);
 $("#aj-f").onsubmit=e=>{e.preventDefault();const q=$("#aj-q").value.trim();if(!q)return;$("#aj-q").value="";ajPerg(q)};
 $("#av-nova").onclick=()=>formAval();$("#av-regras").onclick=formRegras;$("#e-or").addEventListener("change",renderEstoque);
@@ -1647,14 +1820,11 @@ $("#f-login").onsubmit=e=>{e.preventDefault();const u=$("#l-user").value.trim().
 $("#l-user").oninput=$("#l-senha").oninput=()=>{$("#l-erro").hidden=true};
 $("#sair").onclick=()=>{ajAbre(false);$("#aj-m").innerHTML="";USER=null;try{sessionStorage.removeItem("patio-user")}catch(e){}tela("login")};
 $("#ver-site").onclick=$("#ver-site2").onclick=()=>{renderVitrine();tela("vitrine");toast("Este é o site que o comprador vê. O botão de voltar ao painel só aparece para você.")};
-["lj-nome","lj-slug","lj-slogan","lj-cid","lj-cor"].forEach(id=>$("#"+id).addEventListener("input",prevLoja));
-$("#f-loja").onsubmit=e=>{e.preventDefault();S.guia=S.guia||{};S.guia.loja=true;["nome","slug","slogan","cid","wpp","end","hor","sobre"].forEach(k=>S.loja[k]=$("#lj-"+k).value.trim()||S.loja[k]);S.loja.cnpj=$("#lj-cnpj").value.trim();S.loja.contador=$("#lj-contador").value.trim();S.loja.slug=S.loja.slug.toLowerCase().replace(/[^a-z0-9-]/g,"");S.loja.cor=$("#lj-cor").value;salvar();tudo();toast("Loja atualizada. O site já está com os dados novos.")};
-let resetArm=0;$("#reset").onclick=e=>{if(!resetArm){resetArm=1;e.target.textContent="Clique de novo para confirmar";setTimeout(()=>{resetArm=0;e.target.textContent="Restaurar dados de exemplo"},3000);return}S=seed();salvar();resetArm=0;e.target.textContent="Restaurar dados de exemplo";tudo();toast("Dados de exemplo restaurados.")};
 function temaUI(){const d=document.documentElement.getAttribute("data-theme")==="dark";$$("[data-tema]").forEach(b=>{const u=b.querySelector("use");if(u)u.setAttribute("href",d?"#i-sun":"#i-moon");const t=b.querySelector(".tema-txt");if(t)t.textContent=b.classList.contains("tema-btn")?(d?"Claro":"Escuro"):(d?"Modo claro":"Modo escuro");b.setAttribute("aria-label",d?"Mudar para o modo claro":"Mudar para o modo escuro")})}
 function alternaTema(){const d=document.documentElement.getAttribute("data-theme")!=="dark";document.documentElement.setAttribute("data-theme",d?"dark":"light");try{localStorage.setItem("tema",d?"escuro":"claro")}catch(e){}temaUI();if(USER)renderPainel()}
 document.addEventListener("click",e=>{if(e.target.closest("[data-tema]")){alternaTema()}});
 temaUI();
-function rota(){if(USER){const m=USER.id&&S.equipe.find(p=>p.id===USER.id);if(!m||m.removido||m.ativo===false){USER=null;try{sessionStorage.removeItem(UKEY)}catch(e){}}else{USER.nome=m.nome;USER.papel=m.papel}}const mc=location.hash.match(/^#carro-(\d+)$/);if(mc){renderVitrine();tela("vitrine");verCarro(+mc[1]);return}const loj=/\/painel\/?$/.test(location.pathname)||location.hash==="#painel";renderVitrine();
+function rota(){if(location.hash==="#previa"){PREVIA=true;document.documentElement.classList.add("previa");renderVitrine();tela("vitrine");$("#back-painel").hidden=true;try{parent.postMessage({tipo:"patio-pronto"},"*")}catch(e){}return}if(USER){const m=USER.id&&S.equipe.find(p=>p.id===USER.id);if(!m||m.removido||m.ativo===false){USER=null;try{sessionStorage.removeItem(UKEY)}catch(e){}}else{USER.nome=m.nome;USER.papel=m.papel}}const mc=location.hash.match(/^#carro-(\d+)$/);if(mc){renderVitrine();tela("vitrine");verCarro(+mc[1]);return}const loj=/\/painel\/?$/.test(location.pathname)||location.hash==="#painel";renderVitrine();
  if(loj){if(USER){tela("painel");renderPainel();secao("geral")}else tela("login")}else tela("vitrine")}
 addEventListener("hashchange",rota);rota();
 </script>
