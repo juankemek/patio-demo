@@ -534,6 +534,37 @@ details.mais .form{padding:0;margin-top:12px;border:0;background:none;box-shadow
 .av-card .max{font-family:var(--f-mono);font-weight:700;font-size:18px;color:var(--accent)}
 .rg-tab{width:100%;border-collapse:collapse}.rg-tab td,.rg-tab th{padding:6px;border-bottom:1px solid var(--line);text-align:left}
 .rg-tab input{width:100%;padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);font:inherit}
+
+/* ---------- assistente de ajuda ---------- */
+.aj-btn{position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:34;display:flex;align-items:center;gap:8px;border:0;border-radius:99px;background:var(--accent);color:var(--accent-ink);font:inherit;font-weight:700;font-size:14px;padding:12px 16px 12px 13px;box-shadow:0 10px 24px -8px rgba(0,0,0,.45);cursor:pointer}
+.aj-btn svg{width:22px;height:22px}
+.aj-btn[aria-expanded="true"]{display:none}
+.aj{position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:36;width:min(380px,calc(100vw - 24px));height:min(560px,calc(100vh - 110px));background:var(--surface);border:1px solid var(--line);border-radius:18px;box-shadow:0 24px 60px -20px rgba(0,0,0,.5);display:flex;flex-direction:column;overflow:hidden}
+.aj[hidden]{display:none}
+.aj-h{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid var(--line)}
+.aj-h .av{background:var(--accent);color:var(--accent-ink)}
+.aj-h b{display:block;font-size:14.5px}.aj-h small{color:var(--muted);font-size:12px}
+.aj-h .x{margin-left:auto}
+.aj-m{position:relative;flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;background:var(--bg)}
+.aj-msg{max-width:88%;padding:9px 12px;border-radius:14px;font-size:14px;line-height:1.45}
+.aj-msg.bot{background:var(--surface);border:1px solid var(--line);border-bottom-left-radius:4px;align-self:flex-start}
+.aj-msg.eu{background:var(--accent);color:var(--accent-ink);border-bottom-right-radius:4px;align-self:flex-end}
+.aj-msg ol{margin:6px 0 2px;padding-left:20px}.aj-msg ol li{margin-bottom:3px}
+.aj-msg b.t{display:block;margin-bottom:4px}
+.aj-msg .go{margin-top:8px;width:100%;justify-content:center}
+.aj-chips{display:flex;flex-wrap:wrap;gap:6px;align-self:flex-start;max-width:100%}
+.aj-chips button{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:99px;padding:6px 11px;font:inherit;font-size:12.5px;cursor:pointer;text-align:left}
+.aj-chips button:hover{border-color:var(--accent);color:var(--accent)}
+.aj-f{display:flex;gap:8px;padding:10px;border-top:1px solid var(--line);background:var(--surface)}
+.aj-f input{flex:1;min-width:0;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--bg);color:var(--ink);font:inherit;font-size:15px}
+.aj-f button{flex:none}
+.aj-dig{align-self:flex-start;color:var(--muted);font-size:12.5px}
+@media (max-width:900px){
+ .aj-btn{bottom:calc(76px + env(safe-area-inset-bottom,0px));right:12px;padding:12px}
+ .aj-btn span{display:none}
+ .aj{right:0;left:0;bottom:0;width:100%;height:min(78vh,620px);border-radius:18px 18px 0 0;padding-bottom:env(safe-area-inset-bottom,0px)}
+}
+@media print{.aj,.aj-btn{display:none!important}}
 </style>
 
 </head>
@@ -785,6 +816,12 @@ details.mais .form{padding:0;margin-top:12px;border:0;background:none;box-shadow
       </div>
     </div>
   </main>
+  <button class="aj-btn" id="aj-btn" type="button" aria-expanded="false" aria-controls="aj"><svg class="i"><use href="#i-chat"/></svg><span>Ajuda</span></button>
+  <div class="aj" id="aj" hidden role="dialog" aria-label="Ajuda do Pátio">
+    <div class="aj-h"><div class="av">?</div><div><b>Ajuda do Pátio</b><small>Pergunte como fazer qualquer coisa</small></div><button class="x" type="button" id="aj-x">Fechar</button></div>
+    <div class="aj-m" id="aj-m" aria-live="polite"></div>
+    <form class="aj-f" id="aj-f"><input id="aj-q" autocomplete="off" placeholder="Ex.: como anoto uma venda?" aria-label="Sua pergunta"><button class="btn" type="submit">Enviar</button></form>
+  </div>
   <nav class="bbar" aria-label="Atalhos do painel">
     <button class="bb" data-sec="geral" aria-current="true"><svg class="i"><use href="#i-home"/></svg>Início</button>
     <button class="bb" data-sec="estoque"><svg class="i"><use href="#i-car"/></svg>Estoque</button>
@@ -1484,6 +1521,69 @@ function formRegras(){const r=S.regras,ov=$("#ov");ov.classList.add("center");
  <button class="btn full" type="submit" style="justify-content:center">Salvar regras</button></form>`;
  ov.hidden=false;
  $("#fr").onsubmit=e=>{e.preventDefault();marca();const n=k=>+$("#"+k).value||0;Object.assign(r,{fator:n("r-fator")||98,margem:n("r-margem"),fixo:n("r-fixo"),base:n("r-base")});AV_ITENS.forEach(([k])=>r.itens[k]=[0,n("r-"+k+"-1"),n("r-"+k+"-2")]);salvar();renderAval();fechar();toast("Regras atualizadas. Todas as avaliações foram recalculadas.",1)}}
+/* ---------- assistente de ajuda ---------- */
+const AJ=[
+ {t:"Registrar uma venda",k:["anotar venda","registrar venda","marcar venda","vendi","vender carro","venda","fechei","fechou","vendido"],r:"<ol><li>Abra o carro (em <b>Estoque</b>, toque nele).</li><li>Vá na aba <b>Registrar venda</b>.</li><li>Coloque o valor, a data, o nome do cliente, o vendedor e a forma de pagamento.</li><li>Toque em <b>Confirmar venda</b>.</li></ol>O carro sai do site sozinho e o contrato e o recibo ficam prontos na ficha.",go:["Abrir o estoque",()=>secao("estoque")]},
+ {t:"Cadastrar um carro",k:["cadastrar carro","novo carro","adicionar carro","colocar carro","incluir carro","cadastro","cadastrar veiculo","entrou carro","chegou carro"],r:"<ol><li>Toque em <b>Cadastrar veículo</b>.</li><li>Tire as fotos (a primeira vira a capa).</li><li>Preencha marca, modelo, ano, km, placa e preço.</li><li>Toque em <b>Salvar veículo</b>.</li></ol>Se ficar como Disponível, ele já aparece no site.",go:["Cadastrar agora",()=>formNovo("novo-carro")]},
+ {t:"Colocar ou trocar fotos",k:["foto","fotos","imagem","capa","trocar foto","tirar foto"],r:"<ol><li>Abra o carro.</li><li>Vá na aba <b>Fotos</b> e toque em <b>Adicionar fotos</b>.</li><li>Em cada foto dá para <b>Usar como capa</b> ou <b>Remover</b>.</li></ol>A capa é a que aparece no site."},
+ {t:"Mudar o preço de um carro",k:["mudar preco","alterar preco","trocar preco","baixar preco","aumentar preco","preco","valor do carro"],r:"<ol><li>Abra o carro.</li><li>Na aba <b>Resumo</b>, mude o <b>Preço anunciado</b>.</li><li>Toque em <b>Salvar</b>.</li></ol>O site muda na hora e a mudança fica no histórico. Se tiver placa impressa no carro, imprima de novo."},
+ {t:"Preço mínimo",k:["preco minimo","minimo","desconto","limite de desconto"],dono:1,r:"O preço mínimo é o limite para a equipe negociar. Só o dono vê.<ol><li>Abra o carro.</li><li>Na aba <b>Resumo</b>, mude o <b>Preço mínimo</b> e salve.</li></ol>Se alguém registrar uma venda abaixo dele, aparece um aviso em vermelho."},
+ {t:"Esconder um carro do site",k:["esconder","tirar do site","tirar carro","tirar o carro","sair do site","tirar anuncio","oficina","preparacao","nao aparecer","sumir do site"],r:"<ol><li>Abra o carro.</li><li>Em <b>Situação</b>, escolha <b>Preparação</b> e salve.</li></ol>Ele some do site e continua no painel. Quando ficar pronto, volte para <b>Disponível</b>."},
+ {t:"Reservar um carro",k:["reservar","reserva","segurar carro","sinal"],r:"<ol><li>Abra o carro.</li><li>Em <b>Situação</b>, escolha <b>Reservado</b> e salve.</li></ol>Ele continua no site com a etiqueta Reservado. Se o cliente deixou sinal, o dono pode lançar em Financeiro."},
+ {t:"Cadastrar um cliente (contato)",k:["novo contato","cadastrar cliente","novo cliente","anotar cliente","lead","interessado","contato novo"],r:"<ol><li>Vá em <b>Contatos</b> e toque em <b>Novo contato</b>.</li><li>Coloque nome, WhatsApp, de onde veio e o carro de interesse.</li><li>Salve. Ele entra na coluna <b>Novo</b>.</li></ol>",go:["Abrir contatos",()=>secao("contatos")]},
+ {t:"Mudar o contato de etapa",k:["etapa","funil","mover contato","avancar","negociacao","perdido","mudar etapa"],r:"Em <b>Contatos</b>, use os botões do cartão (<b>Voltar</b> ou a próxima etapa). No computador dá para arrastar o cartão para outra coluna. Para pular etapas, toque no cartão e escolha a etapa.",go:["Abrir contatos",()=>secao("contatos")]},
+ {t:"Chamar o cliente no WhatsApp",k:["whatsapp","zap","chamar cliente","mandar mensagem","responder cliente","ligar"],r:"Toque no <b>botão verde</b> do cartão do contato (em Contatos, na Agenda ou em \"Chamar hoje\"). A mensagem já sai pronta para a etapa, é só enviar. O painel anota que você chamou."},
+ {t:"Contatos sem retorno",k:["sem retorno","esquecido","quem chamar","chamar hoje","atrasado","parado"],r:"Os cartões com <b>\"Sem retorno há X dias\"</b> são clientes esperando resposta. Na <b>Visão geral</b>, o quadro <b>Chamar hoje</b> lista todos, os mais atrasados primeiro.",go:["Ver Chamar hoje",()=>secao("geral")]},
+ {t:"Agendar visita ou test drive",k:["agendar","agenda","visita","test drive","marcar visita","horario"],r:"<ol><li>Vá em <b>Agenda</b> e toque em <b>Agendar</b>.</li><li>Coloque cliente, dia, hora, carro e vendedor.</li></ol>Pedidos feitos pelo site entram na agenda sozinhos.",go:["Abrir a agenda",()=>secao("agenda")]},
+ {t:"Imprimir a placa de preço",k:["placa de preco","imprimir placa","para-brisa","parabrisa","qr","codigo qr","etiqueta"],r:"<ol><li>Abra o carro.</li><li>Toque em <b>Imprimir placa de preço</b>.</li><li>Escolha a impressora.</li></ol>Sai uma folha com preço, parcela e um código QR que abre o carro no site."},
+ {t:"Mandar um carro para o cliente",k:["mandar carro","enviar carro","mando o carro","mandar o carro","enviar o carro","mando carro","passar o carro","anuncio","compartilhar","marketplace","olx","divulgar carro","texto"],r:"<ol><li>Abra o carro.</li><li>Toque em <b>Mandar para cliente</b>.</li><li>Use <b>Enviar no WhatsApp</b> ou <b>Copiar texto</b> para colar no Marketplace, na OLX ou no Instagram.</li></ol>"},
+ {t:"Contrato e recibo",k:["contrato","recibo","documento da venda","compra e venda","papel"],r:"<ol><li>Abra um carro <b>vendido</b>.</li><li>Toque em <b>Contrato de compra e venda</b> ou em <b>Recibo</b>.</li><li>Confira os dados do comprador e toque em <b>Gerar e imprimir</b>.</li></ol>Dica: para sair completo, preencha o CPF do comprador e o RENAVAM e chassi do carro."},
+ {t:"Termo de consignação",k:["consignacao","consignado","termo","carro de terceiro","deixou carro"],r:"<ol><li>Cadastre o carro com origem <b>Consignado</b> e escolha o dono.</li><li>Na ficha, toque em <b>Termo de consignação</b>.</li><li>Confira os dados e gere.</li></ol>"},
+ {t:"Avaliar carro na troca",k:["avaliar","avaliacao","troca","quanto pagar","comprar carro do cliente","carro na troca","pegar na troca"],r:"<ol><li>Vá em <b>Avaliações</b> e toque em <b>Nova avaliação</b>.</li><li>Coloque o carro, a FIPE e marque o estado de cada item.</li><li>O sistema mostra <b>quanto pagar no máximo</b> e quanto oferecer.</li></ol>Fechou? Digite o valor e toque em <b>Comprar e pôr no estoque</b>.",go:["Nova avaliação",()=>{secao("aval");formAval()}]},
+ {t:"Regras da avaliação",k:["regras da avaliacao","margem","lucro desejado","custo fixo"],dono:1,r:"Em <b>Avaliações</b>, toque em <b>Regras da avaliação</b>. Ali você define a que % da FIPE vende, o lucro desejado, o custo fixo e o custo de cada item regular ou ruim.",go:["Abrir as regras",()=>{secao("aval");formRegras()}]},
+ {t:"Mapa do pátio",k:["mapa","vaga","onde esta o carro","mover carro de lugar","patio","showroom","garagem","vista de cima"],r:"Em <b>Mapa do pátio</b> você vê a loja de cima. Toque no carro para abrir a ficha. Para mudar de lugar, arraste (no computador) ou toque em <b>Mover carros</b>, depois no carro e depois na vaga.",go:["Abrir o mapa",()=>secao("mapa")]},
+ {t:"Dar baixa numa conta",k:["dar baixa","baixa","conta paga","paguei","recebi","quitar"],dono:1,r:"<ol><li>Vá em <b>Financeiro</b>.</li><li>Na conta, toque em <b>Dar baixa</b>.</li></ol>Errou? Toque em <b>Desfazer</b>.",go:["Abrir o financeiro",()=>secao("fin")]},
+ {t:"Lançar uma despesa ou conta",k:["lancar","despesa","conta a pagar","aluguel","salario","luz","gasto da loja","boleto","conta a receber"],dono:1,r:"<ol><li>Vá em <b>Financeiro</b> e toque em <b>Novo lançamento</b>.</li><li>Escolha a pagar ou a receber, a categoria, o valor e o vencimento.</li><li>Toque em <b>Lançar</b>.</li></ol>",go:["Novo lançamento",()=>{secao("fin");formNovo("nova-conta")}]},
+ {t:"Enviar para o contador",k:["contador","contabilidade","fechamento","imposto","planilha do mes","relatorio do mes"],dono:1,r:"<ol><li>Vá em <b>Financeiro</b> e toque em <b>Enviar para o contador</b>.</li><li>Escolha o mês.</li><li>Baixe a planilha, gere o PDF e toque em <b>Abrir e-mail para o contador</b>.</li></ol>",go:["Abrir agora",()=>{secao("fin");contador()}]},
+ {t:"Lucro do mês",k:["lucro","resultado","dre","quanto ganhei","quanto lucrei","deu lucro"],dono:1,r:"Em <b>Financeiro</b>, aba <b>DRE do mês</b>: receita, custo dos carros vendidos, despesas e resultado. O lucro de cada carro fica na aba <b>Resultado por carro</b>.",go:["Ver o DRE",()=>{secao("fin");FT="dre";renderFin()}]},
+ {t:"Saldo e fluxo de caixa",k:["saldo","caixa","banco","fluxo","dinheiro","quanto tenho"],dono:1,r:"Em <b>Financeiro</b>, o topo mostra o saldo de hoje e o saldo previsto. A aba <b>Fluxo de caixa</b> mostra tudo o que entrou e saiu, e <b>Banco e caixa</b> separa os dois.",go:["Abrir o financeiro",()=>secao("fin")]},
+ {t:"Relatórios",k:["relatorio","relatorios","ranking","conversao","estatistica","numeros"],dono:1,r:"Em <b>Relatórios</b>: vendas, lucro, conversão de contatos, idade do estoque, lucro por marca, vendas por vendedor e de onde vêm os clientes.",go:["Abrir relatórios",()=>secao("rel")]},
+ {t:"Parceiros e repasses",k:["parceiro","repasse","lojista parceiro","carro de parceiro"],dono:1,r:"Em <b>Parceiros</b> ficam os lojistas e donos de carros consignados, com os carros de cada um e o repasse pendente. O repasse entra em contas a pagar quando o carro vende.",go:["Abrir parceiros",()=>secao("parc")]},
+ {t:"Adicionar ou remover vendedor",k:["vendedor novo","funcionario","adicionar vendedor","remover vendedor","equipe","acesso","bloquear","contratar","demitir"],dono:1,r:"<ol><li>Vá em <b>Equipe e acessos</b>.</li><li>Para incluir: <b>Adicionar pessoa</b> (nome, usuário, senha e papel).</li><li>Para mudar ou remover: toque em <b>Editar</b> na pessoa.</li></ol>Em \"Acesso ao painel\" dá para <b>bloquear</b> sem apagar.",go:["Abrir a equipe",()=>secao("equipe")]},
+ {t:"Trocar senha ou usuário",k:["senha","trocar senha","esqueci a senha","usuario","login","mudar senha"],r:"O dono troca a senha de qualquer pessoa em <b>Equipe e acessos</b> → <b>Editar</b>. Se você é vendedor e esqueceu a senha, peça para o dono da loja.",go:null},
+ {t:"Dados da loja e do site",k:["dados da loja","nome da loja","endereco","horario","cnpj","whatsapp da loja","frase","sobre a loja","minha loja"],dono:1,r:"Em <b>Minha loja</b> você muda nome, frase de destaque, endereço, horário, WhatsApp, CNPJ e o e-mail do contador. Salve e o site muda na hora.",go:["Abrir Minha loja",()=>secao("loja")]},
+ {t:"Link do site",k:["link do site","endereco do site","site da loja","divulgar","compartilhar site","ver site"],r:"Toque em <b>Ver meu site</b> no menu para ver como o cliente vê. O dono copia o link em <b>Primeiros passos</b> na Visão geral (botão <b>Copiar link</b>)."},
+ {t:"Modo escuro",k:["modo escuro","escuro","tema","cor da tela","claro"],r:"No menu, toque em <b>Modo escuro</b> (ou <b>Modo claro</b> para voltar). O aparelho guarda a escolha."},
+ {t:"Desfazer",k:["desfazer","errei","voltar atras","apaguei","sem querer"],r:"Logo depois de mover, editar, excluir, dar baixa ou registrar venda aparece o botão <b>Desfazer</b> embaixo da tela por alguns segundos. Se já passou, é só corrigir na própria tela."},
+ {t:"Buscar qualquer coisa",k:["buscar","procurar","achar","encontrar","busca","pesquisar"],r:"Toque em <b>Buscar</b> no menu (ou na lupa no celular). No computador, aperte a tecla <b>/</b>. Acha carro, placa, cliente, telefone e contas.",go:["Abrir a busca",()=>busca()]},
+ {t:"Usar no celular",k:["celular","instalar","aplicativo","app","tela inicial","atalho"],r:"No Chrome (Android): menu de três pontos → <b>Adicionar à tela inicial</b>. No Safari (iPhone): compartilhar → <b>Adicionar à Tela de Início</b>. Abre como um aplicativo."},
+ {t:"RENAVAM, chassi e documentos",k:["renavam","chassi","documento","laudo","ipva","chave reserva","manual"],r:"Abra o carro e vá na aba <b>Documentos</b>: placa, RENAVAM, chassi e a lista de conferência (laudo, manual, chave reserva, IPVA). O que faltar aparece em \"Precisam de atenção\"."},
+ {t:"Lançar gasto de um carro",k:["gasto do carro","custo","preparacao do carro","pneu","polimento","revisao","conserto"],dono:1,r:"<ol><li>Abra o carro.</li><li>Vá na aba <b>Financeiro</b>.</li><li>Em <b>Novo gasto</b>, coloque a descrição e o valor.</li></ol>O lucro do carro se atualiza na hora."},
+ {t:"Comissão dos vendedores",k:["comissao","comissoes","quanto ganha o vendedor"],dono:1,r:"A comissão de cada pessoa fica em <b>Equipe e acessos</b>. Ao registrar uma venda, a comissão entra sozinha em contas a pagar no Financeiro, e aparece em <b>Vendas</b>."},
+ {t:"Entradas e saídas de carros",k:["entradas","saidas","entrada e saida","movimentacao","historico de carros"],r:"Em <b>Entradas e saídas</b> fica cada carro que entrou (compra, consignação ou parceiro) e cada carro que saiu (venda), com data e responsável.",go:["Abrir",()=>secao("mov")]}
+];
+const ajn=t=>t.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^a-z0-9 ]/g," ").replace(/\s+/g," ").trim();
+const AJ_PARE=new Set("como faco fazer onde que o a os as de da do das dos um uma para pra pro e eu quero posso consigo tem ter no na nos nas meu minha se por favor esta isso ver".split(" "));
+const AJ_GEN=new Set("carro carros veiculo veiculos cliente clientes loja site".split(" "));
+function ajBusca(q){const n=" "+ajn(q)+" ",tok=[...new Set(n.trim().split(" ").filter(w=>w.length>2&&!AJ_PARE.has(w)))];
+ const par=(t,w)=>t===w||(t.length>4&&w.length>4&&(w.startsWith(t.slice(0,-2))||t.startsWith(w.slice(0,-2))));
+ return AJ.map(e=>{let sc=0;const ws=new Set();e.k.forEach(k=>{const kk=ajn(k);if(n.includes(" "+kk+" "))sc+=kk.includes(" ")?6:4;kk.split(" ").forEach(w=>{if(w.length>2&&!AJ_GEN.has(w)&&!AJ_PARE.has(w))ws.add(w)})});
+  ajn(e.t).split(" ").forEach(w=>{if(w.length>3&&!AJ_GEN.has(w)&&!AJ_PARE.has(w))ws.add(w)});
+  tok.forEach(t=>{if(!AJ_GEN.has(t)&&[...ws].some(w=>par(t,w)))sc+=1.5});return [e,sc]}).filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1])}
+let AJ_GO=[];
+function ajMsg(html,quem,fica){const m=document.createElement("div"),box=$("#aj-m");m.className="aj-msg "+quem;m.innerHTML=html;box.appendChild(m);if(!fica)box.scrollTop=quem==="bot"?Math.max(0,m.offsetTop-12):1e6;return m}
+function ajChips(lista){const c=document.createElement("div");c.className="aj-chips";lista.forEach(e=>{const b=document.createElement("button");b.type="button";b.textContent=e.t;b.onclick=()=>ajPerg(e.t,e);c.appendChild(b)});$("#aj-m").appendChild(c)}
+function ajResp(e){if(e.dono&&!isDono()){ajMsg(`<b class="t">${esc(e.t)}</b>Essa parte é só do dono da loja. Se precisar, peça para ele fazer ou liberar para você.`,"bot");return}
+ const m=ajMsg(`<b class="t">${esc(e.t)}</b>${e.r}`,"bot");
+ if(e.go){const b=document.createElement("button");b.type="button";b.className="btn sm go";b.textContent=e.go[0]+" →";b.onclick=()=>{if(innerWidth<=900)ajAbre(false);e.go[1]()};m.appendChild(b)}}
+function ajPerg(txt,direto){ajMsg(esc(txt),"eu");const d=document.createElement("div");d.className="aj-dig";d.textContent="digitando…";$("#aj-m").appendChild(d);$("#aj-m").scrollTop=1e6;
+ setTimeout(()=>{d.remove();if(direto){ajResp(direto);return}const r=ajBusca(txt).filter(x=>!x[0].dono||isDono()||x[1]>=4);
+  if(!r.length||r[0][1]<2){ajMsg("Não achei uma resposta para isso. Tente com outras palavras, ou escolha um destes assuntos:","bot");ajChips(AJ.filter(e=>!e.dono||isDono()).slice(0,6));return}
+  ajResp(r[0][0]);const mais=r.slice(1,4).filter(x=>x[1]>=2).map(x=>x[0]).filter(e=>!e.dono||isDono());if(mais.length){ajMsg("Talvez você queira saber também:","bot",1);ajChips(mais)}},420)}
+function ajAbre(abrir){if(abrir)$("#toast").hidden=true;$("#aj").hidden=!abrir;$("#aj-btn").setAttribute("aria-expanded",abrir);
+ if(abrir&&!$("#aj-m").children.length){ajMsg(`Oi, ${esc(USER.nome.split(" ")[0])}! Sou a ajuda do Pátio. Pergunte do seu jeito, por exemplo: <i>"como anoto uma venda?"</i>`,"bot");
+  ajChips(AJ.filter(e=>isDono()?["Registrar uma venda","Cadastrar um carro","Avaliar carro na troca","Enviar para o contador","Adicionar ou remover vendedor","Lucro do mês"].includes(e.t):["Registrar uma venda","Cadastrar um carro","Cadastrar um cliente (contato)","Agendar visita ou test drive","Avaliar carro na troca","Mandar um carro para o cliente"].includes(e.t)))}
+ if(abrir)setTimeout(()=>$("#aj-q").focus(),50)}
 function fechar(){$("#ov").hidden=true}
 function tudo(){renderVitrine();if(USER)renderPainel()}
 function tela(t){["vitrine","login","painel"].forEach(x=>$("#"+x).hidden=x!==t);$("#back-painel").hidden=!(t==="vitrine"&&USER);menu(false);scrollTo(0,0)}
@@ -1533,6 +1633,8 @@ $("#mapa-q").addEventListener("input",renderMapa);
 $("#mapa-mover").onclick=()=>{MOVER=!MOVER;SEL=null;renderMapa()};
 $("#mapa-cfg").onclick=cfgVagas;
 $("#btn-contador").onclick=contador;
+$("#aj-btn").onclick=()=>ajAbre(true);$("#aj-x").onclick=()=>ajAbre(false);
+$("#aj-f").onsubmit=e=>{e.preventDefault();const q=$("#aj-q").value.trim();if(!q)return;$("#aj-q").value="";ajPerg(q)};
 $("#av-nova").onclick=()=>formAval();$("#av-regras").onclick=formRegras;$("#e-or").addEventListener("change",renderEstoque);
 $("#l-voltar").onclick=()=>{renderVitrine();tela("vitrine")};
 $("#menu-btn").onclick=()=>menu(!$("#side").classList.contains("open"));$("#scrim").onclick=()=>menu(false);
@@ -1543,7 +1645,7 @@ $("#f-login").onsubmit=e=>{e.preventDefault();const u=$("#l-user").value.trim().
  $("#l-erro").hidden=true;USER={id:c.id,nome:c.nome,papel:c.papel};try{sessionStorage.setItem(UKEY,JSON.stringify(USER))}catch(e){}
  $("#l-user").value="";$("#l-senha").value="";tela("painel");renderPainel();secao("geral");toast(c.papel==="Dono"?"Entrou como dono: acesso completo.":c.papel==="Vendedor"?"Entrou como vendedor: custo, lucro e financeiro ficam escondidos.":"Entrou como "+c.papel.toLowerCase()+".")};
 $("#l-user").oninput=$("#l-senha").oninput=()=>{$("#l-erro").hidden=true};
-$("#sair").onclick=()=>{USER=null;try{sessionStorage.removeItem("patio-user")}catch(e){}tela("login")};
+$("#sair").onclick=()=>{ajAbre(false);$("#aj-m").innerHTML="";USER=null;try{sessionStorage.removeItem("patio-user")}catch(e){}tela("login")};
 $("#ver-site").onclick=$("#ver-site2").onclick=()=>{renderVitrine();tela("vitrine");toast("Este é o site que o comprador vê. O botão de voltar ao painel só aparece para você.")};
 ["lj-nome","lj-slug","lj-slogan","lj-cid","lj-cor"].forEach(id=>$("#"+id).addEventListener("input",prevLoja));
 $("#f-loja").onsubmit=e=>{e.preventDefault();S.guia=S.guia||{};S.guia.loja=true;["nome","slug","slogan","cid","wpp","end","hor","sobre"].forEach(k=>S.loja[k]=$("#lj-"+k).value.trim()||S.loja[k]);S.loja.cnpj=$("#lj-cnpj").value.trim();S.loja.contador=$("#lj-contador").value.trim();S.loja.slug=S.loja.slug.toLowerCase().replace(/[^a-z0-9-]/g,"");S.loja.cor=$("#lj-cor").value;salvar();tudo();toast("Loja atualizada. O site já está com os dados novos.")};
