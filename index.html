@@ -445,6 +445,7 @@ details.mais .form{padding:0;margin-top:12px;border:0;background:none;box-shadow
  .toast{bottom:calc(84px + env(safe-area-inset-bottom,0px))}
  .gsteps{grid-template-columns:1fr 1fr}
 }
+.l-erro{margin:-4px 0 0;color:var(--crit);font-size:13px;font-weight:600}
 </style>
 
 </head>
@@ -516,17 +517,12 @@ details.mais .form{padding:0;margin-top:12px;border:0;background:none;box-shadow
   <form class="login-box" id="f-login">
     <div class="brand"><span class="mk" aria-hidden="true"></span>Pátio</div>
     <div><h2>Área do lojista</h2><p class="muted" style="margin-top:4px">Entre para cadastrar carros, ver contatos e controlar o financeiro da <b id="l-loja">Auto Sul Veículos</b>.</p></div>
-    <label class="field">E-mail<input id="l-email" type="email" value="marcos@autosul.com.br" required></label>
-    <label class="field">Senha<input id="l-senha" type="password" value="demonstracao" required></label>
-    <div><div class="lbl" style="margin-bottom:6px">Entrar como (para ver a diferença de acesso)</div>
-      <div class="roles">
-        <label><input type="radio" name="papel" value="dono" checked><b>Dono</b><small>Vê tudo, inclusive custo, lucro e financeiro</small></label>
-        <label><input type="radio" name="papel" value="vendedor"><b>Vendedor</b><small>Estoque, contatos e agenda. Sem valores de custo</small></label>
-      </div></div>
+    <label class="field">Usuário<input id="l-user" autocomplete="username" autocapitalize="none" spellcheck="false" required placeholder="Seu usuário"></label>
+    <label class="field">Senha<input id="l-senha" type="password" autocomplete="current-password" required placeholder="Sua senha"></label><p class="l-erro" id="l-erro" hidden role="alert">Usuário ou senha incorretos. Confira e tente de novo.</p>
     <button class="btn" type="submit" style="justify-content:center">Entrar no painel</button>
     <button class="btn ghost" type="button" data-tema style="justify-content:center"><svg class="i"><use href="#i-moon"/></svg><span class="tema-txt">Modo escuro</span></button>
     <button class="btn ghost" type="button" id="l-voltar" style="justify-content:center">Ver o site da loja</button>
-    <p class="muted" style="font-size:12px">Este endereço é só da equipe da loja e não aparece no site. Demonstração: qualquer senha entra. No sistema real, cada pessoa tem o próprio login e cada loja só vê os próprios dados.</p>
+    <p class="muted" style="font-size:12px">Este endereço é só da equipe da loja e não aparece no site. No sistema real, cada pessoa tem o próprio login e cada loja só vê os próprios dados.</p>
   </form>
 </section>
 
@@ -1159,7 +1155,12 @@ $("#e-q").addEventListener("input",renderEstoque);$("#e-or").addEventListener("c
 $("#l-voltar").onclick=()=>{renderVitrine();tela("vitrine")};
 $("#menu-btn").onclick=()=>menu(!$("#side").classList.contains("open"));$("#scrim").onclick=()=>menu(false);
 $("#back-painel").onclick=()=>{tela("painel");renderPainel()};
-$("#f-login").onsubmit=e=>{e.preventDefault();const p=document.querySelector("[name=papel]:checked").value;USER=p==="dono"?{nome:"Marcos Silva",papel:"Dono"}:{nome:"Fernanda Rocha",papel:"Vendedor"};try{sessionStorage.setItem("patio-user",JSON.stringify(USER))}catch(e){}tela("painel");renderPainel();secao("geral");toast(p==="dono"?"Entrou como dono: acesso completo.":"Entrou como vendedora: custo, lucro e financeiro ficam escondidos.")};
+const CONTAS={admin:{senha:"1234",nome:"Marcos Silva",papel:"Dono"},vendedor:{senha:"1234",nome:"Fernanda Rocha",papel:"Vendedor"}};
+$("#f-login").onsubmit=e=>{e.preventDefault();const u=$("#l-user").value.trim().toLowerCase(),c=CONTAS[u];
+ if(!c||$("#l-senha").value!==c.senha){$("#l-erro").hidden=false;$("#l-senha").value="";$("#l-senha").focus();return}
+ $("#l-erro").hidden=true;USER={nome:c.nome,papel:c.papel};try{sessionStorage.setItem("patio-user",JSON.stringify(USER))}catch(e){}
+ $("#l-user").value="";$("#l-senha").value="";tela("painel");renderPainel();secao("geral");toast(c.papel==="Dono"?"Entrou como dono: acesso completo.":"Entrou como vendedora: custo, lucro e financeiro ficam escondidos.")};
+$("#l-user").oninput=$("#l-senha").oninput=()=>{$("#l-erro").hidden=true};
 $("#sair").onclick=()=>{USER=null;try{sessionStorage.removeItem("patio-user")}catch(e){}tela("login")};
 $("#ver-site").onclick=$("#ver-site2").onclick=()=>{renderVitrine();tela("vitrine");toast("Este é o site que o comprador vê. O botão de voltar ao painel só aparece para você.")};
 ["lj-nome","lj-slug","lj-slogan","lj-cid","lj-cor"].forEach(id=>$("#"+id).addEventListener("input",prevLoja));
