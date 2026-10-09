@@ -500,6 +500,40 @@ details.mais .form{padding:0;margin-top:12px;border:0;background:none;box-shadow
 .mapa.busca .carro.achou svg{outline-color:var(--accent);outline-width:4px}
 .fora{display:flex;gap:8px;flex-wrap:wrap}
 @media (max-width:520px){.vagas{grid-template-columns:repeat(auto-fill,minmax(78px,1fr))}.carro svg{max-height:96px}}
+
+/* ---------- documentos ---------- */
+.doc{font-family:Inter,var(--f-body);color:#111;background:#fff;font-size:12px;line-height:1.55}
+.doc h1{font-family:Inter,var(--f-body);font-size:17px;text-align:center;margin:0 0 4px;text-transform:uppercase;letter-spacing:.04em}
+.doc .sub{text-align:center;color:#555;font-size:11px;margin-bottom:14px}
+.doc h3{font-family:Inter,var(--f-body);font-size:12px;margin:12px 0 4px;text-transform:uppercase;letter-spacing:.03em}
+.doc p{margin:0 0 6px;text-align:justify}
+.doc table{width:100%;border-collapse:collapse;margin:4px 0 8px}
+.doc td{border:1px solid #bbb;padding:4px 7px;font-size:11.5px;background:none!important;white-space:normal;font-family:Inter,var(--f-body)}
+.doc td b{display:block;font-size:9px;text-transform:uppercase;color:#555;font-weight:600}
+.doc .ass{display:grid;grid-template-columns:1fr 1fr;gap:28px 40px;margin-top:34px}
+.doc .ass div{border-top:1px solid #111;padding-top:4px;text-align:center;font-size:11px}
+.doc .loc{margin-top:18px;text-align:right}
+.doc .rec{border:2px solid #111;border-radius:10px;padding:18px 22px;margin-bottom:26px}
+.doc .rec .v{font-size:22px;font-weight:800;text-align:right}
+.doc .corte{border-top:1px dashed #999;margin:20px 0}
+.docx{background:var(--sunk);border-radius:10px;padding:10px 12px;font-size:12.5px;color:var(--muted)}
+/* ---------- avaliação ---------- */
+.av-itens{display:grid;gap:8px}
+.av-item{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;background:var(--sunk);border-radius:10px;padding:8px 10px}
+.av-item b{font-size:13.5px}
+.av-item .seg{background:var(--surface)}
+.av-item .seg button[aria-pressed="true"][data-c="Ruim"]{color:var(--crit)}
+.av-item .seg button[aria-pressed="true"][data-c="Regular"]{color:var(--warn)}
+.av-item .seg button[aria-pressed="true"][data-c="Bom"]{color:var(--ok)}
+.av-res{border:2px solid var(--accent);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:6px}
+.av-res .max{font-family:var(--f-display);font-size:30px;font-weight:700;line-height:1;color:var(--accent)}
+.av-res .lines{border-top:0}
+.av-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}
+.av-card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:6px;text-align:left;cursor:pointer;color:inherit;font:inherit}
+.av-card:hover{border-color:var(--ink)}
+.av-card .max{font-family:var(--f-mono);font-weight:700;font-size:18px;color:var(--accent)}
+.rg-tab{width:100%;border-collapse:collapse}.rg-tab td,.rg-tab th{padding:6px;border-bottom:1px solid var(--line);text-align:left}
+.rg-tab input{width:100%;padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);font:inherit}
 </style>
 
 </head>
@@ -525,6 +559,8 @@ details.mais .form{padding:0;margin-top:12px;border:0;background:none;box-shadow
  <symbol id="i-mapa" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 12h18M9 3v18M15 12v9"/></symbol>
  <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></symbol>
  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></symbol>
+ <symbol id="i-clip" viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1M9 10h6M9 14h6M9 18h3"/></symbol>
+ <symbol id="i-doc" viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 12h6M9 16h6"/></symbol>
  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 20l1.3-3.9A8 8 0 1 1 8 19.2z"/></symbol>
  <symbol id="i-gauge" viewBox="0 0 24 24"><path d="M5.6 18.4A9 9 0 1 1 18.4 18.4"/><path d="M12 13.5l4-4.5"/><circle cx="12" cy="13.5" r="1.4"/></symbol>
@@ -594,6 +630,7 @@ details.mais .form{padding:0;margin-top:12px;border:0;background:none;box-shadow
     <button class="nav" data-sec="geral" aria-current="true"><svg class="i"><use href="#i-home"/></svg>Visão geral</button>
     <button class="nav" data-sec="estoque"><svg class="i"><use href="#i-car"/></svg>Estoque</button>
     <button class="nav" data-sec="mapa"><svg class="i"><use href="#i-mapa"/></svg>Mapa do pátio</button>
+    <button class="nav" data-sec="aval"><svg class="i"><use href="#i-clip"/></svg>Avaliações</button>
     <button class="nav" data-sec="contatos"><svg class="i"><use href="#i-chat"/></svg>Contatos<span class="cnt" id="cnt-novos">0</span></button>
     <button class="nav" data-sec="agenda"><svg class="i"><use href="#i-cal"/></svg>Agenda</button>
     <button class="nav" data-sec="vendas"><svg class="i"><use href="#i-tag"/></svg>Vendas</button>
@@ -668,6 +705,13 @@ details.mais .form{padding:0;margin-top:12px;border:0;background:none;box-shadow
       <div class="mapa-leg"><span><i style="border-color:#16a34a"></i>Disponível</span><span><i style="border-color:#d97706"></i>Reservado</span><span><i style="border-color:#2563eb"></i>Em preparação</span><span><b style="width:12px;height:12px;border-radius:50%;background:var(--crit);display:inline-block"></b>Parado há mais de 90 dias</span></div>
       <p class="muted" id="mapa-dica" style="margin:-4px 0 12px;font-size:13px">Toque num carro para abrir a ficha. Para mudar de lugar, arraste o carro (no computador) ou toque em "Mover carros".</p>
       <div class="mapa" id="mapa"></div>
+    </div>
+    <!-- avaliações -->
+    <div class="sec" id="sec-aval" hidden>
+      <div class="topbar"><div><span class="lbl">Compra e troca</span><h1>Avaliações</h1></div><div class="acts"><button class="btn ghost dono" id="av-regras"><svg class="i"><use href="#i-pen"/></svg>Regras da avaliação</button><button class="btn" id="av-nova"><svg class="i"><use href="#i-plus"/></svg>Nova avaliação</button></div></div>
+      <p class="muted" style="margin:-8px 0 14px">Avalie o carro do cliente (troca ou compra) em 2 minutos. O sistema calcula o máximo que a loja pode pagar seguindo as regras do dono, para ninguém comprar caro.</p>
+      <div class="filters"><div class="seg" id="seg-av"><button aria-pressed="true" data-v="">Todas</button><button aria-pressed="false" data-v="Em negociação">Em negociação</button><button aria-pressed="false" data-v="Comprado">Compradas</button><button aria-pressed="false" data-v="Recusado">Recusadas</button></div></div>
+      <div class="av-cards" id="av-lista"></div>
     </div>
     <!-- entradas e saídas -->
     <div class="sec" id="sec-mov" hidden>
@@ -772,8 +816,8 @@ function seed(){return{
   {id:7,marca:"Jeep",modelo:"Renegade",versao:"Sport 1.8 AT",ano:2020,km:69900,placa:"IZE8G42",pintura:"Cinza",comb:"Flex",cambio:"Automático",compra:74000,gastos:[["Embreagem",2400],["Polimento",600]],preco:87900,fipe:86900,entrada:"2026-07-14",status:"Disponível",docs:{laudo:true,manual:false,chave:false,ipva:true},origem:"Parceiro",parc:1,minimo:84000,renavam:"01234509876",chassi:"98810011LKK123321",obs:"Carro da Sul Car. Repasse de R$ 74 mil na venda.",visitas:233},
   {id:8,marca:"Volkswagen",modelo:"T-Cross",versao:"200 TSI AT",ano:2021,km:45300,placa:"JBF1H09",pintura:"Verde",comb:"Flex",cambio:"Automático",compra:91000,gastos:[["Higienização",450]],preco:104900,fipe:107200,entrada:"2026-09-12",status:"Disponível",docs:{laudo:true,manual:true,chave:true,ipva:true},origem:"Próprio",parc:0,minimo:100000,renavam:"01299001122",chassi:"9BWBH6BF6M4012345",obs:"",visitas:350},
   {id:9,marca:"Honda",modelo:"Fit",versao:"EX 1.5 CVT",ano:2018,km:79400,placa:"IQW1L77",pintura:"Bege",comb:"Flex",cambio:"Automático",compra:58000,gastos:[["Suspensão dianteira",1800]],preco:69900,fipe:71200,entrada:"2026-10-05",status:"Preparação",docs:{laudo:false,manual:true,chave:true,ipva:true},origem:"Próprio",parc:0,minimo:67000,renavam:"01087654321",chassi:"93HGK5860JZ100200",obs:"Chegou para preparação.",visitas:0},
-  {id:10,marca:"Fiat",modelo:"Argo",versao:"Drive 1.0",ano:2020,km:52100,placa:"IVB5J66",pintura:"Prata",comb:"Flex",cambio:"Manual",compra:47000,gastos:[["Pneus",1300]],preco:57900,fipe:58900,entrada:"2026-08-05",status:"Vendido",venda:{data:"2026-10-03",valor:57000,vend:2,pag:"Financiado",cli:"Rogério Alves"},docs:{laudo:true,manual:true,chave:true,ipva:true},origem:"Próprio",parc:0,minimo:55500,renavam:"01211223344",chassi:"9BD358A1NLYJ12345",obs:"",visitas:0},
-  {id:11,marca:"Chevrolet",modelo:"Tracker",versao:"LT 1.0 Turbo AT",ano:2021,km:51800,placa:"JAZ0K12",pintura:"Branco",comb:"Flex",cambio:"Automático",compra:89000,gastos:[["Revisão",900],["Higienização",450]],preco:103900,fipe:105600,entrada:"2026-08-26",status:"Vendido",venda:{data:"2026-10-06",valor:102500,vend:3,pag:"À vista + troca",cli:"Juliana Torres"},docs:{laudo:true,manual:true,chave:true,ipva:true},origem:"Parceiro",parc:1,minimo:99000,renavam:"01266554433",chassi:"9BGEA76H0MB123456",obs:"",visitas:0}
+  {id:10,marca:"Fiat",modelo:"Argo",versao:"Drive 1.0",ano:2020,km:52100,placa:"IVB5J66",pintura:"Prata",comb:"Flex",cambio:"Manual",compra:47000,gastos:[["Pneus",1300]],preco:57900,fipe:58900,entrada:"2026-08-05",status:"Vendido",venda:{data:"2026-10-03",valor:57000,vend:2,pag:"Financiado",cli:"Rogério Alves",cpf:"123.456.789-09",tel:"(53) 99001-2200",end:"Rua Gonçalves Chaves, 450 · Centro · Pelotas/RS"},docs:{laudo:true,manual:true,chave:true,ipva:true},origem:"Próprio",parc:0,minimo:55500,renavam:"01211223344",chassi:"9BD358A1NLYJ12345",obs:"",visitas:0},
+  {id:11,marca:"Chevrolet",modelo:"Tracker",versao:"LT 1.0 Turbo AT",ano:2021,km:51800,placa:"JAZ0K12",pintura:"Branco",comb:"Flex",cambio:"Automático",compra:89000,gastos:[["Revisão",900],["Higienização",450]],preco:103900,fipe:105600,entrada:"2026-08-26",status:"Vendido",venda:{data:"2026-10-06",valor:102500,vend:3,pag:"À vista + troca",cli:"Juliana Torres",cpf:"987.654.321-00",tel:"(53) 98222-3344",end:"Av. Dom Joaquim, 1200 · Três Vendas · Pelotas/RS"},docs:{laudo:true,manual:true,chave:true,ipva:true},origem:"Parceiro",parc:1,minimo:99000,renavam:"01266554433",chassi:"9BGEA76H0MB123456",obs:"",visitas:0}
  ],
  leads:[
   {id:1,nome:"Carla Mendes",tel:"(53) 98111-2233",carro:3,origem:"WhatsApp",etapa:"Em negociação",data:"2026-10-07",nota:"Quer trocar um Ka 2016."},
@@ -793,8 +837,11 @@ function seed(){return{
   {id:4,data:"2026-10-10",hora:"09:30",cli:"Bruna Lopes",carro:1,tipo:"Test drive",vend:3},
   {id:5,data:"2026-10-13",hora:"14:00",cli:"Paulo Henrique",carro:8,tipo:"Visita",vend:2}
  ],
- parceiros:[{id:1,nome:"Sul Car Multimarcas",tipo:"Lojista",tel:"(53) 98877-1100",cid:"Pelotas",obs:"Repasse combinado por carro. Acerto em até 5 dias depois da venda."},{id:2,nome:"Ademir Costa",tipo:"Dono do carro (consignado)",tel:"(53) 99100-2030",cid:"Capão do Leão",obs:"Recebe o valor combinado quando o carro for vendido."}],
+ parceiros:[{id:1,nome:"Sul Car Multimarcas",tipo:"Lojista",tel:"(53) 98877-1100",cid:"Pelotas",obs:"Repasse combinado por carro. Acerto em até 5 dias depois da venda."},{id:2,nome:"Ademir Costa",tipo:"Dono do carro (consignado)",tel:"(53) 99100-2030",cid:"Capão do Leão",cpf:"321.654.987-11",end:"Rua Principal, 85 · Capão do Leão/RS",obs:"Recebe o valor combinado quando o carro for vendido."}],
  saldoIni:{Banco:42000,Caixa:3500},
+ regras:{fator:98,margem:12,fixo:600,base:450,itens:{pneus:[0,600,1200],pintura:[0,900,2500],mecanica:[0,1500,5000],interior:[0,300,900],docs:[0,350,1200]}},
+ aval:[{id:1,data:"2026-10-07",cli:"Pedro Martins",tel:"(53) 99876-5432",marca:"Fiat",modelo:"Mobi",versao:"Like 1.0",ano:2020,km:61000,placa:"IXU4B21",pintura:"Branco",cambio:"Manual",fipe:46800,itens:{pneus:"Regular",pintura:"Bom",mecanica:"Bom",interior:"Regular",docs:"Bom"},obs:"Quer dar na troca pelo Onix.",status:"Em negociação",quem:"Fernanda"},
+  {id:2,data:"2026-10-02",cli:"Sandra Lima",tel:"(53) 98111-0099",marca:"Volkswagen",modelo:"Fox",versao:"1.6",ano:2014,km:142000,placa:"IOP2C33",pintura:"Prata",cambio:"Manual",fipe:38900,itens:{pneus:"Ruim",pintura:"Regular",mecanica:"Ruim",interior:"Regular",docs:"Regular"},obs:"Cliente queria R$ 36 mil.",status:"Recusado",quem:"Lucas"}],
  contas:[
   {id:1,tipo:"receber",desc:"Venda Fiat Argo · Rogério Alves (financiado)",cat:"Venda de veículo",valor:57000,venc:"2026-10-05",comp:"2026-10-03",status:"Pago",pago:"2026-10-05",conta:"Banco",carro:10},
   {id:2,tipo:"receber",desc:"Venda Chevrolet Tracker · Juliana Torres",cat:"Venda de veículo",valor:102500,venc:"2026-10-06",comp:"2026-10-06",status:"Pago",pago:"2026-10-06",conta:"Banco",carro:11},
@@ -819,6 +866,7 @@ let S;try{S=JSON.parse(localStorage.getItem("patio-demo-v4"))}catch(e){}
 if(!S||!S.carros||!S.contas)S=seed();
 (function(){let v=0;(S.equipe||[]).forEach(p=>{if(!p.usuario){if(p.papel==="Dono"&&!S.equipe.some(x=>x.usuario==="admin"))p.usuario="admin";else if(p.papel!=="Dono"&&!S.equipe.some(x=>x.usuario==="vendedor"))p.usuario="vendedor";else{let b=p.nome.split(" ")[0].toLowerCase().normalize("NFD").replace(/[^a-z0-9]/g,"")||"pessoa",u=b,i=2;while(S.equipe.some(x=>x.usuario===u))u=b+i++;p.usuario=u}p.senha=p.senha||"1234";if(p.ativo===undefined)p.ativo=true}})})();
 const EQ=()=>S.equipe.filter(p=>!p.removido);
+if(!S.regras){const z=seed();S.regras=z.regras;S.aval=S.aval||z.aval}
 let USER=null;try{USER=JSON.parse(sessionStorage.getItem("patio-user"))}catch(e){}
 function salvar(){try{localStorage.setItem("patio-demo-v4",JSON.stringify(S));return true}catch(e){if(/quota/i.test(e.name+e.message)&&typeof toast==="function")toast("O espaço da demonstração encheu. Remova algumas fotos. No sistema real as fotos ficam guardadas na nuvem, sem esse limite.");return !/quota/i.test(e.name+e.message)}}
 function lerFotos(files){return Promise.all([...files].filter(f=>f.type.startsWith("image/")).slice(0,12).map(f=>new Promise(res=>{const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const W=1000,sc=Math.min(1,W/im.width),cv=document.createElement("canvas");cv.width=Math.round(im.width*sc);cv.height=Math.round(im.height*sc);cv.getContext("2d").drawImage(im,0,0,cv.width,cv.height);res(cv.toDataURL("image/jpeg",0.72))};im.onerror=()=>res(null);im.src=r.result};r.onerror=()=>res(null);r.readAsDataURL(f)}))).then(a=>a.filter(Boolean))}
@@ -927,7 +975,7 @@ function renderPainel(){
  {const h=new Date().getHours();$("#ola").textContent=(h<12?"Bom dia, ":h<18?"Boa tarde, ":"Boa noite, ")+USER.nome.split(" ")[0]}
  $$(".dono").forEach(e=>e.hidden=!isDono());
  {const n=S.leads.filter(l=>parado(l)||l.etapa==="Novo").length;$("#cnt-novos").textContent=n;$("#bb-n").textContent=n;$("#bb-n").hidden=!n}
- renderGeral();renderEstoque();renderKanban();renderAgenda();renderVendas();renderMov();renderMapa();
+ renderGeral();renderEstoque();renderKanban();renderAgenda();renderVendas();renderMov();renderMapa();renderAval();
  if(isDono()){renderFin();renderRel();renderParc();renderEquipe();renderLoja()}
 }
 function renderGeral(){
@@ -1037,7 +1085,7 @@ function renderRel(){
 }
 function renderEquipe(){
  $("#tab-eq").innerHTML=`<thead><tr><th>Pessoa</th><th>Papel</th><th class="r hide-m">${COMLBL}</th><th class="hide-m">Acesso</th><th class="r hide-m">Ação</th></tr></thead><tbody>`+EQ().map(p=>`<tr class="click" data-pessoa="${p.id}"><td><div class="car"><div class="av">${ini(p.nome)}</div><div><b>${esc(p.nome)}${USER&&USER.id===p.id?' <span class="pill p-mut">você</span>':""}</b><small>usuário: <b class="num">${esc(p.usuario)}</b></small><span class="show-m"><span class="pill ${p.ativo!==false?"p-ok":"p-crit"}">${p.ativo!==false?"Liberado":"Bloqueado"}</span><span class="btnx">Editar</span></span></div></div></td><td><span class="pill ${p.papel==="Dono"?"p-ok":p.papel===VEND?"p-info":"p-warn"}">${esc(p.papel)}</span></td><td class="r num hide-m">${p.com?String(p.com).replace(".",",")+"%":"—"}</td><td class="hide-m"><span class="pill ${p.ativo!==false?"p-ok":"p-crit"}">${p.ativo!==false?"Liberado":"Bloqueado"}</span></td><td class="r hide-m"><button type="button" class="btn xs soft" data-pessoa="${p.id}">Editar</button></td></tr>`).join("")+"</tbody>";
- const P=[["Ver e cadastrar carros",1,1,1,0],["Ver custo, preço mínimo e lucro",1,1,0,1],["Contatos e agenda",1,1,1,0],["Registrar venda",1,1,1,0],["Financeiro e contas",1,0,0,1],["Relatórios",1,1,0,1],["Parceiros e repasses",1,1,0,1],["Cadastrar e editar a equipe",1,0,0,0],["Mudar nome e dados do site",1,0,0,0]];
+ const P=[["Ver e cadastrar carros",1,1,1,0],["Ver custo, preço mínimo e lucro",1,1,0,1],["Contatos e agenda",1,1,1,0],["Registrar venda",1,1,1,0],["Avaliar carro na troca",1,1,1,0],["Mudar as regras da avaliação",1,0,0,0],["Financeiro e contas",1,0,0,1],["Relatórios",1,1,0,1],["Parceiros e repasses",1,1,0,1],["Cadastrar e editar a equipe",1,0,0,0],["Mudar nome e dados do site",1,0,0,0]];
  $("#perm").innerHTML=`<thead><tr><th>Permissão</th><th>Dono</th><th>Gerente</th><th>Vendedor</th><th>Financeiro</th></tr></thead><tbody>`+P.map(p=>`<tr><td>${p[0]}</td>${[1,2,3,4].map(k=>`<td class="${p[k]?"yes":"no"}">${p[k]?"✓":"—"}</td>`).join("")}</tr>`).join("")+"</tbody>";
 }
 function renderLoja(){
@@ -1059,7 +1107,7 @@ function ficha(id,tab){
  const p=parc(c.parc);
  let body="";
  if(TAB==="resumo")body=`<div class="ph" style="border-radius:12px;overflow:hidden">${carSVG(c,1)}</div>
-  ${c.venda?"":`<div class="acts-row"><button type="button" class="btn soft" data-share="${c.id}"><svg class="i"><use href="#i-share"/></svg>Mandar para cliente</button><button type="button" class="btn soft" data-imprimir="${c.id}"><svg class="i"><use href="#i-print"/></svg>Imprimir placa de preço</button></div>`}
+  ${c.venda?`<div class="acts-row"><button type="button" class="btn soft" data-doc-gerar="contrato:${c.id}"><svg class="i"><use href="#i-doc"/></svg>Contrato de compra e venda</button><button type="button" class="btn soft" data-doc-gerar="recibo:${c.id}"><svg class="i"><use href="#i-doc"/></svg>Recibo</button></div>`:`<div class="acts-row"><button type="button" class="btn soft" data-share="${c.id}"><svg class="i"><use href="#i-share"/></svg>Mandar para cliente</button><button type="button" class="btn soft" data-imprimir="${c.id}"><svg class="i"><use href="#i-print"/></svg>Imprimir placa de preço</button>${c.origem==="Consignado"?`<button type="button" class="btn soft" data-doc-gerar="consig:${c.id}"><svg class="i"><use href="#i-doc"/></svg>Termo de consignação</button>`:""}</div>`}
   <div class="dgrid">${[["Ano",c.ano],["Km",c.km.toLocaleString("pt-BR")],["Cor",c.pintura],["Combustível",c.comb],["Câmbio",c.cambio],["Placa",c.placa],["Origem",c.origem||"Próprio"],["Dono do carro",p?p.nome:S.loja.nome],["Entrada",fd(c.entrada)+"/2026"],["Vaga",c.venda?"—":vagaNome(c.vaga)]].map(d=>`<div><span class="lbl">${d[0]}</span><b>${esc(d[1])}</b></div>`).join("")}</div>
   <div class="lines num"><div><span>${c.venda?"Vendido por":"Preço anunciado"}</span><span>${R(valorV(c))}</span></div>${dono&&!c.venda?`<div><span>Preço mínimo</span><span>${R(c.minimo||c.preco)}</span></div>`:""}<div><span>Tabela FIPE</span><span>${R(c.fipe)} · ${Math.round(c.preco/c.fipe*100)}%</span></div>
    ${dono?`<div class="tot"><span>${c.venda?"Lucro bruto":"Lucro previsto"}</span><span class="${lucro(c)>=0?"pos":"neg"}">${R(lucro(c))} · ${(lucro(c)/valorV(c)*100).toFixed(1).replace(".",",")}%</span></div>`:""}
@@ -1081,7 +1129,7 @@ function ficha(id,tab){
  if(TAB==="int")body=ints.length?`<div class="list">${ints.map(l=>`<button class="item" data-lead="${l.id}"><div class="av">${ini(l.nome)}</div><span class="t"><b>${esc(l.nome)}</b><small>${esc(l.etapa)} · ${esc(l.origem)} · ${esc(l.tel)}</small></span><span class="pill p-mut">${fd(l.data)}</span></button>`).join("")}</div>`:`<div class="fempty"><b>Ninguém chamou por este carro ainda</b><span class="muted">Quando alguém pedir informação pelo site ou você cadastrar um contato com interesse nele, aparece aqui.</span></div>`;
  if(TAB==="hist"){const ev=[{data:c.entrada,txt:({"Próprio":"Entrou no pátio (compra)","Parceiro":"Entrou no pátio (carro de parceiro)","Consignado":"Entrou no pátio (consignado)"})[c.origem||"Próprio"],quem:"Marcos"},...(c.hist||[]),...(c.venda?[{data:c.venda.data,txt:"Vendido para "+c.venda.cli+" por "+R(c.venda.valor),quem:(pessoa(c.venda.vend)||{nome:"—"}).nome.split(" ")[0]}]:[])].sort((a,b)=>b.data.localeCompare(a.data));
   body=`<ul class="hist">${ev.map(h=>`<li><b>${fd(h.data)}</b> · ${esc(h.txt)}${h.quem?` <span class="muted">· ${esc(h.quem)}</span>`:""}</li>`).join("")}</ul>`}
- if(TAB==="vender")body=`<form class="form" id="f-venda"><label class="field">Valor da venda (R$)<input id="v-val" type="number" inputmode="numeric" value="${c.preco}" required></label><label class="field">Data<input id="v-dt" type="date" value="${HOJE}" required></label><label class="field full">Cliente<input id="v-cli" required placeholder="Nome do comprador"></label><label class="field">Vendedor<select id="v-vend">${EQ().map(p=>`<option value="${p.id}" ${p.nome===USER.nome?"selected":""}>${esc(p.nome)}</option>`).join("")}</select></label><label class="field">Pagamento<select id="v-pag"><option>À vista</option><option>Financiado</option><option>À vista + troca</option><option>Financiado + troca</option></select></label>${dono?`<div class="full lines num"><div><span>Custo do carro</span><span>${R(custo(c))}</span></div><div class="tot"><span>Lucro com esse valor</span><span id="v-luc"></span></div></div>`:""}<p class="muted full" id="v-aviso" style="font-size:12.5px"></p><button class="btn full" type="submit" style="justify-content:center">Confirmar venda</button></form>`;
+ if(TAB==="vender")body=`<form class="form" id="f-venda"><label class="field">Valor da venda (R$)<input id="v-val" type="number" inputmode="numeric" value="${c.preco}" required></label><label class="field">Data<input id="v-dt" type="date" value="${HOJE}" required></label><label class="field full">Cliente<input id="v-cli" required placeholder="Nome do comprador"></label><label class="field">Vendedor<select id="v-vend">${EQ().map(p=>`<option value="${p.id}" ${p.nome===USER.nome?"selected":""}>${esc(p.nome)}</option>`).join("")}</select></label><label class="field">Pagamento<select id="v-pag"><option>À vista</option><option>Financiado</option><option>À vista + troca</option><option>Financiado + troca</option></select></label><details class="full mais"><summary>Dados do comprador para o contrato (pode completar depois)</summary><div class="form"><label class="field">CPF<input id="v-cpf" inputmode="numeric" data-cpf placeholder="000.000.000-00"></label><label class="field">Telefone<input id="v-tel" type="tel" inputmode="tel" data-tel></label><label class="field full">Endereço completo<input id="v-endc" placeholder="Rua, número, bairro, cidade"></label></div></details>${dono?`<div class="full lines num"><div><span>Custo do carro</span><span>${R(custo(c))}</span></div><div class="tot"><span>Lucro com esse valor</span><span id="v-luc"></span></div></div>`:""}<p class="muted full" id="v-aviso" style="font-size:12.5px"></p><button class="btn full" type="submit" style="justify-content:center">Confirmar venda</button></form>`;
  $("#sheet").innerHTML=`<div class="sheet-head"><div><span class="lbl">${esc(c.marca)} · ${plate(c.placa)}</span><h2 style="font-size:28px;margin-top:4px">${esc(c.modelo)} ${esc(c.versao)} ${c.ano}</h2><div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap">${stPill(c.status)} ${diasPill(c)} ${origPill(c)}</div></div><button class="x" data-close>Fechar</button></div>
   <div class="tabs" role="tablist">${tabs.map(t=>`<button role="tab" aria-selected="${t[0]===TAB}" data-tab="${t[0]}">${t[1]}</button>`).join("")}</div>${body}`;
  ov.hidden=false;
@@ -1094,13 +1142,13 @@ function ficha(id,tab){
  $$("[data-capa]").forEach(b=>b.onclick=()=>{const i=+b.dataset.capa;c.fotos.unshift(c.fotos.splice(i,1)[0]);salvar();tudo();ficha(id,"fotos");toast("Capa atualizada.")});
  $$("[data-rmf]").forEach(b=>b.onclick=()=>{marca();c.fotos.splice(+b.dataset.rmf,1);salvar();tudo();ficha(id,"fotos");toast("Foto removida.",1)});
  const fv=$("#f-venda");if(fv){const up=()=>{const v=+$("#v-val").value||0,e=$("#v-luc");if(e){const l=v-custo(c);e.textContent=R(l);e.className=l>=0?"pos":"neg"}$("#v-aviso").textContent=v&&v<(c.minimo||0)?(dono?"Atenção: valor abaixo do preço mínimo combinado ("+R(c.minimo)+").":"Atenção: valor abaixo do mínimo autorizado. Fale com o dono antes de fechar."):"";$("#v-aviso").style.color=v<(c.minimo||0)?"var(--crit)":""};$("#v-val").oninput=up;up();
-  fv.onsubmit=e=>{e.preventDefault();marca();c.venda={data:$("#v-dt").value,valor:+$("#v-val").value,vend:+$("#v-vend").value,pag:$("#v-pag").value,cli:$("#v-cli").value.trim()};c.status="Vendido";
+  fv.onsubmit=e=>{e.preventDefault();marca();c.venda={data:$("#v-dt").value,valor:+$("#v-val").value,vend:+$("#v-vend").value,pag:$("#v-pag").value,cli:$("#v-cli").value.trim(),cpf:$("#v-cpf").value.trim(),tel:$("#v-tel").value.trim(),end:$("#v-endc").value.trim()};c.status="Vendido";
    const ld=S.leads.find(l=>l.carro===c.id&&l.etapa!=="Perdido");if(ld){(ld.hist=ld.hist||[]).push({data:HOJE,txt:ld.etapa+" → Vendido"});ld.etapa="Vendido"}
    const fin=/Financiado/.test(c.venda.pag),nid=Date.now(),vp=pessoa(c.venda.vend)||{com:0,nome:""};
    S.contas.push(fin?{id:nid,tipo:"receber",desc:"Venda "+nomeCarro(c)+" · "+c.venda.cli+" (banco paga)",cat:"Venda de veículo",valor:c.venda.valor,venc:addD(c.venda.data,7),comp:c.venda.data,status:"Pendente",conta:"Banco",carro:c.id}:{id:nid,tipo:"receber",desc:"Venda "+nomeCarro(c)+" · "+c.venda.cli,cat:"Venda de veículo",valor:c.venda.valor,venc:c.venda.data,comp:c.venda.data,status:"Pago",pago:c.venda.data,conta:"Banco",carro:c.id});
    if(c.origem&&c.origem!=="Próprio")S.contas.push({id:nid+1,tipo:"pagar",desc:"Repasse "+c.modelo+" · "+((parc(c.parc)||{nome:"dono"}).nome),cat:"Repasse a parceiro",valor:c.compra,venc:addD(c.venda.data,5),comp:c.venda.data,status:"Pendente",conta:"Banco",carro:c.id});
    if(vp.com)S.contas.push({id:nid+2,tipo:"pagar",desc:"Comissão "+vp.nome.split(" ")[0]+" · "+c.modelo,cat:"Comissão",valor:Math.round(c.venda.valor*vp.com/100),venc:addD(c.venda.data,5),comp:c.venda.data,status:"Pendente",conta:"Banco"});
-   salvar();tudo();ficha(id,"resumo");toast("Venda registrada. "+(fin?"O valor do banco ficou em contas a receber.":"O valor entrou no caixa.")+(c.origem&&c.origem!=="Próprio"?" O repasse ficou em contas a pagar.":""),1)}}
+   salvar();tudo();ficha(id,"resumo");toast("Venda registrada. O contrato e o recibo já estão na ficha. "+(fin?"O valor do banco ficou em contas a receber.":"O valor entrou no caixa.")+(c.origem&&c.origem!=="Próprio"?" O repasse ficou em contas a pagar.":""),1)}}
 }
 function formNovo(tipo){
  const ov=$("#ov");ov.classList.remove("center");let h="",t="";
@@ -1335,6 +1383,107 @@ function cfgVagas(){const ov=$("#ov");ov.classList.add("center");
  <form class="form" id="fv">${AREAS.map(([k,n])=>`<label class="field">${n}<input id="v-${k}" type="number" inputmode="numeric" min="0" max="60" value="${S.patio[k]}"></label>`).join("")}<button class="btn full" type="submit" style="justify-content:center">Salvar</button></form>`;
  ov.hidden=false;
  $("#fv").onsubmit=e=>{e.preventDefault();marca();AREAS.forEach(([k])=>S.patio[k]=Math.max(0,Math.min(60,+$("#v-"+k).value||0)));salvar();fechar();renderMapa();toast("Vagas atualizadas.",1)}}
+/* ---------- valor por extenso ---------- */
+function extenso(v){const u=["","um","dois","três","quatro","cinco","seis","sete","oito","nove","dez","onze","doze","treze","quatorze","quinze","dezesseis","dezessete","dezoito","dezenove"],dz=["","","vinte","trinta","quarenta","cinquenta","sessenta","setenta","oitenta","noventa"],ct=["","cento","duzentos","trezentos","quatrocentos","quinhentos","seiscentos","setecentos","oitocentos","novecentos"];
+ const a999=n=>{if(!n)return "";if(n===100)return "cem";const C=Math.floor(n/100),r=n%100,p=[];if(C)p.push(ct[C]);if(r){if(r<20)p.push(u[r]);else{const D=Math.floor(r/10),U=r%10;p.push(dz[D]+(U?" e "+u[U]:""))}}return p.join(" e ")};
+ const int=n=>{if(!n)return "zero";const mi=Math.floor(n/1e6),ml=Math.floor(n%1e6/1000),r=n%1000,ps=[],vs=[];if(mi){ps.push(mi===1?"um milhão":a999(mi)+" milhões");vs.push(mi)}if(ml){ps.push(ml===1?"mil":a999(ml)+" mil");vs.push(ml)}if(r){ps.push(a999(r));vs.push(r)}
+  return ps.map((p,i)=>i===0?p:((i===ps.length-1&&(vs[i]<100||vs[i]%100===0))?" e ":" ")+p).join("")};
+ const re=Math.floor(v),ce=Math.round((v-re)*100);let t=int(re)+(re===1?" real":(re>=1e6&&re%1e6===0?" de reais":" reais"));if(ce)t+=" e "+a999(ce)+(ce===1?" centavo":" centavos");return t}
+const dataExt=d=>{const x=d.split("-");return +x[2]+" de "+MESES[+x[1]-1]+" de "+x[0]};
+const donoLoja=()=>(EQ().find(p=>p.papel==="Dono")||{nome:"Responsável"}).nome;
+/* ---------- documentos ---------- */
+function docForm(tipo,id){const c=carro(id);if(!c)return;const ov=$("#ov");ov.classList.remove("center");const p=parc(c.parc)||{};
+ const tit={contrato:"Contrato de compra e venda",recibo:"Recibo de pagamento",consig:"Termo de consignação"}[tipo];
+ const campos=tipo==="consig"?`<label class="field full">Consignante (dono do carro)<input id="d-nome" value="${esc(p.nome||"")}" required></label><label class="field">CPF<input id="d-cpf" data-cpf inputmode="numeric" value="${esc(p.cpf||"")}" placeholder="000.000.000-00"></label><label class="field">Telefone<input id="d-tel" type="tel" data-tel value="${esc(p.tel||"")}"></label><label class="field full">Endereço<input id="d-end" value="${esc(p.end||"")}"></label><label class="field">Valor líquido para o dono (R$)<input id="d-val" type="number" inputmode="numeric" value="${c.compra}"></label><label class="field">Prazo da consignação (dias)<input id="d-prazo" type="number" inputmode="numeric" value="90"></label>`
+  :`<label class="field full">Comprador<input id="d-nome" value="${esc(c.venda.cli)}" required></label><label class="field">CPF<input id="d-cpf" data-cpf inputmode="numeric" value="${esc(c.venda.cpf||"")}" placeholder="000.000.000-00"></label><label class="field">Telefone<input id="d-tel" type="tel" data-tel value="${esc(c.venda.tel||"")}"></label><label class="field full">Endereço completo<input id="d-end" value="${esc(c.venda.end||"")}" placeholder="Rua, número, bairro, cidade"></label>`;
+ $("#sheet").innerHTML=`<div class="sheet-head"><div><span class="lbl">${esc(nomeCarro(c))} · ${esc(c.placa)}</span><h2 style="font-size:24px;margin-top:4px">${tit}</h2></div><button class="x" data-close>Fechar</button></div>
+ <p class="muted" style="font-size:13.5px">Confira os dados. Eles saem no documento junto com os dados da loja e do carro (placa, RENAVAM e chassi).</p>
+ <form class="form" id="fd">${campos}<button class="btn full" type="submit" style="justify-content:center"><svg class="i"><use href="#i-print"/></svg>Gerar e imprimir</button><button class="btn ghost full" type="button" id="d-back" style="justify-content:center">← Voltar para a ficha</button></form>
+ ${!c.renavam||!c.chassi?'<div class="docx" style="border:1px solid var(--warn)">Falta o RENAVAM ou o chassi deste carro. Preencha na aba Documentos da ficha para sair completo.</div>':""}
+ <div class="docx">Modelo padrão usado por revendas. Recomendamos que o seu advogado ou contador leia o texto uma vez antes de usar no dia a dia.</div>`;
+ ov.hidden=false;$("#d-back").onclick=()=>ficha(id,"resumo");
+ $("#fd").onsubmit=e=>{e.preventDefault();const g=k=>$("#"+k)?$("#"+k).value.trim():"";
+  if(tipo==="consig"){if(c.parc&&parc(c.parc))Object.assign(parc(c.parc),{nome:g("d-nome"),cpf:g("d-cpf"),tel:g("d-tel"),end:g("d-end")});c.compra=+g("d-val")||c.compra}
+  else Object.assign(c.venda,{cli:g("d-nome"),cpf:g("d-cpf"),tel:g("d-tel"),end:g("d-end")});
+  salvar();gerarDoc(tipo,c,{nome:g("d-nome"),cpf:g("d-cpf"),tel:g("d-tel"),end:g("d-end"),val:+g("d-val"),prazo:+g("d-prazo")||90})}}
+function gerarDoc(tipo,c,x){const L=S.loja,carroTab=`<table><tr><td><b>Marca / modelo</b>${esc(c.marca)} ${esc(c.modelo)} ${esc(c.versao)}</td><td><b>Ano</b>${c.ano}</td><td><b>Cor</b>${esc(c.pintura)}</td></tr><tr><td><b>Placa</b>${esc(c.placa)}</td><td><b>RENAVAM</b>${esc(c.renavam||"________________")}</td><td><b>Chassi</b>${esc(c.chassi||"____________________")}</td></tr><tr><td><b>Combustível</b>${esc(c.comb)}</td><td><b>Câmbio</b>${esc(c.cambio)}</td><td><b>Quilometragem</b>${c.km.toLocaleString("pt-BR")} km</td></tr></table>`;
+ const lojaTab=`<table><tr><td colspan="2"><b>Razão social / nome</b>${esc(L.nome)}</td><td><b>CNPJ</b>${esc(L.cnpj||"__________________")}</td></tr><tr><td colspan="2"><b>Endereço</b>${esc(L.end)} · ${esc(L.cid)}</td><td><b>Telefone</b>${esc(L.wpp)}</td></tr></table>`;
+ const pesTab=`<table><tr><td colspan="2"><b>Nome</b>${esc(x.nome)}</td><td><b>CPF</b>${esc(x.cpf||"______________")}</td></tr><tr><td colspan="2"><b>Endereço</b>${esc(x.end||"________________________________________")}</td><td><b>Telefone</b>${esc(x.tel||"______________")}</td></tr></table>`;
+ const loc=`<p class="loc">${esc(L.cid.split("/")[0])}, ${dataExt(tipo==="consig"?HOJE:c.venda.data)}.</p>`;
+ let h="";
+ if(tipo==="contrato"){const v=c.venda.valor;
+  h=`<h1>Contrato de compra e venda de veículo usado</h1><div class="sub">Nº ${c.id}-${c.venda.data.replace(/-/g,"")}</div>
+  <h3>Vendedora</h3>${lojaTab}<p>neste ato representada por ${esc(donoLoja())}.</p><h3>Comprador</h3>${pesTab}<h3>Veículo</h3>${carroTab}
+  <h3>1. Objeto</h3><p>A VENDEDORA vende ao COMPRADOR o veículo descrito acima, livre de ônus, alienação, penhora ou restrição de qualquer natureza na data da assinatura.</p>
+  <h3>2. Preço e pagamento</h3><p>O preço total é de <b>${R(v)}</b> (${extenso(v)}), pago da seguinte forma: <b>${esc(c.venda.pag)}</b>. Quando houver financiamento, a venda se torna definitiva com a liberação do crédito pela instituição financeira. Quando houver veículo dado na troca, ele é recebido pelo valor acordado entre as partes, abatido do preço.</p>
+  <h3>3. Estado do veículo</h3><p>O COMPRADOR declara que examinou o veículo, fez ou teve a oportunidade de fazer test drive e vistoria, e o recebe no estado em que se encontra, com ${c.km.toLocaleString("pt-BR")} km no hodômetro e laudo cautelar ${c.docs&&c.docs.laudo?"aprovado":"a apresentar"}.</p>
+  <h3>4. Garantia</h3><p>A VENDEDORA garante motor e câmbio pelo prazo de 3 (três) meses a contar da entrega, além da garantia legal prevista no Código de Defesa do Consumidor. A garantia não cobre desgaste natural de peças, mau uso, falta de manutenção ou acidentes.</p>
+  <h3>5. Entrega e responsabilidades</h3><p>O veículo é entregue nesta data. A partir da entrega, multas, infrações, tributos e quaisquer ocorrências com o veículo são de responsabilidade do COMPRADOR. Débitos e multas com data anterior à entrega são de responsabilidade da VENDEDORA.</p>
+  <h3>6. Transferência</h3><p>O COMPRADOR se compromete a fazer a transferência de propriedade junto ao Detran no prazo de 30 (trinta) dias, conforme o artigo 123 do Código de Trânsito Brasileiro. A VENDEDORA fará a comunicação de venda ao órgão de trânsito.</p>
+  <h3>7. Foro</h3><p>As partes elegem o foro da comarca de ${esc(L.cid.split("/")[0])} para resolver qualquer questão deste contrato. E, por estarem de acordo, assinam em duas vias de igual teor, na presença de duas testemunhas.</p>
+  ${loc}<div class="ass"><div>${esc(L.nome)}<br>Vendedora</div><div>${esc(x.nome)}<br>Comprador</div><div>Testemunha 1<br>Nome e CPF</div><div>Testemunha 2<br>Nome e CPF</div></div>`}
+ if(tipo==="recibo"){const v=c.venda.valor,um=`<div class="rec"><div style="display:flex;justify-content:space-between;align-items:center"><h1 style="text-align:left;margin:0">Recibo</h1><div class="v">${R(v)}</div></div>
+  <p style="margin-top:12px">Recebemos de <b>${esc(x.nome)}</b>${x.cpf?", CPF "+esc(x.cpf):""}, a quantia de <b>${R(v)}</b> (${extenso(v)}), referente à compra do veículo <b>${esc(c.marca)} ${esc(c.modelo)} ${esc(c.versao)} ${c.ano}</b>, cor ${esc(c.pintura)}, placa <b>${esc(c.placa)}</b>, RENAVAM ${esc(c.renavam||"__________")}, chassi ${esc(c.chassi||"__________")}.</p>
+  <p>Forma de pagamento: <b>${esc(c.venda.pag)}</b>. Pelo que damos plena e total quitação do valor recebido.</p>
+  ${loc}<div class="ass" style="grid-template-columns:1fr;margin-top:30px;max-width:320px;margin-left:auto"><div>${esc(L.nome)}<br>CNPJ ${esc(L.cnpj||"__________")}</div></div></div>`;
+  h=um+`<div class="corte"></div>`+um.replace('<h1 style="text-align:left;margin:0">Recibo</h1>','<h1 style="text-align:left;margin:0">Recibo <span style="font-size:11px;color:#555">(2ª via)</span></h1>')}
+ if(tipo==="consig"){const v=x.val||c.compra;
+  h=`<h1>Termo de consignação de veículo</h1><div class="sub">Nº C${c.id}-${HOJE.replace(/-/g,"")}</div>
+  <h3>Consignante (dono do veículo)</h3>${pesTab}<h3>Consignatária (loja)</h3>${lojaTab}<h3>Veículo</h3>${carroTab}
+  <h3>1. Objeto</h3><p>O CONSIGNANTE entrega o veículo descrito acima à CONSIGNATÁRIA, que fica autorizada a expô-lo, anunciá-lo e vendê-lo em seu nome, pelo prazo de ${x.prazo} dias, renovável por acordo entre as partes.</p>
+  <h3>2. Valor para o dono</h3><p>Vendido o veículo, a CONSIGNATÁRIA pagará ao CONSIGNANTE o valor líquido de <b>${R(v)}</b> (${extenso(v)}) em até 5 (cinco) dias úteis após receber o pagamento do comprador. O que exceder esse valor pertence à CONSIGNATÁRIA a título de remuneração.</p>
+  <h3>3. Documentos e débitos</h3><p>O CONSIGNANTE declara ser o legítimo proprietário, entrega o documento do veículo e se responsabiliza por multas, tributos e débitos anteriores a esta data, bem como por qualquer restrição que impeça a venda.</p>
+  <h3>4. Guarda do veículo</h3><p>Durante a consignação, a CONSIGNATÁRIA é responsável pela guarda e conservação do veículo, que poderá ser usado apenas para test drive acompanhado.</p>
+  <h3>5. Retirada</h3><p>O CONSIGNANTE pode retirar o veículo a qualquer momento antes da venda, avisando com 2 (dois) dias de antecedência e reembolsando gastos de preparação autorizados por ele.</p>
+  ${loc}<div class="ass"><div>${esc(x.nome)}<br>Consignante</div><div>${esc(L.nome)}<br>Consignatária</div></div>`}
+ $("#printarea").innerHTML=`<div class="doc">${h}</div>`;setPagina("A4 portrait");
+ hist(c,{contrato:"Contrato de compra e venda gerado",recibo:"Recibo gerado",consig:"Termo de consignação gerado"}[tipo]);salvar();
+ toast("Documento pronto. Escolha a impressora ou “Salvar como PDF”.");setTimeout(()=>{try{window.print()}catch(e){toast("Seu navegador bloqueou a impressão aqui.")}},350)}
+
+/* ---------- avaliação de troca ---------- */
+const AV_ITENS=[["pneus","Pneus"],["pintura","Pintura e lataria"],["mecanica","Motor, câmbio e suspensão"],["interior","Interior e acabamento"],["docs","Documentos e revisões"]],COND=["Bom","Regular","Ruim"];
+function calcAval(a){const r=S.regras,venda=a.fipe*r.fator/100,prep=r.base+AV_ITENS.reduce((t,[k])=>t+(r.itens[k][COND.indexOf(a.itens[k]||"Bom")]||0),0),lucro=venda*r.margem/100;
+ const max=Math.max(0,Math.floor((venda-prep-r.fixo-lucro)/500)*500);return {venda,prep,lucro,fixo:r.fixo,max,oferta:Math.floor(max*0.93/500)*500}}
+let AVF="";
+function renderAval(){const l=(S.aval||[]).filter(a=>!AVF||a.status===AVF).sort((a,b)=>b.data.localeCompare(a.data)||b.id-a.id);
+ $("#av-lista").innerHTML=l.map(a=>{const k=calcAval(a);return `<button type="button" class="av-card" data-av="${a.id}"><div style="display:flex;justify-content:space-between;gap:8px"><b>${esc(a.marca)} ${esc(a.modelo)} ${a.ano}</b><span class="pill ${a.status==="Comprado"?"p-ok":a.status==="Recusado"?"p-mut":"p-warn"}">${a.status==="Comprado"?"Comprado":a.status==="Recusado"?"Recusado":"Em negociação"}</span></div><small class="muted">${esc(a.cli)} · ${a.km.toLocaleString("pt-BR")} km · ${esc(a.placa||"sem placa")}</small><small class="muted">FIPE ${R(a.fipe)} · avaliado em ${fd(a.data)} por ${esc(a.quem||"—")}</small><span class="muted" style="font-size:12px">Máximo a pagar</span><span class="max">${a.status==="Comprado"&&a.pago?R(a.pago)+" (pago)":R(k.max)}</span></button>`}).join("")||`<p class="muted">Nenhuma avaliação aqui ainda. Toque em "Nova avaliação".</p>`}
+function formAval(id){const a0=id?S.aval.find(x=>x.id==id):null,a=a0?JSON.parse(JSON.stringify(a0)):{marca:"",modelo:"",versao:"",ano:2020,km:50000,placa:"",pintura:"Prata",cambio:"Manual",fipe:50000,cli:"",tel:"",itens:{pneus:"Bom",pintura:"Bom",mecanica:"Bom",interior:"Bom",docs:"Bom"},obs:"",status:"Em negociação"},ov=$("#ov");ov.classList.remove("center");
+ const fechado=a0&&a0.status==="Comprado";
+ $("#sheet").innerHTML=`<div class="sheet-head"><div><span class="lbl">Avaliação de troca ou compra</span><h2 style="font-size:24px;margin-top:4px">${a0?esc(a.marca+" "+a.modelo+" "+a.ano):"Nova avaliação"}</h2></div><button class="x" data-close>Fechar</button></div>
+ <form class="form" id="fa"><label class="field">Cliente<input id="a-cli" required value="${esc(a.cli)}"></label><label class="field">WhatsApp<input id="a-tel" type="tel" inputmode="tel" data-tel value="${esc(a.tel)}"></label>
+ <label class="field">Marca<input id="a-marca" required value="${esc(a.marca)}" placeholder="Fiat"></label><label class="field">Modelo<input id="a-modelo" required value="${esc(a.modelo)}" placeholder="Mobi"></label>
+ <label class="field">Ano<input id="a-ano" type="number" inputmode="numeric" required value="${a.ano}"></label><label class="field">Km<input id="a-km" type="number" inputmode="numeric" required value="${a.km}"></label>
+ <label class="field">Placa<input id="a-placa" data-placa autocapitalize="characters" maxlength="7" value="${esc(a.placa)}"></label><label class="field">Cor<select id="a-cor">${Object.keys(PINTURA).map(p=>`<option ${p===a.pintura?"selected":""}>${p}</option>`).join("")}</select></label>
+ <label class="field full">Tabela FIPE (R$)<input id="a-fipe" type="number" inputmode="numeric" required value="${a.fipe}"></label>
+ <div class="full"><b style="font-size:13px">Estado do carro</b><div class="av-itens" style="margin-top:8px">${AV_ITENS.map(([k,n])=>`<div class="av-item"><b>${n}</b><div class="seg" data-item="${k}">${COND.map(cn=>`<button type="button" data-c="${cn}" aria-pressed="${a.itens[k]===cn}">${cn}</button>`).join("")}</div></div>`).join("")}</div></div>
+ <div class="full av-res" id="a-res"></div>
+ <label class="field full">Observações<textarea id="a-obs" rows="2" placeholder="Ex.: pneus dianteiros carecas, cliente quer dar na troca">${esc(a.obs)}</textarea></label>
+ ${a0?`<label class="field full">Situação<select id="a-st" ${fechado?"disabled":""}>${["Em negociação","Recusado"].concat(fechado?["Comprado"]:[]).map(x=>`<option ${x===a.status?"selected":""}>${x}</option>`).join("")}</select></label>`:""}
+ <button class="btn full" type="submit" style="justify-content:center">${a0?"Salvar avaliação":"Salvar avaliação"}</button>
+ ${a0&&!fechado?`<div class="full" style="border-top:1px solid var(--line);padding-top:12px"><b style="font-size:13px">Fechou negócio?</b><div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap"><input id="a-pago" type="number" inputmode="numeric" placeholder="Valor combinado (R$)" style="flex:1 1 160px;min-width:0;padding:9px 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);font:inherit"><button type="button" class="btn" id="a-comprar">Comprar e pôr no estoque</button></div><p class="muted" id="a-aviso" style="font-size:12.5px;margin-top:6px"></p></div>`:""}
+ ${fechado?`<p class="muted full">Comprado por ${R(a.pago||0)}. O carro já está no estoque.</p>`:""}</form>`;
+ ov.hidden=false;
+ const ler=()=>{a.fipe=+$("#a-fipe").value||0;$$("#fa .seg").forEach(sg=>{const b=sg.querySelector('[aria-pressed="true"]');a.itens[sg.dataset.item]=b?b.dataset.c:"Bom"})};
+ const pint=()=>{ler();const k=calcAval(a);$("#a-res").innerHTML=`<span class="muted" style="font-size:12.5px">Pague no máximo</span><span class="max">${R(k.max)}</span><span style="font-size:13px">Comece oferecendo <b>${R(k.oferta)}</b></span><div class="lines num" style="font-size:12.5px"><div><span>Preço de venda esperado (${S.regras.fator}% da FIPE)</span><span>${R(k.venda)}</span></div><div><span>(−) Preparação estimada</span><span>${R(k.prep)}</span></div><div><span>(−) Custo fixo por carro</span><span>${R(k.fixo)}</span></div><div><span>(−) Lucro desejado (${S.regras.margem}%)</span><span>${R(k.lucro)}</span></div></div>`;
+  const av=$("#a-aviso"),pg=$("#a-pago");if(av&&pg){const v=+pg.value;av.textContent=v>k.max?"Atenção: "+R(v-k.max)+" acima do máximo. Fale com o dono antes de fechar.":v?"Dentro do limite. Lucro previsto perto de "+R(k.venda-k.prep-k.fixo-v)+".":"";av.style.color=v>k.max?"var(--crit)":""}};
+ $$("#fa .seg button").forEach(b=>b.onclick=()=>{b.parentElement.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",x===b));pint()});
+ $("#a-fipe").oninput=pint;const pg=$("#a-pago");if(pg)pg.oninput=pint;pint();
+ const coleta=()=>{ler();const g=k=>$("#"+k).value.trim();Object.assign(a,{cli:g("a-cli"),tel:g("a-tel"),marca:g("a-marca"),modelo:g("a-modelo"),ano:+g("a-ano"),km:+g("a-km"),placa:g("a-placa").toUpperCase(),pintura:g("a-cor"),obs:g("a-obs")});if($("#a-st")&&!fechado)a.status=$("#a-st").value;return a};
+ $("#fa").onsubmit=e=>{e.preventDefault();marca();coleta();if(a0)Object.assign(a0,a);else S.aval.push({...a,id:Date.now(),data:HOJE,quem:USER.nome.split(" ")[0]});salvar();renderAval();fechar();toast("Avaliação salva. Máximo a pagar: "+R(calcAval(a).max)+".",1)};
+ const cb=$("#a-comprar");if(cb)cb.onclick=()=>{const v=+$("#a-pago").value;if(!v){$("#a-pago").focus();toast("Coloque o valor combinado com o cliente.");return}
+  if(!$("#fa").reportValidity())return;marca();coleta();const k=calcAval(a),id=Date.now();
+  S.carros.push({id,origem:"Próprio",parc:0,marca:a.marca,modelo:a.modelo,versao:a.versao||"",ano:a.ano,km:a.km,placa:a.placa||"SEMPLACA",pintura:a.pintura,comb:"Flex",cambio:a.cambio||"Manual",compra:v,gastos:[["Preparação estimada (avaliação)",k.prep]],preco:Math.round(k.venda/100)*100,fipe:a.fipe,minimo:Math.round(k.venda*0.955/500)*500,renavam:"",chassi:"",obs:"Entrou por avaliação: "+a.cli+(a.obs?" · "+a.obs:""),entrada:HOJE,status:"Preparação",docs:{laudo:false,manual:false,chave:false,ipva:false},visitas:0,fotos:[],hist:[{data:HOJE,txt:"Comprado de "+a.cli+" por "+R(v)+" (avaliação)",quem:USER.nome.split(" ")[0]}]});
+  S.contas.push({id:id+1,tipo:"pagar",desc:"Compra "+a.marca+" "+a.modelo+" · "+a.cli,cat:"Compra de veículo",valor:v,venc:HOJE,comp:HOJE,status:"Pendente",conta:"Banco",carro:id});
+  Object.assign(a0,a,{status:"Comprado",pago:v,carro:id});salvar();tudo();renderAval();TAB="resumo";ficha(id);toast(a.modelo+" comprado e colocado no estoque em Preparação. A conta da compra está em contas a pagar.",1)}}
+function formRegras(){const r=S.regras,ov=$("#ov");ov.classList.add("center");
+ $("#sheet").innerHTML=`<div class="sheet-head"><div><span class="lbl">Avaliações</span><h2 style="font-size:24px;margin-top:4px">Regras da avaliação</h2></div><button class="x" data-close>Fechar</button></div>
+ <p class="muted" style="font-size:13.5px">Essas regras valem para todas as avaliações da equipe. O vendedor vê o máximo a pagar, mas não muda as regras.</p>
+ <form class="form" id="fr"><label class="field">Vendemos em média a (% da FIPE)<input id="r-fator" type="number" inputmode="numeric" value="${r.fator}"></label><label class="field">Lucro desejado por carro (%)<input id="r-margem" type="number" inputmode="numeric" value="${r.margem}"></label>
+ <label class="field">Custo fixo por carro (R$)<input id="r-fixo" type="number" inputmode="numeric" value="${r.fixo}"></label><label class="field">Higienização e polimento (sempre)<input id="r-base" type="number" inputmode="numeric" value="${r.base}"></label>
+ <div class="full"><table class="rg-tab"><tr><th>Custo de preparação</th><th>Regular (R$)</th><th>Ruim (R$)</th></tr>${AV_ITENS.map(([k,n])=>`<tr><td>${n}</td><td><input id="r-${k}-1" type="number" inputmode="numeric" value="${r.itens[k][1]}"></td><td><input id="r-${k}-2" type="number" inputmode="numeric" value="${r.itens[k][2]}"></td></tr>`).join("")}</table></div>
+ <button class="btn full" type="submit" style="justify-content:center">Salvar regras</button></form>`;
+ ov.hidden=false;
+ $("#fr").onsubmit=e=>{e.preventDefault();marca();const n=k=>+$("#"+k).value||0;Object.assign(r,{fator:n("r-fator")||98,margem:n("r-margem"),fixo:n("r-fixo"),base:n("r-base")});AV_ITENS.forEach(([k])=>r.itens[k]=[0,n("r-"+k+"-1"),n("r-"+k+"-2")]);salvar();renderAval();fechar();toast("Regras atualizadas. Todas as avaliações foram recalculadas.",1)}}
 function fechar(){$("#ov").hidden=true}
 function tudo(){renderVitrine();if(USER)renderPainel()}
 function tela(t){["vitrine","login","painel"].forEach(x=>$("#"+x).hidden=x!==t);$("#back-painel").hidden=!(t==="vitrine"&&USER);menu(false);scrollTo(0,0)}
@@ -1362,6 +1511,9 @@ document.addEventListener("click",e=>{
  const es=t.closest("[data-estorno]");if(es){const x=S.contas.find(y=>y.id==es.dataset.estorno);x.status="Pendente";delete x.pago;salvar();tudo();toast("Baixa desfeita. A conta voltou para pendente.");return}
  const ft=t.closest("[data-ft]");if(ft){FT=ft.dataset.ft;renderFin();return}
  const sm=t.closest("#seg-mov button");if(sm){MOVF=sm.dataset.v;$$("#seg-mov button").forEach(b=>b.setAttribute("aria-pressed",b===sm));renderMov();return}
+ const dg=t.closest("[data-doc-gerar]");if(dg){const [tp,id]=dg.dataset.docGerar.split(":");docForm(tp,+id);return}
+ const avc=t.closest("[data-av]");if(avc){formAval(avc.dataset.av);return}
+ const sav=t.closest("#seg-av button");if(sav){AVF=sav.dataset.v;$$("#seg-av button").forEach(b=>b.setAttribute("aria-pressed",b===sav));renderAval();return}
  const mc=t.closest("[data-mc]");if(mc){const c=carro(+mc.dataset.mc);if(MOVER){SEL=SEL===c?null:c;renderMapa()}else{TAB="resumo";ficha(c.id)}return}
  const vg=t.closest("#mapa .vaga");if(vg&&MOVER&&SEL){moverCarro(SEL.id,vg.dataset.vaga);return}
  const od=t.closest("[data-ord]");if(od){EST.ord===od.dataset.ord?EST.dir*=-1:(EST={...EST,ord:od.dataset.ord,dir:-1});renderEstoque();return}
@@ -1374,13 +1526,14 @@ $$(".bb[data-sec]").forEach(b=>b.addEventListener("click",()=>{fechar();secao(b.
 $("#bb-mais").onclick=()=>menu(true);
 $("#busca-btn").onclick=()=>{menu(false);busca()};$("#busca-m").onclick=busca;
 document.addEventListener("keydown",e=>{if(!USER||$("#painel").hidden)return;const tg=e.target.tagName;if((e.key==="/"&&!/INPUT|TEXTAREA|SELECT/.test(tg))||((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k")){e.preventDefault();busca()}});
-document.addEventListener("input",e=>{const el=e.target;if(el.matches&&el.matches("[data-tel]"))el.value=telFmt(el.value);if(el.matches&&el.matches("[data-placa]"))el.value=el.value.toUpperCase().replace(/[^A-Z0-9]/g,"").slice(0,7);if(el.type==="number")hintNum(el)});
+document.addEventListener("input",e=>{const el=e.target;if(el.matches&&el.matches("[data-tel]"))el.value=telFmt(el.value);if(el.matches&&el.matches("[data-cpf]")){const d=el.value.replace(/\D/g,"").slice(0,11);el.value=d.replace(/(\d{3})(\d)/,"$1.$2").replace(/(\d{3})(\d)/,"$1.$2").replace(/(\d{3})(\d{1,2})$/,"$1-$2")}if(el.matches&&el.matches("[data-placa]"))el.value=el.value.toUpperCase().replace(/[^A-Z0-9]/g,"").slice(0,7);if(el.type==="number")hintNum(el)});
 document.addEventListener("focusin",e=>{if(e.target.type==="number")hintNum(e.target)});
 $("#e-q").addEventListener("input",renderEstoque);
 $("#mapa-q").addEventListener("input",renderMapa);
 $("#mapa-mover").onclick=()=>{MOVER=!MOVER;SEL=null;renderMapa()};
 $("#mapa-cfg").onclick=cfgVagas;
-$("#btn-contador").onclick=contador;$("#e-or").addEventListener("change",renderEstoque);
+$("#btn-contador").onclick=contador;
+$("#av-nova").onclick=()=>formAval();$("#av-regras").onclick=formRegras;$("#e-or").addEventListener("change",renderEstoque);
 $("#l-voltar").onclick=()=>{renderVitrine();tela("vitrine")};
 $("#menu-btn").onclick=()=>menu(!$("#side").classList.contains("open"));$("#scrim").onclick=()=>menu(false);
 $("#back-painel").onclick=()=>{tela("painel");renderPainel()};
