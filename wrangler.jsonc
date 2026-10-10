@@ -1,0 +1,15 @@
+{
+  "name": "patio-demo",
+  "main": "worker.js",
+  "compatibility_date": "2025-07-01",
+  "keep_vars": true,
+  "assets": {
+    "directory": ".",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/api/*"]
+  },
+  "d1_databases": [
+    { "binding": "DB", "database_name": "patio", "database_id": "fc7a0e0c-5cd9-4f8b-8344-2657c7064df9" }
+  ]
+}

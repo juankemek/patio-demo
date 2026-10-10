@@ -1,0 +1,10 @@
+functions
+worker.js
+wrangler.jsonc
+.assetsignore
+README.md
+vercel.json
+_routes.json
+node_modules
+.git
+.wrangler
