@@ -762,6 +762,44 @@ html.travado body{overflow:hidden}
 @media(max-width:760px){.v-procura{grid-template-columns:1fr;padding:16px}.pv-it{flex-wrap:wrap}.pv-acts{width:100%;justify-content:flex-end}}
 .pv-it .t b,.pv-it .t small{white-space:normal;overflow:visible;text-overflow:clip}
 #sheet details>summary.btn{display:flex;width:100%;box-sizing:border-box}#sheet details>summary.btn::-webkit-details-marker{display:none}
+
+/* ---------- nuvem: carregando, situação, opinião, administração ---------- */
+.nv-load{position:fixed;inset:0;z-index:395;background:var(--bg);display:grid;place-items:center;text-align:center;padding:24px}
+.nv-load[hidden]{display:none}
+.nv-load p{color:var(--muted);font-size:16px;margin:14px 0}
+.nv-st{font-size:12.5px;color:var(--muted);margin-left:6px}
+.nv-st.err{color:var(--crit)}
+.op-notas{display:grid;grid-template-columns:repeat(11,1fr);gap:4px;margin:6px 0 2px}
+.op-notas button{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:8px;padding:9px 0;font:inherit;font-weight:700;cursor:pointer}
+.op-notas button[aria-pressed="true"]{background:var(--accent);color:#fff;border-color:var(--accent)}
+.op-leg{display:flex;justify-content:space-between;font-size:12px;color:var(--muted)}
+.op-form{display:grid;gap:12px;text-align:left;margin-top:16px}
+.op-form textarea{width:100%;box-sizing:border-box}
+.op-cont{display:flex;gap:8px;flex-wrap:wrap}
+.nv-link{display:flex;gap:8px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin:6px 0 4px;background:var(--bg)}
+.nv-link code{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-family:inherit;font-weight:700;font-size:14px}
+.adm{position:fixed;inset:0;z-index:396;background:var(--bg);overflow:auto}
+.adm[hidden]{display:none}
+.adm-top{position:sticky;top:0;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 18px;background:var(--surface);border-bottom:1px solid var(--line);z-index:2}
+.adm-acts{display:flex;gap:8px}
+.adm-main{max-width:1100px;margin:0 auto;padding:20px 16px 60px}
+.adm-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:18px}
+.adm-kpis div{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px}
+.adm-kpis b{display:block;font-size:26px;margin-top:4px}
+.adm-kpis span{font-size:12.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;font-weight:700}
+.adm-card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:12px}
+.adm-card h3{margin:0;font-size:19px}
+.adm-h{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:flex-start}
+.adm-sub{color:var(--muted);font-size:13.5px;margin-top:3px}
+.adm-nums{display:flex;flex-wrap:wrap;gap:14px;margin:12px 0;font-size:14px}
+.adm-nums b{font-size:16px}
+.adm-op{border-top:1px solid var(--line);padding-top:10px;margin-top:10px;font-size:14px}
+.adm-op .nota{display:inline-grid;place-items:center;min-width:30px;height:30px;border-radius:8px;color:#fff;font-weight:800;margin-right:8px}
+.adm-op p{margin:6px 0 0;line-height:1.45}
+.adm-bts{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.adm-login{max-width:380px;margin:60px auto;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:24px}
+@media(max-width:700px){.adm-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.op-notas{grid-template-columns:repeat(6,1fr)}}
+html.modo-teste #reset{display:none}
 </style>
 
 </head>
@@ -848,10 +886,16 @@ html.travado body{overflow:hidden}
  <div class="onb-top" style="justify-content:center"><span class="onb-k"><i></i>Pátio</span></div>
  <h1 class="onb-h">Seu teste de 48 horas terminou</h1>
  <p class="onb-p">Gostou? Fale com o Juan para continuar usando o Pátio na sua loja, com tudo o que você já cadastrou.</p>
+ <div id="fim-op" hidden></div>
  <a class="btn full wa-btn" id="fim-wa" target="_blank" rel="noopener" style="justify-content:center;margin-top:18px">Falar com o Juan no WhatsApp</a>
  <p class="muted" style="font-size:13px;margin-top:14px">Seus dados continuam guardados neste aparelho.</p>
 </div></div>
 <div class="vid" id="vid" hidden><div class="vid-box" role="dialog" aria-modal="true" aria-labelledby="vid-t"><div class="vid-h"><b id="vid-t">Vídeos de ajuda</b><span style="display:flex;gap:8px"><button type="button" class="btn xs soft" id="vid-lista" hidden>Todos os vídeos</button><button type="button" class="x" id="vid-x">Fechar</button></span></div><div class="vid-c" id="vid-c"></div></div></div>
+<div class="nv-load" id="nv-load" hidden><div><span class="onb-k"><i></i>Pátio</span><p id="nv-load-t">Carregando…</p><button type="button" class="btn" id="nv-load-r" hidden>Tentar de novo</button></div></div>
+<div class="adm" id="adm" hidden>
+ <header class="adm-top"><span class="onb-k"><i></i>Pátio · Test drives</span><span class="adm-acts"><button type="button" class="btn sm soft" id="adm-at" hidden>Atualizar</button><button type="button" class="btn sm ghost" data-tema aria-label="Mudar o tema"><svg class="i"><use href="#i-moon"/></svg></button></span></header>
+ <main class="adm-main" id="adm-main"></main>
+</div>
 <div id="tour-hl" hidden></div>
 <div id="tour-card" role="dialog" aria-live="polite" hidden></div>
 <section id="login" hidden>
@@ -1068,7 +1112,7 @@ html.travado body{overflow:hidden}
 <div id="printarea"></div>
 
 <script>
-const HOJE=(/[?&]teste\b/.test(location.search)||/^\/teste\/?$/.test(location.pathname))?new Date(Date.now()-new Date().getTimezoneOffset()*6e4).toISOString().slice(0,10):"2026-10-08";
+const HOJE=(/[?&]teste\b/.test(location.search)||/^\/(teste|admin|l\/[a-z0-9-]+(\/painel)?)\/?$/.test(location.pathname))?new Date(Date.now()-new Date().getTimezoneOffset()*6e4).toISOString().slice(0,10):"2026-10-08";
 const PINTURA={Prata:"#9aa0a4",Branco:"#ebe8e1",Preto:"#22262a",Vermelho:"#9e1d25",Azul:"#2b4f7e",Cinza:"#5f6468",Verde:"#4f6247",Bege:"#c9b99a"};
 const ETAPAS=["Novo","Em negociação","Visita marcada","Financiamento","Vendido","Perdido"];
 const SWATCH=["#dc2626","#0e5c57","#1f3f8f","#111827","#c2410c","#6d28d9","#047857","#a16207"];
@@ -1131,13 +1175,18 @@ function seed(){return{
  ],
  hist:[["Mai",3,13100],["Jun",4,17800],["Jul",2,9400],["Ago",5,22600],["Set",4,18900]]
 }}
-const TESTE=/[?&]teste\b/.test(location.search)||/^\/teste\/?$/.test(location.pathname);
+const NV_PATH=location.pathname.replace(/\/+$/,""),NV_M=NV_PATH.match(/^\/l\/([a-z0-9-]+)(\/painel)?$/);
+const ADMIN=NV_PATH==="/admin";
+const NUVEM=!ADMIN&&(NV_PATH==="/teste"||!!NV_M||/[?&]teste\b/.test(location.search));
+const NV_COD=NV_M?NV_M[1]:null,NV_PAINEL=!!(NV_M&&NV_M[2]);
+const TESTE=NUVEM;
+var NV={token:null,codigo:null,versao:0,base:null,expira:0,liberado:false,timer:null,salvando:false,pend:false,poll:null,adiado:false,stTxt:"",opinou:false,novo:false,pub:false,carregado:false,fotoId:new Map(),fotoData:new Map()};
 if(TESTE&&/[?&](teste=)?novo\b/.test(location.search)){try{localStorage.removeItem("patio-teste-v1");localStorage.removeItem("patio-teste-user")}catch(e){}history.replaceState(null,"",location.pathname+(/^\/teste/.test(location.pathname)?"":"?teste"))}
 const SKEY=TESTE?"patio-teste-v1":"patio-demo-v4",USTORE=TESTE?localStorage:sessionStorage,TESTE_H=48;
 const CONTATO={nome:"Juan",wpp:"5553999032481"};
 if(TESTE)document.documentElement.classList.add("modo-teste");
 function seedVazio(){const z=seed();return{loja:{nome:"",slug:"",slogan:"",cid:"",wpp:"",end:"",hor:"",sobre:"",cor:"#dc2626",cnpj:"",contador:"",site:{destaques:{d2v:"",d2t:"",d3v:"",d3t:""}}},equipe:[],carros:[],leads:[],visitas:[],parceiros:[],saldoIni:{Banco:0,Caixa:0},regras:z.regras,aval:[],contas:[],despesas:[],hist:[],teste:{inicio:0},guia:{},clientes:[],posv:{},removidos:[],metas:{loja:0,mostrar:true,vend:{}},mural:[],pvend:{}}}
-let S;try{S=JSON.parse(localStorage.getItem(SKEY))}catch(e){}
+let S;if(!NUVEM)try{S=JSON.parse(localStorage.getItem(SKEY))}catch(e){}
 if(!S||!S.carros||!S.contas)S=TESTE?seedVazio():seed();
 (function(){let v=0;(S.equipe||[]).forEach(p=>{if(!p.usuario){if(p.papel==="Dono"&&!S.equipe.some(x=>x.usuario==="admin"))p.usuario="admin";else if(p.papel!=="Dono"&&!S.equipe.some(x=>x.usuario==="vendedor"))p.usuario="vendedor";else{let b=p.nome.split(" ")[0].toLowerCase().normalize("NFD").replace(/[^a-z0-9]/g,"")||"pessoa",u=b,i=2;while(S.equipe.some(x=>x.usuario===u))u=b+i++;p.usuario=u}p.senha=p.senha||"1234";if(p.ativo===undefined)p.ativo=true}})})();
 const EQ=()=>S.equipe.filter(p=>!p.removido);
@@ -1162,7 +1211,8 @@ S.posv=S.posv||{};
 if(!S.leads.some(l=>l.indic)&&!TESTE){const l=S.leads.find(x=>x.id===8);if(l){l.indic="Patrícia Gomes";l.origem="Indicação"}}
 S.loja.google=S.loja.google||{};
 let USER=null;try{USER=JSON.parse(USTORE.getItem(TESTE?"patio-teste-user":"patio-user"))}catch(e){}
-function salvar(){if(typeof PREVIA!=="undefined"&&PREVIA)return true;try{localStorage.setItem(SKEY,JSON.stringify(S));return true}catch(e){if(/quota/i.test(e.name+e.message)&&typeof toast==="function")toast("O espaço da demonstração encheu. Remova algumas fotos. No sistema real as fotos ficam guardadas na nuvem, sem esse limite.");return !/quota/i.test(e.name+e.message)}}
+if(NUVEM||ADMIN)USER=null;
+function salvar(){if(typeof PREVIA!=="undefined"&&PREVIA)return true;if(NUVEM){nvAgenda();return true}try{localStorage.setItem(SKEY,JSON.stringify(S));return true}catch(e){if(/quota/i.test(e.name+e.message)&&typeof toast==="function")toast("O espaço da demonstração encheu. Remova algumas fotos. No sistema real as fotos ficam guardadas na nuvem, sem esse limite.");return !/quota/i.test(e.name+e.message)}}
 function lerFotos(files){return Promise.all([...files].filter(f=>f.type.startsWith("image/")).slice(0,12).map(f=>new Promise(res=>{const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const W=1000,sc=Math.min(1,W/im.width),cv=document.createElement("canvas");cv.width=Math.round(im.width*sc);cv.height=Math.round(im.height*sc);cv.getContext("2d").drawImage(im,0,0,cv.width,cv.height);res(cv.toDataURL("image/jpeg",0.72))};im.onerror=()=>res(null);im.src=r.result};r.onerror=()=>res(null);r.readAsDataURL(f)}))).then(a=>a.filter(Boolean))}
 
 /* ---------- utilidades ---------- */
@@ -1239,7 +1289,7 @@ function seoSite(c){const L=S.loja,st=SITE(L),cid=(L.cid||"").split("/")[0],url=
  ldSet("ld-carro",c?Object.assign({"@context":"https://schema.org"},car(c)):null);
  const fq=(st.faq||FAQ_PADRAO).filter(f=>f.p&&f.r);ldSet("ld-faq",st.mostrar.faq!==false&&fq.length?{"@context":"https://schema.org","@type":"FAQPage",mainEntity:fq.map(f=>({"@type":"Question",name:f.p,acceptedAnswer:{"@type":"Answer",text:faqTxt(f.r)}}))}:null)}
 const faqTxt=t=>String(t||"").replace("{horario}",S.loja.hor||"Seg a sex em horário comercial").replace("{loja}",S.loja.nome||"a loja");
-const urlSite=L=>{const st=SITE(L);return st.dominio?st.dominio.replace(/^https?:\/\//,"").replace(/\/$/,""):(L.slug||"sualoja")+".patio.app"};
+const urlSite=L=>{const st=SITE(L);if(NUVEM&&!st.dominio&&(NV_COD||NV.codigo))return location.host+"/l/"+(NV_COD||NV.codigo);return st.dominio?st.dominio.replace(/^https?:\/\//,"").replace(/\/$/,""):(L.slug||"sualoja")+".patio.app"};
 let ORD_MEXEU=false,PREVIA=false;
 function renderVitrine(){
  const L=S.loja,st=SITE(L);aplicaMarca();
@@ -1285,11 +1335,13 @@ function verCarro(id){
  const upd=()=>{const e=+$("#sim-e").value/100,n=+$("#sim-n").value;$("#sim-ent").textContent=R(c.preco*e)+" ("+Math.round(e*100)+"%)";$("#sim-p").textContent=n+"x de "+R(pmt(c.preco*(1-e),SITE(L).fin.taxa/100,n))};
  $("#sim-e").oninput=upd;$("#sim-n").onchange=upd;upd();
  $("#f-agv").onsubmit=e=>{e.preventDefault();const n=$("#agv-n").value.trim(),t=$("#agv-t").value.trim();
+  if(NUVEM){nvPedido({nome:n,tel:t,carro:c.id,nota:"Pediu "+$("#agv-tp").value.toLowerCase()+" pelo site."},{data:$("#agv-d").value,hora:$("#agv-h").value,tipo:$("#agv-tp").value},"Pedido enviado! A loja confirma pelo WhatsApp.");return}
   const vd=proxVend();S.leads.push({id:Date.now(),nome:n,tel:t,carro:c.id,origem:"Site",etapa:"Visita marcada",data:HOJE,site:true,vend:vd,nota:"Pediu "+$("#agv-tp").value.toLowerCase()+" pelo site."});
   S.visitas.push({id:Date.now()+1,data:$("#agv-d").value,hora:$("#agv-h").value,cli:n,carro:c.id,tipo:$("#agv-tp").value,vend:vd,site:true});
   salvar();fechar();toast("Pedido enviado! A loja confirma pelo WhatsApp.")};
  $("#f-int").onsubmit=e=>{e.preventDefault();const se=$("#sim-e"),sn=$("#sim-n"),o=$("#in-o").value,m=$("#in-m").value.trim();
   const nota=o+(o==="Simular o financiamento"&&se?` · simulou ${se.value}% de entrada em ${sn.value}x (${$("#sim-p").textContent})`:"")+(m?" · "+m:"");
+  if(NUVEM){nvPedido({nome:$("#in-n").value.trim(),tel:$("#in-t").value.trim(),carro:c.id,nota},null,"Recebemos! A loja te chama no WhatsApp.");return}
   S.leads.push({id:Date.now(),nome:$("#in-n").value.trim(),tel:$("#in-t").value.trim(),carro:c.id,origem:"Site",etapa:"Novo",data:HOJE,site:true,vend:proxVend(),nota});
   salvar();fechar();toast("Recebemos! A loja te chama no WhatsApp.")};
  seoSite(c);
@@ -1898,6 +1950,7 @@ function ajAbre(abrir){if(abrir)$("#toast").hidden=true;$("#aj").hidden=!abrir;$
 /* ---------- pedidos do site e rodízio ---------- */
 function proxVend(){const vs=EQ().filter(p=>p.papel!=="Dono"&&p.ativo!==false);if(!vs.length)return (EQ().find(p=>p.papel==="Dono")||{id:1}).id;S.fila=((S.fila||0)+1)%vs.length;return vs[S.fila].id}
 document.addEventListener("submit",e=>{if(e.target.id!=="f-procura")return;e.preventDefault();
+ if(NUVEM){nvPedido({nome:$("#pc-n").value.trim(),tel:$("#pc-t").value.trim(),procura:$("#pc-c").value.trim()+" · "+$("#pc-v").value,nota:"Procura: "+$("#pc-c").value.trim()+" ("+$("#pc-v").value+")"},null,"Anotado! Avisamos pelo WhatsApp quando chegar um carro assim.",e.target);return}
  S.leads.push({id:Date.now(),nome:$("#pc-n").value.trim(),tel:$("#pc-t").value.trim(),carro:null,origem:"Site",etapa:"Novo",data:HOJE,site:true,vend:proxVend(),procura:$("#pc-c").value.trim()+" · "+$("#pc-v").value,nota:"Procura: "+$("#pc-c").value.trim()+" ("+$("#pc-v").value+")"});
  salvar();e.target.reset();toast("Anotado! Avisamos pelo WhatsApp quando chegar um carro assim.")});
 
@@ -2001,7 +2054,7 @@ function vidLista(){const c=$("#vid-c"),pode=VIDS.filter(vidPode);$("#vid-t").te
  const grupo=g=>pode.filter(v=>v[2]===g).map(v=>`<button type="button" data-vid="${v[0]}"><i></i><span>${esc(v[1])}<small>${g==="Dono"?"Para o dono":"Para toda a equipe"}</small></span></button>`).join("");
  c.innerHTML=`<p class="muted" style="margin:0 0 6px;font-size:14px">Vídeos curtos, de menos de 1 minuto, mostrando cada tarefa.</p><div class="vid-g">${isDono()?`<h4>Para o dono</h4>${grupo("Dono")}`:""}<h4>Dia a dia da loja</h4>${grupo("Equipe")}</div>`;$("#vid").hidden=false}
 function vidAbre(id){const v=VIDS.find(x=>x[0]===id);if(!v)return vidLista();ajAbre(false);$("#vid-t").textContent=v[1];$("#vid-lista").hidden=false;
- $("#vid-c").innerHTML=`<video src="videos/${v[0]}.mp4" controls playsinline autoplay preload="metadata"></video>`;$("#vid").hidden=false}
+ $("#vid-c").innerHTML=`<video src="${NV_M?"/":""}videos/${v[0]}.mp4" controls playsinline autoplay preload="metadata"></video>`;$("#vid").hidden=false}
 function vidFecha(){$("#vid-c").innerHTML="";$("#vid").hidden=true}
 $("#vid-x").onclick=vidFecha;$("#vid-lista").onclick=vidLista;
 $("#vid").addEventListener("click",e=>{if(e.target.id==="vid")vidFecha()});
@@ -2090,7 +2143,7 @@ function renderLoja(){const d=edDraft(),st=d.site;
  edFrame();edSujo()}
 function lerImg(file,W){return new Promise(res=>{if(!file)return res(null);const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const sc=Math.min(1,W/im.width),cv=document.createElement("canvas");cv.width=Math.round(im.width*sc);cv.height=Math.round(im.height*sc);const cx=cv.getContext("2d");cx.drawImage(im,0,0,cv.width,cv.height);res(cv.toDataURL(file.type==="image/png"&&W<600?"image/png":"image/jpeg",0.78))};im.onerror=()=>res(null);im.src=r.result};r.readAsDataURL(file)})}
 function edMudou(redesenha){edSujo();if(redesenha){const op=[...$$("#ed-ctrl details")].map(x=>x.open);renderLoja();$$("#ed-ctrl details").forEach((x,i)=>x.open=op[i])}clearTimeout(ED_T);ED_T=setTimeout(edEnvia,120)}
-function edEnvia(){const f=$("#ed-if");if(f&&f.contentWindow)try{f.contentWindow.postMessage({tipo:"patio-previa",loja:edDraft()},"*")}catch(e){}$("#ed-url").textContent="https://"+urlSite(edDraft())}
+function edEnvia(){const f=$("#ed-if");if(f&&f.contentWindow)try{f.contentWindow.postMessage({tipo:"patio-previa",carros:NUVEM?S.carros:undefined,loja:edDraft()},"*")}catch(e){}$("#ed-url").textContent="https://"+urlSite(edDraft())}
 let ED_TRY=0;function edFrame(){$$("#ed-disp button").forEach(x=>x.setAttribute("aria-pressed",x.dataset.v===ED_DISP));const f=$("#ed-if"),box=$("#ed-frame");if(!f||!box)return;if(!f.getAttribute("src")){f.src=location.href.split("#")[0]+"#previa"}if(!box.clientWidth){if(ED_TRY++<20&&!$("#sec-loja").hidden)setTimeout(edFrame,100);return}ED_TRY=0;
  const cel=ED_DISP==="cel",W=cel?390:1280,H=cel?780:900,bw=box.clientWidth-(cel?24:0),bh=box.clientHeight-(cel?28:0),sc=Math.min(1,bw/W,cel?bh/H:9);
  box.classList.toggle("cel",cel);f.style.width=W+"px";f.style.height=(cel?H:Math.ceil(box.clientHeight/sc))+"px";f.style.transform=`scale(${sc})`;if(cel){f.style.marginBottom=(H*sc-H)+"px";f.style.marginRight=(W*sc-W)+"px"}else{f.style.marginBottom="";f.style.marginRight=""}}
@@ -2155,7 +2208,7 @@ $("#ed-desc").onclick=()=>{DRAFT=null;renderLoja();edEnvia();toast("Mudanças de
 $("#ed-disp").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;ED_DISP=b.dataset.v;$$("#ed-disp button").forEach(x=>x.setAttribute("aria-pressed",x===b));edFrame()});
 $("#ed-modo").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;$$("#ed-modo button").forEach(x=>x.setAttribute("aria-pressed",x===b));$("#ed").className="ed so-"+b.dataset.v;if(b.dataset.v==="prev")setTimeout(edFrame,30)});
 addEventListener("resize",()=>{if(!$("#sec-loja").hidden)edFrame()});
-addEventListener("message",e=>{const m=e.data||{};if(m.tipo==="patio-pronto"&&!PREVIA)edEnvia();if(m.tipo==="patio-previa"&&PREVIA){S.loja=m.loja;renderVitrine()}});
+addEventListener("message",e=>{const m=e.data||{};if(m.tipo==="patio-pronto"&&!PREVIA)edEnvia();if(m.tipo==="patio-previa"&&PREVIA){S.loja=m.loja;if(m.carros)S.carros=m.carros;renderVitrine()}});
 $("#recolher").onclick=()=>{const mini=!document.documentElement.classList.contains("menu-mini");document.documentElement.classList.toggle("menu-mini",mini);try{localStorage.setItem("patio-menu",mini?"mini":"")}catch(e){}$("#recolher").textContent=mini?"»":"«";$("#recolher").title=mini?"Mostrar menu":"Esconder menu";$("#recolher").setAttribute("aria-label",$("#recolher").title);if(!$("#sec-loja").hidden)setTimeout(edFrame,230)};
 try{if(localStorage.getItem("patio-menu")==="mini"){document.documentElement.classList.add("menu-mini");$("#recolher").textContent="»";$("#recolher").title="Mostrar menu"}}catch(e){}
 $$(".side .nav").forEach(n=>{if(!n.title)n.title=n.textContent.trim()});
@@ -2165,30 +2218,30 @@ $("#aj-f").onsubmit=e=>{e.preventDefault();const q=$("#aj-q").value.trim();if(!q
 $("#av-nova").onclick=()=>formAval();$("#av-regras").onclick=formRegras;$("#e-or").addEventListener("change",renderEstoque);
 $("#l-voltar").onclick=()=>{renderVitrine();tela("vitrine")};
 $("#menu-btn").onclick=()=>menu(!$("#side").classList.contains("open"));$("#scrim").onclick=()=>menu(false);
-$("#back-painel").onclick=()=>{tela("painel");renderPainel()};
+$("#back-painel").onclick=()=>{if(NUVEM&&!NV_PAINEL){location.href="/l/"+NV_COD+"/painel";return}tela("painel");renderPainel()};
 const UKEY=TESTE?"patio-teste-user":"patio-user";
-$("#f-login").onsubmit=e=>{e.preventDefault();const u=$("#l-user").value.trim().toLowerCase(),sn=$("#l-senha").value,c=EQ().find(p=>p.usuario===u&&p.senha===sn);
+$("#f-login").onsubmit=e=>{e.preventDefault();if(NUVEM){nvEntrar();return}const u=$("#l-user").value.trim().toLowerCase(),sn=$("#l-senha").value,c=EQ().find(p=>p.usuario===u&&p.senha===sn);
  if(!c||c.ativo===false){$("#l-erro").textContent=c?"Seu acesso está bloqueado. Fale com o dono da loja.":"Usuário ou senha incorretos. Confira e tente de novo.";$("#l-erro").hidden=false;$("#l-senha").value="";$("#l-senha").focus();return}
  $("#l-erro").hidden=true;USER={id:c.id,nome:c.nome,papel:c.papel};try{USTORE.setItem(UKEY,JSON.stringify(USER))}catch(e){}
  $("#l-user").value="";$("#l-senha").value="";tela("painel");renderPainel();secao("geral");toast(c.papel==="Dono"?"Entrou como dono: acesso completo.":c.papel==="Vendedor"?"Entrou como vendedor: custo, lucro e financeiro ficam escondidos.":"Entrou como "+c.papel.toLowerCase()+".")};
 $("#l-user").oninput=$("#l-senha").oninput=()=>{$("#l-erro").hidden=true};
-$("#sair").onclick=()=>{ajAbre(false);$("#aj-m").innerHTML="";USER=null;try{USTORE.removeItem(UKEY)}catch(e){}tela("login")};
-$("#ver-site").onclick=$("#ver-site2").onclick=()=>{renderVitrine();tela("vitrine");toast("Este é o site que o comprador vê. O botão de voltar ao painel só aparece para você.")};
+$("#sair").onclick=()=>{if(NUVEM){nvSair();return}ajAbre(false);$("#aj-m").innerHTML="";USER=null;try{USTORE.removeItem(UKEY)}catch(e){}tela("login")};
+$("#ver-site").onclick=$("#ver-site2").onclick=()=>{if(NUVEM&&NV.codigo){location.href="/l/"+NV.codigo;return}renderVitrine();tela("vitrine");toast("Este é o site que o comprador vê. O botão de voltar ao painel só aparece para você.")};
 function temaUI(){const d=document.documentElement.getAttribute("data-theme")==="dark";$$("[data-tema]").forEach(b=>{const u=b.querySelector("use");if(u)u.setAttribute("href",d?"#i-sun":"#i-moon");const t=b.querySelector(".tema-txt");if(t)t.textContent=b.classList.contains("tema-btn")?(d?"Claro":"Escuro"):(d?"Modo claro":"Modo escuro");b.setAttribute("aria-label",d?"Mudar para o modo claro":"Mudar para o modo escuro")})}
 function alternaTema(){const d=document.documentElement.getAttribute("data-theme")!=="dark";document.documentElement.setAttribute("data-theme",d?"dark":"light");try{localStorage.setItem("tema",d?"escuro":"claro")}catch(e){}temaUI();if(USER)renderPainel()}
 document.addEventListener("click",e=>{if(e.target.closest("[data-tema]")){alternaTema()}});
 temaUI();
-function rota(){if(location.hash==="#previa"){PREVIA=true;document.documentElement.classList.add("previa");renderVitrine();tela("vitrine");$("#back-painel").hidden=true;try{parent.postMessage({tipo:"patio-pronto"},"*")}catch(e){}return}if(USER){const m=USER.id&&S.equipe.find(p=>p.id===USER.id);if(!m||m.removido||m.ativo===false){USER=null;try{USTORE.removeItem(UKEY)}catch(e){}}else{USER.nome=m.nome;USER.papel=m.papel}}$("#ov").hidden=true;if(TESTE){if(!S.teste||!S.teste.inicio){onbAbre();return}if(testeAcabou()){fimTeste();return}}const mc=location.hash.match(/^#carro-(\d+)$/);if(mc){renderVitrine();tela("vitrine");verCarro(+mc[1]);return}const loj=TESTE?location.hash!=="#site":(/\/painel\/?$/.test(location.pathname)||location.hash==="#painel");renderVitrine();
+function rota(){if(location.hash==="#previa"){PREVIA=true;document.documentElement.classList.add("previa");renderVitrine();tela("vitrine");$("#back-painel").hidden=true;try{parent.postMessage({tipo:"patio-pronto"},"*")}catch(e){}return}if(USER){const m=USER.id&&S.equipe.find(p=>p.id===USER.id);if(!m||m.removido||m.ativo===false){USER=null;try{USTORE.removeItem(UKEY)}catch(e){}}else{USER.nome=m.nome;USER.papel=m.papel}}$("#ov").hidden=true;if(ADMIN){admAbre();return}if(NUVEM){nvRota();return}if(TESTE){if(!S.teste||!S.teste.inicio){onbAbre();return}if(testeAcabou()){fimTeste();return}}const mc=location.hash.match(/^#carro-(\d+)$/);if(mc){renderVitrine();tela("vitrine");verCarro(+mc[1]);return}const loj=TESTE?location.hash!=="#site":(/\/painel\/?$/.test(location.pathname)||location.hash==="#painel");renderVitrine();
  if(loj){if(USER){tela("painel");renderPainel();secao("geral")}else tela("login")}else tela("vitrine");faixaTeste()}
 
 /* ---------- modo teste: faixa, trava, primeiro acesso, tour ---------- */
-function testeRestaMs(){return S.teste&&S.teste.inicio?S.teste.inicio+TESTE_H*36e5-Date.now():0}
-function testeAcabou(){return TESTE&&!!(S.teste&&S.teste.inicio)&&testeRestaMs()<=0}
+function testeRestaMs(){if(NUVEM)return NV.liberado?9e15:(NV.expira||0)-Date.now();return S.teste&&S.teste.inicio?S.teste.inicio+TESTE_H*36e5-Date.now():0}
+function testeAcabou(){if(NUVEM)return !!NV.token&&!NV.liberado&&!!NV.expira&&NV.expira<=Date.now();return TESTE&&!!(S.teste&&S.teste.inicio)&&testeRestaMs()<=0}
 function waJuan(t){return "https://wa.me/"+CONTATO.wpp+"?text="+encodeURIComponent(t)}
-function faixaTeste(){const f=$("#teste-faixa");if(!f)return;if(!TESTE||!S.teste||!S.teste.inicio){f.hidden=true;return}
+function faixaTeste(){const f=$("#teste-faixa");if(!f)return;if(!TESTE||(NUVEM?(!NV.token||NV.liberado||$("#painel").hidden):(!S.teste||!S.teste.inicio))){f.hidden=true;return}
  const ms=testeRestaMs();if(ms<=0){fimTeste();return}const h=Math.floor(ms/36e5),m=Math.floor(ms%36e5/6e4);
- f.hidden=false;f.innerHTML=`<span><b>Teste grátis</b> · faltam ${h?h+" h e ":""}${m} min</span><span class="tf-acts"><button type="button" class="btn xs ghost" data-tour>Fazer o tour</button><button type="button" class="btn xs ghost" data-vids>Vídeos</button><a class="btn xs" href="${waJuan("Oi Juan! Estou testando o Pátio"+(S.loja.nome?" na "+S.loja.nome:"")+" e quero saber mais.")}" target="_blank" rel="noopener">Falar com o ${CONTATO.nome}</a></span>`}
-function fimTeste(){tourFim(true);$("#fim-wa").href=waJuan("Oi Juan! Meu teste do Pátio"+(S.loja.nome?" na "+S.loja.nome:"")+" terminou e quero continuar.");$("#fim").hidden=false;document.documentElement.classList.add("travado")}
+ f.hidden=false;f.innerHTML=`<span><b>Teste grátis</b> · faltam ${h?h+" h e ":""}${m} min${NUVEM?` <span class="nv-st" id="nv-st">${NV.stTxt||""}</span>`:""}</span><span class="tf-acts"><button type="button" class="btn xs ghost" data-tour>Fazer o tour</button><button type="button" class="btn xs ghost" data-vids>Vídeos</button>${NUVEM?'<button type="button" class="btn xs ghost" data-nv-links>Links da loja</button><button type="button" class="btn xs ghost" data-opiniao>Dar opinião</button>':""}<a class="btn xs" href="${waJuan("Oi Juan! Estou testando o Pátio"+(S.loja.nome?" na "+S.loja.nome:"")+" e quero saber mais.")}" target="_blank" rel="noopener">Falar com o ${CONTATO.nome}</a></span>`}
+function fimTeste(){tourFim(true);if(NUVEM){$$("#fim .muted").forEach(x=>{if(/neste aparelho/.test(x.textContent))x.textContent="Seus dados continuam guardados."});clearInterval(NV.poll);$("#nv-load").hidden=true;const fo=$("#fim-op");if(NV.token&&!NV.opinou){fo.hidden=false;fo.innerHTML=opHTML("fim")}else fo.hidden=true}$("#fim-wa").href=waJuan("Oi Juan! Meu teste do Pátio"+(S.loja.nome?" na "+S.loja.nome:"")+" terminou e quero continuar.");$("#fim").hidden=false;document.documentElement.classList.add("travado")}
 setInterval(()=>{if(!TESTE)return;if(testeAcabou())fimTeste();else faixaTeste()},30000);
 document.addEventListener("click",e=>{if(e.target.closest("[data-tour]")){e.preventDefault();ajAbre&&ajAbre(false);tourStart()}});
 
@@ -2260,7 +2313,7 @@ function onbConclui(){const z=seedVazio(),L=z.loja;
  L.site=mescla(L.site,{logo:OB.logo,redes:{insta:OB.loja.insta.replace(/^@/,"")}});
  z.equipe=[{id:1,nome:OB.dono.nome,email:"",papel:"Dono",com:0,usuario:OB.dono.usuario,senha:OB.dono.senha,ativo:true}].concat(obVendUsers().map((v,i)=>({id:i+2,nome:v.nome,email:"",papel:"Vendedor",com:1.5,usuario:v.usuario,senha:"1234",ativo:true})));
  z.patio={s:OB.vagas.s,p:OB.vagas.p,o:OB.vagas.o};z.teste={inicio:Date.now(),vendedores:OB.vend.length};
- S=z;salvar();document.documentElement.style.removeProperty("--accent");
+ if(NUVEM){nvCriar(z);return}S=z;salvar();document.documentElement.style.removeProperty("--accent");
  USER={id:1,nome:OB.dono.nome,papel:"Dono"};try{USTORE.setItem(UKEY,JSON.stringify(USER))}catch(e){}
  $("#onb").hidden=true;history.replaceState(null,"",location.pathname+location.search+"#painel");
  tela("painel");tudo();secao("geral");faixaTeste();
@@ -2288,7 +2341,7 @@ const TOUR=[
 ];
 let TI=-1;
 function tourStart(){if(!USER)return;TI=0;tourShow()}
-function tourFim(quieto){TI=-1;$("#tour-hl").hidden=true;$("#tour-card").hidden=true;if(!quieto&&TESTE){tela("painel");renderPainel();secao("estoque");toast("Comece por aqui: toque em Cadastrar veículo.")}}
+function tourFim(quieto){const eraTour=TI>=0;TI=-1;$("#tour-hl").hidden=true;$("#tour-card").hidden=true;if(!quieto&&NUVEM&&eraTour&&NV.novo){NV.novo=false;setTimeout(()=>nvLinks(true),700)}if(!quieto&&TESTE){tela("painel");renderPainel();secao("estoque");toast("Comece por aqui: toque em Cadastrar veículo.")}}
 function tourEl(st){const el=$(st.sel);if(!el)return null;const r=el.getBoundingClientRect();return r.width&&r.height?el:null}
 function tourShow(dir=1){const st=TOUR[TI];if(!st)return tourFim();
  if(st.tela==="vitrine"){if($("#vitrine").hidden){renderVitrine();tela("vitrine")}}
@@ -2307,6 +2360,167 @@ document.addEventListener("click",e=>{const b=e.target.closest("[data-tc]");if(!
  if(a==="pular")return tourFim();if(a==="volta"){TI=Math.max(0,TI-1);return tourShow(-1)}TI++;if(TI>=TOUR.length)return tourFim();tourShow(1)});
 addEventListener("resize",()=>{if(TI>=0){const st=TOUR[TI],el=st&&tourEl(st);if(el)tourPos(el,st)}});
 addEventListener("keydown",e=>{if(TI<0)return;if(e.key==="Escape")tourFim();if(e.key==="ArrowRight"){TI++;TI>=TOUR.length?tourFim():tourShow(1)}if(e.key==="ArrowLeft"&&TI>0){TI--;tourShow(-1)}});
+
+/* ================= nuvem (Cloudflare) ================= */
+const API=(()=>{try{return localStorage.getItem("patio-api")||""}catch(e){return ""}})()||"/api";
+async function api(fn,args){const r=await fetch(API+"/"+fn,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(args||{})});let j=null;try{j=await r.json()}catch(e){}if(!j)throw new Error("rede "+r.status);return j}
+const nvChave=c=>"patio-nv-"+c;
+function nvSessao(c){try{return JSON.parse(localStorage.getItem(nvChave(c)))}catch(e){return null}}
+function nvGuarda(c,o){try{if(o){localStorage.setItem(nvChave(c),JSON.stringify(o));localStorage.setItem("patio-nv-ultimo",c)}else localStorage.removeItem(nvChave(c))}catch(e){}}
+const nvClone=o=>JSON.parse(JSON.stringify(o));
+function nvStatus(t,erro){NV.stTxt=t;const e=$("#nv-st");if(e){e.textContent=t;e.classList.toggle("err",!!erro)}}
+function nvCarregando(t,retry){const l=$("#nv-load");l.hidden=!t;if(t){$("#nv-load-t").textContent=t;$("#nv-load-r").hidden=!retry;$("#nv-load-r").onclick=retry||null}}
+
+// troca imagens por referência (e de volta)
+function nvAnda(o,f){if(typeof o==="string")return f(o);if(Array.isArray(o))return o.map(x=>nvAnda(x,f));if(o&&typeof o==="object"){const r={};for(const k in o)r[k]=nvAnda(o[k],f);return r}return o}
+async function nvPrepara(obj){const novas=[];nvAnda(obj,v=>{if(v.startsWith("data:image/")&&!NV.fotoId.has(v)&&!novas.includes(v))novas.push(v);return v});
+ for(const d of novas){const r=await api("foto",{p_token:NV.token,p_dados:d});if(r.ok){NV.fotoId.set(d,r.id);NV.fotoData.set(r.id,d)}else if(r.erro==="sessao")throw new Error("sessao")}
+ return nvAnda(obj,v=>v.startsWith("data:image/")&&NV.fotoId.has(v)?"ref:"+NV.fotoId.get(v):v)}
+async function nvResolve(obj,fotos){if(fotos)for(const id in fotos){NV.fotoData.set(id,fotos[id]);NV.fotoId.set(fotos[id],id)}
+ const falta=new Set();nvAnda(obj,v=>{if(v.startsWith("ref:")&&!NV.fotoData.has(v.slice(4)))falta.add(v.slice(4));return v});
+ if(falta.size&&NV.token){const r=await api("fotos",{p_token:NV.token,p_ids:[...falta]});if(r.ok)for(const id in r.fotos){NV.fotoData.set(id,r.fotos[id]);NV.fotoId.set(r.fotos[id],id)}}
+ return nvAnda(obj,v=>v.startsWith("ref:")?(NV.fotoData.get(v.slice(4))||""):v)}
+
+// mescla: o que eu mudei vale; o resto vem do servidor
+const NV_LISTAS=["carros","leads","visitas","contas","despesas","aval","parceiros","equipe","mural","clientes","removidos"];
+function nvMescla(b,l,r){b=b||{};const js=JSON.stringify,out={},ks=new Set([...Object.keys(l||{}),...Object.keys(r||{})]);
+ ks.forEach(k=>{const bk=b[k],lk=(l||{})[k],rk=(r||{})[k];
+  if(NV_LISTAS.includes(k)&&(Array.isArray(lk)||Array.isArray(rk))){out[k]=nvMesclaLista(bk||[],lk||[],rk||[]);return}
+  if(lk&&rk&&typeof lk==="object"&&typeof rk==="object"&&!Array.isArray(lk)&&!Array.isArray(rk)&&k!=="site"){out[k]=nvMescla(bk&&typeof bk==="object"?bk:{},lk,rk);return}
+  out[k]=js(lk)!==js(bk)?lk:rk;if(out[k]===undefined)delete out[k]});return out}
+function nvMesclaLista(b,l,r){const js=JSON.stringify,id=x=>String(x&&x.id),B=new Map(b.map(x=>[id(x),x])),L=new Map(l.map(x=>[id(x),x])),R=new Map(r.map(x=>[id(x),x]));
+ const ordem=[...r.map(id),...l.map(id).filter(i=>!R.has(i))],out=[];
+ ordem.forEach(i=>{const bi=B.get(i),li=L.get(i),ri=R.get(i),lm=js(li)!==js(bi);if(lm){if(li)out.push(li);else if(ri&&js(ri)!==js(bi))out.push(ri)}else if(ri)out.push(ri)});return out}
+
+// salvar com calma (espera parar de mexer)
+function nvAgenda(){if(!NV.token||PREVIA)return;clearTimeout(NV.timer);NV.timer=setTimeout(()=>{NV.timer=null;nvSalvar()},700);nvStatus("salvando…")}
+async function nvSalvar(){if(!NV.token)return;if(NV.salvando){NV.pend=true;return}NV.salvando=true;
+ try{for(let t=0;t<4;t++){const dados=await nvPrepara(S),feito=nvClone(S);
+   const r=await api("salvar",{p_token:NV.token,p_dados:dados,p_base:NV.versao});
+   if(r.ok){NV.versao=r.versao;NV.expira=r.expira;NV.liberado=r.liberado;NV.base=feito;nvStatus("salvo ✓");break}
+   if(r.conflito){const remoto=await nvResolve(r.dados);S=nvMescla(NV.base,S,remoto);NV.base=remoto;NV.versao=r.versao;nvRedesenha();continue}
+   if(r.erro==="expirado"){NV.expira=r.expira||Date.now();NV.liberado=false;fimTeste();break}
+   if(r.erro==="sessao"){nvPerdeuSessao();break}
+   nvStatus(r.erro==="grande"?"muitas fotos: algumas não foram salvas":"não salvou, tentando de novo",1);setTimeout(nvAgenda,5000);break}}
+ catch(e){if(String(e.message)==="sessao")nvPerdeuSessao();else{nvStatus("sem internet, tentando de novo",1);setTimeout(nvAgenda,5000)}}
+ NV.salvando=false;if(NV.pend){NV.pend=false;nvSalvar()}}
+function nvOcupado(){const a=document.activeElement;return !$("#ov").hidden||(a&&/INPUT|TEXTAREA|SELECT/.test(a.tagName)&&$("#painel").contains(a))||TI>=0}
+function nvRedesenha(){if(nvOcupado()){NV.adiado=true;return}NV.adiado=false;tudo();faixaTeste()}
+async function nvConfere(){if(!NV.token||NV.salvando||NV.timer||document.hidden)return;
+ if(NV.adiado&&!nvOcupado())nvRedesenha();
+ try{const v=await api("versao",{p_token:NV.token});
+  if(!v.ok){if(v.erro==="sessao")nvPerdeuSessao();return}
+  NV.expira=v.expira;NV.liberado=v.liberado;if(!v.ativa){fimTeste();return}
+  if(v.versao>NV.versao&&!NV.salvando&&!NV.timer){const r=await api("carregar",{p_token:NV.token});if(!r.ok)return;
+   const remoto=await nvResolve(r.dados),mexi=JSON.stringify(S)!==JSON.stringify(NV.base);
+   S=mexi?nvMescla(NV.base,S,remoto):remoto;NV.base=remoto;NV.versao=r.versao;if(mexi)nvAgenda();nvRedesenha();nvStatus("atualizado ✓")}
+  faixaTeste()}catch(e){nvStatus("sem internet",1)}}
+function nvPerdeuSessao(){nvGuarda(NV.codigo,null);NV.token=null;clearInterval(NV.poll);USER=null;toast("Sua sessão terminou. Entre de novo.");nvTelaLogin()}
+
+// rotas do modo nuvem
+async function nvRota(){
+ if(NV_PATH==="/teste"){const u=(()=>{try{return localStorage.getItem("patio-nv-ultimo")}catch(e){return null}})();
+  if(u&&nvSessao(u)&&!/[?&]nova\b/.test(location.search)){location.replace("/l/"+u+"/painel");return}
+  onbAbre();return}
+ if(!NV_COD){location.replace("/teste");return}
+ NV.codigo=NV_COD;
+ if(!NV_PAINEL)return nvSite();
+ if(NV.carregado){tela("painel");return}
+ const ss=nvSessao(NV_COD);if(!ss){nvTelaLogin();return}
+ NV.token=ss.token;nvCarregando("Abrindo a sua loja…");
+ try{const r=await api("carregar",{p_token:NV.token});
+  if(!r.ok){nvCarregando(null);if(r.erro==="expirado"){NV.expira=r.expira;fimTeste();return}nvGuarda(NV_COD,null);NV.token=null;nvTelaLogin();return}
+  await nvAbre(r)}catch(e){nvCarregando("Não consegui conectar. Confira a internet.",()=>nvRota())}}
+async function nvAbre(r){S=Object.assign(seedVazio(),await nvResolve(r.dados));NV.base=nvClone(S);NV.versao=r.versao;NV.expira=r.expira;NV.liberado=r.liberado;NV.carregado=true;
+ USER={id:r.pessoa.id,nome:r.pessoa.nome,papel:r.pessoa.papel};nvCarregando(null);
+ tela("painel");renderPainel();secao("geral");faixaTeste();nvStatus("salvo ✓");
+ clearInterval(NV.poll);NV.poll=setInterval(nvConfere,12000)}
+function nvTelaLogin(){nvCarregando(null);tela("login");const h=$("#login .login-box p, #login p");const t=$("#l-dica");if(!t){const p=document.createElement("p");p.id="l-dica";p.className="muted";p.style.cssText="font-size:13px;margin:10px 0 0";p.innerHTML=`Painel da loja <b>${esc(NV_COD)}</b>. Use o usuário e a senha criados no primeiro acesso (ou os que o dono te passou).`;$("#f-login").appendChild(p)}}
+async function nvEntrar(){const u=$("#l-user").value.trim(),sn=$("#l-senha").value,er=$("#l-erro"),bt=$("#f-login [type=submit]");bt.disabled=true;er.hidden=true;
+ try{const r=await api("entrar",{p_codigo:NV_COD,p_usuario:u,p_senha:sn});bt.disabled=false;
+  if(!r.ok){if(r.erro==="expirado"){NV.token=null;fimTeste();return}er.textContent=r.erro==="bloqueado"?"Seu acesso está bloqueado. Fale com o dono da loja.":r.erro==="loja"?"Não encontrei essa loja. Confira o link.":"Usuário ou senha incorretos. Confira e tente de novo.";er.hidden=false;$("#l-senha").value="";return}
+  NV.token=r.token;nvGuarda(NV_COD,{token:r.token,pessoa:r.pessoa});$("#l-user").value="";$("#l-senha").value="";await nvAbre(r);
+  toast(r.pessoa.papel==="Dono"?"Entrou como dono: acesso completo.":"Entrou como "+r.pessoa.papel.toLowerCase()+".")}
+ catch(e){bt.disabled=false;er.textContent="Não consegui conectar. Confira a internet e tente de novo.";er.hidden=false}}
+function nvSair(){ajAbre(false);$("#aj-m").innerHTML="";if(NV.timer){clearTimeout(NV.timer);NV.timer=null;nvSalvar()}nvGuarda(NV_COD,null);NV.token=null;NV.carregado=false;clearInterval(NV.poll);USER=null;tela("login")}
+async function nvSite(){
+ if(!NV.pub){nvCarregando("Carregando…");
+  try{const r=await api("site",{p_codigo:NV_COD});
+   if(!r.ok){nvCarregando(r.erro==="expirado"?"Este site está fora do ar no momento.":"Não encontrei esta loja. Confira o endereço.");return}
+   const d=await nvResolve(r.dados,r.fotos);S=Object.assign(seedVazio(),{loja:d.loja,carros:d.carros});NV.pub=true;
+   const ss=nvSessao(NV_COD);if(ss&&ss.pessoa)USER=ss.pessoa}catch(e){nvCarregando("Não consegui carregar o site. Confira a internet.",()=>nvSite());return}
+  nvCarregando(null)}
+ renderVitrine();tela("vitrine");const mc=location.hash.match(/^#carro-(\d+)$/);if(mc)verCarro(+mc[1]);else fechar()}
+async function nvPedido(lead,vis,msg,form){try{const r=await api("pedido",{p_codigo:NV_COD||NV.codigo,p_lead:lead,p_visita:vis});
+  if(r.ok){fechar();if(form)form.reset();toast(msg)}else toast(r.erro==="limite"?"Recebemos muitos pedidos hoje. Chame a loja no WhatsApp.":"Não consegui enviar. Tente de novo ou chame no WhatsApp.")}
+ catch(e){toast("Sem internet. Tente de novo ou chame a loja no WhatsApp.")}}
+async function nvCriar(z){const bt=$("#onb-seg"),tx=bt.textContent;bt.disabled=true;bt.textContent="Criando sua loja…";
+ try{const r=await api("criar",{p_codigo:z.loja.slug||z.loja.nome,p_dados:z,p_contato:OB.loja.wpp});bt.disabled=false;bt.textContent=tx;
+  if(!r.ok){onbErro(r.erro==="limite"?"Muitas lojas criadas agora. Tente de novo em alguns minutos.":"Não consegui criar a loja. Tente de novo.");return}
+  z.loja.slug=r.codigo;S=z;NV.token=r.token;NV.codigo=r.codigo;NV.versao=r.versao;NV.expira=r.expira;NV.liberado=r.liberado;NV.base=nvClone(S);NV.carregado=true;NV.novo=true;
+  nvGuarda(r.codigo,{token:r.token,pessoa:r.pessoa});history.replaceState(null,"","/l/"+r.codigo+"/painel");
+  document.documentElement.style.removeProperty("--accent");USER={id:r.pessoa.id,nome:r.pessoa.nome,papel:r.pessoa.papel};
+  $("#onb").hidden=true;tela("painel");tudo();secao("geral");faixaTeste();nvStatus("salvo ✓");nvAgenda();
+  clearInterval(NV.poll);NV.poll=setInterval(nvConfere,12000);
+  if(OB.tour)setTimeout(tourStart,450);else nvLinks(true)}
+ catch(e){bt.disabled=false;bt.textContent=tx;onbErro("Não consegui conectar. Confira a internet e tente de novo.")}}
+// links da loja
+function nvLinks(primeira){const c=NV.codigo,pn=location.origin+"/l/"+c+"/painel",st=location.origin+"/l/"+c,ov=$("#ov");ov.classList.remove("center");
+ const vs=EQ().filter(p=>p.papel!=="Dono"&&p.ativo!==false);
+ $("#sheet").innerHTML=`<div class="sheet-head"><div><span class="lbl">${primeira?"Guarde estes links":"Sua loja no Pátio"}</span><h2 style="font-size:28px">Links da loja</h2></div><button class="x" data-close>Fechar</button></div>
+ <p class="muted" style="font-size:14px;margin-top:0">Painel (para você e os vendedores entrarem, em qualquer celular ou computador):</p>
+ <div class="nv-link"><code>${esc(pn)}</code><button type="button" class="btn xs soft" data-copia="${esc(pn)}">Copiar</button></div>
+ <p class="muted" style="font-size:14px;margin:14px 0 0">Site da loja (para os clientes):</p>
+ <div class="nv-link"><code>${esc(st)}</code><button type="button" class="btn xs soft" data-copia="${esc(st)}">Copiar</button></div>
+ ${vs.length&&isDono()?`<p class="muted" style="font-size:14px;margin:16px 0 6px">Mandar o acesso para cada vendedor:</p>${vs.map(p=>`<a class="btn ghost full" style="justify-content:center;margin-bottom:6px" target="_blank" rel="noopener" href="https://wa.me/?text=${encodeURIComponent(`Oi ${p.nome.split(" ")[0]}! Estamos testando o Pátio na ${S.loja.nome}. Entre por este link: ${pn}\nSeu usuário: ${p.usuario}\nSua senha: ${p.senha||"(peça para o dono)"}`)}"><svg class="i"><use href="#i-chat"/></svg>Mandar para ${esc(p.nome.split(" ")[0])} no WhatsApp</a>`).join("")}`:""}
+ <button type="button" class="btn full" data-close style="justify-content:center;margin-top:12px">${primeira?"Entendi, vamos começar":"Fechar"}</button>`;ov.hidden=false}
+document.addEventListener("click",e=>{const c=e.target.closest("[data-copia]");if(c){const t=c.dataset.copia;(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>toast("Link copiado.")).catch(()=>{prompt("Copie o link:",t)});return}
+ if(e.target.closest("[data-nv-links]")){nvLinks(false);return}
+ if(e.target.closest("[data-opiniao]")){opAbre();return}});
+// opinião do cliente
+function opHTML(onde){return `<form class="op-form" data-op="${onde}"><div><b>De 0 a 10, quanto você indicaria o Pátio para outro lojista?</b><div class="op-notas">${[...Array(11)].map((_,i)=>`<button type="button" data-nota="${i}" aria-pressed="false">${i}</button>`).join("")}</div><div class="op-leg"><span>nada</span><span>com certeza</span></div></div>
+ <label class="field">O que você mais gostou?<textarea name="gostou" rows="2" placeholder="Ex.: o mapa do pátio, o pós-venda…"></textarea></label>
+ <label class="field">O que faltou ou atrapalhou?<textarea name="faltou" rows="2" placeholder="Seja sincero, é isso que ajuda a melhorar"></textarea></label>
+ <div><b>Quer continuar usando o Pátio na sua loja?</b><div class="op-cont seg" style="margin-top:6px">${["Sim","Talvez","Não"].map(v=>`<button type="button" data-cont="${v}" aria-pressed="false">${v}</button>`).join("")}</div></div>
+ <p class="l-erro" hidden></p><button class="btn full" type="submit" style="justify-content:center">Enviar opinião</button></form>`}
+function opAbre(){const ov=$("#ov");ov.classList.remove("center");$("#sheet").innerHTML=`<div class="sheet-head"><div><span class="lbl">Leva 1 minuto</span><h2 style="font-size:28px">Sua opinião</h2></div><button class="x" data-close>Fechar</button></div><p class="muted" style="font-size:14px;margin:0">Conte o que está achando do Pátio. O Juan lê todas as respostas.</p>${opHTML("folha")}`;ov.hidden=false}
+document.addEventListener("click",e=>{const n=e.target.closest(".op-form [data-nota]");if(n){const f=n.closest("form");f.dataset.nota=n.dataset.nota;f.querySelectorAll("[data-nota]").forEach(b=>b.setAttribute("aria-pressed",b===n));return}
+ const c=e.target.closest(".op-form [data-cont]");if(c){const f=c.closest("form");f.dataset.cont=c.dataset.cont;f.querySelectorAll("[data-cont]").forEach(b=>b.setAttribute("aria-pressed",b===c))}});
+document.addEventListener("submit",async e=>{const f=e.target.closest(".op-form");if(!f)return;e.preventDefault();const er=f.querySelector(".l-erro");
+ if(f.dataset.nota==null){er.textContent="Escolha uma nota de 0 a 10.";er.hidden=false;return}
+ const bt=f.querySelector("[type=submit]");bt.disabled=true;
+ try{const r=await api("feedback",{p_token:NV.token,p_nota:+f.dataset.nota,p_gostou:f.gostou.value,p_faltou:f.faltou.value,p_continuar:f.dataset.cont||""});
+  if(r.ok){NV.opinou=true;if(f.dataset.op==="fim"){$("#fim-op").innerHTML='<p class="onb-p" style="margin-top:14px"><b>Obrigado pela opinião!</b> O Juan vai falar com você.</p>'}else{fechar();toast("Obrigado! Sua opinião foi enviada.")}}
+  else{bt.disabled=false;er.textContent=r.erro==="limite"?"Você já mandou várias opiniões. Obrigado!":"Não consegui enviar. Tente de novo.";er.hidden=false}}
+ catch(x){bt.disabled=false;er.textContent="Sem internet. Tente de novo.";er.hidden=false}});
+addEventListener("beforeunload",e=>{if(NUVEM&&(NV.timer||NV.salvando)){e.preventDefault();e.returnValue=""}});
+document.addEventListener("visibilitychange",()=>{if(!document.hidden&&NV.token)nvConfere()});
+
+/* ================= administração (/admin) ================= */
+let ADM_S="";
+function admAbre(){["vitrine","login","painel"].forEach(x=>$("#"+x).hidden=true);document.documentElement.classList.add("travado");$("#adm").hidden=false;document.title="Pátio · Test drives";try{ADM_S=sessionStorage.getItem("patio-adm")||""}catch(e){}if(ADM_S)admCarrega();else admLogin()}
+function admLogin(erro){$("#adm-at").hidden=true;$("#adm-main").innerHTML=`<form class="adm-login form" id="adm-f"><h2 style="margin:0 0 6px">Entrar</h2><p class="muted" style="margin:0 0 6px;font-size:14px">Use a senha de administrador que você cadastrou no Cloudflare.</p><label class="field full">Senha<input type="password" id="adm-s" required autocomplete="current-password"></label>${erro?`<p class="l-erro full">${erro}</p>`:""}<button class="btn full" type="submit" style="justify-content:center">Entrar</button></form>`;
+ $("#adm-f").onsubmit=e=>{e.preventDefault();ADM_S=$("#adm-s").value;admCarrega()}}
+async function admCarrega(){$("#adm-main").innerHTML='<p class="muted" style="text-align:center;margin-top:40px">Carregando…</p>';
+ try{const r=await api("admin",{p_senha:ADM_S});if(!r.ok){ADM_S="";try{sessionStorage.removeItem("patio-adm")}catch(e){}admLogin(r.erro==="config"?"A senha de administrador ainda não foi cadastrada no Cloudflare (variável ADMIN_SENHA).":"Senha incorreta.");return}
+  try{sessionStorage.setItem("patio-adm",ADM_S)}catch(e){}$("#adm-at").hidden=false;admRender(r)}
+ catch(e){$("#adm-main").innerHTML='<p class="muted" style="text-align:center;margin-top:40px">Não consegui conectar. <button class="btn sm soft" onclick="admCarrega()">Tentar de novo</button></p>'}}
+function admTempo(ms){const h=Math.floor(Math.abs(ms)/36e5),m=Math.floor(Math.abs(ms)%36e5/6e4);return (h?h+" h ":"")+m+" min"}
+function admData(t){const d=new Date(t);return d.toLocaleDateString("pt-BR")+" "+d.toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})}
+function admRender(r){const ls=r.lojas,ag=r.agora,ativo=l=>l.liberado||l.expira>ag,ops=ls.flatMap(l=>l.opinioes),media=ops.length?(ops.reduce((s,o)=>s+o.nota,0)/ops.length).toFixed(1).replace(".",","):"—";
+ const cor=n=>n>=9?"#15803d":n>=7?"#a16207":"#b91c1c";
+ $("#adm-main").innerHTML=`<div class="adm-kpis"><div><span>Testando agora</span><b>${ls.filter(l=>!l.liberado&&l.expira>ag).length}</b></div><div><span>Teste terminado</span><b>${ls.filter(l=>!ativo(l)).length}</b></div><div><span>Clientes (liberados)</span><b>${ls.filter(l=>l.liberado).length}</b></div><div><span>Nota média</span><b>${media}</b></div></div>
+ <p class="muted" style="font-size:14px">Link para mandar aos donos: <b>${esc(location.origin)}/teste</b> <button type="button" class="btn xs soft" data-copia="${esc(location.origin)}/teste">Copiar</button></p>
+ ${ls.length?ls.map(l=>{const st=l.liberado?'<span class="pill p-ok">Cliente · liberado</span>':l.expira>ag?`<span class="pill p-info">Testando · faltam ${admTempo(l.expira-ag)}</span>`:'<span class="pill p-mut">Teste terminado</span>';
+  return `<div class="adm-card"><div class="adm-h"><div><h3>${esc(l.nome||l.codigo)}</h3><div class="adm-sub">${esc(l.dono||"")}${l.cidade?" · "+esc(l.cidade):""} · começou ${admData(l.criado)} · última vez ${admData(l.visto||l.criado)}</div></div>${st}</div>
+  <div class="adm-nums"><span><b>${l.carros}</b> carros</span><span><b>${l.contatos}</b> contatos</span><span><b>${l.vendas}</b> vendas</span><span><b>${l.equipe}</b> pessoas</span><span><b>${l.fotos}</b> fotos</span><span><b>${l.versao}</b> salvamentos</span></div>
+  <div class="adm-bts">${l.wpp?`<a class="btn sm wa-btn" target="_blank" rel="noopener" href="https://wa.me/55${String(l.wpp).replace(/\D/g,"")}?text=${encodeURIComponent("Oi "+(l.dono||"").split(" ")[0]+"! Aqui é o Juan, do Pátio. Como está sendo o teste na "+(l.nome||"loja")+"?")}">WhatsApp</a>`:""}<a class="btn sm soft" target="_blank" rel="noopener" href="/l/${esc(l.codigo)}">Ver o site</a>
+   <button type="button" class="btn sm soft" data-adm="tempo:24:${l.id}">+24 h</button><button type="button" class="btn sm soft" data-adm="tempo:48:${l.id}">+48 h</button>${l.liberado?"":`<button type="button" class="btn sm" data-adm="liberar:0:${l.id}">Liberar (virou cliente)</button>`}${ativo(l)?`<button type="button" class="btn sm ghost" data-adm="encerrar:0:${l.id}">Encerrar</button>`:""}<button type="button" class="btn sm ghost rem-btn" data-adm="apagar:0:${l.id}">Apagar</button></div>
+  ${l.opinioes.map(o=>`<div class="adm-op"><span class="nota" style="background:${cor(o.nota)}">${o.nota}</span><b>${esc(o.quem||"")}</b> · ${admData(o.criado)}${o.continuar?` · quer continuar: <b>${esc(o.continuar)}</b>`:""}${o.gostou?`<p><b>Gostou:</b> ${esc(o.gostou)}</p>`:""}${o.faltou?`<p><b>Faltou:</b> ${esc(o.faltou)}</p>`:""}</div>`).join("")}</div>`}).join(""):'<div class="adm-card"><p class="muted" style="margin:0">Nenhuma loja testando ainda. Mande o link /teste para os donos.</p></div>'}`}
+document.addEventListener("click",async e=>{const b=e.target.closest("[data-adm]");if(!b)return;const [ac,h,id]=b.dataset.adm.split(":");
+ if((ac==="apagar"||ac==="encerrar")&&!b.dataset.arm){b.dataset.arm=1;const t=b.textContent;b.textContent="Toque de novo para confirmar";setTimeout(()=>{if(b.isConnected){delete b.dataset.arm;b.textContent=t}},3500);return}
+ b.disabled=true;try{const r=await api("admin_acao",{p_senha:ADM_S,p_loja:id,p_acao:ac,p_horas:+h||24});toast(r.ok?"Feito.":"Não deu certo.");admCarrega()}catch(x){b.disabled=false;toast("Sem internet.")}});
+document.addEventListener("click",e=>{if(e.target.closest("#adm-at"))admCarrega()});
 addEventListener("hashchange",rota);rota();
 </script>
 
