@@ -800,6 +800,21 @@ html.travado body{overflow:hidden}
 .adm-login{max-width:380px;margin:60px auto;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:24px}
 @media(max-width:700px){.adm-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.op-notas{grid-template-columns:repeat(6,1fr)}}
 html.modo-teste #reset{display:none}
+
+/* ---------- termos, administração de pessoas ---------- */
+.termos{position:fixed;inset:0;z-index:470;background:rgba(15,23,42,.6);display:grid;place-items:center;padding:16px}
+.termos[hidden]{display:none}
+.termos-box{background:var(--surface);color:var(--ink);border-radius:18px;width:min(760px,100%);max-height:calc(100vh - 32px);display:flex;flex-direction:column;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+.termos-c{overflow:auto;padding:4px 20px 22px;font-size:15px;line-height:1.55}
+.termos-c h3{font-size:16px;margin:18px 0 6px}
+.termos-c p,.termos-c li{color:var(--ink)}
+.termos-c ul{padding-left:20px;margin:6px 0}
+.termos-c .muted{font-size:13px}
+.adm-pessoas{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.adm-pessoas span{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:4px 6px 4px 10px;font-size:13px;background:var(--bg)}
+.adm-msg{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:16px}
+.adm-msg textarea{width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:10px;padding:10px;font:inherit;font-size:14px;background:var(--bg);color:var(--ink);resize:vertical}
+@media(max-width:640px){.termos{padding:0}.termos-box{border-radius:0;height:100%;max-height:none}}
 </style>
 
 </head>
@@ -869,7 +884,7 @@ html.modo-teste #reset{display:none}
         <div><b>WhatsApp</b><div class="muted num" id="v-wpp"></div></div>
       </div></div>
     </div>
-    <footer class="v-foot"><span>© 2026 <span id="v-nome3">Auto Sul Veículos</span></span><details><summary style="cursor:pointer">Créditos das fotos</summary><p style="margin-top:8px;max-width:60ch">Fotos ilustrativas da Wikimedia Commons, sob licenças Creative Commons (CC BY / CC BY-SA). Autoria e licença de cada foto na página do arquivo:</p><ul id="creditos" style="margin:6px 0 0;padding-left:18px"></ul></details><span class="v-redes" id="v-redes"></span><span id="v-rodape"></span><span>Site feito com Pátio</span></footer>
+    <footer class="v-foot"><span>© 2026 <span id="v-nome3">Auto Sul Veículos</span> · <a href="#" data-termos="site">Privacidade</a></span><details><summary style="cursor:pointer">Créditos das fotos</summary><p style="margin-top:8px;max-width:60ch">Fotos ilustrativas da Wikimedia Commons, sob licenças Creative Commons (CC BY / CC BY-SA). Autoria e licença de cada foto na página do arquivo:</p><ul id="creditos" style="margin:6px 0 0;padding-left:18px"></ul></details><span class="v-redes" id="v-redes"></span><span id="v-rodape"></span><span>Site feito com Pátio</span></footer>
     <a class="v-zap" id="v-zap" href="#" target="_blank" rel="noopener" aria-label="Falar no WhatsApp" hidden><svg class="i"><use href="#i-chat"/></svg></a>
   </main>
 </section>
@@ -896,6 +911,7 @@ html.modo-teste #reset{display:none}
  <header class="adm-top"><span class="onb-k"><i></i>Pátio · Test drives</span><span class="adm-acts"><button type="button" class="btn sm soft" id="adm-at" hidden>Atualizar</button><button type="button" class="btn sm ghost" data-tema aria-label="Mudar o tema"><svg class="i"><use href="#i-moon"/></svg></button></span></header>
  <main class="adm-main" id="adm-main"></main>
 </div>
+<div class="termos" id="termos" hidden><div class="termos-box" role="dialog" aria-modal="true" aria-labelledby="termos-t"><div class="vid-h"><b id="termos-t">Termos</b><button type="button" class="x" id="termos-x">Fechar</button></div><div class="termos-c" id="termos-c"></div></div></div>
 <div id="tour-hl" hidden></div>
 <div id="tour-card" role="dialog" aria-live="polite" hidden></div>
 <section id="login" hidden>
@@ -1475,7 +1491,7 @@ function renderRel(){
 }
 function renderEquipe(){
  $("#tab-eq").innerHTML=`<thead><tr><th>Pessoa</th><th>Papel</th><th class="r hide-m">${COMLBL}</th><th class="hide-m">Acesso</th><th class="r hide-m">Ação</th></tr></thead><tbody>`+EQ().map(p=>`<tr class="click" data-pessoa="${p.id}"><td><div class="car"><div class="av">${ini(p.nome)}</div><div><b>${esc(p.nome)}${USER&&USER.id===p.id?' <span class="pill p-mut">você</span>':""}</b><small>usuário: <b class="num">${esc(p.usuario)}</b></small><span class="show-m"><span class="pill ${p.ativo!==false?"p-ok":"p-crit"}">${p.ativo!==false?"Liberado":"Bloqueado"}</span><span class="btnx">Editar</span></span></div></div></td><td><span class="pill ${p.papel==="Dono"?"p-ok":p.papel===VEND?"p-info":"p-warn"}">${esc(p.papel)}</span></td><td class="r num hide-m">${p.com?String(p.com).replace(".",",")+"%":"—"}</td><td class="hide-m"><span class="pill ${p.ativo!==false?"p-ok":"p-crit"}">${p.ativo!==false?"Liberado":"Bloqueado"}</span></td><td class="r hide-m"><button type="button" class="btn xs soft" data-pessoa="${p.id}">Editar</button></td></tr>`).join("")+"</tbody>";
- const P=[["Ver e cadastrar carros",1,1,1,0],["Ver custo, preço mínimo e lucro",1,1,0,1],["Contatos e agenda",1,1,1,0],["Registrar venda",1,1,1,0],["Avaliar carro na troca",1,1,1,0],["Mudar as regras da avaliação",1,0,0,0],["Financeiro e contas",1,0,0,1],["Relatórios",1,1,0,1],["Parceiros e repasses",1,1,0,1],["Remover carro do estoque",1,0,0,0],["Cadastrar e editar a equipe",1,0,0,0],["Recados e metas da equipe",1,0,0,0],["Mudar nome e dados do site",1,0,0,0]];
+ const P=[["Ver e cadastrar carros",1,1,1,0],["Ver preço mínimo",1,1,1,1],["Ver custo e lucro",1,1,0,1],["Contatos e agenda",1,1,1,0],["Registrar venda",1,1,1,0],["Avaliar carro na troca",1,1,1,0],["Mudar as regras da avaliação",1,0,0,0],["Financeiro e contas",1,0,0,1],["Relatórios",1,1,0,1],["Parceiros e repasses",1,1,0,1],["Remover carro do estoque",1,0,0,0],["Cadastrar e editar a equipe",1,0,0,0],["Recados e metas da equipe",1,0,0,0],["Mudar nome e dados do site",1,0,0,0]];
  $("#perm").innerHTML=`<thead><tr><th>Permissão</th><th>Dono</th><th>Gerente</th><th>Vendedor</th><th>Financeiro</th></tr></thead><tbody>`+P.map(p=>`<tr><td>${p[0]}</td>${[1,2,3,4].map(k=>`<td class="${p[k]?"yes":"no"}">${p[k]?"✓":"—"}</td>`).join("")}</tr>`).join("")+"</tbody>";
 }
 
@@ -1620,7 +1636,7 @@ function formPessoa(id){const p=id?S.equipe.find(x=>x.id==id):null,eu=p&&USER&&U
  $("#sheet").innerHTML=`<div class="sheet-head"><div><span class="lbl">Equipe e acessos</span><h2 style="font-size:26px;margin-top:4px">${p?"Editar "+esc(p.nome.split(" ")[0]):"Adicionar pessoa"}</h2></div><button class="x" data-close>Fechar</button></div>
  <form class="form" id="fp"><label class="field full">Nome completo<input id="p-nome" required value="${p?esc(p.nome):""}"></label>
  <label class="field">Usuário (para entrar)<input id="p-user" required autocapitalize="none" spellcheck="false" autocomplete="off" value="${p?esc(p.usuario):""}" placeholder="ex.: joao"></label>
- <label class="field">Senha<span style="display:flex;gap:6px"><input id="p-senha" type="password" required autocomplete="new-password" value="${p?esc(p.senha):""}" style="flex:1;min-width:0" placeholder="mínimo 4 caracteres"><button type="button" class="btn xs soft" id="p-ver" style="flex:none">Mostrar</button></span></label>
+ <label class="field">Senha<span style="display:flex;gap:6px"><input id="p-senha" type="password" ${p?"":"required"} autocomplete="new-password" value="${p&&p.senha?esc(p.senha):""}" style="flex:1;min-width:0" placeholder="${p?"em branco = manter a atual":"mínimo 4 caracteres"}"><button type="button" class="btn xs soft" id="p-ver" style="flex:none">Mostrar</button></span></label>
  <label class="field">Papel<select id="p-papel" ${eu?"disabled":""}>${PAPEIS.map(x=>`<option ${p&&p.papel===x?"selected":""}>${x}</option>`).join("")}</select></label>
  <label class="field">${COMLBL}<input id="p-com" type="number" inputmode="decimal" step="0.5" min="0" value="${p?p.com:"1.5"}"></label>
  <label class="field full">Acesso ao painel<select id="p-ativo" ${eu?"disabled":""}><option value="1" ${!p||p.ativo!==false?"selected":""}>Liberado</option><option value="0" ${p&&p.ativo===false?"selected":""}>Bloqueado (não consegue entrar)</option></select></label>
@@ -1634,10 +1650,10 @@ function formPessoa(id){const p=id?S.equipe.find(x=>x.id==id):null,eu=p&&USER&&U
  $("#fp").onsubmit=e=>{e.preventDefault();const nome=$("#p-nome").value.trim(),u=$("#p-user").value.trim().toLowerCase(),sn=$("#p-senha").value,papel=eu?p.papel:$("#p-papel").value,ativo=eu?true:$("#p-ativo").value==="1",com=+$("#p-com").value||0;
   if(!/^[a-z0-9._-]{3,20}$/.test(u))return err("O usuário precisa ter de 3 a 20 letras ou números, sem espaço e sem acento.");
   if(S.equipe.some(x=>x.usuario===u&&(!p||x.id!==p.id)&&!x.removido))return err("Já existe alguém com o usuário \""+u+"\". Escolha outro.");
-  if(sn.length<4)return err("A senha precisa ter pelo menos 4 caracteres.");
+  if((!p||sn)&&sn.length<4)return err("A senha precisa ter pelo menos 4 caracteres.");
   if(p&&p.papel==="Dono"&&(papel!=="Dono"||!ativo)&&donosAtivos().length<2)return err("A loja precisa ter pelo menos um dono com acesso liberado.");
   marca();
-  if(p){Object.assign(p,{nome,usuario:u,senha:sn,papel,ativo,com});if(eu){USER.nome=nome;try{USTORE.setItem(UKEY,JSON.stringify(USER))}catch(e){}}}
+  if(p){Object.assign(p,{nome,usuario:u,papel,ativo,com});if(sn)p.senha=sn;if(eu){USER.nome=nome;try{USTORE.setItem(UKEY,JSON.stringify(USER))}catch(e){}}}
   else S.equipe.push({id:Date.now(),nome,email:"",usuario:u,senha:sn,papel,ativo,com});
   salvar();tudo();fechar();toast(p?"Dados de "+nome.split(" ")[0]+" atualizados.":nome.split(" ")[0]+" adicionado. Usuário: "+u,1)};
  const del=$("#p-del");if(del)del.onclick=()=>{if(p.papel==="Dono"&&donosAtivos().length<2&&p.ativo!==false)return err("A loja precisa ter pelo menos um dono com acesso liberado.");
@@ -2283,7 +2299,8 @@ function onbRender(){const b=$("#onb-body"),P=OB.p;$("#onb-erro").hidden=true;
  if(P===6)h=`<h1 class="onb-h">Tudo pronto!</h1><p class="onb-p">A <b>${esc(OB.loja.nome)}</b> já está no Pátio. Guarde estes acessos:</p>
   <div class="onb-res"><div><span>${esc(OB.dono.nome)} (você)</span><span>usuário <code>${esc(OB.dono.usuario)}</code></span></div>${obVendUsers().map(v=>`<div><span>${esc(v.nome)}</span><span>usuário <code>${esc(v.usuario)}</code> · senha <code>1234</code></span></div>`).join("")}</div>
   <p class="onb-p" style="margin-top:16px">Seu teste de <b>48 horas</b> começa agora. Para os vendedores entrarem, eles abrem este mesmo endereço e usam o usuário deles.</p>
-  <label style="display:flex;gap:8px;align-items:center;font-size:14.5px"><input type="checkbox" id="ob-tour" ${OB.tour?"checked":""}> Mostrar o tour pelo sistema</label>`;
+  <label style="display:flex;gap:8px;align-items:center;font-size:14.5px"><input type="checkbox" id="ob-tour" ${OB.tour?"checked":""}> Mostrar o tour pelo sistema</label>
+  <label style="display:flex;gap:8px;align-items:flex-start;font-size:14.5px;margin-top:10px"><input type="checkbox" id="ob-aceite" ${OB.aceite?"checked":""} style="margin-top:3px"> <span>Li e aceito os <a href="#" data-termos="uso">Termos de uso</a> e a <a href="#" data-termos="priv">Política de privacidade</a>.</span></label>`;
  b.innerHTML=h;const f=b.querySelector("input:not([type=checkbox]):not([type=file])");if(f&&P>0&&P<6&&matchMedia("(min-width:700px)").matches)setTimeout(()=>f.focus(),60);
  const sn=$("#ob-senha");if(sn)$("#ob-ver").onclick=()=>{sn.type=sn.type==="password"?"text":"password";$("#ob-ver").textContent=sn.type==="password"?"Mostrar":"Esconder"};
  const dn=$("#ob-dnome");if(dn)dn.oninput=()=>{const u=$("#ob-user");if(!u.dataset.mexeu)u.value=slugTxt(dn.value.split(" ")[0])};const us=$("#ob-user");if(us)us.oninput=()=>{us.dataset.mexeu=1};
@@ -2296,13 +2313,14 @@ function onbColeta(){const P=OB.p,g=id=>{const e=$("#"+id);return e?e.value.trim
  if(P===2)Object.assign(OB.dono,{nome:g("ob-dnome"),usuario:slugTxt(g("ob-user")),senha:$("#ob-senha").value});
  if(P===3)$$("[data-ob-v]").forEach(i=>OB.vend[+i.dataset.obV]=i.value);
  if(P===5)OB.slogan=g("ob-slogan");
- if(P===6)OB.tour=$("#ob-tour").checked}
+ if(P===6){OB.tour=$("#ob-tour").checked;OB.aceite=$("#ob-aceite").checked}}
 $("#onb-f").addEventListener("input",()=>{$("#onb-erro").hidden=true});
 function onbErro(t){const e=$("#onb-erro");e.textContent=t;e.hidden=false}
 function onbValida(){const P=OB.p;
  if(P===1){if(!OB.loja.nome)return "Coloque o nome da loja.";if(!OB.loja.cid)return "Coloque a cidade.";if(OB.loja.wpp.replace(/\D/g,"").length<10)return "Coloque o WhatsApp com DDD."}
  if(P===2){if(!OB.dono.nome)return "Coloque o seu nome.";if(OB.dono.usuario.length<3)return "O usuário precisa ter pelo menos 3 letras, sem espaço.";if(OB.dono.senha.length<4)return "A senha precisa ter pelo menos 4 caracteres."}
  if(P===3&&OB.vend.some(v=>!v.trim()))return "Coloque o nome de cada vendedor (ou diminua a quantidade).";
+ if(P===6&&!OB.aceite)return "Para começar, marque que aceita os Termos de uso e a Política de privacidade.";
  return ""}
 $("#onb-f").onsubmit=e=>{e.preventDefault();onbColeta();const er=onbValida();if(er)return onbErro(er);if(OB.p<OB_N){OB.p++;onbRender();$("#onb").scrollTop=0;return}onbConclui()};
 $("#onb-volta").onclick=()=>{onbColeta();if(OB.p>0){OB.p--;onbRender()}};
@@ -2313,7 +2331,7 @@ function onbConclui(){const z=seedVazio(),L=z.loja;
  Object.assign(L,{nome:OB.loja.nome,cid:OB.loja.cid,wpp:OB.loja.wpp,end:OB.loja.end,slug:slugTxt(OB.loja.nome)||"sualoja",slogan:OB.slogan,cor:OB.cor});
  L.site=mescla(L.site,{logo:OB.logo,redes:{insta:OB.loja.insta.replace(/^@/,"")}});
  z.equipe=[{id:1,nome:OB.dono.nome,email:"",papel:"Dono",com:0,usuario:OB.dono.usuario,senha:OB.dono.senha,ativo:true}].concat(obVendUsers().map((v,i)=>({id:i+2,nome:v.nome,email:"",papel:"Vendedor",com:1.5,usuario:v.usuario,senha:"1234",ativo:true})));
- z.patio={s:OB.vagas.s,p:OB.vagas.p,o:OB.vagas.o};z.teste={inicio:Date.now(),vendedores:OB.vend.length};
+ z.patio={s:OB.vagas.s,p:OB.vagas.p,o:OB.vagas.o};z.teste={inicio:Date.now(),vendedores:OB.vend.length,aceite:Date.now(),aceiteVersao:"2026-10-10"};
  if(NUVEM){nvCriar(z);return}S=z;salvar();document.documentElement.style.removeProperty("--accent");
  USER={id:1,nome:OB.dono.nome,papel:"Dono"};try{USTORE.setItem(UKEY,JSON.stringify(USER))}catch(e){}
  $("#onb").hidden=true;history.replaceState(null,"",location.pathname+location.search+"#painel");
@@ -2399,7 +2417,7 @@ function nvAgenda(){if(!NV.token||PREVIA)return;clearTimeout(NV.timer);NV.timer=
 async function nvSalvar(){if(!NV.token)return;if(NV.salvando){NV.pend=true;return}NV.salvando=true;
  try{for(let t=0;t<4;t++){const dados=await nvPrepara(S),feito=nvClone(S);
    const r=await api("salvar",{p_token:NV.token,p_dados:dados,p_base:NV.versao});
-   if(r.ok){NV.versao=r.versao;NV.expira=r.expira;NV.liberado=r.liberado;NV.base=feito;nvStatus("salvo ✓");break}
+   if(r.ok){NV.versao=r.versao;NV.expira=r.expira;NV.liberado=r.liberado;NV.base=feito;NV.senhas=NV.senhas||{};[S,NV.base].forEach(o=>(o.equipe||[]).forEach(q=>{if(q.senha){NV.senhas[q.id]=q.senha;delete q.senha}}));nvStatus("salvo ✓");break}
    if(r.conflito){const remoto=await nvResolve(r.dados);S=nvMescla(NV.base,S,remoto);NV.base=remoto;NV.versao=r.versao;nvRedesenha();continue}
    if(r.erro==="expirado"){NV.expira=r.expira||Date.now();NV.liberado=false;fimTeste();break}
    if(r.erro==="sessao"){nvPerdeuSessao();break}
@@ -2474,7 +2492,7 @@ function nvLinks(primeira){const c=NV.codigo,pn=location.origin+"/l/"+c+"/painel
  <div class="nv-link"><code>${esc(pn)}</code><button type="button" class="btn xs soft" data-copia="${esc(pn)}">Copiar</button></div>
  <p class="muted" style="font-size:14px;margin:14px 0 0">Site da loja (para os clientes):</p>
  <div class="nv-link"><code>${esc(st)}</code><button type="button" class="btn xs soft" data-copia="${esc(st)}">Copiar</button></div>
- ${vs.length&&isDono()?`<p class="muted" style="font-size:14px;margin:16px 0 6px">Mandar o acesso para cada vendedor:</p>${vs.map(p=>`<a class="btn ghost full" style="justify-content:center;margin-bottom:6px" target="_blank" rel="noopener" href="https://wa.me/?text=${encodeURIComponent(`Oi ${p.nome.split(" ")[0]}! Estamos testando o Pátio na ${S.loja.nome}. Entre por este link: ${pn}\nSeu usuário: ${p.usuario}\nSua senha: ${p.senha||"(peça para o dono)"}`)}"><svg class="i"><use href="#i-chat"/></svg>Mandar para ${esc(p.nome.split(" ")[0])} no WhatsApp</a>`).join("")}`:""}
+ ${vs.length&&isDono()?`<p class="muted" style="font-size:14px;margin:16px 0 6px">Mandar o acesso para cada vendedor:</p>${vs.map(p=>`<a class="btn ghost full" style="justify-content:center;margin-bottom:6px" target="_blank" rel="noopener" href="https://wa.me/?text=${encodeURIComponent(`Oi ${p.nome.split(" ")[0]}! Estamos testando o Pátio na ${S.loja.nome}. Entre por este link: ${pn}\nSeu usuário: ${p.usuario}\nSua senha: ${p.senha||(NV.senhas&&NV.senhas[p.id])||"(peça para o dono)"}`)}"><svg class="i"><use href="#i-chat"/></svg>Mandar para ${esc(p.nome.split(" ")[0])} no WhatsApp</a>`).join("")}`:""}
  <button type="button" class="btn full" data-close style="justify-content:center;margin-top:12px">${primeira?"Entendi, vamos começar":"Fechar"}</button>`;ov.hidden=false}
 document.addEventListener("click",e=>{const c=e.target.closest("[data-copia]");if(c){const t=c.dataset.copia;(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>toast("Link copiado.")).catch(()=>{prompt("Copie o link:",t)});return}
  if(e.target.closest("[data-nv-links]")){nvLinks(false);return}
@@ -2498,6 +2516,32 @@ document.addEventListener("submit",async e=>{const f=e.target.closest(".op-form"
 addEventListener("beforeunload",e=>{if(NUVEM&&(NV.timer||NV.salvando)){e.preventDefault();e.returnValue=""}});
 document.addEventListener("visibilitychange",()=>{if(!document.hidden&&NV.token)nvConfere()});
 
+
+/* ---------- termos de uso e privacidade ---------- */
+const TERMOS_DATA="10/10/2026";
+function termosTexto(q){const zap=CONTATO.wpp.replace(/^55/,"").replace(/(\d{2})(\d{5})(\d{4})/,"($1) $2-$3");
+ if(q==="site"){const L=S.loja||{};return ["Privacidade",`<p>Ao enviar seus dados por este site (nome, WhatsApp e o que você procura), a <b>${esc(L.nome||"loja")}</b> usa essas informações <b>só para responder ao seu pedido</b>: tirar dúvidas, simular financiamento, avaliar seu carro na troca ou agendar uma visita.</p>
+  <p>Seus dados não são vendidos nem passados para outras empresas. Eles ficam guardados no sistema da loja (Pátio), em servidores protegidos.</p>
+  <p>Para corrigir ou apagar seus dados, fale com a loja${L.wpp?` pelo WhatsApp <b>${esc(L.wpp)}</b>`:""}.</p><p class="muted">Atualizado em ${TERMOS_DATA}.</p>`]}
+ if(q==="priv")return ["Política de privacidade",`<p>Esta política explica como o Pátio trata os dados durante o teste grátis, seguindo a Lei Geral de Proteção de Dados (LGPD).</p>
+  <h3>1. Quem é quem</h3><p>A <b>loja</b> decide quais dados cadastra e como usa (é a <b>controladora</b>). O <b>Pátio</b> guarda e processa esses dados só para o sistema funcionar (é o <b>operador</b>).</p>
+  <h3>2. Quais dados</h3><ul><li><b>Da loja e da equipe:</b> nome da loja, cidade, WhatsApp, Instagram, nomes, usuários e senhas.</li><li><b>Dos clientes da loja:</b> nome, WhatsApp, carro de interesse e, quando a loja cadastra para contrato, CPF e endereço.</li><li><b>De uso:</b> data e hora do último acesso.</li></ul>
+  <h3>3. Para que usamos</h3><ul><li>Fazer o sistema funcionar: estoque, contatos, agenda, vendas, documentos e site da loja.</li><li>Falar com o dono da loja sobre o teste e ouvir a opinião dele.</li></ul><p>Os dados <b>não são vendidos</b> nem usados para propaganda de terceiros.</p>
+  <h3>4. Onde ficam</h3><p>Em servidores da Cloudflare, com conexão protegida (HTTPS). Os servidores podem ficar fora do Brasil. As senhas são guardadas embaralhadas: ninguém consegue ler a senha original.</p>
+  <h3>5. Por quanto tempo</h3><p>Enquanto a loja usar o Pátio. Depois que o teste termina, os dados ficam guardados por até 30 dias, para o caso de a loja continuar, e depois podem ser apagados. A loja pode pedir para apagar antes.</p>
+  <h3>6. Seus direitos</h3><p>A loja pode pedir acesso, correção ou exclusão dos dados pelo WhatsApp <b>${zap}</b>. Clientes da loja devem falar diretamente com a loja, que é quem decide sobre os dados deles.</p>
+  <p class="muted">Atualizado em ${TERMOS_DATA}.</p>`];
+ return ["Termos de uso",`<p>Estes termos valem para o teste grátis do Pátio, sistema de gestão e site para lojas de veículos.</p>
+  <h3>1. O teste</h3><p>O teste dura <b>48 horas</b>, não tem custo e não obriga a contratar nada. Quando termina, o acesso fica bloqueado até a loja decidir continuar. Os dados cadastrados ficam guardados por até 30 dias, como explicado na Política de privacidade.</p>
+  <h3>2. Responsabilidade da loja</h3><ul><li>As informações cadastradas (carros, preços, clientes, contas) são de responsabilidade da loja.</li><li>A loja deve usar os dados dos seus clientes de forma legal, para atender e vender.</li><li>Cada pessoa deve guardar o próprio usuário e senha. O dono decide quem tem acesso.</li></ul>
+  <h3>3. Versão de teste</h3><ul><li>O sistema pode ter falhas e receber mudanças durante o teste.</li><li>Não use o teste como único registro financeiro ou contábil da loja.</li><li>Contratos, recibos e termos gerados são modelos: confira com o seu contador ou advogado antes de usar.</li></ul>
+  <h3>4. Uso não permitido</h3><p>Não é permitido usar o Pátio para enviar mensagens em massa sem autorização, cadastrar informações falsas ou tentar acessar dados de outras lojas.</p>
+  <h3>5. Contato</h3><p>Dúvidas ou pedidos: WhatsApp <b>${zap}</b>.</p><p class="muted">Atualizado em ${TERMOS_DATA}.</p>`]}
+function termosAbre(q){const [t,h]=termosTexto(q);$("#termos-t").textContent=t;$("#termos-c").innerHTML=h;$("#termos").hidden=false;$("#termos-c").scrollTop=0}
+$("#termos-x").onclick=()=>{$("#termos").hidden=true};
+$("#termos").addEventListener("click",e=>{if(e.target.id==="termos")$("#termos").hidden=true});
+document.addEventListener("click",e=>{const a=e.target.closest("[data-termos]");if(a){e.preventDefault();termosAbre(a.dataset.termos)}});
+addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("#termos").hidden)$("#termos").hidden=true});
 /* ================= administração (/admin) ================= */
 let ADM_S="";
 function admAbre(){["vitrine","login","painel"].forEach(x=>$("#"+x).hidden=true);document.documentElement.classList.add("travado");$("#adm").hidden=false;document.title="Pátio · Test drives";try{ADM_S=sessionStorage.getItem("patio-adm")||""}catch(e){}if(ADM_S)admCarrega();else admLogin()}
@@ -2512,9 +2556,10 @@ function admData(t){const d=new Date(t);return d.toLocaleDateString("pt-BR")+" "
 function admRender(r){const ls=r.lojas,ag=r.agora,ativo=l=>l.liberado||l.expira>ag,ops=ls.flatMap(l=>l.opinioes),media=ops.length?(ops.reduce((s,o)=>s+o.nota,0)/ops.length).toFixed(1).replace(".",","):"—";
  const cor=n=>n>=9?"#15803d":n>=7?"#a16207":"#b91c1c";
  $("#adm-main").innerHTML=`<div class="adm-kpis"><div><span>Testando agora</span><b>${ls.filter(l=>!l.liberado&&l.expira>ag).length}</b></div><div><span>Teste terminado</span><b>${ls.filter(l=>!ativo(l)).length}</b></div><div><span>Clientes (liberados)</span><b>${ls.filter(l=>l.liberado).length}</b></div><div><span>Nota média</span><b>${media}</b></div></div>
- <p class="muted" style="font-size:14px">Link para mandar aos donos: <b>${esc(location.origin)}/teste</b> <button type="button" class="btn xs soft" data-copia="${esc(location.origin)}/teste">Copiar</button></p>
+ <div class="adm-msg"><b>Mensagem para mandar aos donos</b><textarea id="adm-txt" rows="7">${esc(admMensagem())}</textarea><div class="adm-bts"><button type="button" class="btn sm" id="adm-copia-msg">Copiar mensagem</button><a class="btn sm wa-btn" target="_blank" rel="noopener" id="adm-wa-msg" href="https://wa.me/?text=${encodeURIComponent(admMensagem())}">Abrir no WhatsApp</a></div></div>
  ${ls.length?ls.map(l=>{const st=l.liberado?'<span class="pill p-ok">Cliente · liberado</span>':l.expira>ag?`<span class="pill p-info">Testando · faltam ${admTempo(l.expira-ag)}</span>`:'<span class="pill p-mut">Teste terminado</span>';
   return `<div class="adm-card"><div class="adm-h"><div><h3>${esc(l.nome||l.codigo)}</h3><div class="adm-sub">${esc(l.dono||"")}${l.cidade?" · "+esc(l.cidade):""} · começou ${admData(l.criado)} · última vez ${admData(l.visto||l.criado)}</div></div>${st}</div>
+  ${(l.pessoas||[]).length?`<div class="adm-pessoas">${l.pessoas.map(q=>`<span>${esc(q.nome.split(" ")[0])} · <b>${esc(q.usuario)}</b>${q.papel==="Dono"?" (dono)":""}<button type="button" class="btn xs soft" data-adm-senha="${l.id}|${esc(q.usuario)}|${esc(q.nome)}|${esc(l.wpp||"")}">Nova senha</button></span>`).join("")}</div>`:""}
   <div class="adm-nums"><span><b>${l.carros}</b> carros</span><span><b>${l.contatos}</b> contatos</span><span><b>${l.vendas}</b> vendas</span><span><b>${l.equipe}</b> pessoas</span><span><b>${l.fotos}</b> fotos</span><span><b>${l.versao}</b> salvamentos</span></div>
   <div class="adm-bts">${l.wpp?`<a class="btn sm wa-btn" target="_blank" rel="noopener" href="https://wa.me/55${String(l.wpp).replace(/\D/g,"")}?text=${encodeURIComponent("Oi "+(l.dono||"").split(" ")[0]+"! Aqui é o Juan, do Pátio. Como está sendo o teste na "+(l.nome||"loja")+"?")}">WhatsApp</a>`:""}<a class="btn sm soft" target="_blank" rel="noopener" href="/l/${esc(l.codigo)}">Ver o site</a>
    <button type="button" class="btn sm soft" data-adm="tempo:24:${l.id}">+24 h</button><button type="button" class="btn sm soft" data-adm="tempo:48:${l.id}">+48 h</button>${l.liberado?"":`<button type="button" class="btn sm" data-adm="liberar:0:${l.id}">Liberar (virou cliente)</button>`}${ativo(l)?`<button type="button" class="btn sm ghost" data-adm="encerrar:0:${l.id}">Encerrar</button>`:""}<button type="button" class="btn sm ghost rem-btn" data-adm="apagar:0:${l.id}">Apagar</button></div>
@@ -2523,6 +2568,23 @@ document.addEventListener("click",async e=>{const b=e.target.closest("[data-adm]
  if((ac==="apagar"||ac==="encerrar")&&!b.dataset.arm){b.dataset.arm=1;const t=b.textContent;b.textContent="Toque de novo para confirmar";setTimeout(()=>{if(b.isConnected){delete b.dataset.arm;b.textContent=t}},3500);return}
  b.disabled=true;try{const r=await api("admin_acao",{p_senha:ADM_S,p_loja:id,p_acao:ac,p_horas:+h||24});toast(r.ok?"Feito.":"Não deu certo.");admCarrega()}catch(x){b.disabled=false;toast("Sem internet.")}});
 document.addEventListener("click",e=>{if(e.target.closest("#adm-at"))admCarrega()});
+function admMensagem(){return `Oi! Aqui é o Juan. Preparei o Pátio, um sistema feito para lojas de carros: site da loja com os seus carros, controle do estoque, dos clientes, da agenda, das vendas e do financeiro, tudo no celular.
+
+Você pode testar grátis por 48 horas, com os seus carros e a sua equipe. É só abrir o link e responder umas perguntas rápidas (leva 2 minutos):
+${location.origin}/teste
+
+No fim, me conta o que achou. Qualquer dúvida, me chama aqui!`}
+document.addEventListener("click",e=>{if(e.target.closest("#adm-copia-msg")){const t=$("#adm-txt").value;(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>toast("Mensagem copiada.")).catch(()=>{$("#adm-txt").select()});return}});
+document.addEventListener("input",e=>{if(e.target.id==="adm-txt"){const a=$("#adm-wa-msg");if(a)a.href="https://wa.me/?text="+encodeURIComponent(e.target.value)}});
+document.addEventListener("click",async e=>{const b=e.target.closest("[data-adm-senha]");if(!b)return;const [id,usuario,nome,wpp]=b.dataset.admSenha.split("|");
+ if(!b.dataset.arm){b.dataset.arm=1;b.textContent="Gerar nova senha?";setTimeout(()=>{if(b.isConnected){delete b.dataset.arm;b.textContent="Nova senha"}},3500);return}
+ const nova=String(Math.floor(100000+Math.random()*900000));b.disabled=true;
+ try{const r=await api("admin_acao",{p_senha:ADM_S,p_loja:id,p_acao:"senha",p_usuario:usuario,p_nova:nova});
+  if(!r.ok){b.disabled=false;toast("Não deu certo.");return}
+  const msg=`Oi ${nome.split(" ")[0]}! Aqui é o Juan, do Pátio. Sua nova senha é ${nova} (usuário: ${usuario}). Se quiser, troque depois em Equipe.`;
+  const sp=b.parentElement;sp.innerHTML=`${esc(nome.split(" ")[0])} · <b>${esc(usuario)}</b> → nova senha <b>${nova}</b> <a class="btn xs wa-btn" target="_blank" rel="noopener" href="${wpp?"https://wa.me/55"+wpp.replace(/\D/g,"")+"?text=":"https://wa.me/?text="}${encodeURIComponent(msg)}">Mandar</a>`;
+  toast("Senha trocada. Mande para a pessoa.")}catch(x){b.disabled=false;toast("Sem internet.")}});
+
 addEventListener("hashchange",rota);rota();
 </script>
 

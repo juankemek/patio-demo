@@ -29,6 +29,73 @@ const token = () => (crypto.randomUUID() + crypto.randomUUID()).replace(/-/g, ''
 const ativa = l => !!l.liberado || l.expira > agora();
 const resumo = l => ({ versao: l.versao, expira: l.expira, liberado: !!l.liberado, ativa: ativa(l), codigo: l.codigo });
 const semSenhas = d => ({ ...d, equipe: (d.equipe || []).map(({ senha, ...e }) => e) });
+// ---- senhas embaralhadas (PBKDF2) ----
+const ITER = 5000;
+const b64 = u8 => btoa(String.fromCharCode(...u8));
+const deB64 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+async function derivar(senha, sal, iter) {
+  const k = await crypto.subtle.importKey('raw', new TextEncoder().encode(String(senha)), 'PBKDF2', false, ['deriveBits']);
+  return new Uint8Array(await crypto.subtle.deriveBits({ name: 'PBKDF2', hash: 'SHA-256', salt: sal, iterations: iter }, k, 256));
+}
+const ehHash = h => typeof h === 'string' && h.startsWith('pbkdf2$');
+async function hashSenha(senha) {
+  const sal = crypto.getRandomValues(new Uint8Array(16));
+  return `pbkdf2$${ITER}$${b64(sal)}$${b64(await derivar(senha, sal, ITER))}`;
+}
+async function confere(senha, guardada) {
+  if (!guardada) return false;
+  if (!ehHash(guardada)) return guardada === senha; // senhas antigas, de antes do embaralhamento
+  const [, it, sal, h] = guardada.split('$');
+  const x = b64(await derivar(senha, deB64(sal), +it));
+  let dif = x.length ^ h.length;
+  for (let i = 0; i < Math.min(x.length, h.length); i++) dif |= x.charCodeAt(i) ^ h.charCodeAt(i);
+  return dif === 0;
+}
+async function embaralhaEquipe(eq) {
+  return Promise.all((eq || []).map(async e => (e.senha && !ehHash(e.senha)) ? { ...e, senha: await hashSenha(e.senha) } : e));
+}
+// ---- o que o vendedor não vê (custo, mínimo, financeiro, parceiros) ----
+const PRIV_CARRO = ['compra', 'gastos', 'parc'];
+const PRIV_LISTAS = ['contas', 'despesas', 'parceiros'];
+const PRIV_CAMPOS = ['saldoIni', 'hist'];
+function semPrivado(d) {
+  const o = { ...d };
+  PRIV_LISTAS.forEach(k => { o[k] = []; });
+  PRIV_CAMPOS.forEach(k => { delete o[k]; });
+  const limpa = c => { const x = { ...c }; PRIV_CARRO.forEach(k => delete x[k]); return x; };
+  o.carros = (d.carros || []).map(limpa);
+  o.removidos = (d.removidos || []).map(limpa);
+  return o;
+}
+function juntaVendedor(guardado, novo) {
+  // o vendedor não recebeu os dados privados: mantém os guardados e só acrescenta o que ele criou
+  const o = { ...novo, equipe: guardado.equipe };
+  PRIV_CAMPOS.forEach(k => { if (k in guardado) o[k] = guardado[k]; else delete o[k]; });
+  PRIV_LISTAS.forEach(k => {
+    const g = guardado[k] || [], ids = new Set(g.map(x => String(x.id)));
+    o[k] = g.concat((novo[k] || []).filter(x => !ids.has(String(x.id))));
+  });
+  // repasse lançado numa venda feita pelo vendedor: o valor vem do custo guardado
+  const todosG = (guardado.carros || []).concat(guardado.removidos || []);
+  o.contas = (o.contas || []).map(x => {
+    if (x.cat !== 'Repasse a parceiro' || x.carro == null || (guardado.contas || []).some(g => String(g.id) === String(x.id))) return x;
+    const c = todosG.find(q => String(q.id) === String(x.carro));
+    if (!c) return x;
+    const parc = (guardado.parceiros || []).find(q => String(q.id) === String(c.parc));
+    return { ...x, valor: +c.compra || 0, desc: `Repasse ${c.modelo} · ${parc ? parc.nome : 'dono do carro'}` };
+  });
+  const volta = (lista, antigos) => (lista || []).map(c => {
+    const a = (antigos || []).find(x => String(x.id) === String(c.id));
+    if (!a) return c;
+    const x = { ...c };
+    PRIV_CARRO.forEach(k => { if (k in a) x[k] = a[k]; else delete x[k]; });
+    return x;
+  });
+  const todos = (guardado.carros || []).concat(guardado.removidos || []);
+  o.carros = volta(novo.carros, todos);
+  o.removidos = volta(novo.removidos, todos);
+  return o;
+}
 const pessoa = (d, id) => (d.equipe || []).find(e => +e.id === +id && !e.removido && e.ativo !== false) || null;
 const hojeBR = () => new Date(agora() - 3 * 3600 * 1000).toISOString().slice(0, 10);
 const dormir = ms => new Promise(r => setTimeout(r, ms));
@@ -46,13 +113,14 @@ async function sessao(db, tk) {
   const d = JSON.parse(l.dados);
   return { s, l, d, p: pessoa(d, s.pessoa_id) };
 }
-const dadosPara = (p, d) => (p && p.papel === 'Dono' ? d : semSenhas(d));
+const dadosPara = (p, d) => (p && p.papel === 'Dono' ? semSenhas(d) : semSenhas(semPrivado(d)));
 
 // ------------------------------------------------------------------
 const F = {
   async criar(db, a) {
     const d = a.p_dados;
     if (!d || !Array.isArray(d.equipe) || !d.equipe.length) return { ok: false, erro: 'dados' };
+    d.equipe = await embaralhaEquipe(d.equipe);
     const json = JSON.stringify(d);
     if (json.length > MAX_DADOS) return { ok: false, erro: 'grande' };
     const recentes = await db.prepare('SELECT COUNT(*) n FROM lojas WHERE criado > ?').bind(agora() - 3600000).first();
@@ -76,7 +144,8 @@ const F = {
     const l = await lojaPorCodigo(db, a.p_codigo);
     if (!l) { await dormir(400); return { ok: false, erro: 'loja' }; }
     const d = JSON.parse(l.dados), u = String(a.p_usuario || '').toLowerCase().trim();
-    const e = (d.equipe || []).find(x => String(x.usuario || '').toLowerCase() === u && x.senha === a.p_senha && !x.removido);
+    const c = (d.equipe || []).find(x => String(x.usuario || '').toLowerCase() === u && !x.removido);
+    const e = c && await confere(String(a.p_senha || ''), c.senha) ? c : null;
     if (!e) { await dormir(400); return { ok: false, erro: 'senha' }; }
     if (e.ativo === false) return { ok: false, erro: 'bloqueado' };
     if (!ativa(l)) return { ok: false, erro: 'expirado', nome: l.nome };
@@ -113,17 +182,18 @@ const F = {
     const nd = a.p_dados;
     if (!nd || !Array.isArray(nd.equipe)) return { ok: false, erro: 'dados' };
     if (x.l.versao !== +a.p_base) return { ok: false, conflito: true, dados: dadosPara(x.p, x.d), ...resumo(x.l) };
+    let dados = nd;
     if (x.p.papel === 'Dono') {
-      // quem não mandou a senha de alguém mantém a que estava guardada
-      nd.equipe = nd.equipe.map(e => ('senha' in e) ? e : { ...e, ...(() => { const o = (x.d.equipe || []).find(q => String(q.id) === String(e.id)); return o && 'senha' in o ? { senha: o.senha } : {}; })() });
+      // quem não mandou a senha de alguém mantém a que estava guardada; senha nova é embaralhada
+      nd.equipe = await embaralhaEquipe(nd.equipe.map(e => e.senha ? e : (() => { const { senha, ...r } = e; const o = (x.d.equipe || []).find(q => String(q.id) === String(e.id)); return o && o.senha ? { ...r, senha: o.senha } : r; })()));
     } else {
-      nd.equipe = x.d.equipe; // vendedor não muda a equipe
+      dados = juntaVendedor(x.d, nd); // vendedor não muda a equipe nem os dados privados
     }
-    const json = JSON.stringify(nd);
+    const json = JSON.stringify(dados);
     if (json.length > MAX_DADOS) return { ok: false, erro: 'grande' };
     const t = agora();
     const r = await db.prepare('UPDATE lojas SET dados = ?, versao = versao + 1, nome = ?, visto = ? WHERE id = ? AND versao = ?')
-      .bind(json, txt(nd.loja && nd.loja.nome, 120), t, x.l.id, x.l.versao).run();
+      .bind(json, txt(dados.loja && dados.loja.nome, 120), t, x.l.id, x.l.versao).run();
     if (!r.meta || !r.meta.changes) {
       const l2 = await db.prepare('SELECT * FROM lojas WHERE id = ?').bind(x.l.id).first();
       return { ok: false, conflito: true, dados: dadosPara(x.p, JSON.parse(l2.dados)), ...resumo(l2) };
@@ -215,6 +285,7 @@ const F = {
       const d = JSON.parse(l.dados), dono = (d.equipe || []).find(e => e.papel === 'Dono') || {};
       return { id: l.id, codigo: l.codigo, nome: l.nome, contato: l.contato, cidade: d.loja && d.loja.cid, wpp: d.loja && d.loja.wpp,
         dono: dono.nome, criado: l.criado, expira: l.expira, visto: l.visto, liberado: !!l.liberado, versao: l.versao,
+        pessoas: (d.equipe || []).filter(e => !e.removido).map(e => ({ nome: e.nome, usuario: e.usuario, papel: e.papel, ativo: e.ativo !== false })),
         equipe: (d.equipe || []).length, carros: (d.carros || []).length, contatos: (d.leads || []).length,
         vendas: (d.carros || []).filter(c => c.venda).length, fotos: (fts.find(f => f.loja_id === l.id) || {}).n || 0,
         opinioes: ops.filter(o => o.loja_id === l.id).map(o => ({ nota: o.nota, gostou: o.gostou, faltou: o.faltou, continuar: o.continuar, quem: o.quem, criado: o.criado })) };
@@ -231,6 +302,20 @@ const F = {
       await db.prepare('UPDATE lojas SET liberado = 1 WHERE id = ?').bind(id).run();
     } else if (a.p_acao === 'encerrar') {
       await db.prepare('UPDATE lojas SET liberado = 0, expira = ? WHERE id = ?').bind(t, id).run();
+    } else if (a.p_acao === 'senha') {
+      const nova = String(a.p_nova || '');
+      if (nova.length < 4) return { ok: false, erro: 'curta' };
+      for (let i = 0; i < 6; i++) {
+        const l = await db.prepare('SELECT * FROM lojas WHERE id = ?').bind(id).first();
+        if (!l) return { ok: false, erro: 'loja' };
+        const d = JSON.parse(l.dados), u = String(a.p_usuario || '').toLowerCase();
+        const e = (d.equipe || []).find(x => String(x.usuario || '').toLowerCase() === u && !x.removido);
+        if (!e) return { ok: false, erro: 'pessoa' };
+        e.senha = await hashSenha(nova);
+        const r = await db.prepare('UPDATE lojas SET dados = ?, versao = versao + 1 WHERE id = ? AND versao = ?').bind(JSON.stringify(d), id, l.versao).run();
+        if (r.meta && r.meta.changes) return { ok: true };
+      }
+      return { ok: false, erro: 'ocupado' };
     } else if (a.p_acao === 'apagar') {
       await db.batch([
         db.prepare('DELETE FROM sessoes WHERE loja_id = ?').bind(id), db.prepare('DELETE FROM fotos WHERE loja_id = ?').bind(id),
