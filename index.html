@@ -707,6 +707,23 @@ html.travado body{overflow:hidden}
 .vid-g small{display:block;color:var(--muted);font-weight:500;font-size:12.5px}
 .aj-msg .go+.go{margin-left:6px}
 @media(max-width:640px){.vid{padding:0}.vid-box{border-radius:0;height:100%;max-height:none}.vid-c video{max-height:calc(100vh - 90px)}}
+
+/* ---------- remover do estoque / painel dos vendedores ---------- */
+.rem-btn{color:var(--crit)!important}
+.rem-box{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;background:var(--crit-soft);color:var(--ink);border-radius:12px;padding:12px 14px;margin:12px 0;font-size:14px}
+.chk{display:flex;align-items:center;gap:8px;font-size:14.5px;cursor:pointer}
+.chk input{width:18px;height:18px;accent-color:var(--accent)}
+.pv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+.pv-grid label{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);border-radius:12px;padding:12px;cursor:pointer;font-size:14.5px}
+.pv-grid label small{display:block;color:var(--muted);font-size:12.5px;margin-top:2px}
+.pv-grid input{width:18px;height:18px;margin-top:1px;accent-color:var(--accent);flex:none}
+.mural{border-left:4px solid var(--accent)}
+.mu-item{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-top:1px solid var(--line)}
+.mu-item:first-of-type{border-top:0}
+.mu-item p{margin:0;font-size:15px;line-height:1.45;white-space:pre-line}
+.mu-item small{color:var(--muted);font-size:12.5px}
+.mu-item .t{flex:1;min-width:0}
+#mt-vend{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;min-width:0}#mt-vend .field{min-width:0}#mt-vend input{width:100%;box-sizing:border-box}
 </style>
 
 </head>
@@ -830,6 +847,7 @@ html.travado body{overflow:hidden}
     <button class="nav dono" data-sec="rel"><svg class="i"><use href="#i-chart"/></svg>Relatórios</button>
     <button class="nav dono" data-sec="parc"><svg class="i"><use href="#i-users"/></svg>Parceiros</button>
     <button class="nav dono" data-sec="equipe"><svg class="i"><use href="#i-shield"/></svg>Equipe e acessos</button>
+    <button class="nav dono" data-sec="pvend"><svg class="i"><use href="#i-chat"/></svg>Painel dos vendedores</button>
     <button class="nav dono" data-sec="loja"><svg class="i"><use href="#i-store"/></svg>Minha loja</button>
     <div class="me">
       <div class="who"><div class="av" id="me-av">MS</div><div><b id="me-nome" style="font-size:14px">Marcos Silva</b><div class="muted" style="font-size:12px" id="me-papel">Dono</div></div></div>
@@ -844,6 +862,7 @@ html.travado body{overflow:hidden}
     <div class="sec" id="sec-geral">
       <div class="topbar"><div><span class="lbl" id="hoje-lbl">Quinta, 8 de outubro de 2026</span><h1 id="ola">Bom dia, Marcos</h1></div><div class="acts"><button class="btn" data-act="novo-carro"><svg class="i"><use href="#i-plus"/></svg>Cadastrar veículo</button></div></div>
       <div class="panel guia dono" id="guia" hidden></div>
+      <div class="panel mural" id="mural" hidden></div>
       <div class="kpis" id="kpis"></div>
       <div class="kpi-note" id="kpi-note"></div>
       <div class="row2">
@@ -951,6 +970,20 @@ html.travado body{overflow:hidden}
           <p class="muted" style="font-size:13px;margin-top:12px">O comprador não tem login: ele só vê o site da loja. Cada loja tem os próprios dados, separados das outras.</p></div>
       </div>
     </div>
+    <!-- painel dos vendedores -->
+    <div class="sec dono" id="sec-pvend" hidden>
+      <div class="topbar"><div><span class="lbl">Só a equipe vê</span><h1>Painel dos vendedores</h1></div></div>
+      <p class="muted" style="margin:-6px 0 18px;max-width:760px">Escolha o que aparece na tela inicial dos vendedores: recados, metas e quais quadros eles veem. Nada disso aparece no site da loja.</p>
+      <div class="row2">
+        <div class="panel"><div class="panel-h"><h2>Recados para a equipe</h2></div>
+          <form id="f-mural" class="form"><label class="field full">Novo recado<textarea id="mu-txt" rows="3" required placeholder="Ex.: sábado tem mutirão de test drive das 9h às 13h"></textarea></label><label class="full chk"><input type="checkbox" id="mu-fixo"> Fixar no topo</label><button class="btn full" type="submit" style="justify-content:center">Publicar recado</button></form>
+          <div class="list" id="mu-lista" style="margin-top:14px"></div></div>
+        <div class="panel"><div class="panel-h"><h2>Metas de vendas do mês</h2></div>
+          <p class="muted" style="font-size:13.5px;margin:0 0 10px">Use só se quiser. Deixe em branco para não ter meta.</p>
+          <form class="form" id="f-metas"><label class="field full">Meta da loja (carros vendidos no mês)<input id="mt-loja" type="number" min="0" inputmode="numeric" placeholder="sem meta"></label><label class="full chk"><input type="checkbox" id="mt-mostra"> Mostrar a meta da loja para os vendedores</label><div class="form full" id="mt-vend" style="margin:0"></div><button class="btn full" type="submit" style="justify-content:center">Salvar metas</button></form></div>
+      </div>
+      <div class="panel"><div class="panel-h"><h2>O que o vendedor vê na tela inicial</h2></div><div class="pv-grid" id="pv-quadros"></div><p class="muted" style="font-size:13px;margin:12px 0 0">Custo, preço mínimo, lucro e financeiro nunca aparecem para vendedor.</p></div>
+    </div>
     <!-- minha loja -->
     <div class="sec dono" id="sec-loja" hidden>
       <div class="topbar"><div><span class="lbl">Personalize o seu site</span><h1>Minha loja</h1></div><div class="acts"><span class="ed-sujo" id="ed-sujo" hidden>Alterações não salvas</span><button class="btn ghost" id="ed-desc" type="button">Descartar</button><button class="btn" id="ed-salvar" type="button">Salvar e publicar</button></div></div>
@@ -1053,12 +1086,16 @@ if(TESTE&&/[?&](teste=)?novo\b/.test(location.search)){try{localStorage.removeIt
 const SKEY=TESTE?"patio-teste-v1":"patio-demo-v4",USTORE=TESTE?localStorage:sessionStorage,TESTE_H=48;
 const CONTATO={nome:"Juan",wpp:"5553999032481"};
 if(TESTE)document.documentElement.classList.add("modo-teste");
-function seedVazio(){const z=seed();return{loja:{nome:"",slug:"",slogan:"",cid:"",wpp:"",end:"",hor:"",sobre:"",cor:"#dc2626",cnpj:"",contador:"",site:{destaques:{d2v:"",d2t:"",d3v:"",d3t:""}}},equipe:[],carros:[],leads:[],visitas:[],parceiros:[],saldoIni:{Banco:0,Caixa:0},regras:z.regras,aval:[],contas:[],despesas:[],hist:[],teste:{inicio:0},guia:{}}}
+function seedVazio(){const z=seed();return{loja:{nome:"",slug:"",slogan:"",cid:"",wpp:"",end:"",hor:"",sobre:"",cor:"#dc2626",cnpj:"",contador:"",site:{destaques:{d2v:"",d2t:"",d3v:"",d3t:""}}},equipe:[],carros:[],leads:[],visitas:[],parceiros:[],saldoIni:{Banco:0,Caixa:0},regras:z.regras,aval:[],contas:[],despesas:[],hist:[],teste:{inicio:0},guia:{},removidos:[],metas:{loja:0,mostrar:true,vend:{}},mural:[],pvend:{}}}
 let S;try{S=JSON.parse(localStorage.getItem(SKEY))}catch(e){}
 if(!S||!S.carros||!S.contas)S=TESTE?seedVazio():seed();
 (function(){let v=0;(S.equipe||[]).forEach(p=>{if(!p.usuario){if(p.papel==="Dono"&&!S.equipe.some(x=>x.usuario==="admin"))p.usuario="admin";else if(p.papel!=="Dono"&&!S.equipe.some(x=>x.usuario==="vendedor"))p.usuario="vendedor";else{let b=p.nome.split(" ")[0].toLowerCase().normalize("NFD").replace(/[^a-z0-9]/g,"")||"pessoa",u=b,i=2;while(S.equipe.some(x=>x.usuario===u))u=b+i++;p.usuario=u}p.senha=p.senha||"1234";if(p.ativo===undefined)p.ativo=true}})})();
 const EQ=()=>S.equipe.filter(p=>!p.removido);
 if(!S.regras){const z=seed();S.regras=z.regras;S.aval=S.aval||z.aval}
+S.removidos=S.removidos||[];
+if(!S.metas)S.metas=TESTE?{loja:0,mostrar:true,vend:{}}:{loja:6,mostrar:true,vend:{2:3,3:3}};
+if(!S.mural)S.mural=TESTE?[]:[{id:1,data:"2026-10-07",txt:"Sábado tem mutirão de test drive das 9h às 13h. Confirmem os clientes da agenda até sexta!",fixo:true},{id:2,data:"2026-10-06",txt:"Corolla e Gol estão parados há muito tempo: dá para negociar até o preço mínimo.",fixo:false}];
+S.pvend=S.pvend||{};
 let USER=null;try{USER=JSON.parse(USTORE.getItem(TESTE?"patio-teste-user":"patio-user"))}catch(e){}
 function salvar(){if(typeof PREVIA!=="undefined"&&PREVIA)return true;try{localStorage.setItem(SKEY,JSON.stringify(S));return true}catch(e){if(/quota/i.test(e.name+e.message)&&typeof toast==="function")toast("O espaço da demonstração encheu. Remova algumas fotos. No sistema real as fotos ficam guardadas na nuvem, sem esse limite.");return !/quota/i.test(e.name+e.message)}}
 function lerFotos(files){return Promise.all([...files].filter(f=>f.type.startsWith("image/")).slice(0,12).map(f=>new Promise(res=>{const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const W=1000,sc=Math.min(1,W/im.width),cv=document.createElement("canvas");cv.width=Math.round(im.width*sc);cv.height=Math.round(im.height*sc);cv.getContext("2d").drawImage(im,0,0,cv.width,cv.height);res(cv.toDataURL("image/jpeg",0.72))};im.onerror=()=>res(null);im.src=r.result};r.onerror=()=>res(null);r.readAsDataURL(f)}))).then(a=>a.filter(Boolean))}
@@ -1075,7 +1112,7 @@ const dias=c=>Math.round(((c.venda?dt(c.venda.data):dt(HOJE))-dt(c.entrada))/864
 const custo=c=>c.compra+c.gastos.reduce((s,g)=>s+ +g[1],0);
 const valorV=c=>c.venda?c.venda.valor:c.preco;
 const lucro=c=>valorV(c)-custo(c);
-const carro=id=>S.carros.find(c=>c.id==id);
+const carro=id=>S.carros.find(c=>c.id==id)||(S.removidos||[]).find(c=>c.id==id);
 const nomeCarro=c=>c?`${c.marca} ${c.modelo} ${c.ano}`:"—";
 const pessoa=id=>S.equipe.find(p=>p.id==id);
 const ini=n=>n.split(" ").filter(Boolean).map(p=>p[0]).slice(0,2).join("").toUpperCase();
@@ -1090,8 +1127,10 @@ const labCompra=c=>c.origem==="Próprio"||!c.origem?"Valor de compra":"Repasse a
 function hist(c,txt){(c.hist=c.hist||[]).push({data:HOJE,txt,quem:USER?USER.nome.split(" ")[0]:"Site"})}
 const vencida=x=>x.status==="Pendente"&&x.venc<HOJE;
 function saldoConta(n){return (S.saldoIni[n]||0)+S.contas.filter(x=>x.status==="Pago"&&x.conta===n).reduce((s,x)=>s+(x.tipo==="receber"?x.valor:-x.valor),0)}
-function movs(){const a=[];S.carros.forEach(c=>{a.push({d:c.entrada,k:"in",c,tit:{"Próprio":"Compra","Parceiro":"Entrada de parceiro","Consignado":"Consignação"}[c.origem||"Próprio"],v:c.compra,quem:c.origem==="Próprio"?"Marcos":(parc(c.parc)||{nome:"—"}).nome});if(c.venda)a.push({d:c.venda.data,k:"out",c,tit:"Venda",v:c.venda.valor,quem:(pessoa(c.venda.vend)||{nome:"—"}).nome.split(" ")[0]+" · cliente "+c.venda.cli})});return a.sort((x,y)=>y.d.localeCompare(x.d))}
-function movHTML(m){return `<button class="mov" data-carro="${m.c.id}"><span class="ic ${m.k==="in"?"in":"out"}">${m.k==="in"?"↓":"↑"}</span><span class="t"><b>${esc(nomeCarro(m.c))} · ${esc(m.c.placa)}</b><small>${m.tit} · ${esc(m.quem)}</small></span><span class="v num">${m.k==="out"||isDono()?R(m.v):""}<small>${fd(m.d)}/${m.d.slice(2,4)}</small></span></button>`}
+function movs(){const a=[];S.carros.forEach(c=>{a.push({d:c.entrada,k:"in",c,tit:{"Próprio":"Compra","Parceiro":"Entrada de parceiro","Consignado":"Consignação"}[c.origem||"Próprio"],v:c.compra,quem:c.origem==="Próprio"?"Marcos":(parc(c.parc)||{nome:"—"}).nome});if(c.venda)a.push({d:c.venda.data,k:"out",c,tit:"Venda",v:c.venda.valor,quem:(pessoa(c.venda.vend)||{nome:"—"}).nome.split(" ")[0]+" · cliente "+c.venda.cli})});
+ (S.removidos||[]).filter(c=>c.saida&&c.saida.motivo!=="Cadastrado por engano").forEach(c=>{a.push({d:c.entrada,k:"in",c,tit:{"Próprio":"Compra","Parceiro":"Entrada de parceiro","Consignado":"Consignação"}[c.origem||"Próprio"],v:c.compra,quem:c.origem==="Próprio"?S.loja.nome:(parc(c.parc)||{nome:"—"}).nome});a.push({d:c.saida.data,k:"out",c,tit:c.saida.motivo,v:null,quem:c.saida.quem||""})});
+ return a.sort((x,y)=>y.d.localeCompare(x.d))}
+function movHTML(m){return `<button class="mov" data-carro="${m.c.id}"><span class="ic ${m.k==="in"?"in":"out"}">${m.k==="in"?"↓":"↑"}</span><span class="t"><b>${esc(nomeCarro(m.c))} · ${esc(m.c.placa)}</b><small>${m.tit} · ${esc(m.quem)}</small></span><span class="v num">${m.v!=null&&(m.k==="out"||isDono())?R(m.v):""}<small>${fd(m.d)}/${m.d.slice(2,4)}</small></span></button>`}
 let UNDO=null;function marca(){UNDO=JSON.stringify(S)}
 function toast(t,undo){const e=$("#toast");e.innerHTML=esc(t)+(undo&&UNDO?'<button type="button" id="undo-btn">Desfazer</button>':"");e.hidden=false;clearTimeout(e._t);e._t=setTimeout(()=>e.hidden=true,undo?6000:2600);const b=$("#undo-btn");if(b)b.onclick=()=>{S=JSON.parse(UNDO);UNDO=null;salvar();fechar();tudo();toast("Pronto, desfeito.")}}
 const telFmt=v=>{const d=v.replace(/\D/g,"").slice(0,11);if(d.length<3)return d;if(d.length<7)return `(${d.slice(0,2)}) ${d.slice(2)}`;if(d.length<11)return `(${d.slice(0,2)}) ${d.slice(2,6)}-${d.slice(6)}`;return `(${d.slice(0,2)}) ${d.slice(2,7)}-${d.slice(7)}`};
@@ -1179,7 +1218,7 @@ function renderPainel(){
  $$(".dono").forEach(e=>e.hidden=!isDono());
  {const n=S.leads.filter(l=>parado(l)||l.etapa==="Novo").length;$("#cnt-novos").textContent=n;$("#bb-n").textContent=n;$("#bb-n").hidden=!n}
  renderGeral();renderEstoque();renderKanban();renderAgenda();renderVendas();renderMov();renderMapa();renderAval();
- if(isDono()){renderFin();renderRel();renderParc();renderEquipe();if(!$("#sec-loja").hidden)renderLoja()}
+ if(isDono()){renderFin();renderRel();renderParc();renderEquipe();renderPvend();if(!$("#sec-loja").hidden)renderLoja()}
 }
 function renderGeral(){
  const est=S.carros.filter(c=>!c.venda),vm=S.carros.filter(vendaMes);
@@ -1188,7 +1227,14 @@ function renderGeral(){
  const k=[["No pátio",est.length+" carros",est.filter(c=>c.status==="Reservado").length+" reservado · "+est.filter(c=>c.status==="Preparação").length+" em preparação"],
   ["Valor em estoque",Rk(est.reduce((s,c)=>s+c.preco,0)),"preço de venda somado"]];
  if(isDono())k.push(["Lucro bruto em "+MESES[+HOJE.slice(5,7)-1],R(lm),"faturamento de "+R(fat)]);
- k.push(["Vendas em "+MESES[+HOJE.slice(5,7)-1],vm.length+(vm.length===1?" carro":" carros"),TESTE?"neste mês":"meta do mês: 6"],["Tempo médio para vender",vend.length?med+" dias":"—",vend.length?"dos carros já vendidos":"aparece depois da primeira venda"]);
+ const PV=S.pvend||{},MT=S.metas||{},mesN=MESES[+HOJE.slice(5,7)-1],car=n=>n+(n===1?" carro":" carros");
+ if(!isDono()&&PV.valor===false)k.splice(1,1);
+ if(isDono())k.push(["Vendas em "+mesN,car(vm.length),MT.loja?(vm.length>=MT.loja?"bateu a meta de "+MT.loja+"!":"meta: "+MT.loja+" · faltam "+(MT.loja-vm.length)):"neste mês"]);
+ else{const meu=vm.filter(c=>c.venda.vend===USER.id).length,mm=+(MT.vend||{})[USER.id]||0;k.push(["Suas vendas em "+mesN,car(meu),mm?(meu>=mm?"bateu sua meta de "+mm+"!":"sua meta: "+mm+" · faltam "+(mm-meu)):(MT.loja&&MT.mostrar?"loja: "+vm.length+" de "+MT.loja:"neste mês")])}
+ k.push(["Tempo médio para vender",vend.length?med+" dias":"—",vend.length?"dos carros já vendidos":"aparece depois da primeira venda"]);
+ renderMural();
+ [["alertas","#alerts"],["agenda","#ag-hoje"],["chamar","#ld-novos"],["top","#top"],["mov","#mov-geral"]].forEach(([k2,sel])=>{const pn=$(sel).closest(".panel");pn.hidden=!isDono()&&PV[k2]===false});
+ $$("#sec-geral .row2,#sec-geral .row3").forEach(r=>{r.hidden=![...r.children].some(x=>!x.hidden&&getComputedStyle(x).display!=="none")});
  {const d=new Date(HOJE+"T12:00:00"),ds=["Domingo","Segunda","Terça","Quarta","Quinta","Sexta","Sábado"];$("#hoje-lbl").textContent=ds[d.getDay()]+", "+d.getDate()+" de "+MESES[d.getMonth()]+" de "+d.getFullYear()}
  $("#kpis").style.gridTemplateColumns=`repeat(${k.length},minmax(0,1fr))`;
  $("#kpis").innerHTML=k.map(x=>`<div class="kpi"><div class="lbl">${x[0]}</div><div class="v num">${x[1]}</div><small>${x[2]}</small></div>`).join("");
@@ -1289,7 +1335,7 @@ function renderRel(){
 }
 function renderEquipe(){
  $("#tab-eq").innerHTML=`<thead><tr><th>Pessoa</th><th>Papel</th><th class="r hide-m">${COMLBL}</th><th class="hide-m">Acesso</th><th class="r hide-m">Ação</th></tr></thead><tbody>`+EQ().map(p=>`<tr class="click" data-pessoa="${p.id}"><td><div class="car"><div class="av">${ini(p.nome)}</div><div><b>${esc(p.nome)}${USER&&USER.id===p.id?' <span class="pill p-mut">você</span>':""}</b><small>usuário: <b class="num">${esc(p.usuario)}</b></small><span class="show-m"><span class="pill ${p.ativo!==false?"p-ok":"p-crit"}">${p.ativo!==false?"Liberado":"Bloqueado"}</span><span class="btnx">Editar</span></span></div></div></td><td><span class="pill ${p.papel==="Dono"?"p-ok":p.papel===VEND?"p-info":"p-warn"}">${esc(p.papel)}</span></td><td class="r num hide-m">${p.com?String(p.com).replace(".",",")+"%":"—"}</td><td class="hide-m"><span class="pill ${p.ativo!==false?"p-ok":"p-crit"}">${p.ativo!==false?"Liberado":"Bloqueado"}</span></td><td class="r hide-m"><button type="button" class="btn xs soft" data-pessoa="${p.id}">Editar</button></td></tr>`).join("")+"</tbody>";
- const P=[["Ver e cadastrar carros",1,1,1,0],["Ver custo, preço mínimo e lucro",1,1,0,1],["Contatos e agenda",1,1,1,0],["Registrar venda",1,1,1,0],["Avaliar carro na troca",1,1,1,0],["Mudar as regras da avaliação",1,0,0,0],["Financeiro e contas",1,0,0,1],["Relatórios",1,1,0,1],["Parceiros e repasses",1,1,0,1],["Cadastrar e editar a equipe",1,0,0,0],["Mudar nome e dados do site",1,0,0,0]];
+ const P=[["Ver e cadastrar carros",1,1,1,0],["Ver custo, preço mínimo e lucro",1,1,0,1],["Contatos e agenda",1,1,1,0],["Registrar venda",1,1,1,0],["Avaliar carro na troca",1,1,1,0],["Mudar as regras da avaliação",1,0,0,0],["Financeiro e contas",1,0,0,1],["Relatórios",1,1,0,1],["Parceiros e repasses",1,1,0,1],["Remover carro do estoque",1,0,0,0],["Cadastrar e editar a equipe",1,0,0,0],["Recados e metas da equipe",1,0,0,0],["Mudar nome e dados do site",1,0,0,0]];
  $("#perm").innerHTML=`<thead><tr><th>Permissão</th><th>Dono</th><th>Gerente</th><th>Vendedor</th><th>Financeiro</th></tr></thead><tbody>`+P.map(p=>`<tr><td>${p[0]}</td>${[1,2,3,4].map(k=>`<td class="${p[k]?"yes":"no"}">${p[k]?"✓":"—"}</td>`).join("")}</tr>`).join("")+"</tbody>";
 }
 
@@ -1299,13 +1345,13 @@ function ficha(id,tab){
  const c=carro(id);if(!c)return;TAB=tab||TAB;const dono=isDono();
  const ov=$("#ov");ov.classList.remove("center");
  const ints=S.leads.filter(l=>l.carro===c.id);
- const tabs=[["resumo","Resumo"],dono?["fin","Financeiro"]:null,["fotos","Fotos"+((c.fotos||[]).length?" ("+c.fotos.length+")":"")],["docs","Documentos"],["int","Interessados"+(ints.length?" ("+ints.length+")":"")],["hist","Histórico"],c.venda?null:["vender","Registrar venda"]].filter(Boolean);
+ const tabs=[["resumo","Resumo"],dono?["fin","Financeiro"]:null,["fotos","Fotos"+((c.fotos||[]).length?" ("+c.fotos.length+")":"")],["docs","Documentos"],["int","Interessados"+(ints.length?" ("+ints.length+")":"")],["hist","Histórico"],c.venda||c.saida?null:["vender","Registrar venda"]].filter(Boolean);
  if(!tabs.find(t=>t[0]===TAB))TAB="resumo";
  const p=parc(c.parc);
  let body="";
  if(TAB==="resumo")body=`<div class="ph" style="border-radius:12px;overflow:hidden">${carSVG(c,1)}</div>
-  ${c.venda?`<div class="acts-row"><button type="button" class="btn soft" data-doc-gerar="contrato:${c.id}"><svg class="i"><use href="#i-doc"/></svg>Contrato de compra e venda</button><button type="button" class="btn soft" data-doc-gerar="recibo:${c.id}"><svg class="i"><use href="#i-doc"/></svg>Recibo</button></div>`:`<div class="acts-row"><button type="button" class="btn soft" data-share="${c.id}"><svg class="i"><use href="#i-share"/></svg>Mandar para cliente</button><button type="button" class="btn soft" data-imprimir="${c.id}"><svg class="i"><use href="#i-print"/></svg>Imprimir placa de preço</button>${c.origem==="Consignado"?`<button type="button" class="btn soft" data-doc-gerar="consig:${c.id}"><svg class="i"><use href="#i-doc"/></svg>Termo de consignação</button>`:""}</div>`}
-  <div class="dgrid">${[["Ano",c.ano],["Km",c.km.toLocaleString("pt-BR")],["Cor",c.pintura],["Combustível",c.comb],["Câmbio",c.cambio],["Placa",c.placa],["Origem",c.origem||"Próprio"],["Dono do carro",p?p.nome:S.loja.nome],["Entrada",fd(c.entrada)+"/2026"],["Vaga",c.venda?"—":vagaNome(c.vaga)]].map(d=>`<div><span class="lbl">${d[0]}</span><b>${esc(d[1])}</b></div>`).join("")}</div>
+  ${c.saida?`<div class="rem-box"><span>Removido do estoque em <b>${fd(c.saida.data)}</b> · ${esc(c.saida.motivo)}${c.saida.obs?" · "+esc(c.saida.obs):""}</span>${dono?`<button type="button" class="btn sm soft" data-volta-est="${c.id}">Voltar para o estoque</button>`:""}</div>`:c.venda?`<div class="acts-row"><button type="button" class="btn soft" data-doc-gerar="contrato:${c.id}"><svg class="i"><use href="#i-doc"/></svg>Contrato de compra e venda</button><button type="button" class="btn soft" data-doc-gerar="recibo:${c.id}"><svg class="i"><use href="#i-doc"/></svg>Recibo</button></div>`:`<div class="acts-row"><button type="button" class="btn soft" data-share="${c.id}"><svg class="i"><use href="#i-share"/></svg>Mandar para cliente</button><button type="button" class="btn soft" data-imprimir="${c.id}"><svg class="i"><use href="#i-print"/></svg>Imprimir placa de preço</button>${c.origem==="Consignado"?`<button type="button" class="btn soft" data-doc-gerar="consig:${c.id}"><svg class="i"><use href="#i-doc"/></svg>Termo de consignação</button>`:""}${dono?`<button type="button" class="btn ghost rem-btn" data-remover="${c.id}">Remover do estoque</button>`:""}</div>`}
+  <div class="dgrid">${[["Ano",c.ano],["Km",c.km.toLocaleString("pt-BR")],["Cor",c.pintura],["Combustível",c.comb],["Câmbio",c.cambio],["Placa",c.placa],["Origem",c.origem||"Próprio"],["Dono do carro",p?p.nome:S.loja.nome],["Entrada",fd(c.entrada)+"/2026"],["Vaga",c.venda||c.saida?"—":vagaNome(c.vaga)]].map(d=>`<div><span class="lbl">${d[0]}</span><b>${esc(d[1])}</b></div>`).join("")}</div>
   <div class="lines num"><div><span>${c.venda?"Vendido por":"Preço anunciado"}</span><span>${R(valorV(c))}</span></div>${dono&&!c.venda?`<div><span>Preço mínimo</span><span>${R(c.minimo||c.preco)}</span></div>`:""}<div><span>Tabela FIPE</span><span>${R(c.fipe)} · ${Math.round(c.preco/c.fipe*100)}%</span></div>
    ${dono?`<div class="tot"><span>${c.venda?"Lucro bruto":"Lucro previsto"}</span><span class="${lucro(c)>=0?"pos":"neg"}">${R(lucro(c))} · ${(lucro(c)/valorV(c)*100).toFixed(1).replace(".",",")}%</span></div>`:""}
    <div><span>Dias no pátio</span><span>${dias(c)}</span></div><div><span>Visitas no site</span><span>${c.visitas}</span></div></div>
@@ -1714,6 +1760,9 @@ const AJ=[
  {t:"Personalizar o site",k:["personalizar","customizar","mudar o site","cara do site","cor do site","cor da marca","logo","logotipo","fonte","letra","topo","foto do topo","rodape","redes sociais","instagram","facebook","dados da loja","nome da loja","endereco","horario","cnpj","frase","slogan","sobre a loja","minha loja","previa"],dono:1,r:"Em <b>Minha loja</b> você muda tudo do site: logotipo, cor, letra, topo (claro, escuro, cor ou foto), destaques, vitrine, financiamento, contato, redes sociais, endereço e rodapé. A prévia ao lado mostra na hora, e o cliente só vê depois de <b>Salvar e publicar</b>. No celular, use <b>Editar</b> e <b>Ver prévia</b>.",go:["Abrir Minha loja",()=>secao("loja")]},
  {t:"Domínio próprio",k:["dominio","dominio proprio","com.br","registro.br","endereco do site","site proprio","url"],dono:1,r:"Se a loja tem um domínio (ex.: <b>sualoja.com.br</b>, comprado no registro.br por cerca de R$ 40 por ano), o site fica nele e o painel em <b>sualoja.com.br/painel</b>. Coloque o domínio em <b>Minha loja → Endereço do site</b>; a gente faz a ligação na implantação. Sem domínio, a loja usa um endereço grátis.",go:["Abrir Minha loja",()=>secao("loja")]},
  {t:"Vídeos de ajuda",k:["video","videos","assistir","tutorial","aula","ensinar","me ensina","passo a passo"],r:"Tem um vídeo curto para cada tarefa: cadastrar carro, anotar cliente, registrar venda, financeiro e mais.",go:["Ver os vídeos",()=>vidLista()]},
+ {t:"Remover um carro do estoque",k:["remover","tirar do estoque","apagar carro","excluir carro","deletar","devolver","devolvido","devolucao","cadastrei errado","engano","consignado voltou","tirar carro"],dono:1,r:"<ol><li>Abra o carro.</li><li>Toque em <b>Remover do estoque</b>.</li><li>Escolha o motivo: devolvido ao dono, devolvido ao parceiro, repassado ou cadastrado por engano.</li></ol>Ele sai do estoque, do site e do mapa. Fica no histórico de <b>Entradas e saídas</b> e dá para trazer de volta. Só quer esconder do site por um tempo? Mude a situação para <b>Preparação</b>.",go:["Abrir o estoque",()=>secao("estoque")]},
+ {t:"Metas de vendas",k:["meta","metas","objetivo","quantos carros vender","meta do mes","meta do vendedor"],dono:1,r:"A meta é opcional. Em <b>Painel dos vendedores</b> você coloca a meta da loja e a de cada vendedor. Cada vendedor vê só a dele na tela inicial.",go:["Abrir o Painel dos vendedores",()=>secao("pvend")]},
+ {t:"Recados para a equipe",k:["recado","recados","aviso","avisos","mural","mensagem para equipe","comunicado","vendedores verem"],dono:1,r:"Em <b>Painel dos vendedores</b> você publica recados que aparecem no topo da tela inicial dos vendedores. Dá para fixar os importantes. Lá você também escolhe quais quadros eles veem.",go:["Abrir o Painel dos vendedores",()=>secao("pvend")]},
  {t:"Fazer o tour de novo",k:["tour","apresentacao","mostrar tudo","como funciona","conhecer o sistema","por onde comeco","comecar"],r:"O tour passa por cada parte do painel e do site, mostrando para que serve.",go:["Começar o tour",()=>tourStart()]},
  {t:"Esconder o menu lateral",k:["esconder o menu","menu","recolher","esconder menu","recolher menu","menu lateral","barra lateral","mais espaco","tela cheia"],r:"No computador, toque no botão <b>«</b> ao lado do nome no topo do menu para recolher (ficam só os ícones). Toque em <b>»</b> para abrir de novo. O painel lembra sua escolha."},
  {t:"Link do site",k:["link do site","endereco do site","site da loja","divulgar","compartilhar site","ver site"],r:"Toque em <b>Ver meu site</b> no menu para ver como o cliente vê. O dono copia o link em <b>Primeiros passos</b> na Visão geral (botão <b>Copiar link</b>)."},
@@ -1751,6 +1800,47 @@ function ajAbre(abrir){if(abrir)$("#toast").hidden=true;$("#aj").hidden=!abrir;$
  if(abrir)setTimeout(()=>$("#aj-q").focus(),50)}
 /* ---------- editor do site ---------- */
 
+
+/* ---------- remover do estoque ---------- */
+const MOTIVOS=["Devolvido ao dono (consignado)","Devolvido ao parceiro","Repassado para outra loja","Cadastrado por engano","Outro motivo"];
+function remForm(id){const c=carro(id);if(!c||c.venda||c.saida||!isDono())return;
+ const mot=c.origem==="Consignado"?MOTIVOS[0]:c.origem==="Parceiro"?MOTIVOS[1]:MOTIVOS[2];
+ $("#sheet").innerHTML=`<div class="sheet-head"><div><span class="lbl">${esc(nomeCarro(c))} · ${esc(c.placa)}</span><h2 style="font-size:28px">Remover do estoque</h2></div><button class="x" data-close>Fechar</button></div>
+ <p class="muted" style="font-size:14.5px">O carro sai do estoque, do site e do mapa do pátio. Ele fica no histórico de <b>Entradas e saídas</b> e dá para trazer de volta.</p>
+ <form class="form" id="frem"><label class="field full">Por que ele está saindo?<select id="rm-mot">${MOTIVOS.map(m=>`<option${m===mot?" selected":""}>${m}</option>`).join("")}</select></label>
+ <label class="field full">Observação (opcional)<textarea id="rm-obs" rows="2" placeholder="Ex.: o dono buscou o carro hoje"></textarea></label>
+ <p class="muted full" id="rm-dica" style="font-size:13px;margin:0"></p>
+ <button class="btn full danger" type="submit" style="justify-content:center">Remover do estoque</button><button type="button" class="btn ghost full" data-ficha-volta="${c.id}" style="justify-content:center">Cancelar</button></form>`;
+ const dica=()=>{$("#rm-dica").textContent=$("#rm-mot").value==="Cadastrado por engano"?"Cadastrado por engano: o carro some também do histórico, e a compra dele lançada nas contas é apagada.":"As contas desse carro no financeiro continuam lá."};$("#rm-mot").onchange=dica;dica();
+ $("#frem").onsubmit=e=>{e.preventDefault();marca();const m=$("#rm-mot").value;
+  S.carros=S.carros.filter(x=>x!==c);c.saida={data:HOJE,motivo:m,obs:$("#rm-obs").value.trim(),quem:USER.nome.split(" ")[0],vaga:c.vaga};delete c.vaga;S.removidos.push(c);
+  if(m==="Cadastrado por engano")S.contas=S.contas.filter(x=>!(x.carro===c.id&&x.cat==="Compra de veículo"));
+  salvar();tudo();fechar();toast(nomeCarro(c)+" saiu do estoque.",1)}}
+function voltaEstoque(id){const c=(S.removidos||[]).find(x=>x.id==id);if(!c||!isDono())return;marca();
+ S.removidos=S.removidos.filter(x=>x!==c);const v=c.saida&&c.saida.vaga;delete c.saida;if(v&&!S.carros.some(x=>x.vaga===v))c.vaga=v;S.carros.push(c);if(typeof arrumaVagas==="function")arrumaVagas();
+ salvar();tudo();ficha(c.id,"resumo");toast(nomeCarro(c)+" voltou para o estoque.",1)}
+document.addEventListener("click",e=>{const r=e.target.closest("[data-remover]");if(r){remForm(+r.dataset.remover);return}
+ const v=e.target.closest("[data-volta-est]");if(v){voltaEstoque(+v.dataset.voltaEst);return}
+ const f=e.target.closest("[data-ficha-volta]");if(f){ficha(+f.dataset.fichaVolta,"resumo");return}
+ const d=e.target.closest("[data-mu-del]");if(d){marca();S.mural=S.mural.filter(x=>x.id!=d.dataset.muDel);salvar();renderPvend();toast("Recado apagado.",1);return}
+ const fx=e.target.closest("[data-mu-fixo]");if(fx){const m=S.mural.find(x=>x.id==fx.dataset.muFixo);if(m){m.fixo=!m.fixo;salvar();renderPvend()}}});
+
+/* ---------- painel dos vendedores ---------- */
+const PV_QUADROS=[["valor","Valor em estoque","o total do estoque pelo preço de venda"],["alertas","Precisam de atenção","carros parados, preço acima da FIPE, documentos"],["agenda","Agenda de hoje e amanhã","visitas e test drives"],["chamar","Chamar hoje","clientes novos e sem retorno"],["top","Mais vistos no site","carros que mais chamam atenção"],["mov","Últimas entradas e saídas","carros que chegaram e saíram"]];
+const muOrd=a=>[...a].sort((x,y)=>(y.fixo?1:0)-(x.fixo?1:0)||y.data.localeCompare(x.data)||y.id-x.id);
+function renderMural(){const el=$("#mural");if(!el)return;const l=muOrd(S.mural||[]);if(isDono()||!l.length){el.hidden=true;return}
+ const dono=(EQ().find(p=>p.papel==="Dono")||{nome:"o dono"}).nome.split(" ")[0];
+ el.hidden=false;el.innerHTML=`<div class="panel-h"><h2>Recados do ${esc(dono)}</h2><span class="muted" style="font-size:13px">${l.length} ${l.length===1?"recado":"recados"}</span></div>${l.slice(0,5).map(m=>`<div class="mu-item"><span class="t"><p>${esc(m.txt)}</p><small>${m.fixo?"📌 Fixado · ":""}${fd(m.data)}</small></span></div>`).join("")}`}
+function renderPvend(){if(!$("#mu-lista"))return;const l=muOrd(S.mural||[]);
+ $("#mu-lista").innerHTML=l.map(m=>`<div class="mu-item"><span class="t"><p>${esc(m.txt)}</p><small>${m.fixo?"📌 Fixado · ":""}${fd(m.data)}</small></span><button type="button" class="btn xs soft" data-mu-fixo="${m.id}">${m.fixo?"Desafixar":"Fixar"}</button><button type="button" class="btn xs ghost" data-mu-del="${m.id}">Apagar</button></div>`).join("")||`<p class="muted" style="margin:0">Nenhum recado. O que você publicar aparece no topo da tela inicial dos vendedores.</p>`;
+ const MT=S.metas||{};if(document.activeElement&&document.activeElement.closest&&document.activeElement.closest("#f-metas"))return;
+ $("#mt-loja").value=MT.loja||"";$("#mt-mostra").checked=MT.mostrar!==false;
+ const vs=EQ().filter(p=>p.papel!=="Dono"&&p.ativo!==false);
+ $("#mt-vend").innerHTML=vs.length?vs.map(p=>`<label class="field">Meta de ${esc(p.nome.split(" ")[0])}<input type="number" min="0" inputmode="numeric" data-mt-v="${p.id}" value="${(MT.vend||{})[p.id]||""}" placeholder="sem meta"></label>`).join(""):`<p class="muted full" style="font-size:13px;margin:0">Quando você cadastrar vendedores, dá para dar uma meta para cada um.</p>`;
+ const PV=S.pvend||{};$("#pv-quadros").innerHTML=PV_QUADROS.map(([k,t,d])=>`<label><input type="checkbox" data-pv="${k}" ${PV[k]!==false?"checked":""}><span><b>${t}</b><small>${d}</small></span></label>`).join("")}
+$("#f-mural").onsubmit=e=>{e.preventDefault();const t=$("#mu-txt").value.trim();if(!t)return;S.mural=S.mural||[];S.mural.push({id:Date.now(),data:HOJE,txt:t,fixo:$("#mu-fixo").checked});$("#mu-txt").value="";$("#mu-fixo").checked=false;salvar();renderPvend();toast("Recado publicado. Os vendedores veem na tela inicial.")};
+$("#f-metas").onsubmit=e=>{e.preventDefault();const v={};$$("[data-mt-v]").forEach(i=>{if(+i.value>0)v[i.dataset.mtV]=+i.value});S.metas={loja:+$("#mt-loja").value||0,mostrar:$("#mt-mostra").checked,vend:v};document.activeElement.blur();salvar();renderGeral();renderPvend();toast("Metas salvas.")};
+$("#pv-quadros").addEventListener("change",e=>{const c=e.target.closest("[data-pv]");if(!c)return;S.pvend=S.pvend||{};S.pvend[c.dataset.pv]=c.checked;salvar();toast(c.checked?"Os vendedores voltam a ver esse quadro.":"Esse quadro sumiu da tela dos vendedores.")});
 /* ---------- vídeos de ajuda ---------- */
 const VIDS=[["e01-entrar-no-painel","Entrar no painel","Equipe"],["e02-cadastrar-carro","Cadastrar um carro","Equipe"],["e03-anotar-contato","Anotar um cliente","Equipe"],["e04-agendar-visita","Agendar visita ou test drive","Equipe"],["e05-registrar-venda","Registrar uma venda","Equipe"],["e06-avaliar-troca","Avaliar carro na troca","Equipe"],["e07-mapa-do-patio","Usar o mapa do pátio","Equipe"],["e08-mandar-carro-e-placa","Mandar o carro e imprimir a placa","Equipe"],["e09-pedir-ajuda","Tirar uma dúvida no painel","Equipe"],
  ["d01-visao-geral","O painel do dono","Dono"],["d02-personalizar-site","Personalizar o site","Dono"],["d03-equipe-e-senhas","Cadastrar vendedores e senhas","Dono"],["d04-financeiro","Usar o financeiro","Dono"],["d05-enviar-ao-contador","Mandar tudo para o contador","Dono"],["d06-regras-da-avaliacao","Regras da avaliação","Dono"]];
@@ -2029,6 +2119,7 @@ const TOUR=[
  {sec:"fin",sel:"#fin-tabs",t:"Financeiro",x:"Contas a pagar e receber, lucro do mês e quanto cada carro deu. Vendas e compras entram sozinhas."},
  {sec:"fin",sel:"#btn-contador",t:"Para o contador",x:"Um botão junta tudo do mês em planilha e PDF, prontos para mandar ao contador."},
  {sec:"equipe",sel:"#tab-eq",t:"Equipe",x:"Seus vendedores já estão aqui. Crie acessos, troque senhas ou bloqueie quem sair."},
+ {sec:"pvend",sel:"#f-mural",t:"Painel dos vendedores",x:"Deixe recados e metas que só a equipe vê, e escolha o que aparece na tela inicial deles."},
  {sec:"loja",sel:"#ed-ctrl",t:"Minha loja",x:"Aqui você deixa o site do seu jeito: logotipo, cores, textos e redes sociais. A prévia mostra na hora."},
  {sel:"#aj-btn",t:"Ajuda",x:"Ficou com dúvida? Toque aqui e pergunte do seu jeito, como “como registro uma venda”."},
  {tela:"vitrine",sel:"#v-slogan",t:"Este é o seu site",x:"É o que o cliente vê. Os carros aparecem aqui assim que você cadastrar."},
