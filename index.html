@@ -817,6 +817,20 @@ html.modo-teste #reset{display:none}
 @media(max-width:640px){.termos{padding:0}.termos-box{border-radius:0;height:100%;max-height:none}}
 html.modo-teste .v-foot details{display:none}
 #v-aviso:empty{display:none}
+
+.avs-card{display:flex;flex-direction:row!important;gap:14px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;margin:0 0 16px;text-align:left}
+.avs-card[hidden]{display:none}
+.avs-card .avs-ic{flex:0 0 40px;width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:color-mix(in srgb,var(--brand) 12%,transparent);color:var(--brand)}
+.avs-card .avs-ic svg{width:22px;height:22px}
+.avs-card b{display:block;font-size:15px;margin-bottom:2px}
+.avs-card p{margin:0;color:var(--muted);font-size:14px;line-height:1.45}
+.avs-bts{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.avs-passos{margin:8px 0 0;padding-left:20px;font-size:14px;line-height:1.6}
+.dom-pedido{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px;margin:4px 0 12px}
+.dom-pedido p{font-size:13px;color:var(--muted);margin:4px 0 10px}
+.adm-dom{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:14px;margin:8px 0}
+.adm-dom input{flex:1 1 160px;min-width:0;padding:7px 10px;border:1px solid var(--line);border-radius:9px;background:var(--bg);color:var(--ink);font:inherit}
+.adm-msg summary{cursor:pointer}
 </style>
 
 </head>
@@ -964,6 +978,7 @@ html.modo-teste .v-foot details{display:none}
       <div class="tfaixa" id="teste-faixa" hidden></div>
     <!-- geral -->
     <div class="sec" id="sec-geral">
+      <div class="avs-card" id="avs-card" hidden></div>
       <div class="topbar"><div><span class="lbl" id="hoje-lbl">Quinta, 8 de outubro de 2026</span><h1 id="ola">Bom dia, Marcos</h1></div><div class="acts"><button class="btn" data-act="novo-carro"><svg class="i"><use href="#i-plus"/></svg>Cadastrar veículo</button></div></div>
       <div class="panel guia dono" id="guia" hidden></div>
       <div class="panel mural" id="mural" hidden></div>
@@ -1193,7 +1208,8 @@ function seed(){return{
  ],
  hist:[["Mai",3,13100],["Jun",4,17800],["Jul",2,9400],["Ago",5,22600],["Set",4,18900]]
 }}
-const NV_PATH=location.pathname.replace(/\/+$/,""),NV_M=NV_PATH.match(/^\/l\/([a-z0-9-]+)(\/painel)?$/);
+const NV_DOM=/^https?:$/.test(location.protocol)&&!/(^|\.)(pages\.dev|workers\.dev)$|^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
+const NV_PATH=location.pathname.replace(/\/+$/,""),NV_M=NV_PATH.match(/^\/l\/([a-z0-9-]+)(\/painel)?$/)||(NV_DOM&&/^(\/painel)?$/.test(NV_PATH)?[NV_PATH,"@"+location.hostname.replace(/^www\./,""),NV_PATH||undefined]:null);
 const ADMIN=NV_PATH==="/admin";
 const NUVEM=!ADMIN&&(NV_PATH==="/teste"||!!NV_M||/[?&]teste\b/.test(location.search));
 const NV_COD=NV_M?NV_M[1]:null,NV_PAINEL=!!(NV_M&&NV_M[2]);
@@ -1916,7 +1932,7 @@ const AJ=[
  {t:"Adicionar ou remover vendedor",k:["vendedor novo","funcionario","adicionar vendedor","remover vendedor","equipe","acesso","bloquear","contratar","demitir"],dono:1,r:"<ol><li>Vá em <b>Equipe e acessos</b>.</li><li>Para incluir: <b>Adicionar pessoa</b> (nome, usuário, senha e papel).</li><li>Para mudar ou remover: toque em <b>Editar</b> na pessoa.</li></ol>Em \"Acesso ao painel\" dá para <b>bloquear</b> sem apagar.",go:["Abrir a equipe",()=>secao("equipe")]},
  {t:"Trocar senha ou usuário",k:["senha","trocar senha","esqueci a senha","usuario","login","mudar senha"],r:"O dono troca a senha de qualquer pessoa em <b>Equipe e acessos</b> → <b>Editar</b>. Se você é vendedor e esqueceu a senha, peça para o dono da loja.",go:null},
  {t:"Personalizar o site",k:["personalizar","customizar","mudar o site","cara do site","cor do site","cor da marca","logo","logotipo","fonte","letra","topo","foto do topo","rodape","redes sociais","instagram","facebook","dados da loja","nome da loja","endereco","horario","cnpj","frase","slogan","sobre a loja","minha loja","previa"],dono:1,r:"Em <b>Minha loja</b> você muda tudo do site: logotipo, cor, letra, topo (claro, escuro, cor ou foto), destaques, vitrine, financiamento, contato, redes sociais, endereço e rodapé. A prévia ao lado mostra na hora, e o cliente só vê depois de <b>Salvar e publicar</b>. No celular, use <b>Editar</b> e <b>Ver prévia</b>.",go:["Abrir Minha loja",()=>secao("loja")]},
- {t:"Domínio próprio",k:["dominio","dominio proprio","com.br","registro.br","endereco do site","site proprio","url"],dono:1,r:"Se a loja tem um domínio (ex.: <b>sualoja.com.br</b>, comprado no registro.br por cerca de R$ 40 por ano), o site fica nele e o painel em <b>sualoja.com.br/painel</b>. Coloque o domínio em <b>Minha loja → Endereço do site</b>; a gente faz a ligação na implantação. Sem domínio, a loja usa um endereço grátis.",go:["Abrir Minha loja",()=>secao("loja")]},
+ {t:"Domínio próprio",k:["dominio","dominio proprio","com.br","registro.br","endereco do site","endereco proprio","site proprio","url"],dono:1,r:"Quer o site da loja num endereço próprio (ex.: <b>sualoja.com.br</b>)? É só pedir ao Juan pelo WhatsApp: ele registra o endereço no nome que você escolher, <b>sem custo para você</b>, e deixa tudo ligado. O painel passa a ficar em <b>sualoja.com.br/painel</b>.",go:["Pedir ao Juan",()=>window.open("https://wa.me/"+CONTATO.wpp+"?text="+encodeURIComponent("Oi Juan! Quero um endereço próprio para o site da "+(S.loja.nome||"minha loja")+". O nome que eu gostaria: "),"_blank")]},
  {t:"Vídeos de ajuda",k:["video","videos","assistir","tutorial","aula","ensinar","me ensina","passo a passo"],r:"Tem um vídeo curto para cada tarefa: cadastrar carro, anotar cliente, registrar venda, financeiro e mais.",go:["Ver os vídeos",()=>vidLista()]},
  {t:"Remover um carro do estoque",k:["remover","tirar do estoque","apagar carro","excluir carro","deletar","devolver","devolvido","devolucao","cadastrei errado","engano","consignado voltou","tirar carro"],dono:1,r:"<ol><li>Abra o carro.</li><li>Toque em <b>Remover do estoque</b>.</li><li>Escolha o motivo: devolvido ao dono, devolvido ao parceiro, repassado ou cadastrado por engano.</li></ol>Ele sai do estoque, do site e do mapa. Fica no histórico de <b>Entradas e saídas</b> e dá para trazer de volta. Só quer esconder do site por um tempo? Mude a situação para <b>Preparação</b>.",go:["Abrir o estoque",()=>secao("estoque")]},
  {t:"Metas de vendas",k:["meta","metas","objetivo","quantos carros vender","meta do mes","meta do vendedor"],dono:1,r:"A meta é opcional. Em <b>Painel dos vendedores</b> você coloca a meta da loja e a de cada vendedor. Cada vendedor vê só a dele na tela inicial.",go:["Abrir o Painel dos vendedores",()=>secao("pvend")]},
@@ -2091,12 +2107,12 @@ function renderLoja(){const d=edDraft(),st=d.site;
  const seg=(k,ops)=>`<div class="seg" data-segk="${k}">${ops.map(([v,t])=>`<button type="button" data-v="${v}" aria-pressed="${gp(d,k)===v}">${t}</button>`).join("")}</div>`;
  const num=(k,lab,step)=>`<label class="field">${lab}<input data-k="${k}" type="number" inputmode="decimal" step="${step||1}" value="${gp(d,k)}"></label>`;
  $("#ed-ctrl").innerHTML=`
- <details open><summary>Endereço do site</summary><div class="ed-in">
+ <details open><summary>Endereço do site</summary><div class="ed-in">${NUVEM?domPedidoHTML(d):""}<div${NUVEM?" hidden":""}>
   ${inp("site.dominio","Domínio próprio (opcional)","autosulveiculos.com.br")}
   <p class="dica">Se a loja tiver um domínio (comprado no registro.br, por cerca de R$ 40 por ano), o site fica nele e o painel em <b>${esc(urlSite(d))}/painel</b>. A gente faz a ligação do domínio na implantação.</p>
   ${inp("slug","Endereço grátis (se não tiver domínio)","autosul")}
   <p class="dica">Sem domínio próprio, o site fica em <b>${esc((d.slug||"sualoja")+".patio.app")}</b>.</p>
- </div></details>
+ </div></div></details>
  <details open><summary>Identidade</summary><div class="ed-in">
   ${inp("nome","Nome da loja","Auto Sul Veículos")}
   <div class="field">Logotipo<div class="ed-img"><span class="mini" id="ed-logo-mini" style="${st.logo?`background-image:url('${st.logo}')`:""}">${st.logo?"":"sem logo"}</span><label class="btn sm soft" style="cursor:pointer">Enviar imagem<input type="file" accept="image/*" id="ed-logo" hidden></label>${st.logo?'<button type="button" class="btn sm ghost" id="ed-logo-rm">Remover</button>':""}</div><p class="dica">Sem logotipo, o site mostra as iniciais do nome.</p></div>
@@ -2170,7 +2186,7 @@ let ED_TRY=0;function edFrame(){$$("#ed-disp button").forEach(x=>x.setAttribute(
 function resetDemo(e){const b=e.currentTarget;if(!b.dataset.arm){b.dataset.arm=1;b.textContent="Toque de novo para confirmar";setTimeout(()=>{if(b.isConnected){delete b.dataset.arm;b.textContent="Restaurar dados de exemplo"}},3000);return}
  const eq=S.equipe;S=seed();S.equipe=eq;salvar();DRAFT=null;tudo();toast("Dados de exemplo restaurados. A equipe e as senhas foram mantidas.")}
 function fechar(){$("#ov").hidden=true;if(!$("#vitrine").hidden)seoSite()}
-function tudo(){(S.carros||[]).forEach(c=>{if(!c.docs)c.docs={};if(!Array.isArray(c.gastos))c.gastos=[];if(!Array.isArray(c.fotos))c.fotos=[]});renderVitrine();if(USER)renderPainel()}
+function tudo(){if(NUVEM&&USER&&NV.token)nvApp();(S.carros||[]).forEach(c=>{if(!c.docs)c.docs={};if(!Array.isArray(c.gastos))c.gastos=[];if(!Array.isArray(c.fotos))c.fotos=[]});renderVitrine();if(USER)renderPainel()}
 function tela(t){if(t!=="vitrine"&&!PREVIA){document.title="Painel · "+(S.loja.nome||"Pátio");ldSet("ld-carro",null)}else if(t==="vitrine")setTimeout(()=>{if($("#ov").hidden)seoSite()},0);["vitrine","login","painel"].forEach(x=>$("#"+x).hidden=x!==t);$("#back-painel").hidden=!(t==="vitrine"&&USER);menu(false);scrollTo(0,0)}
 function menu(o){$("#side").classList.toggle("open",o);$("#scrim").hidden=!o;$("#menu-btn").setAttribute("aria-expanded",o)}
 function secao(s){menu(false);if(s==="loja")setTimeout(()=>{renderLoja();edFrame()},30);$$(".nav[data-sec],.bb[data-sec]").forEach(b=>b.setAttribute("aria-current",b.dataset.sec===s));$$(".sec").forEach(x=>x.hidden=x.id!=="sec-"+s||(x.classList.contains("dono")&&!isDono()));scrollTo(0,0)}
@@ -2246,7 +2262,7 @@ $("#f-login").onsubmit=e=>{e.preventDefault();if(NUVEM){nvEntrar();return}const 
  $("#l-user").value="";$("#l-senha").value="";tela("painel");renderPainel();secao("geral");toast(c.papel==="Dono"?"Entrou como dono: acesso completo.":c.papel==="Vendedor"?"Entrou como vendedor: custo, lucro e financeiro ficam escondidos.":"Entrou como "+c.papel.toLowerCase()+".")};
 $("#l-user").oninput=$("#l-senha").oninput=()=>{$("#l-erro").hidden=true};
 $("#sair").onclick=()=>{if(NUVEM){nvSair();return}ajAbre(false);$("#aj-m").innerHTML="";USER=null;try{USTORE.removeItem(UKEY)}catch(e){}tela("login")};
-$("#ver-site").onclick=$("#ver-site2").onclick=()=>{if(NUVEM&&NV.codigo){location.href="/l/"+NV.codigo;return}renderVitrine();tela("vitrine");toast("Este é o site que o comprador vê. O botão de voltar ao painel só aparece para você.")};
+$("#ver-site").onclick=$("#ver-site2").onclick=()=>{if(NUVEM&&NV.codigo){location.href=NV_DOM?"/":"/l/"+NV.codigo;return}renderVitrine();tela("vitrine");toast("Este é o site que o comprador vê. O botão de voltar ao painel só aparece para você.")};
 function temaUI(){const d=document.documentElement.getAttribute("data-theme")==="dark";$$("[data-tema]").forEach(b=>{const u=b.querySelector("use");if(u)u.setAttribute("href",d?"#i-sun":"#i-moon");const t=b.querySelector(".tema-txt");if(t)t.textContent=b.classList.contains("tema-btn")?(d?"Claro":"Escuro"):(d?"Modo claro":"Modo escuro");b.setAttribute("aria-label",d?"Mudar para o modo claro":"Mudar para o modo escuro")})}
 function alternaTema(){const d=document.documentElement.getAttribute("data-theme")!=="dark";document.documentElement.setAttribute("data-theme",d?"dark":"light");try{localStorage.setItem("tema",d?"escuro":"claro")}catch(e){}temaUI();if(USER)renderPainel()}
 document.addEventListener("click",e=>{if(e.target.closest("[data-tema]")){alternaTema()}});
@@ -2260,7 +2276,7 @@ function testeAcabou(){if(NUVEM)return !!NV.token&&!NV.liberado&&!!NV.expira&&NV
 function waJuan(t){return "https://wa.me/"+CONTATO.wpp+"?text="+encodeURIComponent(t)}
 function faixaTeste(){const f=$("#teste-faixa");if(!f)return;if(!TESTE||(NUVEM?(!NV.token||NV.liberado||$("#painel").hidden):(!S.teste||!S.teste.inicio))){f.hidden=true;return}
  const ms=testeRestaMs();if(ms<=0){fimTeste();return}const h=Math.floor(ms/36e5),m=Math.floor(ms%36e5/6e4);
- f.hidden=false;f.innerHTML=`<span><b>Teste grátis</b> · faltam ${h?h+" h e ":""}${m} min${NUVEM?` <span class="nv-st" id="nv-st">${NV.stTxt||""}</span>`:""}</span><span class="tf-acts"><button type="button" class="btn xs ghost" data-tour>Fazer o tour</button><button type="button" class="btn xs ghost" data-vids>Vídeos</button>${NUVEM?'<button type="button" class="btn xs ghost" data-nv-links>Links da loja</button><button type="button" class="btn xs ghost" data-opiniao>Dar opinião</button>':""}<a class="btn xs" href="${waJuan("Oi Juan! Estou testando o Pátio"+(S.loja.nome?" na "+S.loja.nome:"")+" e quero saber mais.")}" target="_blank" rel="noopener">Falar com o ${CONTATO.nome}</a></span>`}
+ f.hidden=false;f.innerHTML=`<span><b>Teste grátis</b> · faltam ${h?h+" h e ":""}${m} min${NUVEM?` <span class="nv-st" id="nv-st">${NV.stTxt||""}</span>`:""}</span><span class="tf-acts"><button type="button" class="btn xs ghost" data-tour>Fazer o tour</button><button type="button" class="btn xs ghost" data-vids>Vídeos</button>${NUVEM?'<button type="button" class="btn xs ghost" data-nv-links>Links da loja</button><button type="button" class="btn xs ghost" data-avisos>Avisos no celular</button><button type="button" class="btn xs ghost" data-opiniao>Dar opinião</button>':""}<a class="btn xs" href="${waJuan("Oi Juan! Estou testando o Pátio"+(S.loja.nome?" na "+S.loja.nome:"")+" e quero saber mais.")}" target="_blank" rel="noopener">Falar com o ${CONTATO.nome}</a></span>`}
 function fimTeste(){tourFim(true);if(NUVEM){$$("#fim .muted").forEach(x=>{if(/neste aparelho/.test(x.textContent))x.textContent="Seus dados continuam guardados."});clearInterval(NV.poll);$("#nv-load").hidden=true;const fo=$("#fim-op");if(NV.token&&!NV.opinou){fo.hidden=false;fo.innerHTML=opHTML("fim")}else fo.hidden=true}$("#fim-wa").href=waJuan("Oi Juan! Meu teste do Pátio"+(S.loja.nome?" na "+S.loja.nome:"")+" terminou e quero continuar.");$("#fim").hidden=false;document.documentElement.classList.add("travado")}
 setInterval(()=>{if(!TESTE)return;if(testeAcabou())fimTeste();else faixaTeste()},30000);
 document.addEventListener("click",e=>{if(e.target.closest("[data-tour]")){e.preventDefault();ajAbre&&ajAbre(false);tourStart()}});
@@ -2438,7 +2454,7 @@ async function nvConfere(){if(!NV.token||NV.salvando||NV.timer||document.hidden)
    const remoto=await nvResolve(r.dados),mexi=JSON.stringify(S)!==JSON.stringify(NV.base);
    S=mexi?nvMescla(NV.base,S,remoto):remoto;NV.base=remoto;NV.versao=r.versao;if(mexi)nvAgenda();nvRedesenha();nvStatus("atualizado ✓")}
   faixaTeste()}catch(e){nvStatus("sem internet",1)}}
-function nvPerdeuSessao(){nvGuarda(NV.codigo,null);NV.token=null;clearInterval(NV.poll);USER=null;toast("Sua sessão terminou. Entre de novo.");nvTelaLogin()}
+function nvPerdeuSessao(){nvGuarda(NV_COD||NV.codigo,null);NV.token=null;clearInterval(NV.poll);USER=null;toast("Sua sessão terminou. Entre de novo.");nvTelaLogin()}
 
 // rotas do modo nuvem
 async function nvRota(){
@@ -2454,21 +2470,21 @@ async function nvRota(){
  try{const r=await api("carregar",{p_token:NV.token});
   if(!r.ok){nvCarregando(null);if(r.erro==="expirado"){NV.expira=r.expira;fimTeste();return}nvGuarda(NV_COD,null);NV.token=null;nvTelaLogin();return}
   await nvAbre(r)}catch(e){nvCarregando("Não consegui conectar. Confira a internet.",()=>nvRota())}}
-async function nvAbre(r){S=Object.assign(seedVazio(),await nvResolve(r.dados));NV.base=nvClone(S);NV.versao=r.versao;NV.expira=r.expira;NV.liberado=r.liberado;NV.carregado=true;
+async function nvAbre(r){setTimeout(nvApp,0);if(r&&r.codigo)NV.codigo=r.codigo;S=Object.assign(seedVazio(),await nvResolve(r.dados));NV.base=nvClone(S);NV.versao=r.versao;NV.expira=r.expira;NV.liberado=r.liberado;NV.carregado=true;
  USER={id:r.pessoa.id,nome:r.pessoa.nome,papel:r.pessoa.papel};nvCarregando(null);
  tela("painel");renderPainel();secao("geral");faixaTeste();nvStatus("salvo ✓");
  clearInterval(NV.poll);NV.poll=setInterval(nvConfere,12000)}
-function nvTelaLogin(){nvCarregando(null);tela("login");const h=$("#login .login-box p, #login p");const t=$("#l-dica");if(!t){const p=document.createElement("p");p.id="l-dica";p.className="muted";p.style.cssText="font-size:13px;margin:10px 0 0";p.innerHTML=`Painel da loja <b>${esc(NV_COD)}</b>. Use o usuário e a senha criados no primeiro acesso (ou os que o dono te passou).`;$("#f-login").appendChild(p)}}
+function nvTelaLogin(){nvCarregando(null);tela("login");const h=$("#login .login-box p, #login p");const t=$("#l-dica");if(!t){const p=document.createElement("p");p.id="l-dica";p.className="muted";p.style.cssText="font-size:13px;margin:10px 0 0";p.innerHTML=`Painel da loja <b>${esc(NV_COD&&NV_COD[0]==="@"?NV_COD.slice(1):NV_COD)}</b>. Use o usuário e a senha criados no primeiro acesso (ou os que o dono te passou).`;$("#f-login").appendChild(p)}}
 async function nvEntrar(){const u=$("#l-user").value.trim(),sn=$("#l-senha").value,er=$("#l-erro"),bt=$("#f-login [type=submit]");bt.disabled=true;er.hidden=true;
  try{const r=await api("entrar",{p_codigo:NV_COD,p_usuario:u,p_senha:sn});bt.disabled=false;
   if(!r.ok){if(r.erro==="expirado"){NV.token=null;fimTeste();return}er.textContent=r.erro==="bloqueado"?"Seu acesso está bloqueado. Fale com o dono da loja.":r.erro==="loja"?"Não encontrei essa loja. Confira o link.":"Usuário ou senha incorretos. Confira e tente de novo.";er.hidden=false;$("#l-senha").value="";return}
   NV.token=r.token;nvGuarda(NV_COD,{token:r.token,pessoa:r.pessoa});$("#l-user").value="";$("#l-senha").value="";await nvAbre(r);
   toast(r.pessoa.papel==="Dono"?"Entrou como dono: acesso completo.":"Entrou como "+r.pessoa.papel.toLowerCase()+".")}
  catch(e){bt.disabled=false;er.textContent="Não consegui conectar. Confira a internet e tente de novo.";er.hidden=false}}
-function nvSair(){ajAbre(false);$("#aj-m").innerHTML="";if(NV.timer){clearTimeout(NV.timer);NV.timer=null;nvSalvar()}nvGuarda(NV_COD,null);NV.token=null;NV.carregado=false;clearInterval(NV.poll);USER=null;tela("login")}
+function nvSair(){ajAbre(false);$("#aj-m").innerHTML="";if(NV.timer){clearTimeout(NV.timer);NV.timer=null;nvSalvar()}avSair();nvGuarda(NV_COD,null);NV.token=null;NV.carregado=false;clearInterval(NV.poll);USER=null;tela("login")}
 async function nvSite(){
  if(!NV.pub){nvCarregando("Carregando…");
-  try{const r=await api("site",{p_codigo:NV_COD});
+  try{const r=await api("site",{p_codigo:NV_COD});if(r&&r.codigo)NV.codigo=r.codigo;
    if(!r.ok){nvCarregando(r.erro==="expirado"?"Este site está fora do ar no momento.":"Não encontrei esta loja. Confira o endereço.");return}
    const d=await nvResolve(r.dados,r.fotos);S=Object.assign(seedVazio(),{loja:d.loja,carros:d.carros});NV.pub=true;
    const ss=nvSessao(NV_COD);if(ss&&ss.pessoa)USER=ss.pessoa}catch(e){nvCarregando("Não consegui carregar o site. Confira a internet.",()=>nvSite());return}
@@ -2488,7 +2504,7 @@ async function nvCriar(z){const bt=$("#onb-seg"),tx=bt.textContent;bt.disabled=t
   if(OB.tour)setTimeout(tourStart,450);else nvLinks(true)}
  catch(e){bt.disabled=false;bt.textContent=tx;onbErro(nvErroTxt(e))}}
 // links da loja
-function nvLinks(primeira){const c=NV.codigo,pn=location.origin+"/l/"+c+"/painel",st=location.origin+"/l/"+c,ov=$("#ov");ov.classList.remove("center");
+function nvLinks(primeira){const c=NV.codigo,st=SITE(S.loja).dominio?"https://"+urlSite(S.loja):NV_DOM?location.origin:location.origin+"/l/"+c,pn=st+"/painel",ov=$("#ov");ov.classList.remove("center");
  const vs=EQ().filter(p=>p.papel!=="Dono"&&p.ativo!==false);
  $("#sheet").innerHTML=`<div class="sheet-head"><div><span class="lbl">${primeira?"Guarde estes links":"Sua loja no Pátio"}</span><h2 style="font-size:28px">Links da loja</h2></div><button class="x" data-close>Fechar</button></div>
  <p class="muted" style="font-size:14px;margin-top:0">Painel (para você e os vendedores entrarem, em qualquer celular ou computador):</p>
@@ -2545,6 +2561,69 @@ $("#termos-x").onclick=()=>{$("#termos").hidden=true};
 $("#termos").addEventListener("click",e=>{if(e.target.id==="termos")$("#termos").hidden=true});
 document.addEventListener("click",e=>{const a=e.target.closest("[data-termos]");if(a){e.preventDefault();termosAbre(a.dataset.termos)}});
 addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("#termos").hidden)$("#termos").hidden=true});
+
+/* ================= avisos no celular e aplicativo ================= */
+let AV_INST=null;
+const AV_SINO='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>';
+const avIOS=()=>/iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
+const avApp=()=>matchMedia("(display-mode: standalone)").matches||navigator.standalone===true;
+const avTem=()=>"serviceWorker" in navigator&&"PushManager" in window&&"Notification" in window;
+function avU8(b){const p="=".repeat((4-b.length%4)%4),r=atob((b+p).replace(/-/g,"+").replace(/_/g,"/"));return Uint8Array.from(r,c=>c.charCodeAt(0))}
+async function avSub(){try{if(!avTem())return null;const r=await navigator.serviceWorker.getRegistration("/");return r?await r.pushManager.getSubscription():null}catch(e){return null}}
+function nvApp(){if(nvApp.ok)return;nvApp.ok=1;const cod=NV_COD||NV.codigo;
+ if(cod&&!document.querySelector('link[rel="manifest"]')){document.head.insertAdjacentHTML("beforeend",`<link rel="manifest" href="/api/manifest?c=${encodeURIComponent(cod)}"><link rel="apple-touch-icon" href="/icone-192.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Pátio">`)}
+ if("serviceWorker" in navigator)navigator.serviceWorker.register("/sw.js",{scope:"/"}).then(async()=>{const s=await avSub();if(s&&Notification.permission==="granted"&&NV.token)api("aviso_inscrever",{p_token:NV.token,p_sub:s.toJSON()}).catch(()=>{});avCard()}).catch(()=>avCard());else avCard()}
+addEventListener("beforeinstallprompt",e=>{e.preventDefault();AV_INST=e;avCard()});
+addEventListener("appinstalled",()=>{AV_INST=null;avCard();toast("Pátio instalado no celular.")});
+async function avEstado(){if(avIOS()&&!avApp())return"ios";if(!avTem())return"sem";if(Notification.permission==="denied")return"bloqueado";return(await avSub())&&Notification.permission==="granted"?"ligado":"desligado"}
+function avTexto(e){
+ if(e==="ios")return{t:"Receba avisos no iPhone",p:"No iPhone, os avisos funcionam com o Pátio na tela de início:",passos:["Toque no botão Compartilhar do Safari (o quadrado com a seta para cima).","Toque em <b>Adicionar à Tela de Início</b>.","Abra o Pátio pelo ícone novo e toque em <b>Ativar avisos</b>."]};
+ if(e==="sem")return{t:"Avisos no celular",p:"Este navegador não recebe avisos. No celular, abra o painel pelo Chrome (Android) ou pelo Safari (iPhone)."};
+ if(e==="bloqueado")return{t:"Os avisos estão bloqueados neste aparelho",p:"Libere as notificações deste site nas configurações do navegador e toque em Ativar avisos de novo."};
+ if(e==="ligado")return{t:"Avisos ligados neste aparelho ✓",p:"Quando um cliente pedir test drive ou deixar um pedido no site, o aviso chega aqui na hora, mesmo com o celular bloqueado."};
+ return{t:"Saiba na hora quando chegar cliente pelo site",p:"Receba um aviso no celular sempre que alguém pedir test drive ou deixar um pedido no site da loja. Funciona mesmo com o celular bloqueado."}}
+function avBotoes(e,folha){const b=[];
+ if(e==="desligado"||e==="bloqueado")b.push('<button type="button" class="btn sm" data-av-ativar>Ativar avisos</button>');
+ if(AV_INST)b.push('<button type="button" class="btn sm soft" data-av-instalar>Instalar o aplicativo</button>');
+ if(folha&&e==="ligado")b.push('<button type="button" class="btn sm soft" data-av-teste>Mandar um aviso de teste</button><button type="button" class="btn sm ghost" data-av-desligar>Desligar neste aparelho</button>');
+ if(!folha)b.push('<button type="button" class="btn sm ghost" data-av-fechar>Agora não</button>');
+ return b.join("")}
+async function avCard(){const c=$("#avs-card");if(!c)return;if(!NUVEM||!USER){c.hidden=true;return}
+ const e=await avEstado();let f=0;try{f=+localStorage.getItem("patio-av-fechado")||0}catch(x){}
+ const mostra=(e==="desligado"||e==="ios"||(e==="ligado"&&AV_INST))&&Date.now()-f>7*864e5;
+ if(!mostra){c.hidden=true;return}
+ const x=e==="ligado"?{t:"Coloque o Pátio na tela de início",p:"Abra o painel como um aplicativo, direto do ícone no celular."}:avTexto(e);
+ c.innerHTML=`<div class="avs-ic">${AV_SINO}</div><div style="flex:1;min-width:0"><b>${x.t}</b><p>${x.p}</p>${x.passos?`<ol class="avs-passos">${x.passos.map(q=>`<li>${q}</li>`).join("")}</ol>`:""}<div class="avs-bts">${avBotoes(e,false)}</div></div>`;c.hidden=false}
+async function avFolha(){const e=await avEstado(),x=avTexto(e),ov=$("#ov");ov.classList.remove("center");
+ $("#sheet").innerHTML=`<div class="sheet-head"><div><span class="lbl">Neste aparelho</span><h2 style="font-size:28px">Avisos no celular</h2></div><button class="x" data-close>Fechar</button></div>
+ <div class="avs-card" style="margin:0"><div class="avs-ic">${AV_SINO}</div><div style="flex:1;min-width:0"><b>${x.t}</b><p>${x.p}</p>${x.passos?`<ol class="avs-passos">${x.passos.map(q=>`<li>${q}</li>`).join("")}</ol>`:""}<div class="avs-bts">${avBotoes(e,true)}</div></div></div>
+ <p class="muted" style="font-size:13px;margin:14px 0 0">Cada pessoa ativa no próprio celular. O dono recebe todos os pedidos; o vendedor recebe os clientes que caírem com ele.</p>`;ov.hidden=false}
+async function avAtivar(b){if(!avTem()){avFolha();return}if(b)b.disabled=true;
+ try{const p=await Notification.requestPermission();
+  if(p!=="granted"){toast("Sem permissão, os avisos não chegam. Libere nas configurações do navegador.");return}
+  const reg=await navigator.serviceWorker.register("/sw.js",{scope:"/"});await navigator.serviceWorker.ready;
+  const k=await api("vapid",{});if(!k.ok)throw 0;
+  let sub=await reg.pushManager.getSubscription();if(!sub)sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:avU8(k.chave)});
+  const r=await api("aviso_inscrever",{p_token:NV.token,p_sub:sub.toJSON()});
+  if(!r.ok){toast(r.erro==="limite"?"Limite de aparelhos da loja atingido.":"Não consegui ligar os avisos.");return}
+  toast("Avisos ligados neste aparelho.");api("aviso_teste",{p_token:NV.token}).catch(()=>{})}
+ catch(x){toast("Não consegui ligar os avisos. Confira a internet e tente de novo.")}
+ finally{if(b&&b.isConnected)b.disabled=false;avCard();if(!$("#ov").hidden&&$("#sheet [data-av-ativar],#sheet [data-av-teste]"))avFolha()}}
+async function avSair(){try{const s=await avSub();if(s){api("aviso_sair",{p_endpoint:s.endpoint}).catch(()=>{});s.unsubscribe().catch(()=>{})}}catch(e){}}
+document.addEventListener("click",async e=>{
+ if(e.target.closest("[data-avisos]")){avFolha();return}
+ const a=e.target.closest("[data-av-ativar]");if(a){avAtivar(a);return}
+ if(e.target.closest("[data-av-instalar]")){if(!AV_INST)return;AV_INST.prompt();try{await AV_INST.userChoice}catch(x){}AV_INST=null;avCard();return}
+ if(e.target.closest("[data-av-fechar]")){try{localStorage.setItem("patio-av-fechado",Date.now())}catch(x){}$("#avs-card").hidden=true;return}
+ const t=e.target.closest("[data-av-teste]");if(t){t.disabled=true;const r=await api("aviso_teste",{p_token:NV.token}).catch(()=>({}));t.disabled=false;toast(r.ok&&r.enviados?"Aviso de teste enviado. Deve chegar em segundos.":"Não consegui mandar o teste. Desligue e ligue os avisos de novo.");return}
+ if(e.target.closest("[data-av-desligar]")){await avSair();toast("Avisos desligados neste aparelho.");setTimeout(()=>{avFolha();avCard()},300);return}
+ const d=e.target.closest("[data-adm-dom]");if(d){const inp=document.querySelector(`[data-adm-dom-in="${d.dataset.admDom}"]`);d.disabled=true;
+  try{const r=await api("admin_acao",{p_senha:ADM_S,p_loja:d.dataset.admDom,p_acao:"dominio",p_dominio:inp?inp.value:""});
+   toast(r.ok?(r.dominio?"Endereço salvo: "+r.dominio:"Endereço removido."):r.erro==="usado"?"Esse endereço já está em outra loja.":r.erro==="dominio"?"Endereço inválido. Ex.: sualoja.com.br":"Não deu certo.");if(r.ok)admCarrega()}
+  catch(x){toast("Sem internet.")}d.disabled=false}});
+function domPedidoHTML(d){const st=SITE(d),u=urlSite(d);
+ return st.dominio?`<p class="dica" style="margin:0 0 12px">Seu site está no endereço próprio <b>${esc(u)}</b> ✓ e o painel em <b>${esc(u)}/painel</b>.</p>`
+ :`<p class="dica" style="margin:0 0 8px">Seu site está em <b>${esc(u)}</b>.</p><div class="dom-pedido"><b>Quer um endereço próprio, como sualoja.com.br?</b><p>É só pedir ao Juan: ele registra o endereço no nome que você escolher, sem custo para você, e deixa tudo ligado.</p><a class="btn sm wa-btn" target="_blank" rel="noopener" href="https://wa.me/${CONTATO.wpp}?text=${encodeURIComponent("Oi Juan! Quero um endereço próprio para o site da "+(d.nome||"minha loja")+". O nome que eu gostaria: ")}">Pedir endereço próprio</a></div>`}
 /* ================= administração (/admin) ================= */
 let ADM_S="";
 function admAbre(){["vitrine","login","painel"].forEach(x=>$("#"+x).hidden=true);document.documentElement.classList.add("travado");$("#adm").hidden=false;document.title="Pátio · Test drives";try{ADM_S=sessionStorage.getItem("patio-adm")||""}catch(e){}if(ADM_S)admCarrega();else admLogin()}
@@ -2559,11 +2638,13 @@ function admData(t){const d=new Date(t);return d.toLocaleDateString("pt-BR")+" "
 function admRender(r){const ls=r.lojas,ag=r.agora,ativo=l=>l.liberado||l.expira>ag,ops=ls.flatMap(l=>l.opinioes),media=ops.length?(ops.reduce((s,o)=>s+o.nota,0)/ops.length).toFixed(1).replace(".",","):"—";
  const cor=n=>n>=9?"#15803d":n>=7?"#a16207":"#b91c1c";
  $("#adm-main").innerHTML=`<div class="adm-kpis"><div><span>Testando agora</span><b>${ls.filter(l=>!l.liberado&&l.expira>ag).length}</b></div><div><span>Teste terminado</span><b>${ls.filter(l=>!ativo(l)).length}</b></div><div><span>Clientes (liberados)</span><b>${ls.filter(l=>l.liberado).length}</b></div><div><span>Nota média</span><b>${media}</b></div></div>
+ <details class="adm-msg"><summary><b>Como ligar o endereço próprio de uma loja</b></summary><ol style="margin:8px 0 0;padding-left:20px;font-size:14px;line-height:1.6"><li>A loja te pede pelo WhatsApp e escolhe o nome.</li><li>Você registra o endereço (ex.: no registro.br).</li><li>No Cloudflare: Workers e Pages → juankemek → Domínios personalizados → Configurar um domínio, e siga os passos.</li><li>Quando ficar ativo, escreva o endereço no cartão da loja aqui embaixo e toque em Salvar.</li></ol></details>
  <div class="adm-msg"><b>Mensagem para mandar aos donos</b><textarea id="adm-txt" rows="7">${esc(admMensagem())}</textarea><div class="adm-bts"><button type="button" class="btn sm" id="adm-copia-msg">Copiar mensagem</button><a class="btn sm wa-btn" target="_blank" rel="noopener" id="adm-wa-msg" href="https://wa.me/?text=${encodeURIComponent(admMensagem())}">Abrir no WhatsApp</a></div></div>
  ${ls.length?ls.map(l=>{const st=l.liberado?'<span class="pill p-ok">Cliente · liberado</span>':l.expira>ag?`<span class="pill p-info">Testando · faltam ${admTempo(l.expira-ag)}</span>`:'<span class="pill p-mut">Teste terminado</span>';
   return `<div class="adm-card"><div class="adm-h"><div><h3>${esc(l.nome||l.codigo)}</h3><div class="adm-sub">${esc(l.dono||"")}${l.cidade?" · "+esc(l.cidade):""} · começou ${admData(l.criado)} · última vez ${admData(l.visto||l.criado)}</div></div>${st}</div>
   ${(l.pessoas||[]).length?`<div class="adm-pessoas">${l.pessoas.map(q=>`<span>${esc(q.nome.split(" ")[0])} · <b>${esc(q.usuario)}</b>${q.papel==="Dono"?" (dono)":""}<button type="button" class="btn xs soft" data-adm-senha="${l.id}|${esc(q.usuario)}|${esc(q.nome)}|${esc(l.wpp||"")}">Nova senha</button></span>`).join("")}</div>`:""}
   <div class="adm-nums"><span><b>${l.carros}</b> carros</span><span><b>${l.contatos}</b> contatos</span><span><b>${l.vendas}</b> vendas</span><span><b>${l.equipe}</b> pessoas</span><span><b>${l.fotos}</b> fotos</span><span><b>${l.versao}</b> salvamentos</span></div>
+  <div class="adm-dom"><span>Endereço próprio:</span>${l.dominio?`<b>${esc(l.dominio)}</b><a class="btn xs soft" target="_blank" rel="noopener" href="https://${esc(l.dominio)}">Abrir</a>`:'<span class="muted">nenhum</span>'}<input data-adm-dom-in="${l.id}" placeholder="sualoja.com.br" value="${esc(l.dominio||"")}" aria-label="Endereço próprio"><button type="button" class="btn xs" data-adm-dom="${l.id}">Salvar</button></div>
   <div class="adm-bts">${l.wpp?`<a class="btn sm wa-btn" target="_blank" rel="noopener" href="https://wa.me/55${String(l.wpp).replace(/\D/g,"")}?text=${encodeURIComponent("Oi "+(l.dono||"").split(" ")[0]+"! Aqui é o Juan, do Pátio. Como está sendo o teste na "+(l.nome||"loja")+"?")}">WhatsApp</a>`:""}<a class="btn sm soft" target="_blank" rel="noopener" href="/l/${esc(l.codigo)}">Ver o site</a>
    <button type="button" class="btn sm soft" data-adm="tempo:24:${l.id}">+24 h</button><button type="button" class="btn sm soft" data-adm="tempo:48:${l.id}">+48 h</button>${l.liberado?"":`<button type="button" class="btn sm" data-adm="liberar:0:${l.id}">Liberar (virou cliente)</button>`}${ativo(l)?`<button type="button" class="btn sm ghost" data-adm="encerrar:0:${l.id}">Encerrar</button>`:""}<button type="button" class="btn sm ghost rem-btn" data-adm="apagar:0:${l.id}">Apagar</button></div>
   ${l.opinioes.map(o=>`<div class="adm-op"><span class="nota" style="background:${cor(o.nota)}">${o.nota}</span><b>${esc(o.quem||"")}</b> · ${admData(o.criado)}${o.continuar?` · quer continuar: <b>${esc(o.continuar)}</b>`:""}${o.gostou?`<p><b>Gostou:</b> ${esc(o.gostou)}</p>`:""}${o.faltou?`<p><b>Faltou:</b> ${esc(o.faltou)}</p>`:""}</div>`).join("")}</div>`}).join(""):'<div class="adm-card"><p class="muted" style="margin:0">Nenhuma loja testando ainda. Mande o link /teste para os donos.</p></div>'}`}

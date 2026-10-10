@@ -20,7 +20,14 @@ async function prepara(db) {
     db.prepare(`CREATE INDEX IF NOT EXISTS sessoes_loja ON sessoes(loja_id)`),
     db.prepare(`CREATE INDEX IF NOT EXISTS fotos_loja ON fotos(loja_id)`),
     db.prepare(`CREATE INDEX IF NOT EXISTS feedbacks_loja ON feedbacks(loja_id)`),
+    db.prepare(`CREATE TABLE IF NOT EXISTS config(chave TEXT PRIMARY KEY, valor TEXT NOT NULL)`),
+    db.prepare(`CREATE TABLE IF NOT EXISTS inscricoes(endpoint TEXT PRIMARY KEY, loja_id TEXT NOT NULL, pessoa_id INTEGER NOT NULL, criado INTEGER NOT NULL)`),
+    db.prepare(`CREATE INDEX IF NOT EXISTS inscricoes_loja ON inscricoes(loja_id)`),
+    db.prepare(`CREATE TABLE IF NOT EXISTS avisos(id INTEGER PRIMARY KEY AUTOINCREMENT, loja_id TEXT NOT NULL, titulo TEXT, corpo TEXT, url TEXT, criado INTEGER NOT NULL)`),
+    db.prepare(`CREATE INDEX IF NOT EXISTS avisos_loja ON avisos(loja_id, criado)`),
   ]);
+  try { await db.prepare('ALTER TABLE lojas ADD COLUMN dominio TEXT').run(); } catch (e) { /* já existe */ }
+  await db.prepare('CREATE INDEX IF NOT EXISTS lojas_dominio ON lojas(dominio)').run();
   pronto = true;
 }
 
@@ -101,8 +108,71 @@ const hojeBR = () => new Date(agora() - 3 * 3600 * 1000).toISOString().slice(0, 
 const dormir = ms => new Promise(r => setTimeout(r, ms));
 const txt = (v, n) => String(v == null ? '' : v).trim().slice(0, n);
 
+// endereço próprio da loja (ex.: sualoja.com.br): o site manda "@sualoja.com.br" no lugar do código
+const limpaDominio = v => String(v || '').toLowerCase().trim().replace(/^https?:\/\//, '').replace(/[\/?#].*$/, '').replace(/:\d+$/, '').replace(/^www\./, '');
 async function lojaPorCodigo(db, codigo) {
-  return db.prepare('SELECT * FROM lojas WHERE codigo = ?').bind(String(codigo || '').toLowerCase().trim()).first();
+  const c = String(codigo || '').toLowerCase().trim();
+  if (c.startsWith('@')) {
+    const dom = limpaDominio(c.slice(1));
+    return dom ? db.prepare('SELECT * FROM lojas WHERE dominio = ?').bind(dom).first() : null;
+  }
+  return db.prepare('SELECT * FROM lojas WHERE codigo = ?').bind(c).first();
+}
+
+// ---- avisos no celular (notificação do navegador, padrão Web Push com chaves VAPID) ----
+const b64url = u8 => b64(u8).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+const PUSH_HOSTS = /(^|\.)(fcm\.googleapis\.com|googleapis\.com|push\.services\.mozilla\.com|notify\.windows\.com|push\.apple\.com)$/;
+function endpointOk(env, ep) {
+  try {
+    const u = new URL(String(ep || ''));
+    if (env && env.PUSH_LIVRE && /^https?:$/.test(u.protocol)) return true; // só nos testes locais
+    return u.protocol === 'https:' && PUSH_HOSTS.test(u.hostname);
+  } catch (e) { return false; }
+}
+async function chavesVapid(db) {
+  let r = await db.prepare("SELECT valor FROM config WHERE chave = 'vapid'").first();
+  if (!r) {
+    const k = await crypto.subtle.generateKey({ name: 'ECDSA', namedCurve: 'P-256' }, true, ['sign', 'verify']);
+    const pub = new Uint8Array(await crypto.subtle.exportKey('raw', k.publicKey));
+    const priv = await crypto.subtle.exportKey('jwk', k.privateKey);
+    await db.prepare("INSERT OR IGNORE INTO config(chave, valor) VALUES('vapid', ?)").bind(JSON.stringify({ pub: b64url(pub), priv })).run();
+    r = await db.prepare("SELECT valor FROM config WHERE chave = 'vapid'").first();
+  }
+  return JSON.parse(r.valor);
+}
+async function jwtVapid(ch, aud) {
+  const enc = o => b64url(new TextEncoder().encode(JSON.stringify(o)));
+  const corpo = enc({ typ: 'JWT', alg: 'ES256' }) + '.' + enc({ aud, exp: Math.floor(agora() / 1000) + 12 * 3600, sub: 'https://juankemek.pages.dev' });
+  const k = await crypto.subtle.importKey('jwk', { kty: ch.priv.kty, crv: ch.priv.crv, x: ch.priv.x, y: ch.priv.y, d: ch.priv.d }, { name: 'ECDSA', namedCurve: 'P-256' }, false, ['sign']);
+  const sig = new Uint8Array(await crypto.subtle.sign({ name: 'ECDSA', hash: 'SHA-256' }, k, new TextEncoder().encode(corpo)));
+  return corpo + '.' + b64url(sig);
+}
+// grava o aviso e cutuca os celulares inscritos; o celular busca o texto em aviso_ultimo
+async function enviaAvisos(db, env, lojaId, pessoas, av, guarda = true) {
+  const t = agora();
+  if (guarda) {
+    await db.batch([
+      db.prepare('INSERT INTO avisos(loja_id,titulo,corpo,url,criado) VALUES(?,?,?,?,?)').bind(lojaId, av.titulo, av.corpo, av.url, t),
+      db.prepare('DELETE FROM avisos WHERE loja_id = ? AND criado < ?').bind(lojaId, t - 7 * 86400000),
+    ]);
+  }
+  const todas = (await db.prepare('SELECT * FROM inscricoes WHERE loja_id = ?').bind(lojaId).all()).results || [];
+  const ins = todas.filter(i => !pessoas || pessoas.includes(+i.pessoa_id));
+  if (!ins.length) return 0;
+  const ch = await chavesVapid(db);
+  let n = 0;
+  await Promise.all(ins.map(async i => {
+    try {
+      if (!endpointOk(env, i.endpoint)) return;
+      const r = await fetch(i.endpoint, { method: 'POST', headers: {
+        TTL: '86400', Urgency: 'high', 'Content-Length': '0',
+        Authorization: `vapid t=${await jwtVapid(ch, new URL(i.endpoint).origin)}, k=${ch.pub}`,
+      } });
+      if (r.status === 404 || r.status === 410) await db.prepare('DELETE FROM inscricoes WHERE endpoint = ?').bind(i.endpoint).run();
+      else if (r.ok) n++;
+    } catch (e) { /* um celular fora do ar não atrapalha os outros */ }
+  }));
+  return n;
 }
 async function sessao(db, tk) {
   if (!tk) return null;
@@ -189,6 +259,7 @@ const F = {
     } else {
       dados = juntaVendedor(x.d, nd); // vendedor não muda a equipe nem os dados privados
     }
+    if (dados.loja) dados.loja.site = { ...(dados.loja.site || {}), dominio: x.l.dominio || '' }; // o endereço próprio só muda pela administração
     const json = JSON.stringify(dados);
     if (json.length > MAX_DADOS) return { ok: false, erro: 'grande' };
     const t = agora();
@@ -236,7 +307,7 @@ const F = {
     return { ok: true, codigo: l.codigo, dados: pub, fotos: await buscaFotos(db, l.id, refs) };
   },
 
-  async pedido(db, a) {
+  async pedido(db, a, env, extra) {
     const lead = a.p_lead || {}, vis = a.p_visita;
     if (!txt(lead.nome, 80) || !txt(lead.tel, 30)) return { ok: false, erro: 'dados' };
     for (let tentativa = 0; tentativa < 6; tentativa++) {
@@ -259,9 +330,58 @@ const F = {
       d.fila = fila;
       const r = await db.prepare('UPDATE lojas SET dados = ?, versao = versao + 1 WHERE id = ? AND versao = ?')
         .bind(JSON.stringify(d), l.id, l.versao).run();
-      if (r.meta && r.meta.changes) return { ok: true };
+      if (r.meta && r.meta.changes) {
+        const c = (d.carros || []).find(x => String(x.id) === String(novo.carro));
+        const nc = c ? [c.marca, c.modelo, c.ano].filter(Boolean).join(' ') : '';
+        const dt = vis && vis.data ? ` · ${vis.data.slice(8, 10)}/${vis.data.slice(5, 7)} às ${txt(vis.hora || '14:00', 5)}` : '';
+        const av = {
+          titulo: vis ? (vis.tipo === 'Visita' ? 'Visita marcada pelo site' : 'Pedido de test drive') : (novo.procura ? 'Cliente procurando carro' : 'Novo cliente pelo site'),
+          corpo: `${novo.nome}${nc ? ' · ' + nc : novo.procura ? ' · procura ' + novo.procura : ''}${dt}`,
+          url: `/l/${l.codigo}/painel`,
+        };
+        const donos = (d.equipe || []).filter(e => e.papel === 'Dono').map(e => +e.id);
+        const p = enviaAvisos(db, env, l.id, [...new Set(donos.concat(+vid))], av).catch(() => 0);
+        if (extra && extra.espera) extra.espera(p); else await p;
+        return { ok: true };
+      }
     }
     return { ok: false, erro: 'ocupado' };
+  },
+
+  async vapid(db) {
+    return { ok: true, chave: (await chavesVapid(db)).pub };
+  },
+
+  async aviso_inscrever(db, a, env) {
+    const x = await sessao(db, a.p_token);
+    if (!x || !x.p) return { ok: false, erro: 'sessao' };
+    const ep = a.p_sub && a.p_sub.endpoint;
+    if (!endpointOk(env, ep) || String(ep).length > 1000) return { ok: false, erro: 'endereco' };
+    const n = await db.prepare('SELECT COUNT(*) n FROM inscricoes WHERE loja_id = ?').bind(x.l.id).first();
+    if (n.n >= 60) return { ok: false, erro: 'limite' };
+    await db.prepare('INSERT OR REPLACE INTO inscricoes(endpoint,loja_id,pessoa_id,criado) VALUES(?,?,?,?)').bind(String(ep), x.l.id, +x.p.id, agora()).run();
+    return { ok: true };
+  },
+
+  async aviso_sair(db, a) {
+    await db.prepare('DELETE FROM inscricoes WHERE endpoint = ?').bind(String(a.p_endpoint || '')).run();
+    return { ok: true };
+  },
+
+  async aviso_teste(db, a, env) {
+    const x = await sessao(db, a.p_token);
+    if (!x || !x.p) return { ok: false, erro: 'sessao' };
+    await db.prepare('INSERT INTO avisos(loja_id,titulo,corpo,url,criado) VALUES(?,?,?,?,?)')
+      .bind(x.l.id, 'Avisos ligados ✓', 'Quando chegar cliente pelo site, o aviso aparece assim.', `/l/${x.l.codigo}/painel`, agora()).run();
+    return { ok: true, enviados: await enviaAvisos(db, env, x.l.id, [+x.p.id], null, false) };
+  },
+
+  async aviso_ultimo(db, a) {
+    const i = await db.prepare('SELECT * FROM inscricoes WHERE endpoint = ?').bind(String(a.p_endpoint || '')).first();
+    if (!i) return { ok: false };
+    const v = await db.prepare('SELECT * FROM avisos WHERE loja_id = ? AND criado > ? ORDER BY id DESC LIMIT 1').bind(i.loja_id, agora() - 3600000).first();
+    if (!v) return { ok: false };
+    return { ok: true, titulo: v.titulo, corpo: v.corpo, url: v.url };
   },
 
   async feedback(db, a) {
@@ -284,7 +404,7 @@ const F = {
     return { ok: true, agora: agora(), lojas: ls.map(l => {
       const d = JSON.parse(l.dados), dono = (d.equipe || []).find(e => e.papel === 'Dono') || {};
       return { id: l.id, codigo: l.codigo, nome: l.nome, contato: l.contato, cidade: d.loja && d.loja.cid, wpp: d.loja && d.loja.wpp,
-        dono: dono.nome, criado: l.criado, expira: l.expira, visto: l.visto, liberado: !!l.liberado, versao: l.versao,
+        dono: dono.nome, dominio: l.dominio || '', criado: l.criado, expira: l.expira, visto: l.visto, liberado: !!l.liberado, versao: l.versao,
         pessoas: (d.equipe || []).filter(e => !e.removido).map(e => ({ nome: e.nome, usuario: e.usuario, papel: e.papel, ativo: e.ativo !== false })),
         equipe: (d.equipe || []).length, carros: (d.carros || []).length, contatos: (d.leads || []).length,
         vendas: (d.carros || []).filter(c => c.venda).length, fotos: (fts.find(f => f.loja_id === l.id) || {}).n || 0,
@@ -316,10 +436,24 @@ const F = {
         if (r.meta && r.meta.changes) return { ok: true };
       }
       return { ok: false, erro: 'ocupado' };
+    } else if (a.p_acao === 'dominio') {
+      const dom = limpaDominio(a.p_dominio);
+      if (dom && !/^[a-z0-9-]+(\.[a-z0-9-]+)+$/.test(dom)) return { ok: false, erro: 'dominio' };
+      if (dom) { const o = await db.prepare('SELECT id FROM lojas WHERE dominio = ? AND id <> ?').bind(dom, id).first(); if (o) return { ok: false, erro: 'usado' }; }
+      for (let i = 0; i < 6; i++) {
+        const l = await db.prepare('SELECT * FROM lojas WHERE id = ?').bind(id).first();
+        if (!l) return { ok: false, erro: 'loja' };
+        const d = JSON.parse(l.dados);
+        d.loja = d.loja || {}; d.loja.site = d.loja.site || {}; d.loja.site.dominio = dom;
+        const r = await db.prepare('UPDATE lojas SET dados = ?, dominio = ?, versao = versao + 1 WHERE id = ? AND versao = ?').bind(JSON.stringify(d), dom || null, id, l.versao).run();
+        if (r.meta && r.meta.changes) return { ok: true, dominio: dom };
+      }
+      return { ok: false, erro: 'ocupado' };
     } else if (a.p_acao === 'apagar') {
       await db.batch([
         db.prepare('DELETE FROM sessoes WHERE loja_id = ?').bind(id), db.prepare('DELETE FROM fotos WHERE loja_id = ?').bind(id),
-        db.prepare('DELETE FROM feedbacks WHERE loja_id = ?').bind(id), db.prepare('DELETE FROM lojas WHERE id = ?').bind(id),
+        db.prepare('DELETE FROM feedbacks WHERE loja_id = ?').bind(id), db.prepare('DELETE FROM inscricoes WHERE loja_id = ?').bind(id),
+        db.prepare('DELETE FROM avisos WHERE loja_id = ?').bind(id), db.prepare('DELETE FROM lojas WHERE id = ?').bind(id),
       ]);
     } else return { ok: false, erro: 'acao' };
     return { ok: true };
@@ -347,7 +481,7 @@ function adminOk(env, senha) {
 
 const resp = (obj, st = 200) => new Response(JSON.stringify(obj), { status: st, headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' } });
 
-export async function onRequestPost({ request, env, params }) {
+export async function onRequestPost({ request, env, params, waitUntil }) {
   const fn = String(params.fn || '');
   if (!Object.prototype.hasOwnProperty.call(F, fn)) return resp({ ok: false, erro: 'funcao' }, 404);
   if (!env.DB) return resp({ ok: false, erro: 'sem-banco' }, 500);
@@ -355,10 +489,37 @@ export async function onRequestPost({ request, env, params }) {
   try { a = await request.json(); } catch (e) { return resp({ ok: false, erro: 'json' }, 400); }
   try {
     await prepara(env.DB);
-    return resp(await F[fn](env.DB, a || {}, env));
+    return resp(await F[fn](env.DB, a || {}, env, { espera: typeof waitUntil === 'function' ? waitUntil : null }));
   } catch (e) {
     return resp({ ok: false, erro: 'servidor', detalhe: String(e && e.message || e).slice(0, 200) }, 500);
   }
 }
 
-export async function onRequestGet() { return resp({ ok: false, erro: 'use POST' }, 405); }
+// GET /api/manifest?c=<código>: o "cartão" do aplicativo para instalar o painel no celular
+export async function onRequestGet({ request, env, params }) {
+  if (String(params.fn || '') !== 'manifest') return resp({ ok: false, erro: 'use POST' }, 405);
+  const u = new URL(request.url), cod = String(u.searchParams.get('c') || '').toLowerCase().slice(0, 120);
+  let nome = 'Pátio', cor = '#dc2626', base = cod.startsWith('@') ? '' : '/l/' + cod.replace(/[^a-z0-9-]/g, '');
+  try {
+    if (env.DB) {
+      await prepara(env.DB);
+      const l = await lojaPorCodigo(env.DB, cod);
+      if (l) {
+        const d = JSON.parse(l.dados);
+        nome = (d.loja && d.loja.nome) || l.nome || nome;
+        if (d.loja && /^#[0-9a-f]{6}$/i.test(d.loja.cor || '')) cor = d.loja.cor;
+        if (!cod.startsWith('@')) base = '/l/' + l.codigo;
+      }
+    }
+  } catch (e) { /* manda o cartão padrão */ }
+  const m = {
+    name: nome === 'Pátio' ? nome : nome + ' · Pátio', short_name: nome.length > 14 ? 'Pátio' : nome, id: base + '/painel', start_url: base + '/painel', scope: base + '/',
+    display: 'standalone', background_color: '#f5f5f4', theme_color: cor, lang: 'pt-BR',
+    icons: [
+      { src: '/icone-192.png', sizes: '192x192', type: 'image/png', purpose: 'any' },
+      { src: '/icone-512.png', sizes: '512x512', type: 'image/png', purpose: 'any' },
+      { src: '/icone-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
+    ],
+  };
+  return new Response(JSON.stringify(m), { headers: { 'Content-Type': 'application/manifest+json; charset=utf-8', 'Cache-Control': 'no-store' } });
+}
