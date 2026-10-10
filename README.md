@@ -2,7 +2,7 @@
 
 Site e painel para lojas de veículos.
 
-- `/` e `/painel`: demonstração com dados de exemplo (fica só no navegador).
+- `/` e `/painel`: levam direto para o test drive (`/teste`).
 - `/teste`: test drive de 48 horas, com dados salvos no servidor (Cloudflare D1).
 - `/l/<loja>`: site da loja em teste. `/l/<loja>/painel`: painel da loja.
 - `/admin`: acompanhamento dos testes (senha na variável `ADMIN_SENHA`).

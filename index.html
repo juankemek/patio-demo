@@ -1179,6 +1179,7 @@ const NV_PATH=location.pathname.replace(/\/+$/,""),NV_M=NV_PATH.match(/^\/l\/([a
 const ADMIN=NV_PATH==="/admin";
 const NUVEM=!ADMIN&&(NV_PATH==="/teste"||!!NV_M||/[?&]teste\b/.test(location.search));
 const NV_COD=NV_M?NV_M[1]:null,NV_PAINEL=!!(NV_M&&NV_M[2]);
+if(!NUVEM&&!ADMIN&&location.hash!=="#previa"&&/^(\/painel|\/index\.html)?$/.test(NV_PATH))location.replace("/teste");
 const TESTE=NUVEM;
 var NV={token:null,codigo:null,versao:0,base:null,expira:0,liberado:false,timer:null,salvando:false,pend:false,poll:null,adiado:false,stTxt:"",opinou:false,novo:false,pub:false,carregado:false,fotoId:new Map(),fotoData:new Map()};
 if(TESTE&&/[?&](teste=)?novo\b/.test(location.search)){try{localStorage.removeItem("patio-teste-v1");localStorage.removeItem("patio-teste-user")}catch(e){}history.replaceState(null,"",location.pathname+(/^\/teste/.test(location.pathname)?"":"?teste"))}
