@@ -2363,7 +2363,8 @@ addEventListener("keydown",e=>{if(TI<0)return;if(e.key==="Escape")tourFim();if(e
 
 /* ================= nuvem (Cloudflare) ================= */
 const API=(()=>{try{return localStorage.getItem("patio-api")||""}catch(e){return ""}})()||"/api";
-async function api(fn,args){const r=await fetch(API+"/"+fn,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(args||{})});let j=null;try{j=await r.json()}catch(e){}if(!j)throw new Error("rede "+r.status);return j}
+async function api(fn,args){const r=await fetch(API+"/"+fn,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(args||{})});let j=null;try{j=await r.json()}catch(e){}if(!j){const e=new Error("rede "+r.status);e.status=r.status;throw e}return j}
+function nvErroTxt(e,r){if(r&&r.erro==="sem-banco")return "O banco de dados ainda não foi ligado no Cloudflare (Settings → Bindings → D1, nome DB) ou falta publicar de novo.";if(r&&r.erro==="servidor")return "O servidor deu erro: "+(r.detalhe||"")+".";if(e&&(e.status===404||e.status===405))return "Este endereço não tem o servidor do teste. Abra pelo endereço do Cloudflare (termina em .pages.dev).";return "Não consegui conectar. Confira a internet e tente de novo."}
 const nvChave=c=>"patio-nv-"+c;
 function nvSessao(c){try{return JSON.parse(localStorage.getItem(nvChave(c)))}catch(e){return null}}
 function nvGuarda(c,o){try{if(o){localStorage.setItem(nvChave(c),JSON.stringify(o));localStorage.setItem("patio-nv-ultimo",c)}else localStorage.removeItem(nvChave(c))}catch(e){}}
@@ -2456,14 +2457,14 @@ async function nvPedido(lead,vis,msg,form){try{const r=await api("pedido",{p_cod
  catch(e){toast("Sem internet. Tente de novo ou chame a loja no WhatsApp.")}}
 async function nvCriar(z){const bt=$("#onb-seg"),tx=bt.textContent;bt.disabled=true;bt.textContent="Criando sua loja…";
  try{const r=await api("criar",{p_codigo:z.loja.slug||z.loja.nome,p_dados:z,p_contato:OB.loja.wpp});bt.disabled=false;bt.textContent=tx;
-  if(!r.ok){onbErro(r.erro==="limite"?"Muitas lojas criadas agora. Tente de novo em alguns minutos.":"Não consegui criar a loja. Tente de novo.");return}
+  if(!r.ok){onbErro(r.erro==="limite"?"Muitas lojas criadas agora. Tente de novo em alguns minutos.":(r.erro==="sem-banco"||r.erro==="servidor")?nvErroTxt(null,r):"Não consegui criar a loja. Tente de novo.");return}
   z.loja.slug=r.codigo;S=z;NV.token=r.token;NV.codigo=r.codigo;NV.versao=r.versao;NV.expira=r.expira;NV.liberado=r.liberado;NV.base=nvClone(S);NV.carregado=true;NV.novo=true;
   nvGuarda(r.codigo,{token:r.token,pessoa:r.pessoa});history.replaceState(null,"","/l/"+r.codigo+"/painel");
   document.documentElement.style.removeProperty("--accent");USER={id:r.pessoa.id,nome:r.pessoa.nome,papel:r.pessoa.papel};
   $("#onb").hidden=true;tela("painel");tudo();secao("geral");faixaTeste();nvStatus("salvo ✓");nvAgenda();
   clearInterval(NV.poll);NV.poll=setInterval(nvConfere,12000);
   if(OB.tour)setTimeout(tourStart,450);else nvLinks(true)}
- catch(e){bt.disabled=false;bt.textContent=tx;onbErro("Não consegui conectar. Confira a internet e tente de novo.")}}
+ catch(e){bt.disabled=false;bt.textContent=tx;onbErro(nvErroTxt(e))}}
 // links da loja
 function nvLinks(primeira){const c=NV.codigo,pn=location.origin+"/l/"+c+"/painel",st=location.origin+"/l/"+c,ov=$("#ov");ov.classList.remove("center");
  const vs=EQ().filter(p=>p.papel!=="Dono"&&p.ativo!==false);
