@@ -89,7 +89,11 @@ function juntaVendedor(guardado, novo) {
     const c = todosG.find(q => String(q.id) === String(x.carro));
     if (!c) return x;
     const parc = (guardado.parceiros || []).find(q => String(q.id) === String(c.parc));
-    return { ...x, valor: +c.compra || 0, desc: `Repasse ${c.modelo} · ${parc ? parc.nome : 'dono do carro'}` };
+    const nv = (novo.carros || []).concat(novo.removidos || []).find(q => String(q.id) === String(c.id));
+    const vv = nv && nv.venda ? +nv.venda.valor || 0 : 0, k = c.consig;
+    const valor = c.origem === 'Consignado' && k && k.modo === 'pct' ? Math.round(vv * (1 - (+k.pct || 0) / 100))
+      : c.origem === 'Consignado' && k && k.modo === 'valor' ? Math.max(0, vv - (+k.valor || 0)) : +c.compra || 0;
+    return { ...x, valor, desc: `Repasse ${c.modelo} · ${parc ? parc.nome : 'dono do carro'}` };
   });
   const volta = (lista, antigos) => (lista || []).map(c => {
     const a = (antigos || []).find(x => String(x.id) === String(c.id));
@@ -183,6 +187,18 @@ async function sessao(db, tk) {
   const d = JSON.parse(l.dados);
   return { s, l, d, p: pessoa(d, s.pessoa_id) };
 }
+// o que o site mostra da loja e de cada carro (nada de custo, senha ou contador)
+function lojaPublica(d) {
+  const { contador, google, perfil, ...loja } = d.loja || {};
+  if (perfil) { const { senhaLoj, pix, juros, ...pf } = perfil; loja.perfil = pf; }
+  return loja;
+}
+const carroPublico = (c, preco) => ({
+  id: c.id, marca: c.marca, modelo: c.modelo, versao: c.versao, ano: c.ano, km: c.km, placa: c.placa, pintura: c.pintura,
+  comb: c.comb, cambio: c.cambio, preco, fipe: c.fipe, status: c.status, entrada: c.entrada, fotos: c.fotos || [],
+  visitas: c.visitas || 0, docs: c.docs || {}, gastos: [], compra: 0, origem: 'Próprio',
+  tipo: c.tipo || 'Carro', cc: c.cc || 0, tracao: c.tracao || '', eixos: c.eixos || 0, carroc: c.carroc || '', cap: c.cap || 0,
+});
 const dadosPara = (p, d) => (p && p.papel === 'Dono' ? semSenhas(d) : semSenhas(semPrivado(d)));
 
 // ------------------------------------------------------------------
@@ -296,15 +312,69 @@ const F = {
     if (!l) return { ok: false, erro: 'loja' };
     if (!ativa(l)) return { ok: false, erro: 'expirado', nome: l.nome };
     const d = JSON.parse(l.dados);
-    const { contador, google, ...loja } = d.loja || {};
-    const carros = (d.carros || []).filter(c => (c.status === 'Disponível' || c.status === 'Reservado') && !c.venda).map(c => ({
-      id: c.id, marca: c.marca, modelo: c.modelo, versao: c.versao, ano: c.ano, km: c.km, placa: c.placa, pintura: c.pintura,
-      comb: c.comb, cambio: c.cambio, preco: c.preco, fipe: c.fipe, status: c.status, entrada: c.entrada, fotos: c.fotos || [],
-      visitas: c.visitas || 0, docs: c.docs || {}, gastos: [], compra: 0, origem: 'Próprio',
-    }));
+    const pf = (d.loja && d.loja.perfil) || {};
+    if (pf.publico === 'repasse') return { ok: false, erro: 'lojistas', codigo: l.codigo };
+    const loja = lojaPublica(d);
+    const carros = (d.carros || []).filter(c => (c.status === 'Disponível' || c.status === 'Reservado') && !c.venda && c.canal !== 'repasse').map(c => carroPublico(c, c.preco));
     const pub = { loja, carros };
     const refs = [...new Set((JSON.stringify(pub).match(/ref:[0-9a-f-]{36}/g) || []).map(r => r.slice(4)))];
     return { ok: true, codigo: l.codigo, dados: pub, fotos: await buscaFotos(db, l.id, refs) };
+  },
+
+  // página dos lojistas: carros de repasse com o preço para lojista
+  async site_loj(db, a) {
+    const l = await lojaPorCodigo(db, a.p_codigo);
+    if (!l) return { ok: false, erro: 'loja' };
+    if (!ativa(l)) return { ok: false, erro: 'expirado', nome: l.nome };
+    const d = JSON.parse(l.dados), pf = (d.loja && d.loja.perfil) || {};
+    if (!pf.publico || pf.publico === 'varejo') return { ok: false, erro: 'sem', codigo: l.codigo };
+    const loja = lojaPublica(d);
+    if (pf.senhaLoj && String(a.p_senha || '') !== String(pf.senhaLoj)) {
+      await dormir(400);
+      return { ok: false, erro: 'senha', codigo: l.codigo, loja: { nome: loja.nome, cid: loja.cid, wpp: loja.wpp, cor: loja.cor, slogan: loja.slogan, perfil: loja.perfil } };
+    }
+    const so = pf.publico === 'repasse';
+    const carros = (d.carros || []).filter(c => (c.status === 'Disponível' || c.status === 'Reservado') && !c.venda && (so || c.canal === 'repasse' || c.canal === 'ambos'))
+      .map(c => carroPublico(c, so ? c.preco : (c.canal === 'ambos' && c.precoLoj ? c.precoLoj : c.preco)));
+    const pub = { loja, carros };
+    const refs = [...new Set((JSON.stringify(pub).match(/ref:[0-9a-f-]{36}/g) || []).map(r => r.slice(4)))];
+    return { ok: true, codigo: l.codigo, dados: pub, fotos: await buscaFotos(db, l.id, refs) };
+  },
+
+  // "Venda seu carro": oferta de particular que chega pelo site e vira avaliação
+  async oferta(db, a, env, extra) {
+    const o = a.p_dados || {};
+    if (!txt(o.nome, 80) || !txt(o.tel, 30) || !txt(o.modelo, 60)) return { ok: false, erro: 'dados' };
+    const l0 = await lojaPorCodigo(db, a.p_codigo);
+    if (!l0 || !ativa(l0)) return { ok: false, erro: 'loja' };
+    const d0 = JSON.parse(l0.dados);
+    if (!(d0.loja && d0.loja.perfil && d0.loja.perfil.compra)) return { ok: false, erro: 'sem' };
+    const hoje = hojeBR();
+    if ((d0.aval || []).filter(x => x.site && x.data === hoje).length >= 40) return { ok: false, erro: 'limite' };
+    const nf = await db.prepare('SELECT COUNT(*) n FROM fotos WHERE loja_id = ?').bind(l0.id).first();
+    const fotos = (Array.isArray(a.p_fotos) ? a.p_fotos : []).slice(0, 4).map(String).filter(f => f.startsWith('data:image/') && f.length < 700000);
+    const ids = [];
+    if (nf.n + fotos.length <= 600) {
+      for (const f of fotos) { const id = crypto.randomUUID(); await db.prepare('INSERT INTO fotos(id,loja_id,dados,criado) VALUES(?,?,?,?)').bind(id, l0.id, f, agora()).run(); ids.push(id); }
+    }
+    for (let tentativa = 0; tentativa < 6; tentativa++) {
+      const l = await lojaPorCodigo(db, a.p_codigo);
+      const d = JSON.parse(l.dados);
+      const av = { id: agora() + Math.floor(Math.random() * 1000), data: hoje, cli: txt(o.nome, 80), tel: txt(o.tel, 30), marca: txt(o.marca, 40), modelo: txt(o.modelo, 60),
+        versao: '', ano: parseInt(o.ano, 10) || 0, km: parseInt(o.km, 10) || 0, placa: '', pintura: 'Prata', cambio: 'Manual', fipe: 0,
+        itens: { pneus: 'Bom', pintura: 'Bom', mecanica: 'Bom', interior: 'Bom', docs: 'Bom' }, obs: txt(o.obs, 500), status: 'Oferta do site', site: true,
+        quer: Math.max(0, parseInt(o.valor, 10) || 0), fotos: ids.map(i => 'ref:' + i), quem: 'Site' };
+      d.aval = (d.aval || []).concat(av);
+      const r = await db.prepare('UPDATE lojas SET dados = ?, versao = versao + 1 WHERE id = ? AND versao = ?').bind(JSON.stringify(d), l.id, l.versao).run();
+      if (r.meta && r.meta.changes) {
+        const donos = (d.equipe || []).filter(e => e.papel === 'Dono').map(e => +e.id);
+        const aviso = { titulo: 'Oferta de carro pelo site', corpo: `${av.cli} · ${[av.marca, av.modelo, av.ano || ''].join(' ').trim()}${av.quer ? ' · quer R$ ' + av.quer.toLocaleString('pt-BR') : ''}`, url: `/l/${l.codigo}/painel` };
+        const p = enviaAvisos(db, env, l.id, donos, aviso).catch(() => 0);
+        if (extra && extra.espera) extra.espera(p); else await p;
+        return { ok: true };
+      }
+    }
+    return { ok: false, erro: 'ocupado' };
   },
 
   async pedido(db, a, env, extra) {
