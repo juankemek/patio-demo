@@ -2318,7 +2318,7 @@ let ED_TRY=0;function edFrame(){$$("#ed-disp button").forEach(x=>x.setAttribute(
 function resetDemo(e){const b=e.currentTarget;if(!b.dataset.arm){b.dataset.arm=1;b.textContent="Toque de novo para confirmar";setTimeout(()=>{if(b.isConnected){delete b.dataset.arm;b.textContent="Restaurar dados de exemplo"}},3000);return}
  const eq=S.equipe;S=seed();S.equipe=eq;salvar();DRAFT=null;tudo();toast("Dados de exemplo restaurados. A equipe e as senhas foram mantidas.")}
 function fechar(){$("#ov").hidden=true;if(!$("#vitrine").hidden)seoSite()}
-function tudo(){if(NUVEM&&USER&&NV.token)nvApp();(S.carros||[]).forEach(c=>{if(!c.docs)c.docs={};if(!Array.isArray(c.gastos))c.gastos=[];if(!Array.isArray(c.fotos))c.fotos=[]});renderVitrine();if(USER)renderPainel()}
+function tudo(){setTimeout(()=>tvNo(document.body),0);if(NUVEM&&USER&&NV.token)nvApp();(S.carros||[]).forEach(c=>{if(!c.docs)c.docs={};if(!Array.isArray(c.gastos))c.gastos=[];if(!Array.isArray(c.fotos))c.fotos=[]});renderVitrine();if(USER)renderPainel()}
 function tela(t){if(t!=="vitrine"&&!PREVIA){document.title="Painel · "+(S.loja.nome||"Pátio");ldSet("ld-carro",null)}else if(t==="vitrine")setTimeout(()=>{if($("#ov").hidden)seoSite()},0);["vitrine","login","painel"].forEach(x=>$("#"+x).hidden=x!==t);$("#back-painel").hidden=!(t==="vitrine"&&USER);menu(false);scrollTo(0,0)}
 function menu(o){$("#side").classList.toggle("open",o);$("#scrim").hidden=!o;$("#menu-btn").setAttribute("aria-expanded",o)}
 function secao(s){menu(false);if(s==="loja")setTimeout(()=>{renderLoja();edFrame()},30);$$(".nav[data-sec],.bb[data-sec]").forEach(b=>b.setAttribute("aria-current",b.dataset.sec===s));$$(".sec").forEach(x=>x.hidden=x.id!=="sec-"+s||(x.classList.contains("dono")&&!isDono()));scrollTo(0,0)}
@@ -2625,7 +2625,7 @@ async function nvSite(){
    const d=await nvResolve(r.dados,r.fotos);S=Object.assign(seedVazio(),{loja:d.loja,carros:d.carros});NV.pub=true;
    const ss=nvSessao(NV_COD);if(ss&&ss.pessoa)USER=ss.pessoa}catch(e){nvCarregando("Não consegui carregar o site. Confira a internet.",()=>nvSite());return}
   nvCarregando(null)}
- renderVitrine();tela("vitrine");const mc=location.hash.match(/^#carro-(\d+)$/);if(mc)verCarro(+mc[1]);else fechar()}
+ renderVitrine();tela("vitrine");tvNo(document.body);const mc=location.hash.match(/^#carro-(\d+)$/);if(mc)verCarro(+mc[1]);else fechar()}
 async function nvPedido(lead,vis,msg,form){try{const r=await api("pedido",{p_codigo:NV_COD||NV.codigo,p_lead:lead,p_visita:vis});
   if(r.ok){fechar();if(form)form.reset();toast(msg)}else toast(r.erro==="limite"?"Recebemos muitos pedidos hoje. Chame a loja no WhatsApp.":"Não consegui enviar. Tente de novo ou chame no WhatsApp.")}
  catch(e){toast("Sem internet. Tente de novo ou chame a loja no WhatsApp.")}}
@@ -2787,8 +2787,21 @@ function consigUI(){const o=$("#n-org"),w=$("#n-consig-w");if(!o)return;const co
  $("#n-parc-w").hidden=o.value==="Próprio";$("#n-parc-l").textContent=o.value==="Consignado"?"Dono do carro":"Parceiro";
  const ps=$("#n-parc");$("#n-pn-w").hidden=o.value==="Próprio"||ps.value!=="novo"}
 
+
+/* ---------- textos: "carro" vira "moto" ou "veículo" conforme a loja ---------- */
+const TV_F={meu:"minha",seu:"sua",o:"a",um:"uma",do:"da",no:"na",ao:"à",esse:"essa",este:"esta",pelo:"pela",num:"numa","próximo":"próxima",primeiro:"primeira",outro:"outra",mesmo:"mesma",nenhum:"nenhuma",algum:"alguma","último":"última",novo:"nova",cada:"cada",qualquer:"qualquer",nosso:"nossa",seguinte:"seguinte"};
+const TV_FP={os:"as",meus:"minhas",seus:"suas",dos:"das",nos:"nas",aos:"às",esses:"essas",estes:"estas",pelos:"pelas",outros:"outras",alguns:"algumas",nossos:"nossas",todos:"todas",novos:"novas","próximos":"próximas","últimos":"últimas"};
+const tvCap=(m,v)=>m[0]===m[0].toUpperCase()&&m[0]!==m[0].toLowerCase()?v[0].toUpperCase()+v.slice(1):v;
+function txV(t){if(!t||t.indexOf("arro")<0)return t;const n=nomeVeic();if(n==="carro")return t;const fem=n==="moto";
+ if(fem)t=t.replace(/(^|[^\wÀ-ú])([A-Za-zÀ-ú]+)(\s+)(carros?)(?![\w-])/gi,(all,pre,d,sp,c)=>{const pl=/s$/i.test(c),k=d.toLowerCase(),m=pl?TV_FP[k]:TV_F[k];return m?pre+tvCap(d,m)+sp+tvCap(c,pl?"motos":"moto"):all});
+ if(fem)t=t.replace(/(^|[^\wÀ-ú])([A-Za-zÀ-ú]+)(\s+)(próximas?|primeiras?|novas?|últimas?|outras?|mesmas?)(\s+)(motos?)(?![\w-])/gi,(all,pre,d,sp,adj,sp2,c)=>{const pl=/s$/i.test(c),m=pl?TV_FP[d.toLowerCase()]:TV_F[d.toLowerCase()];return m?pre+tvCap(d,m)+sp+adj+sp2+c:all});
+ return t.replace(/(^|[^\wÀ-ú#\/-])(carros?)(?![\w-])/gi,(all,pre,c)=>pre+tvCap(c,/s$/i.test(c)?nomeVeic(1):n))}
+const tvPula=x=>{const p=x.parentNode;if(!p)return true;if(/^(SCRIPT|STYLE)$/.test(p.nodeName))return true;if(p.nodeName==="OPTION"&&/^\s*Carros?\s*$/.test(x.nodeValue))return true;return !!(p.closest&&p.closest("[data-sem-tv]"))};
+function tvNo(root){if(!root||nomeVeic()==="carro")return;const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:x=>tvPula(x)?2:1});let x;while((x=w.nextNode())){const v=txV(x.nodeValue);if(v!==x.nodeValue)x.nodeValue=v}
+ if(root.querySelectorAll)root.querySelectorAll("[placeholder],[aria-label]").forEach(e=>{["placeholder","aria-label"].forEach(a=>{const o=e.getAttribute(a);if(o){const v=txV(o);if(v!==o)e.setAttribute(a,v)}})})}
+new MutationObserver(ms=>{if(!S||nomeVeic()==="carro")return;for(const m of ms){if(m.type==="characterData"){if(tvPula(m.target))continue;const v=txV(m.target.nodeValue);if(v!==m.target.nodeValue)m.target.nodeValue=v}else m.addedNodes.forEach(n=>{if(n.nodeType===3){if(tvPula(n))return;const v=txV(n.nodeValue);if(v!==n.nodeValue)n.nodeValue=v}else if(n.nodeType===1)tvNo(n)})}}).observe(document.body,{childList:true,subtree:true,characterData:true});
 /* ---------- vitrine dos lojistas ---------- */
-async function nvSiteLoj(senha){let sh="";try{sh=senha!=null?senha:(sessionStorage.getItem("patio-loj-"+NV_COD)||"")}catch(e){}
+async function nvSiteLoj(senha){setTimeout(()=>tvNo(document.body),2500);let sh="";try{sh=senha!=null?senha:(sessionStorage.getItem("patio-loj-"+NV_COD)||"")}catch(e){}
  nvCarregando("Carregando…");
  try{const r=await api("site_loj",{p_codigo:NV_COD,p_senha:sh});if(r&&r.codigo)NV.codigo=r.codigo;
   if(!r.ok&&r.erro==="senha"){nvCarregando(null);S=Object.assign(seedVazio(),{loja:Object.assign(seedVazio().loja,r.loja||{}),carros:[]});document.documentElement.classList.add("modo-loj");renderVitrine();tela("vitrine");lojSenha(senha!=null);return}
@@ -2873,7 +2886,7 @@ const PF_OPS=[["consig","Consignação","Vende carros de clientes e ganha comiss
 function perfilHTML(pf){return `<div class="pf">
  <div class="pf-g"><b>Para quem a loja vende?</b><div class="seg pf-seg" id="pf-pub">${[["varejo","Público final"],["ambos","Público e lojistas"],["repasse","Só lojistas (repasse)"]].map(([v,t])=>`<button type="button" data-v="${v}" aria-pressed="${pf.publico===v}">${t}</button>`).join("")}</div>
   <small class="muted" id="pf-pub-d">${pf.publico==="varejo"?"Site aberto para qualquer cliente, com simulação de financiamento e test drive.":pf.publico==="ambos"?"Cada carro pode ir para o site, para os lojistas ou para os dois, com preços diferentes.":"O site vira uma vitrine só para lojistas, com preço de repasse."}</small></div>
- <div class="pf-g"><b>O que a loja vende?</b><div class="pf-chips">${[["carro","Carros"],["moto","Motos"],["pesado","Caminhões e utilitários"]].map(([k,t])=>`<label><input type="checkbox" data-pf-v="${k}" ${pf.veic[k]?"checked":""}><span>${t}</span></label>`).join("")}</div></div>
+ <div class="pf-g"><b>O que a loja vende?</b><div class="pf-chips" data-sem-tv>${[["carro","Carros"],["moto","Motos"],["pesado","Caminhões e utilitários"]].map(([k,t])=>`<label><input type="checkbox" data-pf-v="${k}" ${pf.veic[k]?"checked":""}><span>${t}</span></label>`).join("")}</div></div>
  <div class="pf-g"><b>O que mais a loja faz?</b><small class="muted">Marque só o que usa. O resto fica escondido para não poluir.</small>
   <div class="pf-ops">${PF_OPS.map(([k,t,d])=>`<label><input type="checkbox" data-pf-o="${k}" ${pf[k]?"checked":""}><span><b>${t}</b><small>${d}</small></span></label>`).join("")}</div></div>
 </div>`}
