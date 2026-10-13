@@ -25,6 +25,7 @@ async function prepara(db) {
     db.prepare(`CREATE INDEX IF NOT EXISTS inscricoes_loja ON inscricoes(loja_id)`),
     db.prepare(`CREATE TABLE IF NOT EXISTS avisos(id INTEGER PRIMARY KEY AUTOINCREMENT, loja_id TEXT NOT NULL, titulo TEXT, corpo TEXT, url TEXT, criado INTEGER NOT NULL)`),
     db.prepare(`CREATE INDEX IF NOT EXISTS avisos_loja ON avisos(loja_id, criado)`),
+    db.prepare(`CREATE TABLE IF NOT EXISTS suporte(id INTEGER PRIMARY KEY AUTOINCREMENT, loja_id TEXT NOT NULL, criado INTEGER NOT NULL)`),
   ]);
   try { await db.prepare('ALTER TABLE lojas ADD COLUMN dominio TEXT').run(); } catch (e) { /* já existe */ }
   await db.prepare('CREATE INDEX IF NOT EXISTS lojas_dominio ON lojas(dominio)').run();
@@ -182,6 +183,11 @@ async function sessao(db, tk) {
   if (!tk) return null;
   const s = await db.prepare('SELECT * FROM sessoes WHERE token = ?').bind(String(tk)).first();
   if (!s) return null;
+  // acesso de suporte vale só por 4 horas
+  if (String(s.token).startsWith('sp_') && agora() - s.criado > 4 * 3600000) {
+    await db.prepare('DELETE FROM sessoes WHERE token = ?').bind(s.token).run();
+    return null;
+  }
   const l = await db.prepare('SELECT * FROM lojas WHERE id = ?').bind(s.loja_id).first();
   if (!l) return null;
   const d = JSON.parse(l.dados);
@@ -519,11 +525,24 @@ const F = {
         if (r.meta && r.meta.changes) return { ok: true, dominio: dom };
       }
       return { ok: false, erro: 'ocupado' };
+    } else if (a.p_acao === 'suporte') {
+      const l = await db.prepare('SELECT * FROM lojas WHERE id = ?').bind(id).first();
+      if (!l) return { ok: false, erro: 'loja' };
+      const d = JSON.parse(l.dados), e = (d.equipe || []).find(x => x.papel === 'Dono' && !x.removido);
+      if (!e) return { ok: false, erro: 'pessoa' };
+      const tk = 'sp_' + token();
+      await db.batch([
+        db.prepare("DELETE FROM sessoes WHERE loja_id = ? AND substr(token, 1, 3) = 'sp_' AND criado < ?").bind(id, t - 4 * 3600000),
+        db.prepare('INSERT INTO sessoes(token,loja_id,pessoa_id,papel,criado,visto) VALUES(?,?,?,?,?,?)').bind(tk, id, +e.id, e.papel, t, t),
+        db.prepare('INSERT INTO suporte(loja_id,criado) VALUES(?,?)').bind(id, t),
+      ]);
+      return { ok: true, token: tk, codigo: l.codigo, pessoa: { id: +e.id, nome: 'Suporte Pátio', papel: e.papel } };
     } else if (a.p_acao === 'apagar') {
       await db.batch([
         db.prepare('DELETE FROM sessoes WHERE loja_id = ?').bind(id), db.prepare('DELETE FROM fotos WHERE loja_id = ?').bind(id),
         db.prepare('DELETE FROM feedbacks WHERE loja_id = ?').bind(id), db.prepare('DELETE FROM inscricoes WHERE loja_id = ?').bind(id),
-        db.prepare('DELETE FROM avisos WHERE loja_id = ?').bind(id), db.prepare('DELETE FROM lojas WHERE id = ?').bind(id),
+        db.prepare('DELETE FROM avisos WHERE loja_id = ?').bind(id), db.prepare('DELETE FROM suporte WHERE loja_id = ?').bind(id),
+        db.prepare('DELETE FROM lojas WHERE id = ?').bind(id),
       ]);
     } else return { ok: false, erro: 'acao' };
     return { ok: true };
