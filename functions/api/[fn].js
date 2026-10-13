@@ -28,6 +28,8 @@ async function prepara(db) {
     db.prepare(`CREATE TABLE IF NOT EXISTS suporte(id INTEGER PRIMARY KEY AUTOINCREMENT, loja_id TEXT NOT NULL, criado INTEGER NOT NULL)`),
   ]);
   try { await db.prepare('ALTER TABLE lojas ADD COLUMN dominio TEXT').run(); } catch (e) { /* já existe */ }
+  try { await db.prepare('ALTER TABLE lojas ADD COLUMN suporte_off INTEGER').run(); } catch (e) { /* já existe */ }
+  try { await db.prepare('ALTER TABLE suporte ADD COLUMN motivo TEXT').run(); } catch (e) { /* já existe */ }
   await db.prepare('CREATE INDEX IF NOT EXISTS lojas_dominio ON lojas(dominio)').run();
   pronto = true;
 }
@@ -424,6 +426,25 @@ const F = {
     return { ok: false, erro: 'ocupado' };
   },
 
+  // acessos do suporte: o dono vê cada entrada e pode desligar o acesso
+  async suporte_info(db, a) {
+    const x = await sessao(db, a.p_token);
+    if (!x || !x.p || x.p.papel !== 'Dono') return { ok: false, erro: 'sessao' };
+    const ac = (await db.prepare('SELECT criado, motivo FROM suporte WHERE loja_id = ? ORDER BY criado DESC LIMIT 30').bind(x.l.id).all()).results || [];
+    return { ok: true, permitido: !x.l.suporte_off, eu_suporte: String(x.s.token).startsWith('sp_'), acessos: ac.map(r => ({ criado: r.criado, motivo: r.motivo || '' })) };
+  },
+
+  async suporte_cfg(db, a) {
+    const x = await sessao(db, a.p_token);
+    if (!x || !x.p || x.p.papel !== 'Dono') return { ok: false, erro: 'sessao' };
+    if (String(x.s.token).startsWith('sp_')) return { ok: false, erro: 'suporte' };
+    const off = a.p_permitir ? 0 : 1;
+    const q = [db.prepare('UPDATE lojas SET suporte_off = ? WHERE id = ?').bind(off, x.l.id)];
+    if (off) q.push(db.prepare("DELETE FROM sessoes WHERE loja_id = ? AND substr(token, 1, 3) = 'sp_'").bind(x.l.id));
+    await db.batch(q);
+    return { ok: true, permitido: !off };
+  },
+
   async vapid(db) {
     return { ok: true, chave: (await chavesVapid(db)).pub };
   },
@@ -480,7 +501,7 @@ const F = {
     return { ok: true, agora: agora(), lojas: ls.map(l => {
       const d = JSON.parse(l.dados), dono = (d.equipe || []).find(e => e.papel === 'Dono') || {};
       return { id: l.id, codigo: l.codigo, nome: l.nome, contato: l.contato, cidade: d.loja && d.loja.cid, wpp: d.loja && d.loja.wpp,
-        dono: dono.nome, dominio: l.dominio || '', criado: l.criado, expira: l.expira, visto: l.visto, liberado: !!l.liberado, versao: l.versao,
+        dono: dono.nome, dominio: l.dominio || '', suporteOff: !!l.suporte_off, criado: l.criado, expira: l.expira, visto: l.visto, liberado: !!l.liberado, versao: l.versao,
         pessoas: (d.equipe || []).filter(e => !e.removido).map(e => ({ nome: e.nome, usuario: e.usuario, papel: e.papel, ativo: e.ativo !== false })),
         equipe: (d.equipe || []).length, carros: (d.carros || []).length, contatos: (d.leads || []).length,
         vendas: (d.carros || []).filter(c => c.venda).length, fotos: (fts.find(f => f.loja_id === l.id) || {}).n || 0,
@@ -488,7 +509,7 @@ const F = {
     }) };
   },
 
-  async admin_acao(db, a, env) {
+  async admin_acao(db, a, env, extra) {
     if (!adminOk(env, a.p_senha)) { await dormir(1000); return { ok: false, erro: 'senha' }; }
     const id = String(a.p_loja || ''), t = agora();
     if (a.p_acao === 'tempo') {
@@ -530,12 +551,17 @@ const F = {
       if (!l) return { ok: false, erro: 'loja' };
       const d = JSON.parse(l.dados), e = (d.equipe || []).find(x => x.papel === 'Dono' && !x.removido);
       if (!e) return { ok: false, erro: 'pessoa' };
+      if (l.suporte_off) return { ok: false, erro: 'desligado' };
+      const motivo = txt(a.p_motivo, 140);
       const tk = 'sp_' + token();
       await db.batch([
         db.prepare("DELETE FROM sessoes WHERE loja_id = ? AND substr(token, 1, 3) = 'sp_' AND criado < ?").bind(id, t - 4 * 3600000),
         db.prepare('INSERT INTO sessoes(token,loja_id,pessoa_id,papel,criado,visto) VALUES(?,?,?,?,?,?)').bind(tk, id, +e.id, e.papel, t, t),
-        db.prepare('INSERT INTO suporte(loja_id,criado) VALUES(?,?)').bind(id, t),
+        db.prepare('INSERT INTO suporte(loja_id,criado,motivo) VALUES(?,?,?)').bind(id, t, motivo),
       ]);
+      const donos = (d.equipe || []).filter(x => x.papel === 'Dono' && !x.removido).map(x => +x.id);
+      const pa = enviaAvisos(db, env, id, donos, { titulo: 'O suporte do Pátio entrou na sua loja', corpo: motivo || 'Para ajudar no que você pediu. O acesso fica registrado em Equipe e acessos.', url: `/l/${l.codigo}/painel` }).catch(() => 0);
+      if (extra && extra.espera) extra.espera(pa); else await pa;
       return { ok: true, token: tk, codigo: l.codigo, pessoa: { id: +e.id, nome: 'Suporte Pátio', papel: e.papel } };
     } else if (a.p_acao === 'apagar') {
       await db.batch([

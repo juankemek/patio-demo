@@ -85,6 +85,16 @@ textarea{resize:vertical}
 .md-bts{display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;align-items:center}
 .md-chk{display:flex;gap:8px;align-items:center;font-size:13.5px;color:var(--ink)}
 #sup-faixa{position:fixed;left:12px;bottom:calc(76px + env(safe-area-inset-bottom));z-index:120;background:#7c2d12;color:#fff;border-radius:999px;padding:5px 5px 5px 12px;display:flex;gap:8px;align-items:center;font-size:12.5px;box-shadow:0 6px 18px rgba(0,0,0,.25)}
+.sup-aviso{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;border:1px solid #fdba74;background:#fff7ed;color:#7c2d12;border-radius:12px;padding:12px 14px;margin-bottom:14px;font-size:14px;line-height:1.45}
+.sup-aviso span{display:block;font-size:13.5px}.sup-aviso a{color:inherit;font-weight:600}
+:root[data-theme="dark"] .sup-aviso{background:#3b2414;border-color:#9a3412;color:#fed7aa}
+.sup-tg{display:flex;gap:12px;align-items:flex-start;border:1px solid var(--line);border-radius:12px;padding:12px;cursor:pointer}
+.sup-tg input{width:20px;height:20px;margin-top:2px;flex:none}.sup-tg b{display:block;color:var(--ink);font-size:14.5px}.sup-tg small{display:block;color:var(--muted);font-size:13px;margin-top:2px}
+.sup-h3{font-size:14px;margin:16px 0 8px}
+.sup-lista{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.sup-lista li{display:flex;gap:10px;flex-wrap:wrap;font-size:13.5px;border-bottom:1px solid var(--line);padding:6px 0}.sup-lista li span{color:var(--muted)}
+.adm-sup{display:inline-flex;gap:6px;flex-wrap:wrap;align-items:center}.adm-sup input{border:1px solid var(--line);border-radius:8px;padding:6px 8px;font:inherit;font-size:13px;min-width:170px;background:var(--bg);color:var(--ink)}
+.adm-supoff{font-size:12.5px;color:#9a3412;background:#fff7ed;border:1px solid #fdba74;border-radius:999px;padding:4px 10px}
 #sup-faixa button{border:0;background:#fff;color:#7c2d12;border-radius:999px;padding:4px 10px;font:inherit;font-weight:700;cursor:pointer}
 @media (min-width:901px){#sup-faixa{bottom:16px;left:50%;transform:translateX(-50%)}}
 .toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:10px;font-weight:600;z-index:60;box-shadow:var(--shadow);max-width:calc(100% - 32px);text-align:center}
@@ -1057,6 +1067,7 @@ html.modo-loj #cards .parc.num{display:none}
     <!-- geral -->
     <div class="sec" id="sec-geral">
       <div class="avs-card" id="avs-card" hidden></div>
+      <div class="sup-aviso dono" id="sup-aviso" hidden></div>
       <div class="topbar"><div><span class="lbl" id="hoje-lbl">Quinta, 8 de outubro de 2026</span><h1 id="ola">Bom dia, Marcos</h1></div><div class="acts"><button class="btn" data-act="novo-carro"><svg class="i"><use href="#i-plus"/></svg>Cadastrar veículo</button></div></div>
       <div class="panel guia dono" id="guia" hidden></div>
       <div class="panel mural" id="mural" hidden></div>
@@ -1171,6 +1182,7 @@ html.modo-loj #cards .parc.num{display:none}
         <div class="panel"><div class="panel-h"><h2>O que cada papel pode fazer</h2></div><div class="tablewrap"><table class="perm" id="perm"></table></div>
           <p class="muted" style="font-size:13px;margin-top:12px">O comprador não tem login: ele só vê o site da loja. Cada loja tem os próprios dados, separados das outras.</p></div>
       </div>
+      <div class="panel" id="sup-painel" style="margin-top:16px" hidden></div>
     </div>
     <!-- pós-venda -->
     <div class="sec" id="sec-posv" hidden>
@@ -2088,6 +2100,7 @@ const AJ=[
  {t:"Consultar a tabela FIPE",k:["fipe","tabela fipe","valor fipe","preco fipe","quanto vale","consultar fipe","valor de mercado"],r:"No cadastro do carro ou na avaliação de troca, toque em <b>Buscar na tabela FIPE</b>, logo embaixo do campo Tabela FIPE. Escolha a marca, o modelo e o ano, e toque em <b>Usar este valor</b>. Se a marca, o modelo e o ano já estiverem preenchidos, o sistema já deixa marcados.",go:["Abrir o estoque",()=>secao("estoque")]},
  {t:"Procuração, garantia e outros documentos",k:["procuracao","garantia","termo de garantia","declaracao","entrega do veiculo","modelo de documento","outros documentos","documento"],r:"Na ficha do carro, toque em <b>Outros documentos</b>. Escolha o modelo (termo de garantia, procuração, declaração de entrega ou um que você criou), confira os dados do cliente e toque em <b>Gerar e imprimir</b>. O dono muda os textos e cria modelos novos em <b>Editar os modelos</b>.",go:["Abrir o estoque",()=>secao("estoque")]},
  {t:"Relatórios de vendas",k:["relatorio","marcas mais vendidas","tempo medio","vendas por mes","modelo que vende","giro","mes mais forte"],dono:1,r:"Em <b>Relatórios</b> você vê as vendas de cada mês, as marcas que mais vendem, os modelos que saem mais rápido e o tempo médio que um carro fica no pátio até ser vendido.",go:["Abrir relatórios",()=>secao("rel")]},
+ {t:"Acesso do suporte",k:["suporte","juan entrou","alguem entrou","acesso do suporte","quem entrou","desligar suporte","privacidade","seguranca"],dono:1,r:"Quando você pede ajuda, o suporte do Pátio pode entrar no seu painel para resolver. A cada entrada você recebe um aviso, e todas ficam registradas em <b>Equipe e acessos → Acesso do suporte</b>. Ali também dá para desligar o acesso e ligar só quando precisar.",go:["Ver os acessos",()=>{secao("equipe");setTimeout(()=>{const p=$("#sup-painel");if(p)p.scrollIntoView({block:"start"})},80)}]},
  {t:"Avisos no celular",k:["aviso","avisos","notificacao","notificação","notificacoes","alerta","celular","test drive","pedido do site","cliente novo","aplicativo","instalar"],r:"Para saber na hora quando chegar cliente pelo site, toque em <b>Ativar avisos</b> no quadro do início do painel (ou em <b>Avisos no celular</b>, no rodapé). Cada pessoa ativa no próprio celular. No iPhone, primeiro coloque o Pátio na tela de início: no Safari, toque em Compartilhar e em <b>Adicionar à Tela de Início</b>, abra pelo ícone e ative.",go:["Abrir avisos",()=>avFolha()]},
  {t:"Domínio próprio",k:["dominio","dominio proprio","com.br","registro.br","endereco do site","endereco proprio","site proprio","url"],dono:1,r:"Quer o site da loja num endereço próprio (ex.: <b>sualoja.com.br</b>)? É só pedir ao Juan pelo WhatsApp: ele registra o endereço no nome que você escolher, <b>sem custo para você</b>, e deixa tudo ligado. O painel passa a ficar em <b>sualoja.com.br/painel</b>.",go:["Pedir ao Juan",()=>window.open("https://wa.me/"+CONTATO.wpp+"?text="+encodeURIComponent("Oi Juan! Quero um endereço próprio para o site da "+(S.loja.nome||"minha loja")+". O nome que eu gostaria: "),"_blank")]},
  {t:"Vídeos de ajuda",k:["video","videos","assistir","tutorial","aula","ensinar","me ensina","passo a passo"],r:"Tem um vídeo curto para cada tarefa: cadastrar carro, anotar cliente, registrar venda, financeiro e mais.",go:["Ver os vídeos",()=>vidLista()]},
@@ -2634,7 +2647,7 @@ async function nvRota(){
 async function nvAbre(r){setTimeout(nvApp,0);if(r&&r.codigo)NV.codigo=r.codigo;S=Object.assign(seedVazio(),await nvResolve(r.dados));(S.carros||[]).concat(S.removidos||[]).forEach(c=>{if(!c.docs)c.docs={};if(!Array.isArray(c.gastos))c.gastos=[];if(!Array.isArray(c.fotos))c.fotos=[]});NV.base=nvClone(S);NV.versao=r.versao;NV.expira=r.expira;NV.liberado=r.liberado;NV.carregado=true;
  USER={id:r.pessoa.id,nome:r.pessoa.nome,papel:r.pessoa.papel};{const ss=nvSessao(NV_COD);if(ss&&ss.suporte)USER.nome="Suporte Pátio"}nvCarregando(null);
  tela("painel");renderPainel();secao("geral");faixaTeste();nvStatus("salvo ✓");
- clearInterval(NV.poll);NV.poll=setInterval(nvConfere,12000);supFaixa()}
+ clearInterval(NV.poll);NV.poll=setInterval(nvConfere,12000);supFaixa();supCarrega()}
 function nvTelaLogin(){nvCarregando(null);tela("login");const h=$("#login .login-box p, #login p");const t=$("#l-dica");if(!t){const p=document.createElement("p");p.id="l-dica";p.className="muted";p.style.cssText="font-size:13px;margin:10px 0 0";p.innerHTML=`Painel da loja <b>${esc(NV_COD&&NV_COD[0]==="@"?NV_COD.slice(1):NV_COD)}</b>. Use o usuário e a senha criados no primeiro acesso (ou os que o dono te passou).`;$("#f-login").appendChild(p)}}
 async function nvEntrar(){const u=$("#l-user").value.trim(),sn=$("#l-senha").value,er=$("#l-erro"),bt=$("#f-login [type=submit]");bt.disabled=true;er.hidden=true;
  try{const r=await api("entrar",{p_codigo:NV_COD,p_usuario:u,p_senha:sn});bt.disabled=false;
@@ -2705,7 +2718,7 @@ function termosTexto(q){const zap=CONTATO.wpp.replace(/^55/,"").replace(/(\d{2})
   <p>Seus dados não são vendidos nem passados para outras empresas. Eles ficam guardados no sistema da loja (Pátio), em servidores protegidos.</p>
   <p>Para corrigir ou apagar seus dados, fale com a loja${L.wpp?` pelo WhatsApp <b>${esc(L.wpp)}</b>`:""}.</p><p class="muted">Atualizado em ${TERMOS_DATA}.</p>`]}
  if(q==="priv")return ["Política de privacidade",`<p>Esta política explica como o Pátio trata os dados durante o teste grátis, seguindo a Lei Geral de Proteção de Dados (LGPD).</p>
-  <h3>1. Quem é quem</h3><p>A <b>loja</b> decide quais dados cadastra e como usa (é a <b>controladora</b>). O <b>Pátio</b> guarda e processa esses dados só para o sistema funcionar (é o <b>operador</b>).</p>
+  <h3>1. Quem é quem</h3><p>A <b>loja</b> decide quais dados cadastra e como usa (é a <b>controladora</b>). O <b>Pátio</b> guarda e processa esses dados só para o sistema funcionar (é o <b>operador</b>). Quando a loja pede ajuda, o suporte do Pátio pode entrar no painel da loja para resolver; o dono recebe um aviso a cada entrada, vê todos os acessos em Equipe e acessos e pode desligar essa permissão quando quiser.</p>
   <h3>2. Quais dados</h3><ul><li><b>Da loja e da equipe:</b> nome da loja, cidade, WhatsApp, Instagram, nomes, usuários e senhas.</li><li><b>Dos clientes da loja:</b> nome, WhatsApp, carro de interesse e, quando a loja cadastra para contrato, CPF e endereço.</li><li><b>De uso:</b> data e hora do último acesso.</li></ul>
   <h3>3. Para que usamos</h3><ul><li>Fazer o sistema funcionar: estoque, contatos, agenda, vendas, documentos e site da loja.</li><li>Falar com o dono da loja sobre o teste e ouvir a opinião dele.</li></ul><p>Os dados <b>não são vendidos</b> nem usados para propaganda de terceiros.</p>
   <h3>4. Onde ficam</h3><p>Em servidores da Cloudflare, com conexão protegida (HTTPS). Os servidores podem ficar fora do Brasil. As senhas são guardadas embaralhadas: ninguém consegue ler a senha original.</p>
@@ -2843,8 +2856,8 @@ function supFaixa(){let f=$("#sup-faixa");const ss=NUVEM&&NV_COD?nvSessao(NV_COD
  if(!f){f=document.createElement("div");f.id="sup-faixa";f.setAttribute("role","status");document.body.appendChild(f)}
  f.title="Você está na loja "+(S.loja.nome||"")+" como suporte. O que mudar aqui vale para o cliente.";f.innerHTML=`<b>Modo suporte</b><button type="button" data-sup-sair>Sair</button>`}
 document.addEventListener("click",async e=>{const b=e.target.closest("[data-adm-sup]");if(!b)return;b.disabled=true;let w=null;try{w=window.open("about:blank","_blank")}catch(x){}
- try{const r=await api("admin_acao",{p_senha:ADM_S,p_loja:b.dataset.admSup,p_acao:"suporte"});b.disabled=false;
-  if(!r.ok){if(w)w.close();toast(r.erro==="pessoa"?"Essa loja não tem dono cadastrado.":"Não deu certo.");return}
+ try{const mi=document.querySelector(`[data-adm-sup-mot="${b.dataset.admSup}"]`),r=await api("admin_acao",{p_senha:ADM_S,p_loja:b.dataset.admSup,p_acao:"suporte",p_motivo:mi?mi.value.trim():""});b.disabled=false;
+  if(!r.ok){if(w)w.close();toast(r.erro==="pessoa"?"Essa loja não tem dono cadastrado.":r.erro==="desligado"?"O dono desligou o acesso do suporte. Peça para ele ligar em Equipe e acessos.":"Não deu certo.");return}
   let ult=null;try{ult=localStorage.getItem("patio-nv-ultimo")}catch(x){}
   nvGuarda(r.codigo,{token:r.token,pessoa:r.pessoa,suporte:true});
   try{if(ult)localStorage.setItem("patio-nv-ultimo",ult);else localStorage.removeItem("patio-nv-ultimo")}catch(x){}
@@ -2961,6 +2974,25 @@ function relNovos(){if(!$("#r-mes"))return;const vd=S.carros.filter(c=>c.venda&&
  hbars("#r-rapido",Object.entries(md).map(([k,a])=>[k,Math.round(a.reduce((s2,x)=>s2+x,0)/a.length)]).sort((a,b)=>a[1]-b[1]).slice(0,6),v=>v+(v===1?" dia":" dias"));
  const ds=vd.map(dias).filter(d=>isFinite(d)&&d>=0),k=$("#rel-kpis");
  if(k&&ds.length&&!$("#kpi-tmv")){const n=Math.round(ds.reduce((s2,x)=>s2+x,0)/ds.length);k.insertAdjacentHTML("beforeend",`<div class="kpi" id="kpi-tmv"><div class="lbl">Tempo médio para vender</div><div class="v num">${n} ${n===1?"dia":"dias"}</div><small>da entrada no pátio até a venda</small></div>`)}}
+
+/* ---------- transparência do suporte: o dono vê cada acesso e pode desligar ---------- */
+let SUP_INFO=null;
+const supData=t=>{const d=new Date(t);return d.toLocaleDateString("pt-BR",{day:"2-digit",month:"2-digit"})+" às "+d.toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})};
+const supModo=()=>{const ss=NUVEM&&NV_COD?nvSessao(NV_COD):null;return !!(ss&&ss.suporte)};
+async function supCarrega(){if(!NUVEM||!NV.token||!isDono())return;try{const r=await api("suporte_info",{p_token:NV.token});if(r.ok){SUP_INFO=r;supAviso();supPainel()}}catch(e){}}
+function supAviso(){const el=$("#sup-aviso");if(!el)return;const a=SUP_INFO&&SUP_INFO.acessos&&SUP_INFO.acessos[0];let visto=0;try{visto=+localStorage.getItem("patio-sup-visto-"+NV_COD)||0}catch(e){}
+ if(!a||supModo()||a.criado<=visto||Date.now()-a.criado>3*864e5){el.hidden=true;return}
+ el.hidden=false;el.innerHTML=`<div><b>O suporte do Pátio entrou na sua loja em ${supData(a.criado)}.</b><span>${a.motivo?"Motivo: "+esc(a.motivo)+". ":""}Todos os acessos ficam em <a href="#" data-sup-ver>Equipe e acessos</a>.</span></div><button type="button" class="btn xs soft" data-sup-ok="${a.criado}">Entendi</button>`}
+function supPainel(){const el=$("#sup-painel");if(!el)return;if(!NUVEM||!SUP_INFO){el.hidden=true;return}const ac=SUP_INFO.acessos||[],sm=supModo();
+ el.hidden=false;el.innerHTML=`<div class="panel-h"><h2>Acesso do suporte</h2></div>
+ <p class="muted" style="font-size:13.5px;margin:0 0 12px">Quando você pedir ajuda, o suporte do Pátio pode entrar no seu painel para resolver. Você recebe um aviso a cada entrada, e todas ficam registradas aqui.</p>
+ <label class="sup-tg"><input type="checkbox" id="sup-perm" ${SUP_INFO.permitido?"checked":""} ${sm?"disabled":""}><span><b>Permitir que o suporte entre na loja</b><small>${sm?"Só o dono muda esta opção, no próprio painel.":SUP_INFO.permitido?"Ligado. Desligue se quiser liberar só quando precisar de ajuda.":"Desligado. O suporte não consegue entrar até você ligar de novo."}</small></span></label>
+ <h3 class="sup-h3">Últimos acessos</h3>${ac.length?`<ul class="sup-lista">${ac.slice(0,10).map(x=>`<li><b>${supData(x.criado)}</b><span>${x.motivo?esc(x.motivo):"Sem motivo informado"}</span></li>`).join("")}</ul>`:'<p class="muted" style="font-size:13.5px;margin:0">Nenhum acesso do suporte até agora.</p>'}`}
+document.addEventListener("change",async e=>{if(e.target.id!=="sup-perm")return;const cb=e.target,v=cb.checked;cb.disabled=true;
+ try{const r=await api("suporte_cfg",{p_token:NV.token,p_permitir:v});if(r.ok){SUP_INFO.permitido=r.permitido;toast(r.permitido?"Acesso do suporte ligado.":"Acesso do suporte desligado.")}else{cb.checked=!v;toast("Não consegui mudar agora.")}}
+ catch(x){cb.checked=!v;toast("Sem internet.")}supPainel()});
+document.addEventListener("click",e=>{const ok=e.target.closest("[data-sup-ok]");if(ok){try{localStorage.setItem("patio-sup-visto-"+NV_COD,ok.dataset.supOk)}catch(x){}$("#sup-aviso").hidden=true;return}
+ if(e.target.closest("[data-sup-ver]")){e.preventDefault();secao("equipe");setTimeout(()=>{const p=$("#sup-painel");if(p)p.scrollIntoView({behavior:"smooth",block:"start"})},80)}});
 /* ---------- vitrine dos lojistas ---------- */
 async function nvSiteLoj(senha){setTimeout(()=>tvNo(document.body),2500);let sh="";try{sh=senha!=null?senha:(sessionStorage.getItem("patio-loj-"+NV_COD)||"")}catch(e){}
  nvCarregando("Carregando…");
@@ -3095,7 +3127,7 @@ function admRender(r){const ls=r.lojas,ag=r.agora,ativo=l=>l.liberado||l.expira>
   ${(l.pessoas||[]).length?`<div class="adm-pessoas">${l.pessoas.map(q=>`<span>${esc(q.nome.split(" ")[0])} · <b>${esc(q.usuario)}</b>${q.papel==="Dono"?" (dono)":""}<button type="button" class="btn xs soft" data-adm-senha="${l.id}|${esc(q.usuario)}|${esc(q.nome)}|${esc(l.wpp||"")}">Nova senha</button></span>`).join("")}</div>`:""}
   <div class="adm-nums"><span><b>${l.carros}</b> carros</span><span><b>${l.contatos}</b> contatos</span><span><b>${l.vendas}</b> vendas</span><span><b>${l.equipe}</b> pessoas</span><span><b>${l.fotos}</b> fotos</span><span><b>${l.versao}</b> salvamentos</span></div>
   <div class="adm-dom"><span>Endereço próprio:</span>${l.dominio?`<b>${esc(l.dominio)}</b><a class="btn xs soft" target="_blank" rel="noopener" href="https://${esc(l.dominio)}">Abrir</a>`:'<span class="muted">nenhum</span>'}<input data-adm-dom-in="${l.id}" placeholder="sualoja.com.br" value="${esc(l.dominio||"")}" aria-label="Endereço próprio"><button type="button" class="btn xs" data-adm-dom="${l.id}">Salvar</button></div>
-  <div class="adm-bts">${l.wpp?`<a class="btn sm wa-btn" target="_blank" rel="noopener" href="https://wa.me/55${String(l.wpp).replace(/\D/g,"")}?text=${encodeURIComponent("Oi "+(l.dono||"").split(" ")[0]+"! Aqui é o Juan, do Pátio. Como está sendo o teste na "+(l.nome||"loja")+"?")}">WhatsApp</a>`:""}<a class="btn sm soft" target="_blank" rel="noopener" href="/l/${esc(l.codigo)}">Ver o site</a><button type="button" class="btn sm soft" data-adm-sup="${l.id}">Entrar na loja (suporte)</button>
+  <div class="adm-bts">${l.wpp?`<a class="btn sm wa-btn" target="_blank" rel="noopener" href="https://wa.me/55${String(l.wpp).replace(/\D/g,"")}?text=${encodeURIComponent("Oi "+(l.dono||"").split(" ")[0]+"! Aqui é o Juan, do Pátio. Como está sendo o teste na "+(l.nome||"loja")+"?")}">WhatsApp</a>`:""}<a class="btn sm soft" target="_blank" rel="noopener" href="/l/${esc(l.codigo)}">Ver o site</a>${l.suporteOff?'<span class="adm-supoff">Suporte desligado pelo dono</span>':`<span class="adm-sup"><input data-adm-sup-mot="${l.id}" placeholder="Motivo (o dono vê)" aria-label="Motivo do acesso" maxlength="140"><button type="button" class="btn sm soft" data-adm-sup="${l.id}">Entrar na loja (suporte)</button></span>`}
    <button type="button" class="btn sm soft" data-adm="tempo:24:${l.id}">+24 h</button><button type="button" class="btn sm soft" data-adm="tempo:48:${l.id}">+48 h</button>${l.liberado?"":`<button type="button" class="btn sm" data-adm="liberar:0:${l.id}">Liberar (virou cliente)</button>`}${ativo(l)?`<button type="button" class="btn sm ghost" data-adm="encerrar:0:${l.id}">Encerrar</button>`:""}<button type="button" class="btn sm ghost rem-btn" data-adm="apagar:0:${l.id}">Apagar</button></div>
   ${l.opinioes.map(o=>`<div class="adm-op"><span class="nota" style="background:${cor(o.nota)}">${o.nota}</span><b>${esc(o.quem||"")}</b> · ${admData(o.criado)}${o.continuar?` · quer continuar: <b>${esc(o.continuar)}</b>`:""}${o.gostou?`<p><b>Gostou:</b> ${esc(o.gostou)}</p>`:""}${o.faltou?`<p><b>Faltou:</b> ${esc(o.faltou)}</p>`:""}</div>`).join("")}</div>`}).join(""):'<div class="adm-card"><p class="muted" style="margin:0">Nenhuma loja testando ainda. Mande o link /teste para os donos.</p></div>'}`}
 document.addEventListener("click",async e=>{const b=e.target.closest("[data-adm]");if(!b)return;const [ac,h,id]=b.dataset.adm.split(":");
