@@ -30,6 +30,8 @@ async function prepara(db) {
   try { await db.prepare('ALTER TABLE lojas ADD COLUMN dominio TEXT').run(); } catch (e) { /* já existe */ }
   try { await db.prepare('ALTER TABLE lojas ADD COLUMN suporte_off INTEGER').run(); } catch (e) { /* já existe */ }
   try { await db.prepare('ALTER TABLE suporte ADD COLUMN motivo TEXT').run(); } catch (e) { /* já existe */ }
+  try { await db.prepare('ALTER TABLE suporte ADD COLUMN fin INTEGER').run(); } catch (e) { /* já existe */ }
+  try { await db.prepare('ALTER TABLE lojas ADD COLUMN suporte_fin INTEGER').run(); } catch (e) { /* já existe */ }
   await db.prepare('CREATE INDEX IF NOT EXISTS lojas_dominio ON lojas(dominio)').run();
   pronto = true;
 }
@@ -108,6 +110,52 @@ function juntaVendedor(guardado, novo) {
   const todos = (guardado.carros || []).concat(guardado.removidos || []);
   o.carros = volta(novo.carros, todos);
   o.removidos = volta(novo.removidos, todos);
+  return o;
+}
+// ---- o que o suporte não vê: tudo do vendedor + dados do contador, Pix, juros e o crediário/retorno das vendas ----
+const SUP_VENDA = ['cred', 'retorno', 'serv'];
+function semSuporte(d) {
+  const o = semPrivado(d);
+  if (o.loja) {
+    const { contador, ...loja } = o.loja;
+    if (loja.perfil) { const { pix, juros, ...pf } = loja.perfil; loja.perfil = pf; }
+    o.loja = loja;
+  }
+  const limpa = c => { if (!c.venda) return c; const v = { ...c.venda }; SUP_VENDA.forEach(k => delete v[k]); return { ...c, venda: v }; };
+  o.carros = (o.carros || []).map(limpa);
+  o.removidos = (o.removidos || []).map(limpa);
+  return o;
+}
+function juntaSuporte(guardado, novo) {
+  const o = juntaVendedor(guardado, novo);
+  // equipe: o suporte arruma vendedores, mas não mexe em quem é dono nem cria dono novo
+  const g = guardado.equipe || [], donosG = g.filter(e => e.papel === 'Dono');
+  const eq = (novo.equipe || []).filter(e => !donosG.some(x => String(x.id) === String(e.id))).map(e => {
+    const a = g.find(x => String(x.id) === String(e.id));
+    const r = { ...e, papel: e.papel === 'Dono' ? ((a && a.papel !== 'Dono') ? a.papel : 'Vendedor') : e.papel };
+    if (!r.senha && a && a.senha) r.senha = a.senha;
+    return r;
+  });
+  o.equipe = donosG.concat(eq);
+  // contador, Pix e juros ficam como estavam
+  if (o.loja) {
+    const gl = guardado.loja || {};
+    if ('contador' in gl) o.loja.contador = gl.contador; else delete o.loja.contador;
+    if (o.loja.perfil || gl.perfil) {
+      o.loja.perfil = { ...(o.loja.perfil || {}) };
+      ['pix', 'juros'].forEach(k => { if (gl.perfil && k in gl.perfil) o.loja.perfil[k] = gl.perfil[k]; else delete o.loja.perfil[k]; });
+    }
+  }
+  // crediário, retorno e serviços das vendas que já existiam ficam como estavam
+  const todos = (guardado.carros || []).concat(guardado.removidos || []);
+  const volta = l => (l || []).map(c => {
+    const a = todos.find(x => String(x.id) === String(c.id));
+    if (!a || !a.venda || !c.venda) return c;
+    const v = { ...c.venda };
+    SUP_VENDA.forEach(k => { if (k in a.venda) v[k] = a.venda[k]; else delete v[k]; });
+    return { ...c, venda: v };
+  });
+  o.carros = volta(o.carros); o.removidos = volta(o.removidos);
   return o;
 }
 const pessoa = (d, id) => (d.equipe || []).find(e => +e.id === +id && !e.removido && e.ativo !== false) || null;
@@ -193,7 +241,9 @@ async function sessao(db, tk) {
   const l = await db.prepare('SELECT * FROM lojas WHERE id = ?').bind(s.loja_id).first();
   if (!l) return null;
   const d = JSON.parse(l.dados);
-  return { s, l, d, p: pessoa(d, s.pessoa_id) };
+  let p = pessoa(d, s.pessoa_id);
+  if (p && String(s.token).startsWith('sp_') && s.papel === 'Suporte') p = { ...p, papel: 'Suporte' };
+  return { s, l, d, p };
 }
 // o que o site mostra da loja e de cada carro (nada de custo, senha ou contador)
 function lojaPublica(d) {
@@ -207,7 +257,7 @@ const carroPublico = (c, preco) => ({
   visitas: c.visitas || 0, docs: c.docs || {}, gastos: [], compra: 0, origem: 'Próprio',
   tipo: c.tipo || 'Carro', cc: c.cc || 0, tracao: c.tracao || '', eixos: c.eixos || 0, carroc: c.carroc || '', cap: c.cap || 0,
 });
-const dadosPara = (p, d) => (p && p.papel === 'Dono' ? semSenhas(d) : semSenhas(semPrivado(d)));
+const dadosPara = (p, d) => (p && p.papel === 'Dono' ? semSenhas(d) : p && p.papel === 'Suporte' ? semSenhas(semSuporte(d)) : semSenhas(semPrivado(d)));
 
 // ------------------------------------------------------------------
 const F = {
@@ -277,7 +327,10 @@ const F = {
     if (!nd || !Array.isArray(nd.equipe)) return { ok: false, erro: 'dados' };
     if (x.l.versao !== +a.p_base) return { ok: false, conflito: true, dados: dadosPara(x.p, x.d), ...resumo(x.l) };
     let dados = nd;
-    if (x.p.papel === 'Dono') {
+    if (x.p.papel === 'Suporte') {
+      dados = juntaSuporte(x.d, nd);
+      dados.equipe = await embaralhaEquipe(dados.equipe);
+    } else if (x.p.papel === 'Dono') {
       // quem não mandou a senha de alguém mantém a que estava guardada; senha nova é embaralhada
       nd.equipe = await embaralhaEquipe(nd.equipe.map(e => e.senha ? e : (() => { const { senha, ...r } = e; const o = (x.d.equipe || []).find(q => String(q.id) === String(e.id)); return o && o.senha ? { ...r, senha: o.senha } : r; })()));
     } else {
@@ -429,20 +482,24 @@ const F = {
   // acessos do suporte: o dono vê cada entrada e pode desligar o acesso
   async suporte_info(db, a) {
     const x = await sessao(db, a.p_token);
-    if (!x || !x.p || x.p.papel !== 'Dono') return { ok: false, erro: 'sessao' };
-    const ac = (await db.prepare('SELECT criado, motivo FROM suporte WHERE loja_id = ? ORDER BY criado DESC LIMIT 30').bind(x.l.id).all()).results || [];
-    return { ok: true, permitido: !x.l.suporte_off, eu_suporte: String(x.s.token).startsWith('sp_'), acessos: ac.map(r => ({ criado: r.criado, motivo: r.motivo || '' })) };
+    if (!x || !x.p || (x.p.papel !== 'Dono' && x.p.papel !== 'Suporte')) return { ok: false, erro: 'sessao' };
+    const ac = (await db.prepare('SELECT criado, motivo, fin FROM suporte WHERE loja_id = ? ORDER BY criado DESC LIMIT 30').bind(x.l.id).all()).results || [];
+    return { ok: true, permitido: !x.l.suporte_off, fin: !!x.l.suporte_fin, eu_suporte: String(x.s.token).startsWith('sp_'), acessos: ac.map(r => ({ criado: r.criado, motivo: r.motivo || '', fin: !!r.fin })) };
   },
 
   async suporte_cfg(db, a) {
     const x = await sessao(db, a.p_token);
     if (!x || !x.p || x.p.papel !== 'Dono') return { ok: false, erro: 'sessao' };
     if (String(x.s.token).startsWith('sp_')) return { ok: false, erro: 'suporte' };
+    if ('p_fin' in a) {
+      await db.prepare('UPDATE lojas SET suporte_fin = ? WHERE id = ?').bind(a.p_fin ? 1 : 0, x.l.id).run();
+      return { ok: true, permitido: !x.l.suporte_off, fin: !!a.p_fin };
+    }
     const off = a.p_permitir ? 0 : 1;
-    const q = [db.prepare('UPDATE lojas SET suporte_off = ? WHERE id = ?').bind(off, x.l.id)];
+    const q = [db.prepare('UPDATE lojas SET suporte_off = ?, suporte_fin = CASE WHEN ? = 1 THEN 0 ELSE suporte_fin END WHERE id = ?').bind(off, off, x.l.id)];
     if (off) q.push(db.prepare("DELETE FROM sessoes WHERE loja_id = ? AND substr(token, 1, 3) = 'sp_'").bind(x.l.id));
     await db.batch(q);
-    return { ok: true, permitido: !off };
+    return { ok: true, permitido: !off, fin: off ? false : !!x.l.suporte_fin };
   },
 
   async vapid(db) {
@@ -501,7 +558,7 @@ const F = {
     return { ok: true, agora: agora(), lojas: ls.map(l => {
       const d = JSON.parse(l.dados), dono = (d.equipe || []).find(e => e.papel === 'Dono') || {};
       return { id: l.id, codigo: l.codigo, nome: l.nome, contato: l.contato, cidade: d.loja && d.loja.cid, wpp: d.loja && d.loja.wpp,
-        dono: dono.nome, dominio: l.dominio || '', suporteOff: !!l.suporte_off, criado: l.criado, expira: l.expira, visto: l.visto, liberado: !!l.liberado, versao: l.versao,
+        dono: dono.nome, dominio: l.dominio || '', suporteOff: !!l.suporte_off, suporteFin: !!l.suporte_fin, criado: l.criado, expira: l.expira, visto: l.visto, liberado: !!l.liberado, versao: l.versao,
         pessoas: (d.equipe || []).filter(e => !e.removido).map(e => ({ nome: e.nome, usuario: e.usuario, papel: e.papel, ativo: e.ativo !== false })),
         equipe: (d.equipe || []).length, carros: (d.carros || []).length, contatos: (d.leads || []).length,
         vendas: (d.carros || []).filter(c => c.venda).length, fotos: (fts.find(f => f.loja_id === l.id) || {}).n || 0,
@@ -553,16 +610,17 @@ const F = {
       if (!e) return { ok: false, erro: 'pessoa' };
       if (l.suporte_off) return { ok: false, erro: 'desligado' };
       const motivo = txt(a.p_motivo, 140);
-      const tk = 'sp_' + token();
+      const tk = 'sp_' + token(), fin = !!l.suporte_fin, papel = fin ? 'Dono' : 'Suporte';
       await db.batch([
+        db.prepare('UPDATE lojas SET suporte_fin = 0 WHERE id = ?').bind(id),
         db.prepare("DELETE FROM sessoes WHERE loja_id = ? AND substr(token, 1, 3) = 'sp_' AND criado < ?").bind(id, t - 4 * 3600000),
-        db.prepare('INSERT INTO sessoes(token,loja_id,pessoa_id,papel,criado,visto) VALUES(?,?,?,?,?,?)').bind(tk, id, +e.id, e.papel, t, t),
-        db.prepare('INSERT INTO suporte(loja_id,criado,motivo) VALUES(?,?,?)').bind(id, t, motivo),
+        db.prepare('INSERT INTO sessoes(token,loja_id,pessoa_id,papel,criado,visto) VALUES(?,?,?,?,?,?)').bind(tk, id, +e.id, papel, t, t),
+        db.prepare('INSERT INTO suporte(loja_id,criado,motivo,fin) VALUES(?,?,?,?)').bind(id, t, motivo, fin ? 1 : 0),
       ]);
       const donos = (d.equipe || []).filter(x => x.papel === 'Dono' && !x.removido).map(x => +x.id);
-      const pa = enviaAvisos(db, env, id, donos, { titulo: 'O suporte do Pátio entrou na sua loja', corpo: motivo || 'Para ajudar no que você pediu. O acesso fica registrado em Equipe e acessos.', url: `/l/${l.codigo}/painel` }).catch(() => 0);
+      const pa = enviaAvisos(db, env, id, donos, { titulo: 'O suporte do Pátio entrou na sua loja', corpo: (motivo || 'Para ajudar no que você pediu.') + (fin ? ' Com acesso às finanças, como você liberou.' : ' Sem acesso às finanças.'), url: `/l/${l.codigo}/painel` }).catch(() => 0);
       if (extra && extra.espera) extra.espera(pa); else await pa;
-      return { ok: true, token: tk, codigo: l.codigo, pessoa: { id: +e.id, nome: 'Suporte Pátio', papel: e.papel } };
+      return { ok: true, token: tk, codigo: l.codigo, fin, pessoa: { id: +e.id, nome: 'Suporte Pátio', papel } };
     } else if (a.p_acao === 'apagar') {
       await db.batch([
         db.prepare('DELETE FROM sessoes WHERE loja_id = ?').bind(id), db.prepare('DELETE FROM fotos WHERE loja_id = ?').bind(id),
