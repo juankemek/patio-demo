@@ -109,6 +109,12 @@ textarea{resize:vertical}
 :root[data-theme="dark"] .rnv-seg{background:#3b2414;border-color:#9a3412;color:#fed7aa}
 .rnv-card{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;border:1px solid var(--line);background:var(--panel,var(--bg));border-radius:12px;padding:12px 14px;margin-bottom:14px;font-size:14px}
 .rnv-card span{display:block;color:var(--muted);font-size:13.5px}
+.fipe-hint{font-size:12.5px;color:var(--muted);font-weight:400}.fipe-hint a{color:var(--accent,#2563eb)}
+.v-dots{display:flex;gap:8px;justify-content:inherit;margin:4px 0 10px}.v-dots button{width:10px;height:10px;border-radius:50%;border:1px solid rgba(255,255,255,.8);background:rgba(255,255,255,.35);padding:0;cursor:pointer}.v-dots button[aria-pressed="true"]{background:#fff;width:24px;border-radius:999px}
+.alinha-esq .v-dots{justify-content:flex-start}:not(.alinha-esq)>.v-hero .v-dots,.v-hero .in .v-dots{justify-content:center}.alinha-esq .v-hero .in .v-dots{justify-content:flex-start}
+.v-fachada{width:100%;max-height:320px;object-fit:cover;border-radius:12px;margin-bottom:12px;display:block}.v-fachada[hidden]{display:none}
+.bn-ed{display:flex;flex-direction:column;gap:8px}.bn-it{display:flex;gap:8px;align-items:center;border:1px solid var(--line);border-radius:10px;padding:8px}.bn-it .mini{width:64px;height:44px;border-radius:8px;background-size:cover;background-position:center;flex:none}.bn-tx{display:flex;flex-direction:column;gap:4px;flex:1;min-width:0}.bn-tx input{width:100%;min-width:0;font:inherit;font-size:13px;border:1px solid var(--line);border-radius:8px;padding:5px 8px;background:var(--bg);color:var(--ink)}
+.rnv-passos{border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin:0 0 12px;font-size:13.5px}.rnv-passos summary{cursor:pointer;font-weight:600;color:var(--ink)}.rnv-passos ol{margin:10px 0 0;padding-left:20px;display:flex;flex-direction:column;gap:8px;line-height:1.45}.rnv-passos a{color:var(--accent,#2563eb);font-weight:600}
 #sup-faixa button{border:0;background:#fff;color:#7c2d12;border-radius:999px;padding:4px 10px;font:inherit;font-weight:700;cursor:pointer}
 @media (min-width:901px){#sup-faixa{bottom:16px;left:50%;transform:translateX(-50%)}}
 .toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:10px;font-weight:600;z-index:60;box-shadow:var(--shadow);max-width:calc(100% - 32px);text-align:center}
@@ -976,6 +982,7 @@ html.modo-loj #cards .parc.num{display:none}
     <span class="lbl" style="color:inherit;opacity:.85" id="v-eyebrow">Seminovos em Pelotas/RS</span>
     <h1 id="v-slogan">Seminovos revisados, com procedência e garantia</h1>
     <p id="v-subt">Escolha seu próximo carro, simule as parcelas e fale com a gente no WhatsApp ou agende um test drive.</p>
+    <div class="v-dots" id="v-dots" hidden></div>
     <div class="v-stats" id="v-stats"></div>
     <div class="v-search" id="estoque-v">
       <input id="s-q" type="search" placeholder="Buscar marca ou modelo" aria-label="Buscar">
@@ -1114,7 +1121,7 @@ html.modo-loj #cards .parc.num{display:none}
     </div>
     <!-- contatos -->
     <div class="sec" id="sec-contatos" hidden>
-      <div class="topbar"><div><span class="lbl">Funil de vendas</span><h1>Contatos</h1></div><div class="acts"><button class="btn" data-act="novo-lead"><svg class="i"><use href="#i-plus"/></svg>Novo contato</button></div></div>
+      <div class="topbar"><div><span class="lbl">Funil de vendas</span><h1>Contatos</h1></div><div class="acts"><button class="btn soft dono" data-csv-cli>Baixar planilha</button><button class="btn" data-act="novo-lead"><svg class="i"><use href="#i-plus"/></svg>Novo contato</button></div></div>
       <p class="muted" style="margin:-8px 0 14px">Quem chamou no WhatsApp, no Instagram, pelo site ou passou na loja. Arraste o card para outra coluna (ou use os botões) conforme a negociação anda. Toque no card para editar dados, etapa ou observação.</p>
       <div class="kanban" id="kanban"></div>
     </div>
@@ -1256,7 +1263,7 @@ html.modo-loj #cards .parc.num{display:none}
 
 <script>
 const HOJE=(/[?&]teste\b/.test(location.search)||/^\/(teste|admin|l\/[a-z0-9-]+(\/painel)?)\/?$/.test(location.pathname))?new Date(Date.now()-new Date().getTimezoneOffset()*6e4).toISOString().slice(0,10):"2026-10-08";
-const PINTURA={Prata:"#9aa0a4",Branco:"#ebe8e1",Preto:"#22262a",Vermelho:"#9e1d25",Azul:"#2b4f7e",Cinza:"#5f6468",Verde:"#4f6247",Bege:"#c9b99a"};
+const PINTURA={Prata:"#9aa0a4",Branco:"#ebe8e1",Preto:"#22262a",Vermelho:"#9e1d25",Azul:"#2b4f7e",Cinza:"#5f6468",Verde:"#4f6247",Bege:"#c9b99a",Amarelo:"#d6a419",Dourado:"#b8964f",Laranja:"#d9661f",Marrom:"#6b4a32",Vinho:"#5e1a2a",Rosa:"#d48aa0",Roxo:"#5b3f86",Fantasia:"#7f8c8d"};
 const ETAPAS=["Novo","Em negociação","Visita marcada","Financiamento","Vendido","Perdido"];
 const SWATCH=["#dc2626","#0e5c57","#1f3f8f","#111827","#c2410c","#6d28d9","#047857","#a16207"];
 function seed(){return{
@@ -1442,7 +1449,7 @@ function renderVitrine(){normLoja();
  vt.style.setProperty("--foto",st.topo.foto?`url("${st.topo.foto}")`:"none");
  $("#v-logo").classList.toggle("tem-img",!!st.logo);
  $("#v-logo").innerHTML=st.logo?`<img src="${st.logo}" alt="">`:esc(ini(L.nome));$("#v-nome").textContent=L.nome;$("#v-nome2").textContent=L.nome;$("#v-nome3").textContent=L.nome;
- $("#v-cid").textContent=L.cid;$("#v-eyebrow").textContent=st.topo.eyebrow.replace("{cidade}",L.cid);$("#v-subt").textContent=st.topo.subt;$("#v-subt").hidden=!st.topo.subt;$("#v-slogan").textContent=L.slogan;$("#v-sobre").textContent=L.sobre||"";$("#v-sobre").closest(".v-box").hidden=!L.sobre;$("#v-end").textContent=L.end||"";$("#v-end").parentElement.hidden=!L.end;$("#v-hor").textContent=L.hor||"";$("#v-hor").parentElement.hidden=!L.hor;$("#v-wpp").textContent=L.wpp;const zp="https://wa.me/55"+L.wpp.replace(/\D/g,"")+"?text="+encodeURIComponent(st.textos.zap.replace("{loja}",L.nome));$("#v-contato").href=zp;$("#v-contato-t").textContent=st.textos.contato||"Contato";$("#v-zap").href=zp;$("#v-zap").hidden=!st.mostrar.zap;$("#v-aviso").textContent=(st.textos.aviso||"").replace("{entrada}",st.fin.entrada).replace("{prazo}",st.fin.prazo);$("#v-rodape").textContent=st.textos.rodape;$("#v-redes").innerHTML=[st.redes.insta?`<a href="${esc(/^https?:/.test(st.redes.insta)?st.redes.insta:"https://instagram.com/"+st.redes.insta.replace("@",""))}" target="_blank" rel="noopener">Instagram</a>`:"",st.redes.face?`<a href="${esc(/^https?:/.test(st.redes.face)?st.redes.face:"https://facebook.com/"+st.redes.face)}" target="_blank" rel="noopener">Facebook</a>`:""].join("");$("#creditos").innerHTML=Object.entries(FOTOS).map(([m,f])=>`<li><a href="https://commons.wikimedia.org/wiki/File:${encodeURIComponent(f.replace(/ /g,"_"))}" target="_blank" rel="noopener">${esc(m)}: ${esc(f)}</a></li>`).join("");$("#l-loja").textContent=L.nome;
+ $("#v-cid").textContent=L.cid;$("#v-eyebrow").textContent=st.topo.eyebrow.replace("{cidade}",L.cid);$("#v-subt").textContent=st.topo.subt;$("#v-subt").hidden=!st.topo.subt;$("#v-slogan").textContent=L.slogan;$("#v-sobre").textContent=L.sobre||"";$("#v-sobre").closest(".v-box").hidden=!L.sobre;fachadaMostra(st,L);setTimeout(()=>bnIni(st,L),0);$("#v-end").textContent=L.end||"";$("#v-end").parentElement.hidden=!L.end;$("#v-hor").textContent=L.hor||"";$("#v-hor").parentElement.hidden=!L.hor;$("#v-wpp").textContent=L.wpp;const zp="https://wa.me/55"+L.wpp.replace(/\D/g,"")+"?text="+encodeURIComponent(st.textos.zap.replace("{loja}",L.nome));$("#v-contato").href=zp;$("#v-contato-t").textContent=st.textos.contato||"Contato";$("#v-zap").href=zp;$("#v-zap").hidden=!st.mostrar.zap;$("#v-aviso").textContent=(st.textos.aviso||"").replace("{entrada}",st.fin.entrada).replace("{prazo}",st.fin.prazo);$("#v-rodape").textContent=st.textos.rodape;$("#v-redes").innerHTML=[st.redes.insta?`<a href="${esc(/^https?:/.test(st.redes.insta)?st.redes.insta:"https://instagram.com/"+st.redes.insta.replace("@",""))}" target="_blank" rel="noopener">Instagram</a>`:"",st.redes.face?`<a href="${esc(/^https?:/.test(st.redes.face)?st.redes.face:"https://facebook.com/"+st.redes.face)}" target="_blank" rel="noopener">Facebook</a>`:""].join("");$("#creditos").innerHTML=Object.entries(FOTOS).map(([m,f])=>`<li><a href="https://commons.wikimedia.org/wiki/File:${encodeURIComponent(f.replace(/ /g,"_"))}" target="_blank" rel="noopener">${esc(m)}: ${esc(f)}</a></li>`).join("");$("#l-loja").textContent=L.nome;
  const pub=S.carros.filter(c=>(c.status==="Disponível"||c.status==="Reservado")&&(LOJ||(PREVIA&&soRep())?true:noSite(c)));const LM=LOJ||(PREVIA&&soRep());document.documentElement.classList.toggle("modo-loj",LM);
  {const fq=(st.faq||FAQ_PADRAO).filter(f=>f.p&&f.r);$("#v-faq").hidden=st.mostrar.faq===false||!fq.length;$("#v-faq-l").innerHTML=fq.map(f=>`<details><summary>${esc(f.p)}</summary><p>${esc(faqTxt(f.r))}</p></details>`).join("");$("#v-procura").hidden=st.mostrar.procura===false||LM;$("#v-vende").hidden=!PF().compra||LM;if(LM){$("#v-faq").hidden=true;$("#v-eyebrow").textContent="Área do lojista · "+L.cid;$("#v-aviso").textContent="Preços para lojistas. "+nomeVeic(1).replace(/^./,x=>x.toUpperCase())+" no estado em que se encontram, sem garantia.";$("#v-subt").textContent="Estoque de repasse da "+L.nome+". Chame no WhatsApp para negociar.";$("#v-subt").hidden=false}if(!$("#vitrine").hidden&&$("#ov").hidden)seoSite()}
  $("#v-stats").innerHTML=[st.destaques.qtd?[pub.length,nomeVeic(1)+" disponíveis"]:null,st.destaques.d2v?[st.destaques.d2v,st.destaques.d2t]:null,st.destaques.d3v?[st.destaques.d3v,st.destaques.d3t]:null].filter(Boolean).map(x=>`<div><b>${esc(x[0])}</b>${esc(x[1])}</div>`).join("");
@@ -1669,7 +1676,7 @@ function ficha(id,tab){
  <label class="field">Valor da venda (R$)<input id="v-val" type="number" inputmode="numeric" value="${lojDef?precoLoj(c):c.preco}" required></label><label class="field">Data<input id="v-dt" type="date" value="${HOJE}" required></label>
  <label class="field full"><span id="v-cli-l">${lojDef?"Loja compradora":"Cliente"}</span><input id="v-cli" required placeholder="${lojDef?"Nome da loja que comprou":"Nome do comprador"}"></label>
  <label class="field" id="v-cnpj-w" ${lojDef?"":"hidden"}>CNPJ da loja<input id="v-cnpj" inputmode="numeric" placeholder="00.000.000/0000-00"></label>
- <label class="field">Vendedor<select id="v-vend">${EQ().map(p=>`<option value="${p.id}" ${p.nome===USER.nome?"selected":""}>${esc(p.nome)}</option>`).join("")}</select></label><label class="field">Pagamento<select id="v-pag">${pags.map(x=>`<option>${x}</option>`).join("")}</select></label>
+ <label class="field">Vendedor<select id="v-vend">${EQ().map(p=>`<option value="${p.id}" ${p.nome===USER.nome?"selected":""}>${esc(p.nome)}</option>`).join("")}</select></label><label class="field">Pagamento<select id="v-pag">${pags.map(x=>`<option>${x}</option>`).join("")}</select></label><label class="field" id="v-fn-w" hidden>Parcelas do financiamento<select id="v-fn"><option value="0">Não sei</option>${[12,24,36,48,60].map(n=>`<option value="${n}" ${n===48?"selected":""}>${n}</option>`).join("")}</select></label>
  ${P.cred?`<div class="full v-box2" id="v-cred" hidden><b>Crediário próprio</b><div class="form"><label class="field">Entrada (R$)<input id="v-ce" type="number" inputmode="numeric" value="0" min="0"></label><label class="field">Parcelas<select id="v-cn">${[6,10,12,18,24,30,36,48].map(n=>`<option ${n===24?"selected":""}>${n}</option>`).join("")}</select></label><label class="field">Juros ao mês (%)<input id="v-cj" type="number" step="0.1" min="0" inputmode="decimal" value="${P.juros}"></label><label class="field">1º vencimento<input id="v-cv" type="date" value="${addD(HOJE,30)}"></label></div><p class="v-cp" id="v-cp"></p></div>`:""}
  ${P.extras?`<div class="full v-box2" id="v-ext"><b>Financiamento e serviços</b><div class="form"><label class="field" id="v-ret-w" hidden>Retorno do banco (R$)<input id="v-ret" type="number" inputmode="numeric" min="0" placeholder="0"></label><label class="field" id="v-banco-w" hidden>Banco<input id="v-banco" placeholder="Ex.: Santander"></label></div>
   <div class="v-servs">${["Garantia estendida","Seguro","Despachante / transferência","Estética e acessórios"].map((n,i)=>`<div class="v-sv"><label><input type="checkbox" data-sv="${i}"> ${n}</label><input type="number" inputmode="numeric" min="0" data-sv-v="${i}" placeholder="Cobrado (R$)" aria-label="${n}: valor cobrado"><input type="number" inputmode="numeric" min="0" data-sv-c="${i}" placeholder="Custo (R$)" aria-label="${n}: custo para a loja"></div>`).join("")}</div><small class="muted">Marque o que foi vendido junto. O lucro de cada serviço entra no lucro da venda.</small></div>`:""}
@@ -1692,7 +1699,7 @@ function ficha(id,tab){
   const servs=()=>$$("[data-sv]").filter(x=>x.checked).map(x=>{const i=x.dataset.sv;return {n:x.parentElement.textContent.trim(),v:+$(`[data-sv-v="${i}"]`).value||0,c:+$(`[data-sv-c="${i}"]`).value||0}});
   const credCalc=()=>{const v=+$("#v-val").value||0,e=+($("#v-ce")||{}).value||0,n=+($("#v-cn")||{}).value||1,j=(+($("#v-cj")||{}).value||0)/100,pv=Math.max(0,v-e);return {entrada:e,n,juros:+($("#v-cj")||{}).value||0,parcela:Math.round((j?pmt(pv,j,n):pv/n)*100)/100,venc1:($("#v-cv")||{}).value||addD(HOJE,30)}};
   const up=()=>{const v=+$("#v-val").value||0,pag=$("#v-pag").value,cr=/Crediário/.test(pag),fi=/Financiado/.test(pag);
-   if($("#v-cred"))$("#v-cred").hidden=!cr;if($("#v-ret-w")){$("#v-ret-w").hidden=!fi;$("#v-banco-w").hidden=!fi}
+   if($("#v-cred"))$("#v-cred").hidden=!cr;if($("#v-fn-w"))$("#v-fn-w").hidden=!fi;if($("#v-ret-w")){$("#v-ret-w").hidden=!fi;$("#v-banco-w").hidden=!fi}
    if(cr&&$("#v-cp")){const k=credCalc();$("#v-cp").innerHTML=`<b>${k.n}x de ${R(k.parcela)}</b>${k.entrada?" + entrada de "+R(k.entrada):""} · total ${R(k.entrada+k.parcela*k.n)}`}
    const ex=(fi?+($("#v-ret")||{}).value||0:0)+servs().reduce((s2,x)=>s2+x.v-x.c,0),e=$("#v-luc");
    if(e){const l=v-repasseDe(c,v)-(custo(c)-repasseDe(c))+ex;e.textContent=R(l);e.className=l>=0?"pos":"neg";$("#v-custo").textContent=R(repasseDe(c,v)+(custo(c)-repasseDe(c)));$("#v-ext-l").hidden=!ex;$("#v-ext-v").textContent=R(ex)}
@@ -1702,7 +1709,7 @@ function ficha(id,tab){
   fv.onsubmit=e=>{e.preventDefault();marca();const pag=$("#v-pag").value,cr=/Crediário/.test(pag),fi=/Financiado|Consórcio/.test(pag);
    c.venda={data:$("#v-dt").value,valor:+$("#v-val").value,vend:+$("#v-vend").value,pag,cli:$("#v-cli").value.trim(),cpf:$("#v-cpf").value.trim(),tel:$("#v-tel").value.trim(),end:$("#v-endc").value.trim()};
    if(loj){c.venda.loj=true;c.venda.cnpj=$("#v-cnpj").value.trim()}
-   if(cr)c.venda.cred=credCalc();
+   if(cr)c.venda.cred=credCalc();if(/Financiado/.test(pag)&&$("#v-fn")&&+$("#v-fn").value)c.venda.finParc=+$("#v-fn").value;
    if(P.extras){const sv=servs().filter(x=>x.v||x.c);if(sv.length)c.venda.serv=sv;if(/Financiado/.test(pag)&&+$("#v-ret").value){c.venda.retorno=+$("#v-ret").value;c.venda.banco=$("#v-banco").value.trim()}}
    c.status="Vendido";
    const ld=S.leads.find(l=>l.carro===c.id&&l.etapa!=="Perdido");if(ld){(ld.hist=ld.hist||[]).push({data:HOJE,txt:ld.etapa+" → Vendido"});ld.etapa="Vendido"}
@@ -1724,7 +1731,7 @@ function formNovo(tipo){
  <label class="field">Marca<input id="n-marca" required ${dv("Nissan",tv[0]==="Moto"?"Ex.: Honda":"Ex.: Chevrolet")}></label><label class="field">Modelo<input id="n-modelo" required ${dv("Kicks",tv[0]==="Moto"?"Ex.: CG 160":"Ex.: Onix")}></label><label class="field">Ano<input id="n-ano" type="number" inputmode="numeric" required ${dv("2021","Ex.: 2021")}></label><label class="field">Km<input id="n-km" type="number" inputmode="numeric" required ${dv("48000","Ex.: 48000")}></label><label class="field">Placa<input id="n-placa" data-placa autocapitalize="characters" required ${dv("IXP2D45","ABC1D23")} maxlength="7"></label>
  <div class="full form" id="n-tipo-x">${tipoCampos(tv[0])}</div>
  ${rp?`<label class="field">Vende para<select id="n-canal"><option value="varejo">Público (site)</option><option value="repasse">Lojistas (repasse)</option><option value="ambos">Os dois</option></select></label>`:""}
- <label class="field"><span id="n-preco-l">${soRep()?"Preço para lojista (R$)":"Preço anunciado (R$)"}</span><input id="n-preco" type="number" inputmode="numeric" required ${dv("93900","Ex.: 79900")}></label>
+ <label class="field"><span id="n-preco-l">${soRep()?"Preço para lojista (R$)":"Preço anunciado (R$)"}</span><input id="n-preco" type="number" inputmode="numeric" required ${dv("93900","Ex.: 79900")}><small class="fipe-hint" id="n-fipe-h"><a href="#" data-fipe-abre>Ver o valor na tabela FIPE</a></small></label>
  ${rp?`<label class="field" id="n-ploj-w" hidden>Preço para lojista (R$)<input id="n-ploj" type="number" inputmode="numeric" placeholder="Ex.: 72000"></label>`:""}
  <label class="field">Origem<select id="n-org"><option>Próprio</option><option>Parceiro</option><option>Consignado</option></select></label><label class="field"><span id="n-compra-l">Valor de compra (R$)</span><input id="n-compra" type="number" inputmode="numeric" required ${dv("80000","Ex.: 68000")}></label>
  <label class="field full" id="n-parc-w" hidden><span id="n-parc-l">Parceiro</span><select id="n-parc">${S.parceiros.map(p=>`<option value="${p.id}">${esc(p.nome)}</option>`).join("")}<option value="novo" ${S.parceiros.length?"":"selected"}>+ Cadastrar novo</option></select></label>
@@ -2121,6 +2128,8 @@ const AJ=[
  {t:"Relatórios de vendas",k:["relatorio","marcas mais vendidas","tempo medio","vendas por mes","modelo que vende","giro","mes mais forte"],dono:1,r:"Em <b>Relatórios</b> você vê as vendas de cada mês, as marcas que mais vendem, os modelos que saem mais rápido e o tempo médio que um carro fica no pátio até ser vendido.",go:["Abrir relatórios",()=>secao("rel")]},
  {t:"Acesso do suporte",k:["suporte","juan entrou","alguem entrou","acesso do suporte","quem entrou","desligar suporte","privacidade","seguranca"],dono:1,r:"Quando você pede ajuda, o suporte do Pátio pode entrar no seu painel para resolver. A cada entrada você recebe um aviso, e todas ficam registradas em <b>Equipe e acessos → Acesso do suporte</b>. Ali também dá para desligar o acesso e ligar só quando precisar. O suporte não vê as finanças (contas, crediário, custos e lucro); se você precisar de ajuda nessa parte, marque <b>Deixar o suporte ver as finanças no próximo acesso</b>.",go:["Ver os acessos",()=>{secao("equipe");setTimeout(()=>{const p=$("#sup-painel");if(p)p.scrollIntoView({block:"start"})},80)}]},
  {t:"Renave",k:["renave","registro de estoque","entrada no estoque","saida do estoque","serpro","credencia","atpv","integradora","certificado digital"],r:"O Renave é o registro oficial de cada carro que entra e sai da loja. Na ficha do carro, aba <b>Renave</b>, você preenche os dados que o Renave pede, copia para a sua integradora e marca como registrado. O dono acompanha a adesão em <b>Preparar a loja para o Renave</b>, na tela inicial.",go:["Preparar a loja",()=>rnvPrep()]},
+ {t:"Baixar a lista de clientes",k:["planilha","exportar","baixar clientes","lista de clientes","excel","csv"],dono:1,r:"Em <b>Contatos</b>, toque em <b>Baixar planilha</b>. Vem um arquivo que abre no Excel ou no Google Planilhas, com todos os contatos e compradores, telefone, carro, data e vendedor.",go:["Abrir contatos",()=>secao("contatos")]},
+ {t:"Fotos que trocam no topo do site",k:["banner","banners","fotos do topo","carrossel","fachada","foto da loja"],dono:1,r:"Em <b>Minha loja → Topo do site</b>, escolha o fundo <b>Foto</b> e use <b>Adicionar foto</b> para colocar até 4 fotos a mais, cada uma com o próprio título. A foto da fachada fica em <b>Sobre a loja e endereço</b>.",go:["Abrir Minha loja",()=>secao("loja")]},
  {t:"Avisos no celular",k:["aviso","avisos","notificacao","notificação","notificacoes","alerta","celular","test drive","pedido do site","cliente novo","aplicativo","instalar"],r:"Para saber na hora quando chegar cliente pelo site, toque em <b>Ativar avisos</b> no quadro do início do painel (ou em <b>Avisos no celular</b>, no rodapé). Cada pessoa ativa no próprio celular. No iPhone, primeiro coloque o Pátio na tela de início: no Safari, toque em Compartilhar e em <b>Adicionar à Tela de Início</b>, abra pelo ícone e ative.",go:["Abrir avisos",()=>avFolha()]},
  {t:"Domínio próprio",k:["dominio","dominio proprio","com.br","registro.br","endereco do site","endereco proprio","site proprio","url"],dono:1,r:"Quer o site da loja num endereço próprio (ex.: <b>sualoja.com.br</b>)? É só pedir ao Juan pelo WhatsApp: ele registra o endereço no nome que você escolher, <b>sem custo para você</b>, e deixa tudo ligado. O painel passa a ficar em <b>sualoja.com.br/painel</b>.",go:["Pedir ao Juan",()=>window.open("https://wa.me/"+CONTATO.wpp+"?text="+encodeURIComponent("Oi Juan! Quero um endereço próprio para o site da "+(S.loja.nome||"minha loja")+". O nome que eu gostaria: "),"_blank")]},
  {t:"Vídeos de ajuda",k:["video","videos","assistir","tutorial","aula","ensinar","me ensina","passo a passo"],r:"Tem um vídeo curto para cada tarefa: cadastrar carro, anotar cliente, registrar venda, financeiro e mais.",go:["Ver os vídeos",()=>vidLista()]},
@@ -2194,12 +2203,12 @@ document.addEventListener("click",e=>{const d=e.target.closest("[data-rp-del]");
 
 /* ---------- pós-venda e indicações ---------- */
 const PV_MARCOS=[[7,"Como está o carro?","Oi {cliente}! Aqui é {vendedor}, da {loja}. Passando para saber como está o {carro}. Qualquer coisa, conte com a gente! {avaliacao_txt}"],[180,"Revisão de 6 meses","Oi {cliente}! Seu {carro} já está com 6 meses com você. Está na hora de fazer a revisão. Precisa de indicação de oficina de confiança?"],[365,"1 ano de carro","Oi {cliente}! Hoje faz 1 ano que você levou o {carro}. Obrigado pela confiança! Se algum amigo estiver procurando carro, indica a gente."],[730,"Hora de trocar?","Oi {cliente}! Já são 2 anos com o {carro}. Que tal trocar por um mais novo? Avaliamos o seu na troca, sem compromisso."]];
-function compradores(){const a=S.carros.filter(c=>c.venda).map(c=>({id:"c"+c.id,nome:c.venda.cli,tel:c.venda.tel||"",carroTxt:`${c.marca} ${c.modelo} ${c.ano}`,data:c.venda.data,vend:c.venda.vend}));
+function compradores(){const a=S.carros.filter(c=>c.venda).map(c=>({id:"c"+c.id,nome:c.venda.cli,tel:c.venda.tel||"",carroTxt:`${c.marca} ${c.modelo} ${c.ano}`,data:c.venda.data,vend:c.venda.vend,fin:c.venda.finParc?addMes(c.venda.data,c.venda.finParc):null}));
  (S.clientes||[]).forEach(k=>a.push({id:"k"+k.id,nome:k.nome,tel:k.tel,carroTxt:k.carro,data:k.data,vend:k.vend,antigo:true}));return a.sort((x,y)=>y.data.localeCompare(x.data))}
 const nomesClientes=()=>[...new Set(compradores().map(k=>k.nome))];
 function lembretes(){const out=[],eu=USER&&!isDono()?USER.id:null;compradores().forEach(k=>{if(eu&&k.vend!==eu)return;PV_MARCOS.forEach(([d,t,m],i)=>{const due=addD(k.data,d),key=k.id+":"+d,st=S.posv[key];if(st)return;
   const prox=PV_MARCOS[i+1];if(prox&&addD(k.data,prox[0])<=HOJE)return;
-  out.push({k,d,t,m,key,due,atraso:desde(due)})})});return out.sort((a,b)=>a.due.localeCompare(b.due))}
+  out.push({k,d,t,m,key,due,atraso:desde(due)})})});compradores().forEach(k=>{if(!k.fin||(eu&&k.vend!==eu))return;const due=addD(k.fin,-60),key=k.id+":fin";if(S.posv[key])return;out.push({k,d:"fin",t:"Fim do financiamento",m:"Oi {cliente}! Aqui é {vendedor}, da {loja}. O financiamento do seu {carro} está quase no fim. Que tal já pensar no próximo? A gente avalia o seu na troca, sem compromisso.",key,due,atraso:desde(due)})});return out.sort((a,b)=>a.due.localeCompare(b.due))}
 function indicacoes(nome){const ls=S.leads.filter(l=>l.indic&&l.indic.toLowerCase()===nome.toLowerCase());return{n:ls.length,v:ls.filter(l=>l.etapa==="Vendido").length}}
 let PVT="fazer";
 function renderPosv(){const el=$("#posv-body");if(!el)return;const L=lembretes(),hoje=L.filter(x=>x.due<=HOJE),prox=L.filter(x=>x.due>HOJE&&x.due<=addD(HOJE,30));
@@ -2313,6 +2322,7 @@ function renderLoja(){const d=edDraft(),st=d.site;
  <details><summary>Topo do site</summary><div class="ed-in">
   <div class="field">Fundo do topo${seg("site.topo.estilo",[["claro","Claro"],["escuro","Escuro"],["marca","Cor da marca"],["foto","Foto"]])}</div>
   <div class="field" ${st.topo.estilo==="foto"?"":"hidden"}>Foto do topo<div class="ed-img"><span class="mini" style="${st.topo.foto?`background-image:url('${st.topo.foto}')`:""}">${st.topo.foto?"":"sem foto"}</span><label class="btn sm soft" style="cursor:pointer">Enviar foto<input type="file" accept="image/*" id="ed-foto" hidden></label></div><p class="dica">Uma foto da fachada ou do pátio fica ótima. Ela escurece um pouco para o texto aparecer.</p></div>
+  <div class="field" ${st.topo.estilo==="foto"?"":"hidden"}>Mais fotos no topo (trocam sozinhas)<div class="bn-ed">${(st.banners||[]).map((b,i)=>`<div class="bn-it"><span class="mini" style="background-image:url('${b.foto}')"></span><div class="bn-tx"><input data-bn-t1="${i}" value="${esc(b.t1||"")}" placeholder="Título (opcional)"><input data-bn-t2="${i}" value="${esc(b.t2||"")}" placeholder="Texto de apoio (opcional)"></div><button type="button" class="btn xs ghost" data-bn-rm="${i}">Remover</button></div>`).join("")}</div>${(st.banners||[]).length<4?'<label class="btn sm soft" style="cursor:pointer;align-self:flex-start">Adicionar foto<input type="file" accept="image/*" id="ed-bn" hidden></label>':""}<p class="dica">Até 4 fotos a mais, além da foto do topo. Cada uma pode ter o próprio título. Sem título, vale o texto do topo.</p></div>
   <div class="field">Alinhamento${seg("site.topo.alinhar",[["centro","Centralizado"],["esquerda","À esquerda"]])}</div>
   ${inp("site.topo.eyebrow","Texto pequeno acima do título","Seminovos em {cidade}")}
   ${inp("slogan","Frase de destaque (título)","Seminovos revisados em Pelotas")}
@@ -2355,6 +2365,7 @@ function renderLoja(){const d=edDraft(),st=d.site;
  <details><summary>Sobre a loja e endereço</summary><div class="ed-in">
   ${chk("site.mostrar.sobre","Mostrar a parte “Sobre a loja”")}
   ${area("sobre","Sobre a loja","Conte a história da loja")}
+  <div class="field">Foto da fachada<div class="ed-img"><span class="mini" style="${st.fachada?`background-image:url('${st.fachada}')`:""}">${st.fachada?"":"sem foto"}</span><label class="btn sm soft" style="cursor:pointer">Enviar foto<input type="file" accept="image/*" id="ed-fach" hidden></label>${st.fachada?'<button type="button" class="btn sm ghost" id="ed-fach-rm">Remover</button>':""}</div><p class="dica">Aparece junto do texto “Sobre a loja”. Passa confiança para quem ainda não conhece a loja.</p></div>
   ${inp("cid","Cidade","Pelotas/RS")}${inp("end","Endereço","Rua, número, bairro")}${inp("hor","Horário","Seg a sex 8h–18h")}
  </div></details>
  <details><summary>Rodapé e dados da empresa</summary><div class="ed-in">
@@ -2366,6 +2377,11 @@ function renderLoja(){const d=edDraft(),st=d.site;
  const dz=$("#reset");dz.onclick=resetDemo;
  const lg=$("#ed-logo");lg.onchange=async()=>{const f=await lerImg(lg.files[0],420);if(f){d.site.logo=f;edMudou(true)}};
  const rm=$("#ed-logo-rm");if(rm)rm.onclick=()=>{d.site.logo="";edMudou(true)};
+ const bn=$("#ed-bn");if(bn)bn.onchange=async()=>{const f=await lerImg(bn.files[0],1600);if(f){d.site.banners=(d.site.banners||[]).concat({foto:f,t1:"",t2:""}).slice(0,4);edMudou(true)}};
+ $$("[data-bn-rm]").forEach(b=>b.onclick=()=>{d.site.banners.splice(+b.dataset.bnRm,1);edMudou(true)});
+ $$("[data-bn-t1],[data-bn-t2]").forEach(x=>x.oninput=()=>{const i=+(x.dataset.bnT1??x.dataset.bnT2),k=x.dataset.bnT1!=null?"t1":"t2";d.site.banners[i][k]=x.value;edMudou(false)});
+ const fc=$("#ed-fach");if(fc)fc.onchange=async()=>{const f=await lerImg(fc.files[0],1200);if(f){d.site.fachada=f;edMudou(true)}};
+ const fcr=$("#ed-fach-rm");if(fcr)fcr.onclick=()=>{d.site.fachada="";edMudou(true)};
  const ft=$("#ed-foto");ft.onchange=async()=>{const f=await lerImg(ft.files[0],1600);if(f){d.site.topo.foto=f;edMudou(true)}};
  edFrame();edSujo()}
 function lerImg(file,W){return new Promise(res=>{if(!file)return res(null);const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const sc=Math.min(1,W/im.width),cv=document.createElement("canvas");cv.width=Math.round(im.width*sc);cv.height=Math.round(im.height*sc);const cx=cv.getContext("2d");cx.drawImage(im,0,0,cv.width,cv.height);res(cv.toDataURL(file.type==="image/png"&&W<600?"image/png":"image/jpeg",0.78))};im.onerror=()=>res(null);im.src=r.result};r.readAsDataURL(file)})}
@@ -3089,6 +3105,12 @@ function rnvLiga(c,id){const f=$("#f-rnv");if(!f)return;
  $$("[data-rnv-desf]").forEach(b=>b.onclick=()=>{const lado=b.dataset.rnvDesf;if(!b.dataset.arm){b.dataset.arm=1;b.textContent="Toque de novo para desfazer";return}const k=lado==="ent"?"entOk":"saiOk";if(c.rnv)delete c.rnv[k];hist(c,lado==="ent"?"Entrada no Renave desmarcada":"Saída no Renave desmarcada");salvar();tudo();ficha(id,"rnv")})}
 function rnvPrep(){const ov=$("#ov");ov.classList.remove("center");const cf=rnvCfg(),ad=cf.adesao||{},n=RNV_PREP.filter(x=>ad[x[0]]).length,dono=isDono();
  $("#sheet").innerHTML=`<div class="sheet-head"><div><span class="lbl">Renave · ${n} de ${RNV_PREP.length} prontos</span><h2 style="font-size:24px;margin-top:4px">Preparar a loja para o Renave</h2></div><button class="x" data-close>Fechar</button></div>
+ <details class="rnv-passos"><summary>Passo a passo da adesão (endereços oficiais)</summary><ol>
+  <li>Entre no <a href="https://credencia.serpro.gov.br/credencia-web/#/login" target="_blank" rel="noopener">Credencia do Serpro</a> com a conta gov.br e o certificado digital da empresa. Em <b>Solicitação → Nova solicitação</b>, escolha <b>Renave Concessionário/Lojista</b>, preencha as abas e anexe o termo de sigilo (TCMS) assinado.</li>
+  <li>Envie e aguarde a aprovação da Senatran. Pode demorar alguns dias.</li>
+  <li>Aprovado, contrate o Renave no <a href="https://cliente.serpro.gov.br/web/home" target="_blank" rel="noopener">Painel do Cliente Serpro</a>, com os dados do representante legal. O certificado digital é pedido para assinar o contrato.</li>
+  <li>Cadastre quem vai registrar os carros (os operadores) e comece a registrar entradas e saídas: pela sua integradora ou, quando estiver ligado, direto pelo Pátio.</li>
+ </ol><p class="muted" style="font-size:12.5px;margin:6px 0 0">Endereços oficiais do governo terminam em .gov.br.</p></details>
  <p class="muted" style="font-size:13.5px;margin-top:0">O Renave é o registro oficial de cada carro que entra e sai da loja. Para usar, a loja faz a adesão no Serpro, direto ou por uma integradora. Vá marcando o que já tem:</p>
  <div class="rnv-prep">${RNV_PREP.map(([k,t])=>`<label><input type="checkbox" data-rnv-item="${k}" ${ad[k]?"checked":""} ${dono?"":"disabled"}><span>${t}</span></label>`).join("")}</div>
  <label class="field" style="margin-top:12px">Integradora que a loja usa<input id="rnv-integ" value="${esc(cf.integ||"")}" placeholder="Ex.: o nome da empresa" ${dono?"":"disabled"}></label>
@@ -3104,6 +3126,50 @@ document.addEventListener("click",e=>{if(e.target.closest("[data-rnv-prep]")){e.
 function rnvCard(){const el=$("#rnv-card");if(!el)return;const cf=rnvCfg(),ad=cf.adesao||{},n=RNV_PREP.filter(x=>ad[x[0]]).length;
  if(!isDono()||(cf.inicio&&n===RNV_PREP.length)){el.hidden=true;return}
  el.hidden=false;el.innerHTML=`<div><b>Renave: prepare a sua loja</b><span>O registro de cada carro no Renave virou obrigatório. ${n} de ${RNV_PREP.length} itens prontos${cf.inicio?" · acompanhamento ligado":""}.</span></div><button type="button" class="btn sm" data-rnv-prep>Abrir a lista</button>`}
+
+/* ---------- cadastro: sugestões da tabela FIPE para marca, modelo e versão ---------- */
+const FS={};
+const fsMarca=n=>{let m=String(n||"").split(" - ").pop().trim();if(/^VolksWagen$/i.test(m))m="Volkswagen";return m};
+const fsBase=n=>{const w=String(n||"").split(/\s+/);return (/^(grand|range|new|space|nova|novo|land|fiat)$/i.test(w[0])&&w[1]?w[0]+" "+w[1]:w[0]).replace(/[^\wÀ-ÿ\- ]/g,"")};
+function fsDl(id,itens){let d=$("#"+id);if(!d){d=document.createElement("datalist");d.id=id;document.body.appendChild(d)}d.innerHTML=itens.slice(0,400).map(x=>`<option value="${esc(x)}"></option>`).join("")}
+async function fsIni(){const mi=$("#n-marca");if(!mi||mi.dataset.fs)return;mi.dataset.fs=1;mi.setAttribute("list","fs-marcas");["n-modelo","n-versao"].forEach((k,i)=>{const e=$("#"+k);if(e)e.setAttribute("list",i?"fs-versoes":"fs-modelos")});
+ mi.setAttribute("autocomplete","off");["n-modelo","n-versao"].forEach(k=>{const e=$("#"+k);if(e)e.setAttribute("autocomplete","off")});
+ try{const ms=await fipeGet(fipeTpN()+"/marcas");FS.marcas=ms;fsDl("fs-marcas",[...new Set(ms.map(m=>fsMarca(m.nome)))]);if(mi.value)fsModelos()}catch(e){}}
+const fipeTpN=()=>{const t=$("#n-tipo"),v=t?t.value:"Carro";return v==="Moto"?"motos":v==="Caminhão"?"caminhoes":"carros"};
+function fsAchaMarca(v){const w=fipeNorm(v);if(!w||!FS.marcas)return null;return FS.marcas.find(m=>fipeNorm(fsMarca(m.nome))===w)||FS.marcas.find(m=>fipeNorm(m.nome).split(" ").includes(w.split(" ")[0]))||null}
+async function fsModelos(){const m=fsAchaMarca(($("#n-marca")||{}).value);FS.mods=null;if(!m)return;FS.marca=m;
+ try{const r=await fipeGet(fipeTpN()+"/marcas/"+m.codigo+"/modelos");FS.mods=r.modelos||[];fsDl("fs-modelos",[...new Set(FS.mods.map(x=>fsBase(x.nome)))].sort());fsVersoes()}catch(e){}}
+function fsVersoes(){if(!FS.mods)return;const b=fipeNorm(($("#n-modelo")||{}).value);const ls=FS.mods.filter(x=>!b||fipeNorm(x.nome).startsWith(b));fsDl("fs-versoes",ls.map(x=>x.nome))}
+async function fsValor(){const vi=$("#n-versao"),ai=$("#n-ano");if(!FS.mods||!vi||!ai)return;const mo=FS.mods.find(x=>x.nome===vi.value.trim());const ano=String(ai.value||"").trim();if(!mo||ano.length!==4)return;
+ try{const an=await fipeGet(fipeTpN()+"/marcas/"+FS.marca.codigo+"/modelos/"+mo.codigo+"/anos");const a=an.find(x=>String(x.nome).startsWith(ano));if(!a)return;
+  const r=await fipeGet(fipeTpN()+"/marcas/"+FS.marca.codigo+"/modelos/"+mo.codigo+"/anos/"+a.codigo);const v=fipeNum(r.Valor),f=$("#n-fipe");if(v&&f&&!f.value){f.value=v;fsHint();toast("Tabela FIPE: "+R(v)+".")}}catch(e){}}
+function fsHint(){const h=$("#n-fipe-h");if(!h)return;const f=+(($("#n-fipe")||{}).value)||0,p=+(($("#n-preco")||{}).value)||0;
+ h.innerHTML=f?`Tabela FIPE: <b>${R(f)}</b>${p?` · seu preço é ${Math.round(p/f*100)}% da FIPE`:""}`:'<a href="#" data-fipe-abre>Ver o valor na tabela FIPE</a>'}
+document.addEventListener("change",e=>{const id=e.target.id;if(id==="n-marca"){const m=fsAchaMarca(e.target.value);if(m)e.target.value=fsMarca(m.nome);fsModelos()}else if(id==="n-modelo"){fsVersoes()}else if(id==="n-versao"||id==="n-ano"){fsValor()}else if(id==="n-tipo"){Object.keys(FS).forEach(k=>delete FS[k]);const mi=$("#n-marca");if(mi)delete mi.dataset.fs;fsIni()}});
+document.addEventListener("input",e=>{const id=e.target.id;if(id==="n-preco"||id==="n-fipe")fsHint();if(id==="n-modelo")fsVersoes()});
+document.addEventListener("focusin",e=>{if(e.target.id==="n-marca")fsIni()});
+document.addEventListener("click",e=>{if(e.target.closest("[data-fipe-abre]")){e.preventDefault();const d=document.querySelector("#fn details.mais");if(d)d.open=true;fipeAbre("n-fipe")}});
+
+/* ---------- planilha de clientes ---------- */
+function csvClientes(){const q=v=>{const t=String(v==null?"":v);return /[;"\n]/.test(t)?'"'+t.replace(/"/g,'""')+'"':t};
+ const nomeP=id=>{const p=pessoa(id);return p?p.nome:""},carroN=id=>{const c=carro(id);return c?nomeCarro(c):""};
+ const L=[["Tipo","Nome","Telefone","Origem","Etapa","Carro","Data","Vendedor","Observação"]];
+ S.leads.forEach(l=>L.push(["Contato",l.nome,l.tel,l.origem,l.etapa,l.carro?carroN(l.carro):(l.procura||""),l.data?fd(l.data)+"/"+l.data.slice(0,4):"",nomeP(l.vend),l.nota||""]));
+ S.carros.concat(S.removidos||[]).filter(c=>c.venda).forEach(c=>L.push(["Comprador",c.venda.cli,c.venda.tel||"",c.venda.loj?"Lojista":"Venda","Comprou",nomeCarro(c),fd(c.venda.data)+"/"+c.venda.data.slice(0,4),nomeP(c.venda.vend),""]));
+ const txt="﻿"+L.map(r=>r.map(q).join(";")).join("\r\n");baixar(new Blob([txt],{type:"text/csv;charset=utf-8"}),"clientes-"+(S.loja.slug||"loja")+"-"+HOJE+".csv");toast("Planilha baixada: "+(L.length-1)+" linhas.")}
+document.addEventListener("click",e=>{if(e.target.closest("[data-csv-cli]")&&isDono())csvClientes()});
+
+/* ---------- site: várias fotos no topo e foto da fachada ---------- */
+let BN_T=null,BN_I=0;
+function bnSlides(st,L){if(st.topo.estilo!=="foto")return [];const b=(st.banners||[]).filter(x=>x&&x.foto);if(!b.length)return [];return [{foto:st.topo.foto,t1:"",t2:""}].filter(x=>x.foto).concat(b)}
+function bnMostra(st,L,i){const sl=bnSlides(st,L);if(!sl.length)return;BN_I=(i+sl.length)%sl.length;const x=sl[BN_I],vt=$("#vitrine");vt.style.setProperty("--foto",`url("${x.foto}")`);
+ $("#v-slogan").textContent=x.t1||L.slogan;$("#v-subt").textContent=x.t2||st.topo.subt;$("#v-subt").hidden=!(x.t2||st.topo.subt);
+ const d=$("#v-dots");if(d){d.hidden=false;d.innerHTML=sl.map((_,k)=>`<button type="button" data-bn="${k}" aria-label="Foto ${k+1}" aria-pressed="${k===BN_I}"></button>`).join("")}}
+function bnIni(st,L){clearInterval(BN_T);const d=$("#v-dots"),sl=bnSlides(st,L);if(!sl.length){if(d)d.hidden=true;return}sl.forEach(x=>{const im=new Image();im.src=x.foto});bnMostra(st,L,0);
+ if(!matchMedia("(prefers-reduced-motion: reduce)").matches)BN_T=setInterval(()=>{if(document.hidden||$("#vitrine").hidden)return;bnMostra(SITE(S.loja),S.loja,BN_I+1)},6000)}
+document.addEventListener("click",e=>{const b=e.target.closest("[data-bn]");if(!b)return;bnMostra(SITE(S.loja),S.loja,+b.dataset.bn);clearInterval(BN_T)});
+function fachadaMostra(st,L){const box=$("#v-sobre")&&$("#v-sobre").closest(".v-box");if(!box)return;let im=$("#v-fachada");if(!im){im=document.createElement("img");im.id="v-fachada";im.alt="Fachada da loja";im.className="v-fachada";box.insertBefore(im,box.firstChild)}
+ im.hidden=!st.fachada;if(st.fachada)im.src=st.fachada;box.hidden=!(L.sobre||st.fachada)}
 /* ---------- vitrine dos lojistas ---------- */
 async function nvSiteLoj(senha){setTimeout(()=>tvNo(document.body),2500);let sh="";try{sh=senha!=null?senha:(sessionStorage.getItem("patio-loj-"+NV_COD)||"")}catch(e){}
  nvCarregando("Carregando…");
