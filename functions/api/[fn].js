@@ -67,7 +67,7 @@ async function embaralhaEquipe(eq) {
   return Promise.all((eq || []).map(async e => (e.senha && !ehHash(e.senha)) ? { ...e, senha: await hashSenha(e.senha) } : e));
 }
 // ---- o que o vendedor não vê (custo, mínimo, financeiro, parceiros) ----
-const PRIV_CARRO = ['compra', 'gastos', 'parc'];
+const PRIV_CARRO = ['compra', 'gastos', 'parc', 'crvSeg'];
 const PRIV_LISTAS = ['contas', 'despesas', 'parceiros'];
 const PRIV_CAMPOS = ['saldoIni', 'hist'];
 function semPrivado(d) {
