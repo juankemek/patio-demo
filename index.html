@@ -107,6 +107,12 @@ textarea{resize:vertical}
 .rnv-prep{display:flex;flex-direction:column;gap:8px}.rnv-prep label{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);border-radius:10px;padding:10px;font-size:14px;cursor:pointer}.rnv-prep input{width:18px;height:18px;flex:none;margin-top:1px}
 .rnv-seg{margin-top:12px;border:1px solid #fdba74;background:#fff7ed;color:#7c2d12;border-radius:12px;padding:10px 12px;font-size:13.5px;line-height:1.45}
 :root[data-theme="dark"] .rnv-seg{background:#3b2414;border-color:#9a3412;color:#fed7aa}
+.rnv-ajuda{margin-top:12px;border:1px solid #86efac;background:#f0fdf4;border-radius:12px;padding:12px;display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.rnv-ajuda>div{flex:1 1 220px;min-width:0}.rnv-ajuda b{display:block;font-size:14.5px;color:#14532d}.rnv-ajuda span{display:block;font-size:13px;color:#166534;line-height:1.45;margin-top:2px}
+.rnv-ajuda .btn{flex:0 0 auto}
+:root[data-theme="dark"] .rnv-ajuda{background:#14261b;border-color:#166534}:root[data-theme="dark"] .rnv-ajuda b{color:#bbf7d0}:root[data-theme="dark"] .rnv-ajuda span{color:#86efac}
+.rnv-card-bts{display:flex;gap:8px;flex-wrap:wrap}
+@media(max-width:520px){.rnv-ajuda .btn{width:100%}}
 .rnv-card{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;border:1px solid var(--line);background:var(--panel,var(--bg));border-radius:12px;padding:12px 14px;margin-bottom:14px;font-size:14px}
 .rnv-card span{display:block;color:var(--muted);font-size:13.5px}
 .fipe-hint{font-size:12.5px;color:var(--muted);font-weight:400}.fipe-hint a{color:var(--accent,#2563eb)}
@@ -3071,7 +3077,7 @@ function rnvPill(c){if(!rnvOn()||c.saida)return "";const st=rnvSt(c);
 function rnvBox(t,st,ok,falta){return `<div class="rnv-box rnv-${st}"><b>${t}</b><span>${st==="ok"?"Registrada em "+fd(ok)+" ✓":st==="pronto"?"Dados completos. Pronta para registrar.":"Falta: "+esc(falta.join(", "))}</span></div>`}
 function rnvHTML(c){const r=c.rnv||{},cr=c.crv||{},v=c.venda||{},st=rnvSt(c),dono=isDono(),docV=v.cnpj||v.cpf||"",tdV=v.tdoc||(rnvDoc(docV).length>11||v.loj?"CNPJ":"CPF");
  const kmd=r.kmData||(c.entrada?c.entrada+"T09:00":"");
- return `${rnvOn()?"":`<div class="rnv-aviso">O acompanhamento do Renave ainda não foi ligado nesta loja. ${dono?'<button type="button" class="btn xs soft" data-rnv-prep>Preparar a loja para o Renave</button>':"Peça para o dono ligar em Preparar a loja para o Renave."}</div>`}
+ return `${rnvOn()?"":`<div class="rnv-aviso">O acompanhamento do Renave ainda não foi ligado nesta loja. ${dono?'<button type="button" class="btn xs soft" data-rnv-prep>Preparar a loja para o Renave</button>':"Peça para o dono ligar em Preparar a loja para o Renave."}${dono?` <a class="btn xs wa-btn" target="_blank" rel="noopener" href="${rnvAjudaLink()}">Ajuda com a adesão</a>`:""}</div>`}
  <div class="rnv-sts">${rnvBox("Entrada no estoque",st.ent,r.entOk,rnvFalta(c,"ent"))}${c.venda?rnvBox("Saída por venda",st.sai,r.saiOk,rnvFalta(c,"sai")):""}</div>
  <form class="form" id="f-rnv">
  <h3 class="full rnv-h">Entrada no estoque</h3>
@@ -3130,8 +3136,12 @@ function rnvPrep(){const ov=$("#ov");ov.classList.remove("center");const cf=rnvC
  <label class="field" style="margin-top:12px">Integradora que a loja usa<input id="rnv-integ" value="${esc(cf.integ||"")}" placeholder="Ex.: o nome da empresa" ${dono?"":"disabled"}></label>
  <label class="sup-tg" style="margin-top:12px"><input type="checkbox" id="rnv-on" ${cf.inicio?"checked":""} ${dono?"":"disabled"}><span><b>Acompanhar o Renave no Pátio</b><small>${cf.inicio?"Ligado desde "+fd(cf.inicio)+". O painel avisa os carros que faltam registrar.":"Ligue quando a loja já estiver registrando no Renave. O painel passa a avisar os carros que faltam registrar."}</small></span></label>
  <div class="rnv-seg"><b>Cuidado com o certificado digital.</b> Com o certificado A1 e a senha, alguém consegue assinar documentos em nome da sua empresa. Só entregue para quem você confia, por um meio seguro, e peça para apagarem depois do cadastro.</div>
- <div class="docx">Dúvidas sobre a adesão? Fale com o Juan pelo WhatsApp que ele te ajuda.</div>`;
+ ${rnvAjudaHTML()}`;
  ov.hidden=false}
+/* ajuda na adesão: representante da Renave Fácil no RS */
+const RNV_AJUDA={nome:"Andréia",empresa:"Renave Fácil",regiao:"RS",wpp:"5551991741335"};
+function rnvAjudaLink(){const lj=(S&&S.loja&&S.loja.nome)||"";return "https://wa.me/"+RNV_AJUDA.wpp+"?text="+encodeURIComponent("Olá, Andréia! Sou "+(lj?"da "+lj:"lojista")+" e uso o Pátio, do Juan. Quero ajuda para adequar a minha loja ao Renave.")}
+function rnvAjudaHTML(){return `<div class="rnv-ajuda"><div><b>Quer ajuda para fazer a adesão?</b><span>A ${RNV_AJUDA.nome}, representante da ${RNV_AJUDA.empresa} no ${RNV_AJUDA.regiao}, cuida de todo o processo para a sua loja.</span></div><a class="btn wa-btn" target="_blank" rel="noopener" href="${rnvAjudaLink()}"><svg class="i"><use href="#i-chat"/></svg>Falar com a ${RNV_AJUDA.nome}</a></div>`}
 document.addEventListener("change",e=>{const t=e.target;if(!S||!S.loja)return;
  if(t.dataset&&t.dataset.rnvItem){S.loja.renave=Object.assign({},rnvCfg());S.loja.renave.adesao=Object.assign({},S.loja.renave.adesao||{},{[t.dataset.rnvItem]:t.checked});salvar();rnvPrep();rnvCard();return}
  if(t.id==="rnv-on"){S.loja.renave=Object.assign({},rnvCfg(),{inicio:t.checked?HOJE:""});salvar();rnvPrep();tudo();toast(t.checked?"Acompanhamento do Renave ligado.":"Acompanhamento do Renave desligado.");return}
@@ -3139,7 +3149,7 @@ document.addEventListener("change",e=>{const t=e.target;if(!S||!S.loja)return;
 document.addEventListener("click",e=>{if(e.target.closest("[data-rnv-prep]")){e.preventDefault();rnvPrep()}});
 function rnvCard(){const el=$("#rnv-card");if(!el)return;const cf=rnvCfg(),ad=cf.adesao||{},n=RNV_PREP.filter(x=>ad[x[0]]).length;
  if(!isDono()||(cf.inicio&&n===RNV_PREP.length)){el.hidden=true;return}
- el.hidden=false;el.innerHTML=`<div><b>Renave: prepare a sua loja</b><span>O registro de cada carro no Renave virou obrigatório. ${n} de ${RNV_PREP.length} itens prontos${cf.inicio?" · acompanhamento ligado":""}.</span></div><button type="button" class="btn sm" data-rnv-prep>Abrir a lista</button>`}
+ el.hidden=false;el.innerHTML=`<div><b>Renave: prepare a sua loja</b><span>O registro de cada carro no Renave virou obrigatório. ${n} de ${RNV_PREP.length} itens prontos${cf.inicio?" · acompanhamento ligado":""}.</span></div><div class="rnv-card-bts"><button type="button" class="btn sm" data-rnv-prep>Abrir a lista</button>${cf.inicio?"":`<a class="btn sm wa-btn" target="_blank" rel="noopener" href="${rnvAjudaLink()}">Pedir ajuda</a>`}</div>`}
 
 /* ---------- cadastro: sugestões da tabela FIPE para marca, modelo e versão ---------- */
 const FS={};
