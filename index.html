@@ -700,6 +700,21 @@ html.previa #back-painel,html.previa .aj-btn{display:none!important}
 #vitrine.sem-busca .v-search,#vitrine.sem-parcela .parc,#vitrine.sem-etiquetas .ph .tags,#vitrine.sem-sobre .v-about{display:none!important}
 .v-logo img{width:100%;height:100%;object-fit:contain;border-radius:inherit;background:#fff}
 .v-logo.tem-img{background:#fff;padding:0;overflow:hidden}
+/* topo do site: logo grande sem caixa, nome em destaque, sem cidade */
+#vitrine .v-top .in{padding-block:10px;gap:16px}
+#vitrine .v-logo.tem-img{display:flex;align-items:center;width:auto;height:auto;max-width:200px;background:transparent;border-radius:0;box-shadow:none;overflow:visible;flex:none}
+#vitrine .v-logo.tem-img img{display:block;width:auto;height:64px;max-width:200px;object-fit:contain;background:transparent;border-radius:0}
+#vitrine .v-logo:not(.tem-img){width:52px;height:52px;font-size:22px;border-radius:12px}
+#vitrine .v-name{font-size:22px;letter-spacing:.06em;font-weight:800;line-height:1.05}
+#vitrine .v-name small{display:none}
+@media (max-width:520px){#vitrine .v-logo.tem-img{max-width:130px}#vitrine .v-logo.tem-img img{height:46px;max-width:130px}#vitrine .v-name{font-size:16px;letter-spacing:.02em}#vitrine .v-name>span{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}#vitrine .v-top .tema-txt{display:none}#vitrine .v-top .in{gap:10px}}
+/* fotos dos carros: 4:3, carro inteiro com fundo desfocado da própria foto */
+#vitrine .ph,.det .ph{aspect-ratio:4/3}
+.pic img.pic-fundo{object-fit:cover;filter:blur(18px) saturate(1.1);transform:scale(1.15);z-index:0;opacity:.9}
+.pic img.pic-carro{object-fit:contain;z-index:1}
+#vitrine .cards{grid-template-columns:repeat(auto-fill,minmax(max(270px,calc((100% - 40px)/3)),1fr));gap:20px}
+#vitrine.cards-compacto .cards{grid-template-columns:repeat(auto-fill,minmax(max(220px,calc((100% - 60px)/4)),1fr))}
+#vitrine.cards-grande .cards{grid-template-columns:repeat(auto-fill,minmax(max(300px,calc((100% - 20px)/2)),1fr))}
 .v-redes{display:flex;gap:10px}
 .v-redes a{color:inherit}
 .v-zap{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:29;width:56px;height:56px;border-radius:50%;background:#16a34a;color:#fff;display:grid;place-items:center;box-shadow:0 10px 24px -8px rgba(0,0,0,.45)}
@@ -1434,7 +1449,7 @@ function inkFor(hex){hex=/^#[0-9a-f]{6}$/i.test(hex||"")?hex:"#dc2626";const n=p
 function aplicaMarca(){if(!/^#[0-9a-f]{6}$/i.test(S.loja.cor||""))S.loja.cor="#dc2626";document.documentElement.style.setProperty("--brand",S.loja.cor);document.documentElement.style.setProperty("--brand-ink",inkFor(S.loja.cor))}
 const FOTOS={"Kwid": "Renault Kwid 1.0 Zen (2022) (52721423597).jpg", "T-Cross": "Volkswagen T-Cross IMG001.jpg", "Toro": "2021 Fiat Toro Freedom 1.8 4X2 - (2).jpg", "Onix": "Chevrolet Onix (second generation, front view).jpg", "HB20": "HB20X 2nd Generation Frontal View.jpg", "Corolla": "Toyota Corolla Limousine Hybrid Genf 2019 1Y7A5582.jpg", "Renegade": "Jeep Renegade 1.8 Sport 2018 (43134425314).jpg", "Gol": "VW Gol G8.jpg", "Fit": "Honda FIT 13G (DBA-GK3) front.JPG", "Argo": "Fiat Argo 1.3 Drive ELX 2018 (26635198997).jpg", "Tracker": "Chevrolet Tracker, Front Right, 05-12-2021.jpg"};
 const fotoURL=(f,w)=>"https://commons.wikimedia.org/wiki/Special:FilePath/"+encodeURIComponent(f.replace(/ /g,"_"))+"?width="+(w||800);
-function carSVG(c,big){const cor=PINTURA[c.pintura]||"#888";const f=NUVEM?null:FOTOS[c.modelo];const src=(c.fotos&&c.fotos[0])||(f?fotoURL(f,big?1200:640):"");return `<div class="pic" style="--paint:${cor}" role="img" aria-label="${esc(c.marca+" "+c.modelo)}"><span>${esc(c.modelo)}</span>${src?`<img src="${src}" alt="" loading="lazy" decoding="async" onerror="this.remove()">`:""}<b></b></div>`}
+function carSVG(c,big){const cor=PINTURA[c.pintura]||"#888";const f=NUVEM?null:FOTOS[c.modelo];const src=(c.fotos&&c.fotos[0])||(f?fotoURL(f,big?1200:640):"");return `<div class="pic" style="--paint:${cor}" role="img" aria-label="${esc(c.marca+" "+c.modelo)}"><span>${esc(c.modelo)}</span>${src?`<img class="pic-fundo" src="${src}" alt="" aria-hidden="true" loading="lazy" decoding="async" onerror="this.remove()"><img class="pic-carro" src="${src}" alt="" loading="lazy" decoding="async" onerror="this.remove()">`:""}<b></b></div>`}
 function diasPill(c){const d=dias(c);if(c.venda)return `<span class="pill p-mut">vendeu em ${d} d</span>`;const k=d>90?"p-crit":d>60?"p-warn":"p-ok";return `<span class="pill ${k}">${d} dias</span>`}
 function stPill(s){return `<span class="pill ${{"Disponível":"p-ok","Reservado":"p-warn","Preparação":"p-info","Vendido":"p-mut"}[s]}">${s}</span>`}
 function hbars(el,rows,fmt){const max=Math.max(1,...rows.map(r=>r[1]));$(el).innerHTML=rows.map(r=>`<div class="r"><span>${esc(r[0])}</span><span class="trk"><i style="width:${Math.max(2,r[1]/max*100)}%;${r[2]?"background:"+r[2]:""}"></i></span><span class="num" style="text-align:right">${fmt(r[1])}</span></div>`).join("")||`<p class="muted">Sem dados ainda.</p>`}
@@ -1501,7 +1516,7 @@ function verCarro(id){
     <form class="form" id="f-agv" style="margin-top:10px"><label class="field full">Seu nome<input id="agv-n" required></label><label class="field full">WhatsApp<input id="agv-t" type="tel" inputmode="tel" data-tel autocomplete="tel" required></label><label class="field">Dia<input id="agv-d" type="date" required value="${addD(HOJE,1)}" min="${HOJE}"></label><label class="field">Horário<select id="agv-h"><option>09:00</option><option>10:30</option><option selected>14:00</option><option>15:30</option><option>17:00</option></select></label><label class="field full">Tipo<select id="agv-tp"><option>Test drive</option><option>Visita</option></select></label><button class="btn full" type="submit" style="justify-content:center;background:var(--brand);color:var(--brand-ink)">Pedir agendamento</button></form></details>
   </div></div>`;
  ov.hidden=false;
- $$("[data-gal]").forEach(b=>b.onclick=()=>{const im=$("#gal-main img");if(im)im.src=c.fotos[+b.dataset.gal];$$("[data-gal]").forEach(x=>x.setAttribute("aria-pressed",x===b))});
+ $$("[data-gal]").forEach(b=>b.onclick=()=>{$$("#gal-main img").forEach(im=>im.src=c.fotos[+b.dataset.gal]);$$("[data-gal]").forEach(x=>x.setAttribute("aria-pressed",x===b))});
  const upd=()=>{const e=+$("#sim-e").value/100,n=+$("#sim-n").value;$("#sim-ent").textContent=R(c.preco*e)+" ("+Math.round(e*100)+"%)";$("#sim-p").textContent=n+"x de "+R(pmt(c.preco*(1-e),SITE(L).fin.taxa/100,n))};
  $("#sim-e").oninput=upd;$("#sim-n").onchange=upd;upd();
  $("#f-agv").onsubmit=e=>{e.preventDefault();const n=$("#agv-n").value.trim(),t=$("#agv-t").value.trim();
@@ -2393,7 +2408,7 @@ function renderLoja(){const d=edDraft(),st=d.site;
  <button class="btn danger" type="button" id="reset">Restaurar dados de exemplo</button>`;
  $("#ed-url").textContent="https://"+urlSite(d);
  const dz=$("#reset");dz.onclick=resetDemo;
- const lg=$("#ed-logo");lg.onchange=async()=>{const f=await lerImg(lg.files[0],420);if(f){d.site.logo=f;edMudou(true)}};
+ const lg=$("#ed-logo");lg.onchange=async()=>{const f=await lerLogo(lg.files[0],480);if(f){d.site.logo=f;edMudou(true)}};
  const rm=$("#ed-logo-rm");if(rm)rm.onclick=()=>{d.site.logo="";edMudou(true)};
  const bn=$("#ed-bn");if(bn)bn.onchange=async()=>{const f=await lerImg(bn.files[0],1600);if(f){d.site.banners=(d.site.banners||[]).concat({foto:f,t1:"",t2:""}).slice(0,4);edMudou(true)}};
  $$("[data-bn-rm]").forEach(b=>b.onclick=()=>{d.site.banners.splice(+b.dataset.bnRm,1);edMudou(true)});
@@ -2402,6 +2417,20 @@ function renderLoja(){const d=edDraft(),st=d.site;
  const fcr=$("#ed-fach-rm");if(fcr)fcr.onclick=()=>{d.site.fachada="";edMudou(true)};
  const ft=$("#ed-foto");ft.onchange=async()=>{const f=await lerImg(ft.files[0],1600);if(f){d.site.topo.foto=f;edMudou(true)}};
  edFrame();edSujo()}
+/* logo: vira PNG, tira o fundo liso (cor das bordas) e corta as sobras */
+function lerLogo(file,W){return new Promise(res=>{if(!file)return res(null);const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{try{
+ const sc=Math.min(1,W/Math.max(im.width,im.height)),w=Math.max(1,Math.round(im.width*sc)),h=Math.max(1,Math.round(im.height*sc)),cv=document.createElement("canvas");cv.width=w;cv.height=h;const cx=cv.getContext("2d");cx.drawImage(im,0,0,w,h);
+ const id=cx.getImageData(0,0,w,h),p=id.data,borda=[];for(let x=0;x<w;x++){borda.push((x)*4,((h-1)*w+x)*4)}for(let y=0;y<h;y++){borda.push((y*w)*4,(y*w+w-1)*4)}
+ const opacas=borda.filter(i=>p[i+3]>200);
+ if(opacas.length>borda.length*.6){const m=[0,1,2].map(k=>opacas.reduce((s,i)=>s+p[i+k],0)/opacas.length);const dif=i=>Math.abs(p[i]-m[0])+Math.abs(p[i+1]-m[1])+Math.abs(p[i+2]-m[2]);
+  const lisa=opacas.filter(i=>dif(i)<45).length>opacas.length*.85;
+  if(lisa){const vis=new Uint8Array(w*h),fila=[];borda.forEach(i=>{const q=i/4;if(!vis[q]&&p[i+3]>0&&dif(i)<60){vis[q]=1;fila.push(q)}});
+   while(fila.length){const q=fila.pop(),x=q%w,y=(q-x)/w,i=q*4,d=dif(i);p[i+3]=d<30?0:Math.min(p[i+3],Math.round((d-30)/30*255));
+    [[x+1,y],[x-1,y],[x,y+1],[x,y-1]].forEach(([a,b])=>{if(a<0||b<0||a>=w||b>=h)return;const n=b*w+a;if(vis[n])return;vis[n]=1;if(p[n*4+3]>0&&dif(n*4)<60)fila.push(n)})}
+   cx.putImageData(id,0,0)}}
+ const d2=cx.getImageData(0,0,w,h).data;let x0=w,y0=h,x1=-1,y1=-1;for(let y=0;y<h;y++)for(let x=0;x<w;x++)if(d2[(y*w+x)*4+3]>16){if(x<x0)x0=x;if(x>x1)x1=x;if(y<y0)y0=y;if(y>y1)y1=y}
+ if(x1<0)return res(cv.toDataURL("image/png"));const out=document.createElement("canvas");out.width=x1-x0+1;out.height=y1-y0+1;out.getContext("2d").drawImage(cv,x0,y0,out.width,out.height,0,0,out.width,out.height);res(out.toDataURL("image/png"))
+ }catch(e){lerImg(file,W).then(res)}};im.onerror=()=>res(null);im.src=r.result};r.readAsDataURL(file)})}
 function lerImg(file,W){return new Promise(res=>{if(!file)return res(null);const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const sc=Math.min(1,W/im.width),cv=document.createElement("canvas");cv.width=Math.round(im.width*sc);cv.height=Math.round(im.height*sc);const cx=cv.getContext("2d");cx.drawImage(im,0,0,cv.width,cv.height);res(cv.toDataURL(file.type==="image/png"&&W<600?"image/png":"image/jpeg",0.78))};im.onerror=()=>res(null);im.src=r.result};r.readAsDataURL(file)})}
 function edMudou(redesenha){edSujo();if(redesenha){const op=[...$$("#ed-ctrl details")].map(x=>x.open);renderLoja();$$("#ed-ctrl details").forEach((x,i)=>x.open=op[i])}clearTimeout(ED_T);ED_T=setTimeout(edEnvia,120)}
 function edEnvia(){const f=$("#ed-if");if(f&&f.contentWindow)try{f.contentWindow.postMessage({tipo:"patio-previa",carros:NUVEM?S.carros:undefined,loja:edDraft()},"*")}catch(e){}$("#ed-url").textContent="https://"+urlSite(edDraft())}
@@ -2549,7 +2578,7 @@ function onbRender(){const b=$("#onb-body"),P=OB.p;$("#onb-erro").hidden=true;
  b.innerHTML=h;const f=b.querySelector("input:not([type=checkbox]):not([type=file])");if(f&&P>0&&P<7&&matchMedia("(min-width:700px)").matches)setTimeout(()=>f.focus(),60);
  const sn=$("#ob-senha");if(sn)$("#ob-ver").onclick=()=>{sn.type=sn.type==="password"?"text":"password";$("#ob-ver").textContent=sn.type==="password"?"Mostrar":"Esconder"};
  const dn=$("#ob-dnome");if(dn)dn.oninput=()=>{const u=$("#ob-user");if(!u.dataset.mexeu)u.value=slugTxt(dn.value.split(" ")[0])};const us=$("#ob-user");if(us)us.oninput=()=>{us.dataset.mexeu=1};
- const lg=$("#ob-logo");if(lg)lg.onchange=async()=>{const u=await lerImg(lg.files[0],400);if(u){OB.logo=u;onbColeta();onbRender()}};
+ const lg=$("#ob-logo");if(lg)lg.onchange=async()=>{const u=await lerLogo(lg.files[0],480);if(u){OB.logo=u;onbColeta();onbRender()}};
  const lx=$("#ob-logo-x");if(lx)lx.onclick=()=>{OB.logo="";onbColeta();onbRender()};
 }
 function obVendUsers(){const usados=[OB.dono.usuario];return OB.vend.filter(v=>v.trim()).map(v=>{let b=slugTxt(v.split(" ")[0])||"vendedor",u=b,i=2;while(usados.includes(u))u=b+i++;usados.push(u);return{nome:v.trim(),usuario:u}})}
