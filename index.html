@@ -707,6 +707,17 @@ html.previa #back-painel,html.previa .aj-btn{display:none!important}
 #vitrine .v-logo:not(.tem-img){width:52px;height:52px;font-size:22px;border-radius:12px}
 #vitrine .v-name{font-size:22px;letter-spacing:.06em;font-weight:800;line-height:1.05}
 #vitrine .v-name small{display:none}
+#vitrine{--accent:var(--brand);--accent-ink:var(--brand-ink);--accent-soft:color-mix(in srgb,var(--brand) 12%,var(--surface,#fff))}
+.v-faixa{background:var(--brand);color:var(--brand-ink);font-size:13.5px}
+.v-faixa .in{max-width:1180px;margin:0 auto;padding:7px 16px;text-align:center;line-height:1.35}
+#vitrine .v-top nav a.v-contato-wa{background:#16a34a;border-color:#16a34a;color:#fff}
+#vitrine .v-top nav a.v-contato-wa:hover{background:#15803d}
+.v-mapa{margin-top:18px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.v-mapa-tx{padding:22px;display:flex;flex-direction:column;gap:6px;justify-content:center}
+.v-mapa-tx h2{margin:2px 0 0;font-size:20px;line-height:1.25}.v-mapa-tx p{margin:0 0 10px}.v-mapa-tx .btn{align-self:flex-start}
+.v-mapa-fr{min-height:300px;background:var(--sunk)}.v-mapa-fr iframe{display:block;width:100%;height:100%;min-height:300px;border:0}
+@media (max-width:720px){.v-mapa{grid-template-columns:1fr}.v-mapa-fr,.v-mapa-fr iframe{min-height:240px}.v-mapa-tx .btn{align-self:stretch;justify-content:center}.v-faixa{font-size:12.5px}}
+.ed-rec{margin:6px 0 8px}.ed-rec small,.ed-rec-o{display:block;font-size:12px;color:var(--muted);margin-bottom:4px}
 @media (max-width:520px){#vitrine .v-logo.tem-img{max-width:130px}#vitrine .v-logo.tem-img img{height:46px;max-width:130px}#vitrine .v-name{font-size:16px;letter-spacing:.02em}#vitrine .v-name>span{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}#vitrine .v-top .tema-txt{display:none}#vitrine .v-top .in{gap:10px}}
 /* fotos dos carros: 4:3, carro inteiro com fundo desfocado da própria foto */
 #vitrine .ph,.det .ph{aspect-ratio:4/3}
@@ -1000,6 +1011,7 @@ html.modo-loj #cards .parc.num{display:none}
 
 <!-- ============ VITRINE ============ -->
 <section id="vitrine">
+  <div class="v-faixa" id="v-faixa" hidden><div class="in"><b>Horário de atendimento:</b> <span id="v-faixa-t"></span></div></div>
   <header class="v-top"><div class="in">
     <div class="v-logo" id="v-logo">AS</div>
     <div class="v-name"><span id="v-nome">Auto Sul Veículos</span><small id="v-cid">Pelotas/RS</small></div>
@@ -1037,6 +1049,7 @@ html.modo-loj #cards .parc.num{display:none}
         <div><b>WhatsApp</b><div class="muted num" id="v-wpp"></div></div>
       </div></div>
     </div>
+    <section class="v-mapa" id="v-mapa" hidden><div class="v-mapa-tx"><span class="lbl">Como chegar</span><h2 id="v-mapa-end"></h2><p class="muted" id="v-mapa-hor"></p><a class="btn" id="v-mapa-rota" target="_blank" rel="noopener">Abrir rota no mapa</a></div><div class="v-mapa-fr" id="v-mapa-fr"></div></section>
     <footer class="v-foot"><span>© 2026 <span id="v-nome3">Auto Sul Veículos</span> · <a href="#" data-termos="site">Privacidade</a></span><details><summary style="cursor:pointer">Créditos das fotos</summary><p style="margin-top:8px;max-width:60ch">Fotos ilustrativas da Wikimedia Commons, sob licenças Creative Commons (CC BY / CC BY-SA). Autoria e licença de cada foto na página do arquivo:</p><ul id="creditos" style="margin:6px 0 0;padding-left:18px"></ul></details><span class="v-redes" id="v-redes"></span><span id="v-rodape"></span><span>Site feito com Pátio</span></footer>
     <a class="v-zap" id="v-zap" href="#" target="_blank" rel="noopener" aria-label="Falar no WhatsApp" hidden><svg class="i"><use href="#i-chat"/></svg></a>
   </main>
@@ -1456,7 +1469,7 @@ function hbars(el,rows,fmt){const max=Math.max(1,...rows.map(r=>r[1]));$(el).inn
 
 /* ---------- VITRINE ---------- */
 const SITE_PADRAO={dominio:"",logo:"",fonte:"larga",topo:{estilo:"claro",foto:"",alinhar:"centro",eyebrow:"Seminovos em {cidade}",subt:"Escolha seu próximo carro, simule as parcelas e fale com a gente no WhatsApp ou agende um test drive."},
- destaques:{qtd:true,d2v:"3 meses",d2t:"de garantia de motor e câmbio",d3v:"Laudo",d3t:"cautelar em todos"},mostrar:{busca:true,parcela:true,etiquetas:true,sobre:true,simulador:true,zap:true,faq:true,procura:true},
+ destaques:{qtd:true,d2v:"3 meses",d2t:"de garantia de motor e câmbio",d3v:"Laudo",d3t:"cautelar em todos"},mostrar:{busca:true,parcela:true,etiquetas:true,sobre:true,simulador:true,zap:true,faq:true,procura:true,mapa:true,horario:true},
  fin:{entrada:30,prazo:48,taxa:1.89},cards:"normal",ordem:"rec",textos:{contato:"Contato",aviso:"Preços à vista. Parcelas simuladas com {entrada}% de entrada em {prazo}x.",rodape:"",zap:"Olá! Vim pelo site da {loja}."},redes:{insta:"",face:""}};
 function mescla(a,b){const o=JSON.parse(JSON.stringify(a));Object.keys(b||{}).forEach(k=>{o[k]=(b[k]&&typeof b[k]==="object"&&!Array.isArray(b[k])&&o[k]&&typeof o[k]==="object")?mescla(o[k],b[k]):b[k]});return o}
 const SITE=L=>mescla(SITE_PADRAO,L.site||{});
@@ -1475,13 +1488,32 @@ function seoSite(c){const L=S.loja,st=SITE(L),cid=(L.cid||"").split("/")[0],url=
 const faqTxt=t=>String(t||"").replace("{horario}",S.loja.hor||"Seg a sex em horário comercial").replace("{loja}",S.loja.nome||"a loja");
 const urlSite=L=>{const st=SITE(L);if(NUVEM&&!st.dominio&&(NV_COD||NV.codigo))return location.host+"/l/"+(NV_COD||NV.codigo);return st.dominio?st.dominio.replace(/^https?:\/\//,"").replace(/\/$/,""):(L.slug||"sualoja")+".patio.app"};
 let ORD_MEXEU=false,PREVIA=false;
+/* extras do site: faixa de horário, mapa, ícone da aba, botão verde de contato */
+function vtExtras(st,L){const fx=$("#v-faixa");if(fx){const on=st.mostrar.horario&&L.hor;fx.hidden=!on;if(on)$("#v-faixa-t").textContent=L.hor}
+ const mp=$("#v-mapa");if(mp){const end=[L.end,L.cid].filter(Boolean).join(", "),on=st.mostrar.mapa&&L.end;mp.hidden=!on;
+  if(on){$("#v-mapa-end").textContent=L.end;$("#v-mapa-hor").textContent=[L.cid,L.hor].filter(Boolean).join(" · ");$("#v-mapa-rota").href="https://www.google.com/maps/dir/?api=1&destination="+encodeURIComponent(end);
+   const fr=$("#v-mapa-fr");if(fr.dataset.q!==end){fr.dataset.q=end;fr.innerHTML=`<iframe title="Mapa da loja" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=${encodeURIComponent(end)}&output=embed"></iframe>`}}}
+ const ct=$("#v-contato");if(ct)ct.classList.add("v-contato-wa");
+ {let ic=document.getElementById("fav");if(!ic){ic=document.createElement("link");ic.id="fav";ic.rel="icon";document.head.appendChild(ic)}
+  const cor=/^#[0-9a-f]{6}$/i.test(L.cor||"")?L.cor:"#dc2626",svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="${cor}"/><text x="32" y="42" font-family="Arial,sans-serif" font-weight="700" font-size="28" text-anchor="middle" fill="${inkFor(cor)}">${esc(ini(L.nome||"P"))}</text></svg>`;
+  const href=st.logo||"data:image/svg+xml,"+encodeURIComponent(svg);if(ic.getAttribute("href")!==href){ic.setAttribute("href",href);ic.type=st.logo?(st.logo.slice(5,st.logo.indexOf(";"))||"image/png"):"image/svg+xml"}}}
+/* cores do logo: as mais marcantes, para recomendar como cor da marca */
+function logoCores(url){return new Promise(res=>{if(!url)return res([]);const im=new Image();im.onload=()=>{try{const N=72,sc=N/Math.max(im.width,im.height),w=Math.max(1,Math.round(im.width*sc)),h=Math.max(1,Math.round(im.height*sc)),cv=document.createElement("canvas");cv.width=w;cv.height=h;const cx=cv.getContext("2d");cx.drawImage(im,0,0,w,h);
+ const d=cx.getImageData(0,0,w,h).data,bk={},neu={};for(let i=0;i<d.length;i+=4){if(d[i+3]<200)continue;const r=d[i],g=d[i+1],b=d[i+2],mx=Math.max(r,g,b),mn=Math.min(r,g,b),l=(mx+mn)/510,sat=mx?(mx-mn)/mx:0;
+  if(l>.93)continue;const k=(r>>4)+","+(g>>4)+","+(b>>4),alvo=sat>.25&&l>.12?bk:neu;const o=alvo[k]||(alvo[k]={n:0,r:0,g:0,b:0,s:0});o.n++;o.r+=r;o.g+=g;o.b+=b;o.s+=sat}
+ const hx=o=>"#"+[o.r,o.g,o.b].map(v=>Math.round(v/o.n).toString(16).padStart(2,"0")).join("");
+ const lista=Object.values(bk).map(o=>({o,peso:o.n*(.5+o.s/o.n)})).sort((a,b)=>b.peso-a.peso),out=[];
+ const dist=(a,b)=>{const p=x=>[1,3,5].map(i=>parseInt(x.slice(i,i+2),16));const A=p(a),B=p(b);return Math.hypot(A[0]-B[0],A[1]-B[1],A[2]-B[2])};
+ for(const {o} of lista){if(o.n<3)break;const c=hx(o);if(out.every(x=>dist(x,c)>70))out.push(c);if(out.length>=3)break}
+ const nz=Object.values(neu).sort((a,b)=>b.n-a.n)[0];if(nz&&nz.n>8){const c=hx(nz);if(out.every(x=>dist(x,c)>70)&&out.length<4)out.push(c)}
+ res(out)}catch(e){res([])}};im.onerror=()=>res([]);im.src=url})}
 function renderVitrine(){normLoja();
  const L=S.loja,st=SITE(L);aplicaMarca();
  const vt=$("#vitrine");vt.className=["topo-"+st.topo.estilo,st.topo.alinhar==="esquerda"?"alinha-esq":"","fonte-"+st.fonte,"cards-"+st.cards,st.mostrar.busca?"":"sem-busca",st.mostrar.parcela?"":"sem-parcela",st.mostrar.etiquetas?"":"sem-etiquetas",st.mostrar.sobre?"":"sem-sobre"].filter(Boolean).join(" ");
  vt.style.setProperty("--foto",st.topo.foto?`url("${st.topo.foto}")`:"none");
  $("#v-logo").classList.toggle("tem-img",!!st.logo);
  $("#v-logo").innerHTML=st.logo?`<img src="${st.logo}" alt="">`:esc(ini(L.nome));$("#v-nome").textContent=L.nome;$("#v-nome2").textContent=L.nome;$("#v-nome3").textContent=L.nome;
- $("#v-cid").textContent=L.cid;$("#v-eyebrow").textContent=st.topo.eyebrow.replace("{cidade}",L.cid);$("#v-subt").textContent=st.topo.subt;$("#v-subt").hidden=!st.topo.subt;$("#v-slogan").textContent=L.slogan;$("#v-sobre").textContent=L.sobre||"";$("#v-sobre").closest(".v-box").hidden=!L.sobre;fachadaMostra(st,L);setTimeout(()=>bnIni(st,L),0);$("#v-end").textContent=L.end||"";$("#v-end").parentElement.hidden=!L.end;$("#v-hor").textContent=L.hor||"";$("#v-hor").parentElement.hidden=!L.hor;$("#v-wpp").textContent=L.wpp;const zp="https://wa.me/55"+L.wpp.replace(/\D/g,"")+"?text="+encodeURIComponent(st.textos.zap.replace("{loja}",L.nome));$("#v-contato").href=zp;$("#v-contato-t").textContent=st.textos.contato||"Contato";$("#v-zap").href=zp;$("#v-zap").hidden=!st.mostrar.zap;$("#v-aviso").textContent=(st.textos.aviso||"").replace("{entrada}",st.fin.entrada).replace("{prazo}",st.fin.prazo);$("#v-rodape").textContent=st.textos.rodape;$("#v-redes").innerHTML=[st.redes.insta?`<a href="${esc(/^https?:/.test(st.redes.insta)?st.redes.insta:"https://instagram.com/"+st.redes.insta.replace("@",""))}" target="_blank" rel="noopener">Instagram</a>`:"",st.redes.face?`<a href="${esc(/^https?:/.test(st.redes.face)?st.redes.face:"https://facebook.com/"+st.redes.face)}" target="_blank" rel="noopener">Facebook</a>`:""].join("");$("#creditos").innerHTML=Object.entries(FOTOS).map(([m,f])=>`<li><a href="https://commons.wikimedia.org/wiki/File:${encodeURIComponent(f.replace(/ /g,"_"))}" target="_blank" rel="noopener">${esc(m)}: ${esc(f)}</a></li>`).join("");$("#l-loja").textContent=L.nome;
+ $("#v-cid").textContent=L.cid;$("#v-eyebrow").textContent=st.topo.eyebrow.replace("{cidade}",L.cid);$("#v-subt").textContent=st.topo.subt;$("#v-subt").hidden=!st.topo.subt;$("#v-slogan").textContent=L.slogan;$("#v-sobre").textContent=L.sobre||"";$("#v-sobre").closest(".v-box").hidden=!L.sobre;fachadaMostra(st,L);setTimeout(()=>bnIni(st,L),0);$("#v-end").textContent=L.end||"";$("#v-end").parentElement.hidden=!L.end;$("#v-hor").textContent=L.hor||"";$("#v-hor").parentElement.hidden=!L.hor;$("#v-wpp").textContent=L.wpp;const zp="https://wa.me/55"+L.wpp.replace(/\D/g,"")+"?text="+encodeURIComponent(st.textos.zap.replace("{loja}",L.nome));$("#v-contato").href=zp;$("#v-contato-t").textContent=st.textos.contato||"Contato";$("#v-zap").href=zp;$("#v-zap").hidden=!st.mostrar.zap;$("#v-aviso").textContent=(st.textos.aviso||"").replace("{entrada}",st.fin.entrada).replace("{prazo}",st.fin.prazo);$("#v-rodape").textContent=st.textos.rodape;$("#v-redes").innerHTML=[st.redes.insta?`<a href="${esc(/^https?:/.test(st.redes.insta)?st.redes.insta:"https://instagram.com/"+st.redes.insta.replace("@",""))}" target="_blank" rel="noopener">Instagram</a>`:"",st.redes.face?`<a href="${esc(/^https?:/.test(st.redes.face)?st.redes.face:"https://facebook.com/"+st.redes.face)}" target="_blank" rel="noopener">Facebook</a>`:""].join("");$("#creditos").innerHTML=Object.entries(FOTOS).map(([m,f])=>`<li><a href="https://commons.wikimedia.org/wiki/File:${encodeURIComponent(f.replace(/ /g,"_"))}" target="_blank" rel="noopener">${esc(m)}: ${esc(f)}</a></li>`).join("");$("#l-loja").textContent=L.nome;vtExtras(st,L);
  const pub=S.carros.filter(c=>(c.status==="Disponível"||c.status==="Reservado")&&(LOJ||(PREVIA&&soRep())?true:noSite(c)));const LM=LOJ||(PREVIA&&soRep());document.documentElement.classList.toggle("modo-loj",LM);
  {const fq=(st.faq||FAQ_PADRAO).filter(f=>f.p&&f.r);$("#v-faq").hidden=st.mostrar.faq===false||!fq.length;$("#v-faq-l").innerHTML=fq.map(f=>`<details><summary>${esc(f.p)}</summary><p>${esc(faqTxt(f.r))}</p></details>`).join("");$("#v-procura").hidden=st.mostrar.procura===false||LM;$("#v-vende").hidden=!PF().compra||LM;if(LM){$("#v-faq").hidden=true;$("#v-eyebrow").textContent="Área do lojista · "+L.cid;$("#v-aviso").textContent="Preços para lojistas. "+nomeVeic(1).replace(/^./,x=>x.toUpperCase())+" no estado em que se encontram, sem garantia.";$("#v-subt").textContent="Estoque de repasse da "+L.nome+". Chame no WhatsApp para negociar.";$("#v-subt").hidden=false}if(!$("#vitrine").hidden&&$("#ov").hidden)seoSite()}
  $("#v-stats").innerHTML=[st.destaques.qtd?[pub.length,nomeVeic(1)+" disponíveis"]:null,st.destaques.d2v?[st.destaques.d2v,st.destaques.d2t]:null,st.destaques.d3v?[st.destaques.d3v,st.destaques.d3t]:null].filter(Boolean).map(x=>`<div><b>${esc(x[0])}</b>${esc(x[1])}</div>`).join("");
@@ -2349,7 +2381,7 @@ function renderLoja(){const d=edDraft(),st=d.site;
  <details open><summary>Identidade</summary><div class="ed-in">
   ${inp("nome","Nome da loja","Auto Sul Veículos")}
   <div class="field">Logotipo<div class="ed-img"><span class="mini" id="ed-logo-mini" style="${st.logo?`background-image:url('${st.logo}')`:""}">${st.logo?"":"sem logo"}</span><label class="btn sm soft" style="cursor:pointer">Enviar imagem<input type="file" accept="image/*" id="ed-logo" hidden></label>${st.logo?'<button type="button" class="btn sm ghost" id="ed-logo-rm">Remover</button>':""}</div><p class="dica">Sem logotipo, o site mostra as iniciais do nome.</p></div>
-  <div class="field">Cor da marca<div class="ed-sw" id="ed-sw">${["#dc2626","#1d4ed8","#0f766e","#111827","#c2410c","#6d28d9","#15803d","#a16207"].map(c=>`<button type="button" data-cor="${c}" style="background:${c}" aria-pressed="${c===d.cor}" aria-label="Cor ${c}"></button>`).join("")}<input type="color" data-k="cor" value="${d.cor}" aria-label="Outra cor"></div><p class="dica">Usada nos botões, no logotipo de iniciais e no topo, se você escolher "Cor da marca".</p></div>
+  <div class="field">Cor da marca${(st.logoCores||[]).length?`<div class="ed-rec"><small>Cores do seu logotipo · <b>recomendado</b></small><div class="ed-sw">${st.logoCores.map(c=>`<button type="button" data-cor="${c}" style="background:${c}" aria-pressed="${c===d.cor}" aria-label="Cor ${c} do logotipo"></button>`).join("")}</div></div><small class="ed-rec-o">Outras cores</small>`:""}<div class="ed-sw" id="ed-sw">${["#dc2626","#1d4ed8","#0f766e","#111827","#c2410c","#6d28d9","#15803d","#a16207"].map(c=>`<button type="button" data-cor="${c}" style="background:${c}" aria-pressed="${c===d.cor}" aria-label="Cor ${c}"></button>`).join("")}<input type="color" data-k="cor" value="${d.cor}" aria-label="Outra cor"></div><p class="dica">Usada nos botões, no logotipo de iniciais e no topo, se você escolher "Cor da marca".</p></div>
   <div class="field">Letra dos títulos${seg("site.fonte",[["larga","Moderna"],["classica","Clássica"],["simples","Simples"]])}</div>
  </div></details>
  <details><summary>Topo do site</summary><div class="ed-in">
@@ -2393,6 +2425,8 @@ function renderLoja(){const d=edDraft(),st=d.site;
   ${inp("site.textos.zap","Mensagem que o cliente manda","Olá! Vim pelo site da {loja}.")}
   ${inp("site.textos.contato","Texto do botão de contato","Contato")}
   ${chk("site.mostrar.zap","Botão verde do WhatsApp no canto do site")}
+  ${chk("site.mostrar.horario","Faixa com o horário de atendimento no topo")}
+  ${chk("site.mostrar.mapa","Mapa com o endereço no fim do site")}
   ${inp("site.redes.insta","Instagram","@sualoja")}${inp("site.redes.face","Facebook","sualoja")}
  </div></details>
  <details><summary>Sobre a loja e endereço</summary><div class="ed-in">
@@ -2408,8 +2442,8 @@ function renderLoja(){const d=edDraft(),st=d.site;
  <button class="btn danger" type="button" id="reset">Restaurar dados de exemplo</button>`;
  $("#ed-url").textContent="https://"+urlSite(d);
  const dz=$("#reset");dz.onclick=resetDemo;
- const lg=$("#ed-logo");lg.onchange=async()=>{const f=await lerLogo(lg.files[0],480);if(f){d.site.logo=f;edMudou(true)}};
- const rm=$("#ed-logo-rm");if(rm)rm.onclick=()=>{d.site.logo="";edMudou(true)};
+ const lg=$("#ed-logo");lg.onchange=async()=>{const f=await lerLogo(lg.files[0],480);if(f){d.site.logo=f;const cs=await logoCores(f);d.site.logoCores=cs;if(cs[0])d.cor=cs[0];edMudou(true);if(cs[0])toast("Logotipo enviado. Usei a cor dele no site; você pode trocar em Cor da marca.")}};
+ const rm=$("#ed-logo-rm");if(rm)rm.onclick=()=>{d.site.logo="";d.site.logoCores=[];edMudou(true)};
  const bn=$("#ed-bn");if(bn)bn.onchange=async()=>{const f=await lerImg(bn.files[0],1600);if(f){d.site.banners=(d.site.banners||[]).concat({foto:f,t1:"",t2:""}).slice(0,4);edMudou(true)}};
  $$("[data-bn-rm]").forEach(b=>b.onclick=()=>{d.site.banners.splice(+b.dataset.bnRm,1);edMudou(true)});
  $$("[data-bn-t1],[data-bn-t2]").forEach(x=>x.oninput=()=>{const i=+(x.dataset.bnT1??x.dataset.bnT2),k=x.dataset.bnT1!=null?"t1":"t2";d.site.banners[i][k]=x.value;edMudou(false)});
@@ -2567,7 +2601,7 @@ function onbRender(){const b=$("#onb-body"),P=OB.p;$("#onb-erro").hidden=true;
  if(P===5)h=`<h1 class="onb-h">Seu pátio</h1><p class="onb-p">Quantos carros cabem em cada lugar? Isso monta o <b>mapa do pátio</b>. Dá para mudar depois.</p>
   <div class="onb-vagas">${[["s","Showroom","carros na parte coberta ou na frente"],["p","Pátio","vagas no pátio externo"],["o","Preparação","carros sendo arrumados"]].map(([k,t,d])=>`<div><span><b>${t}</b><small>${d}</small></span><span class="stepper"><button type="button" data-ob-vg="${k}" data-d="-1" aria-label="Menos">−</button><output>${OB.vagas[k]}</output><button type="button" data-ob-vg="${k}" data-d="1" aria-label="Mais">+</button></span></div>`).join("")}</div>`;
  if(P===6)h=`<h1 class="onb-h">A cara do site</h1><p class="onb-p">Escolha a cor da marca e, se tiver, o logotipo. Em <b>Minha loja</b> dá para mudar tudo depois.</p><div class="form">
-  <div class="field full">Cor da marca<div class="swatches" id="ob-cores" style="margin-top:6px">${OB_CORES.map(c=>`<button type="button" data-ob-cor="${c}" style="background:${c}" aria-label="Cor ${c}" aria-pressed="${c===OB.cor}"></button>`).join("")}</div></div>
+  <div class="field full">Cor da marca<div class="swatches" id="ob-cores" style="margin-top:6px">${[...new Set([...(OB.logoCores||[]),...OB_CORES])].map(c=>`<button type="button" data-ob-cor="${c}" style="background:${c}" aria-label="Cor ${c}" aria-pressed="${c===OB.cor}"></button>`).join("")}</div></div>
   <div class="field full">Logotipo (opcional)<div class="onb-logo" style="margin-top:6px"><span class="lg" id="ob-lg">${OB.logo?`<img src="${OB.logo}" alt="">`:"sem logo"}</span><label class="btn soft sm">Enviar imagem<input type="file" id="ob-logo" accept="image/*" hidden></label>${OB.logo?'<button type="button" class="btn ghost sm" id="ob-logo-x">Tirar</button>':""}</div></div>
   ${obCampo("Frase de destaque do site","ob-slogan",OB.slogan||(OB.perfil.publico==="repasse"?"Repasse para lojistas em "+(OB.loja.cid.split("/")[0]||"sua cidade"):(OB.perfil.veic.moto&&!OB.perfil.veic.carro?"Motos seminovas em ":"Seminovos revisados em ")+(OB.loja.cid.split("/")[0]||"sua cidade")))}</div>`;
  if(P===7)h=`<h1 class="onb-h">Tudo pronto!</h1><p class="onb-p">A <b>${esc(OB.loja.nome)}</b> já está no Pátio. Guarde estes acessos:</p>
@@ -2578,7 +2612,7 @@ function onbRender(){const b=$("#onb-body"),P=OB.p;$("#onb-erro").hidden=true;
  b.innerHTML=h;const f=b.querySelector("input:not([type=checkbox]):not([type=file])");if(f&&P>0&&P<7&&matchMedia("(min-width:700px)").matches)setTimeout(()=>f.focus(),60);
  const sn=$("#ob-senha");if(sn)$("#ob-ver").onclick=()=>{sn.type=sn.type==="password"?"text":"password";$("#ob-ver").textContent=sn.type==="password"?"Mostrar":"Esconder"};
  const dn=$("#ob-dnome");if(dn)dn.oninput=()=>{const u=$("#ob-user");if(!u.dataset.mexeu)u.value=slugTxt(dn.value.split(" ")[0])};const us=$("#ob-user");if(us)us.oninput=()=>{us.dataset.mexeu=1};
- const lg=$("#ob-logo");if(lg)lg.onchange=async()=>{const u=await lerLogo(lg.files[0],480);if(u){OB.logo=u;onbColeta();onbRender()}};
+ const lg=$("#ob-logo");if(lg)lg.onchange=async()=>{const u=await lerLogo(lg.files[0],480);if(u){OB.logo=u;onbColeta();OB.logoCores=await logoCores(u);if(OB.logoCores[0]){OB.cor=OB.logoCores[0];document.documentElement.style.setProperty("--accent",OB.cor)}onbRender()}};
  const lx=$("#ob-logo-x");if(lx)lx.onclick=()=>{OB.logo="";onbColeta();onbRender()};
 }
 function obVendUsers(){const usados=[OB.dono.usuario];return OB.vend.filter(v=>v.trim()).map(v=>{let b=slugTxt(v.split(" ")[0])||"vendedor",u=b,i=2;while(usados.includes(u))u=b+i++;usados.push(u);return{nome:v.trim(),usuario:u}})}
@@ -2605,7 +2639,7 @@ $("#onb").addEventListener("click",e=>{const q=e.target.closest("[data-ob-q]");i
  const c=e.target.closest("[data-ob-cor]");if(c){OB.cor=c.dataset.obCor;$$("[data-ob-cor]").forEach(b=>b.setAttribute("aria-pressed",b===c));document.documentElement.style.setProperty("--accent",OB.cor)}});
 function onbConclui(){const z=seedVazio(),L=z.loja;
  L.perfil=Object.assign({},OB.perfil);Object.assign(L,{nome:OB.loja.nome,cid:OB.loja.cid,wpp:OB.loja.wpp,end:OB.loja.end,slug:slugTxt(OB.loja.nome)||"sualoja",slogan:OB.slogan,cor:OB.cor});
- L.site=mescla(L.site,{logo:OB.logo,redes:{insta:OB.loja.insta.replace(/^@/,"")}});
+ L.site=mescla(L.site,{logo:OB.logo,logoCores:OB.logoCores||[],redes:{insta:OB.loja.insta.replace(/^@/,"")}});
  z.equipe=[{id:1,nome:OB.dono.nome,email:"",papel:"Dono",com:0,usuario:OB.dono.usuario,senha:OB.dono.senha,ativo:true}].concat(obVendUsers().map((v,i)=>({id:i+2,nome:v.nome,email:"",papel:"Vendedor",com:1.5,usuario:v.usuario,senha:"1234",ativo:true})));
  z.patio={s:OB.vagas.s,p:OB.vagas.p,o:OB.vagas.o};z.teste={inicio:Date.now(),vendedores:OB.vend.length,aceite:Date.now(),aceiteVersao:"2026-10-10"};
  if(NUVEM){nvCriar(z);return}S=z;salvar();document.documentElement.style.removeProperty("--accent");
