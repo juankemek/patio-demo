@@ -10,9 +10,9 @@
 <script>(function(){var t="";try{t=localStorage.getItem("tema")||""}catch(e){}document.documentElement.setAttribute("data-theme",t==="escuro"?"dark":"light")})()</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Space+Mono:wght@400;700&family=Inter+Tight:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght@500;600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap">
 <style>
-/* Sistema UI UX Pro Max (revenda de carros): ardósia escura #1E293B + vermelho de ação #DC2626, Syncopate (títulos largos) + Space Mono (números) + Inter Tight (texto). Herói escuro em tela cheia, movimento leve.
+/* Sistema UI UX Pro Max (revenda de carros): ardósia escura #1E293B + vermelho de ação #DC2626, Lexend (títulos) + Source Sans 3 (texto), números alinhados; cinzas neutros, sem maiúsculas largas. Herói escuro em tela cheia, movimento leve.
    Layout: três telas na mesma página. Vitrine pública (cor da loja, sem login) → Login do lojista → Painel (menu lateral fixo + conteúdo com resumo antes do detalhe). */
 :root{
   --bg:#f8fafc; --surface:#ffffff; --sunk:#eef2f6; --ink:#0f172a; --muted:#475569; --line:#e2e8f0;
@@ -21,9 +21,9 @@
   --ok:#15803d; --ok-soft:#e3f5ea; --warn:#a15c07; --warn-soft:#fdf0d9; --crit:#b91c1c; --crit-soft:#fde4e4; --info:#1d4ed8; --info-soft:#e3ebfd;
   --shadow:0 1px 2px rgba(15,23,42,.06),0 10px 24px -12px rgba(15,23,42,.18);
   --brand:#dc2626; --brand-ink:#ffffff;
-  --f-display:"Syncopate","Arial Black",sans-serif;
-  --f-body:"Inter Tight",system-ui,-apple-system,"Segoe UI",sans-serif;
-  --f-mono:"Space Mono",ui-monospace,Menlo,monospace;
+  --f-display:"Lexend",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-body:"Source Sans 3",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"Lexend",system-ui,sans-serif;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --bg:#0b1120; --surface:#111a2e; --sunk:#18233a; --ink:#e2e8f0; --muted:#94a3b8; --line:#22304a;
@@ -430,8 +430,8 @@ h2{font-family:var(--f-display);font-weight:700;text-transform:uppercase;font-si
 @media (max-width:1100px){.kpis.k5{grid-template-columns:repeat(3,minmax(0,1fr))}}
 
 /* ---------- temas: claro (padrão) e escuro em cinza ---------- */
-:root{--hero:#f1f5f9;--pic-a:#f8fafc;--pic-b:#e2e8f0;--pic-t:rgba(15,23,42,.10);--pic-s:rgba(15,23,42,.42);--bar:#64748b}
-:root,:root[data-theme="light"]{color-scheme:light;--primary:#f1f5f9;--primary-2:#e2e8f0;--on-primary:#0f172a;--on-primary-mut:#475569}
+:root{--hero:#f4f4f5;--pic-a:#fafafa;--pic-b:#e4e4e7;--pic-t:rgba(24,24,27,.10);--pic-s:rgba(24,24,27,.42);--bar:#71717a}
+:root,:root[data-theme="light"]{color-scheme:light;--bg:#fafafa;--sunk:#f0f0f1;--ink:#18181b;--muted:#52525b;--line:#e4e4e7;--primary:#f4f4f5;--primary-2:#e4e4e7;--on-primary:#18181b;--on-primary-mut:#52525b}
 :root[data-theme="dark"]{color-scheme:dark;--bg:#18181b;--surface:#232327;--sunk:#2e2e33;--ink:#f4f4f5;--muted:#a1a1aa;--line:#3a3a41;--primary:#232327;--primary-2:#3a3a41;--on-primary:#f4f4f5;--on-primary-mut:#a1a1aa;--accent-soft:#3b1d1d;--ok:#4ade80;--ok-soft:#183024;--warn:#fbbf24;--warn-soft:#382d14;--crit:#f87171;--crit-soft:#3b1d1d;--info:#93b4ff;--info-soft:#1f2940;--hero:#1f1f23;--pic-a:#2e2e33;--pic-b:#1f1f23;--pic-t:rgba(255,255,255,.07);--pic-s:rgba(255,255,255,.5);--bar:#a1a1aa;--shadow:0 1px 2px rgba(0,0,0,.35),0 10px 24px -12px rgba(0,0,0,.55)}
 .v-top{background:var(--surface);color:var(--ink);border-bottom:1px solid var(--line)}
 .v-top nav a,.v-top nav button{color:var(--ink);border-color:var(--line)}
@@ -676,6 +676,26 @@ details.mais .form{padding:0;margin-top:12px;border:0;background:none;box-shadow
 .ed-modo{display:none}
 @media (max-width:1100px){.ed{grid-template-columns:1fr}.ed-prev{position:relative;top:0}.ed-frame{height:640px}}
 @media (max-width:900px){.ed-modo{display:inline-flex;margin-bottom:10px}.ed.so-edit .ed-prev,.ed.so-prev .ed-ctrl{display:none}}
+/* ---------- camada sóbria (sem cara de modelo pronto) ---------- */
+body{font-size:16px;-webkit-font-smoothing:antialiased}
+h1,h2{text-transform:none}
+h1{font-weight:700;letter-spacing:-.025em;line-height:1.1}
+h2{font-weight:600;font-size:18px;letter-spacing:-.01em}
+.num,.kpi .v,.pr,.sim .big,td.r,.v-stats b{font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.plate{font-family:ui-monospace,"Cascadia Mono",Menlo,monospace}
+.v-name{font-size:18px;letter-spacing:-.015em;text-transform:none;font-weight:700}
+.v-hero h1{font-size:clamp(28px,4vw,46px);max-width:20ch;letter-spacing:-.03em}
+.v-hero::before{display:none}
+.v-stats b{font-size:20px;font-weight:600}
+.login-box .brand,.side .brand{letter-spacing:-.01em;text-transform:none;font-size:20px}
+.btn{font-weight:600}
+.btn:hover{transform:none;box-shadow:none;filter:brightness(.95)}
+.card{transition:box-shadow .2s ease-out,border-color .2s ease-out}
+.card:hover{transform:none;box-shadow:0 8px 24px -16px rgba(24,24,27,.35);border-color:color-mix(in srgb,var(--ink) 18%,var(--line))}
+.card .nm{font-family:var(--f-display);font-weight:600;font-size:17px;letter-spacing:-.01em}
+.pr{font-weight:700;font-size:22px}
+.tag,.ph .tags span{font-weight:600}
+@media (max-width:520px){.v-hero h1{font-size:28px}.v-name{font-size:16px}}
 /* ---------- personalização do site ---------- */
 html.previa #back-painel,html.previa .aj-btn{display:none!important}
 #vitrine.topo-escuro .v-hero{background:#1f1f23;border-bottom-color:#1f1f23}
@@ -705,7 +725,7 @@ html.previa #back-painel,html.previa .aj-btn{display:none!important}
 #vitrine .v-logo.tem-img{display:flex;align-items:center;width:auto;height:auto;max-width:200px;background:transparent;border-radius:0;box-shadow:none;overflow:visible;flex:none}
 #vitrine .v-logo.tem-img img{display:block;width:auto;height:64px;max-width:200px;object-fit:contain;background:transparent;border-radius:0}
 #vitrine .v-logo:not(.tem-img){width:52px;height:52px;font-size:22px;border-radius:12px}
-#vitrine .v-name{font-size:22px;letter-spacing:.06em;font-weight:800;line-height:1.05}
+#vitrine .v-name{font-size:22px;letter-spacing:-.02em;font-weight:700;line-height:1.05}
 #vitrine .v-name small{display:none}
 #vitrine{--accent:var(--brand);--accent-ink:var(--brand-ink);--accent-soft:color-mix(in srgb,var(--brand) 12%,var(--surface,#fff))}
 .v-faixa{background:var(--brand);color:var(--brand-ink);font-size:13.5px}
@@ -718,7 +738,7 @@ html.previa #back-painel,html.previa .aj-btn{display:none!important}
 .v-mapa-fr{min-height:300px;background:var(--sunk)}.v-mapa-fr iframe{display:block;width:100%;height:100%;min-height:300px;border:0}
 @media (max-width:720px){.v-mapa{grid-template-columns:1fr}.v-mapa-fr,.v-mapa-fr iframe{min-height:240px}.v-mapa-tx .btn{align-self:stretch;justify-content:center}.v-faixa{font-size:12.5px}}
 .ed-rec{margin:6px 0 8px}.ed-rec small,.ed-rec-o{display:block;font-size:12px;color:var(--muted);margin-bottom:4px}
-@media (max-width:520px){#vitrine .v-logo.tem-img{max-width:130px}#vitrine .v-logo.tem-img img{height:46px;max-width:130px}#vitrine .v-name{font-size:16px;letter-spacing:.02em}#vitrine .v-name>span{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}#vitrine .v-top .tema-txt{display:none}#vitrine .v-top .in{gap:10px}}
+@media (max-width:520px){#vitrine .v-logo.tem-img{max-width:130px}#vitrine .v-logo.tem-img img{height:46px;max-width:130px}#vitrine .v-name{font-size:17px;letter-spacing:-.01em}#vitrine .v-name>span{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}#vitrine .v-top .tema-txt{display:none}#vitrine .v-top .in{gap:10px}}
 /* fotos dos carros: 4:3, carro inteiro com fundo desfocado da própria foto */
 #vitrine .ph,.det .ph{aspect-ratio:4/3}
 .pic img.pic-fundo{object-fit:cover;filter:blur(18px) saturate(1.1);transform:scale(1.15);z-index:0;opacity:.9}
