@@ -1501,8 +1501,8 @@ function seed(){return{
 const NV_DOM=/^https?:$/.test(location.protocol)&&!/(^|\.)(pages\.dev|workers\.dev)$|^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
 const NV_PATH=location.pathname.replace(/\/+$/,""),NV_M=NV_PATH.match(/^\/l\/([a-z0-9-]+)(\/painel|\/lojistas)?$/)||(NV_DOM&&/^(\/painel|\/lojistas)?$/.test(NV_PATH)?[NV_PATH,"@"+location.hostname.replace(/^www\./,""),NV_PATH||undefined]:null);
 const ADMIN=NV_PATH==="/admin";
-/* A administração do Pátio agora fica no painel da Atende Já. Em caso de emergência, /admin?antigo abre a tela antiga. */
-if(ADMIN&&!/[?&]antigo/.test(location.search))location.replace("https://www.useatendeja.com.br/admin#patio");
+/* A administração do Pátio fica no painel da Atende Já (endereço não divulgado aqui). Em caso de emergência, /admin?antigo abre a tela antiga. */
+if(ADMIN&&!/[?&]antigo/.test(location.search))location.replace("https://www.useatendeja.com.br/");
 const NUVEM=!ADMIN&&(NV_PATH==="/teste"||!!NV_M||/[?&]teste\b/.test(location.search));
 const NV_COD=NV_M?NV_M[1]:null,NV_PAINEL=!!(NV_M&&NV_M[2]==="/painel");let LOJ=!!(NV_M&&NV_M[2]==="/lojistas");
 if(!NUVEM&&!ADMIN&&location.hash!=="#previa"&&/^(\/painel|\/index\.html)?$/.test(NV_PATH))location.replace("/teste");
