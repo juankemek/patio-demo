@@ -3618,6 +3618,13 @@ document.addEventListener("click",async e=>{const b=e.target.closest("[data-adm-
   const sp=b.parentElement;sp.innerHTML=`${esc(nome.split(" ")[0])} · <b>${esc(usuario)}</b> → nova senha <b>${nova}</b> <a class="btn xs wa-btn" target="_blank" rel="noopener" href="${wpp?"https://wa.me/55"+wpp.replace(/\D/g,"")+"?text=":"https://wa.me/?text="}${encodeURIComponent(msg)}">Mandar</a>`;
   toast("Senha trocada. Mande para a pessoa.")}catch(x){b.disabled=false;toast("Sem internet.")}});
 
+/* Entrada do suporte vinda do painel da Atende Já: o endereço traz a sessão depois do #sup= (essa parte não vai para o servidor). */
+(function(){const m=location.hash.match(/^#sup=([A-Za-z0-9_-]+)$/);if(!m||!NV_COD||!NV_PAINEL)return;
+ try{const o=JSON.parse(decodeURIComponent(escape(atob(m[1].replace(/-/g,"+").replace(/_/g,"/")))));
+  if(o&&/^sp_/.test(o.token||"")){let ult=null;try{ult=localStorage.getItem("patio-nv-ultimo")}catch(x){}
+   nvGuarda(NV_COD,{token:o.token,pessoa:o.pessoa,suporte:true});
+   try{if(ult)localStorage.setItem("patio-nv-ultimo",ult);else localStorage.removeItem("patio-nv-ultimo")}catch(x){}}}catch(x){}
+ history.replaceState(null,"",location.pathname)})();
 addEventListener("hashchange",rota);rota();
 </script>
 <script>

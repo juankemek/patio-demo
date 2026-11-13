@@ -551,7 +551,7 @@ const F = {
   },
 
   async admin(db, a, env) {
-    if (!adminOk(env, a.p_senha)) { await dormir(1000); return { ok: false, erro: env.ADMIN_SENHA ? 'senha' : 'config' }; }
+    if (!adminOk(env, a.p_senha, a.p_chave)) { await dormir(1000); return { ok: false, erro: env.ADMIN_SENHA ? 'senha' : 'config' }; }
     const ls = (await db.prepare('SELECT * FROM lojas ORDER BY criado DESC').all()).results || [];
     const ops = (await db.prepare('SELECT * FROM feedbacks ORDER BY criado DESC').all()).results || [];
     const fts = (await db.prepare('SELECT loja_id, COUNT(*) n FROM fotos GROUP BY loja_id').all()).results || [];
@@ -567,7 +567,7 @@ const F = {
   },
 
   async admin_acao(db, a, env, extra) {
-    if (!adminOk(env, a.p_senha)) { await dormir(1000); return { ok: false, erro: 'senha' }; }
+    if (!adminOk(env, a.p_senha, a.p_chave)) { await dormir(1000); return { ok: false, erro: 'senha' }; }
     const id = String(a.p_loja || ''), t = agora();
     if (a.p_acao === 'tempo') {
       const h = Math.max(1, Math.min(720, parseInt(a.p_horas, 10) || 24));
@@ -644,8 +644,12 @@ async function buscaFotos(db, lojaId, ids) {
   return out;
 }
 
-function adminOk(env, senha) {
-  const s = String(env.ADMIN_SENHA || ''), p = String(senha || '');
+// Entra quem tem a senha de administrador ou a chave da central da Atende Já (useatendeja.com.br/admin).
+function adminOk(env, senha, chave) {
+  return igualSeguro(env.ADMIN_SENHA, senha) || igualSeguro(env.CHAVE_CENTRAL, chave);
+}
+function igualSeguro(certo, dado) {
+  const s = String(certo || ''), p = String(dado || '');
   if (!s || s.length !== p.length) return false;
   let dif = 0;
   for (let i = 0; i < s.length; i++) dif |= s.charCodeAt(i) ^ p.charCodeAt(i);
