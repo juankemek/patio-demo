@@ -1498,7 +1498,8 @@ function seed(){return{
  ],
  hist:[["Mai",3,13100],["Jun",4,17800],["Jul",2,9400],["Ago",5,22600],["Set",4,18900]]
 }}
-const NV_DOM=/^https?:$/.test(location.protocol)&&!/(^|\.)(pages\.dev|workers\.dev)$|^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
+/* Endereço próprio do Pátio (patio.useatendeja.com.br) não é domínio de loja: lá a raiz leva ao teste, como no pages.dev. */
+const NV_DOM=/^https?:$/.test(location.protocol)&&!/(^|\.)(pages\.dev|workers\.dev)$|^(localhost|127\.0\.0\.1|\[::1\])$|^patio\.useatendeja\.com\.br$/.test(location.hostname);
 const NV_PATH=location.pathname.replace(/\/+$/,""),NV_M=NV_PATH.match(/^\/l\/([a-z0-9-]+)(\/painel|\/lojistas)?$/)||(NV_DOM&&/^(\/painel|\/lojistas)?$/.test(NV_PATH)?[NV_PATH,"@"+location.hostname.replace(/^www\./,""),NV_PATH||undefined]:null);
 const ADMIN=NV_PATH==="/admin";
 /* A administração do Pátio fica no painel da Atende Já (endereço não divulgado aqui). Em caso de emergência, /admin?antigo abre a tela antiga. */
