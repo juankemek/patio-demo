@@ -7,6 +7,7 @@
 <style>:root{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}body{margin:0}img{max-width:100%}</style>
 <title>Painel Pátio</title>
 <meta name="color-scheme" content="light dark">
+<script>/* Endereço novo: quem chega pelo endereço antigo (.pages.dev) e não tem loja aberta neste navegador vai para patio.useatendeja.com.br. Quem está no meio de um teste continua onde está. */(function(){try{if(!/\.pages\.dev$/.test(location.hostname))return;var tem=false,i;for(i=0;i<localStorage.length;i++){if(/^patio-(teste|demo)-/.test(localStorage.key(i)))tem=true}for(i=0;i<sessionStorage.length;i++){if(/^patio-/.test(sessionStorage.key(i)))tem=true}if(!tem)location.replace("https://patio.useatendeja.com.br"+location.pathname+location.search+location.hash)}catch(e){}})()</script>
 <script>(function(){var t="";try{t=localStorage.getItem("tema")||""}catch(e){}document.documentElement.setAttribute("data-theme",t==="escuro"?"dark":"light")})()</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -2820,7 +2821,7 @@ addEventListener("keydown",e=>{if(TI<0)return;if(e.key==="Escape")tourFim();if(e
 /* ================= nuvem (Cloudflare) ================= */
 const API=(()=>{try{return localStorage.getItem("patio-api")||""}catch(e){return ""}})()||"/api";
 async function api(fn,args){const r=await fetch(API+"/"+fn,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(args||{})});let j=null;try{j=await r.json()}catch(e){}if(!j){const e=new Error("rede "+r.status);e.status=r.status;throw e}return j}
-function nvErroTxt(e,r){if(r&&r.erro==="sem-banco")return "O banco de dados ainda não foi ligado no Cloudflare (Settings → Bindings → D1, nome DB) ou falta publicar de novo.";if(r&&r.erro==="servidor")return "O servidor deu erro: "+(r.detalhe||"")+".";if(e&&(e.status===404||e.status===405))return "Este endereço não tem o servidor do teste. Abra pelo endereço do Cloudflare (termina em .pages.dev).";return "Não consegui conectar. Confira a internet e tente de novo."}
+function nvErroTxt(e,r){if(r&&r.erro==="sem-banco")return "O banco de dados ainda não foi ligado no Cloudflare (Settings → Bindings → D1, nome DB) ou falta publicar de novo.";if(r&&r.erro==="servidor")return "O servidor deu erro: "+(r.detalhe||"")+".";if(e&&(e.status===404||e.status===405))return "Este endereço não tem o servidor do teste. Abra por patio.useatendeja.com.br.";return "Não consegui conectar. Confira a internet e tente de novo."}
 const nvChave=c=>"patio-nv-"+c;
 function nvSessao(c){try{return JSON.parse(localStorage.getItem(nvChave(c)))}catch(e){return null}}
 function nvGuarda(c,o){try{if(o){localStorage.setItem(nvChave(c),JSON.stringify(o));localStorage.setItem("patio-nv-ultimo",c)}else localStorage.removeItem(nvChave(c))}catch(e){}}

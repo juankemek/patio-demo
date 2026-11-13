@@ -197,7 +197,7 @@ async function chavesVapid(db) {
 }
 async function jwtVapid(ch, aud) {
   const enc = o => b64url(new TextEncoder().encode(JSON.stringify(o)));
-  const corpo = enc({ typ: 'JWT', alg: 'ES256' }) + '.' + enc({ aud, exp: Math.floor(agora() / 1000) + 12 * 3600, sub: 'https://juankemek.pages.dev' });
+  const corpo = enc({ typ: 'JWT', alg: 'ES256' }) + '.' + enc({ aud, exp: Math.floor(agora() / 1000) + 12 * 3600, sub: 'https://patio.useatendeja.com.br' });
   const k = await crypto.subtle.importKey('jwk', { kty: ch.priv.kty, crv: ch.priv.crv, x: ch.priv.x, y: ch.priv.y, d: ch.priv.d }, { name: 'ECDSA', namedCurve: 'P-256' }, false, ['sign']);
   const sig = new Uint8Array(await crypto.subtle.sign({ name: 'ECDSA', hash: 'SHA-256' }, k, new TextEncoder().encode(corpo)));
   return corpo + '.' + b64url(sig);
