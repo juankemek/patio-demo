@@ -1103,6 +1103,32 @@ html.modo-loj #cards .parc.num{display:none}
 .vmo #vitrine .v-hero.vgo p{transition-delay:.35s}.vmo #vitrine .v-hero.vgo .v-stats{transition-delay:.5s}.vmo #vitrine .v-hero.vgo .v-search{transition-delay:.65s}.vmo #vitrine .v-hero.vgo .v-dest{transition-delay:.25s}
 @media (max-width:520px){#vitrine .v-hero h1{font-size:32px!important}#vitrine .v-chips{flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}#vitrine .v-chips b{display:none}#vitrine .v-chips button{flex:none}#vitrine .card .b::after{display:none}}
 @media (prefers-reduced-motion:reduce){#vitrine *,#vitrine *::before,#vitrine *::after{animation:none!important;transition:none!important}.v-cur{display:none}}
+/* ===== Vitrine v3: chamada no topo, menu, por que comprar, contato junto do mapa ===== */
+#vitrine .v-cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
+#vitrine .v-cta .btn{padding:13px 22px;font-size:15px;font-weight:600;border-radius:12px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;cursor:pointer}
+#vitrine .v-cta .v-cta-1{background:var(--brand);color:var(--brand-ink);border:1.5px solid var(--brand)}
+#vitrine .v-cta .v-cta-2{background:transparent;color:inherit;border:1.5px solid color-mix(in srgb,currentColor 40%,transparent)}
+#vitrine .v-cta .v-cta-2:hover{border-color:currentColor}
+#vitrine .v-cta .i{width:18px;height:18px}
+.vmo #vitrine .v-cta{opacity:0;transform:translateY(20px);transition:opacity 1s var(--e),transform 1.1s var(--e)}
+.vmo #vitrine .v-hero.vgo .v-cta{opacity:1;transform:none;transition-delay:.45s}
+#vitrine .v-nav3{display:flex;gap:2px;margin-right:6px}
+#vitrine .v-top nav .v-nav3 button{border:0!important;background:transparent!important;color:inherit;opacity:.75;padding:7px 12px;font-weight:600;font-size:14px;cursor:pointer}
+#vitrine .v-top nav .v-nav3 button:hover{opacity:1}
+#vitrine .v-difs{margin-top:clamp(52px,6vw,84px)}
+#vitrine .v-difs h2{font-size:clamp(24px,3vw,36px);letter-spacing:-.03em;margin:4px 0 0}
+#vitrine .v-difs-g{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px;margin-top:22px}
+#vitrine .v-dif{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:8px}
+#vitrine .v-dif-n{font:700 13px var(--f-display);color:var(--brand);letter-spacing:.1em}
+#vitrine .v-dif h3{margin:4px 0 0;font-family:var(--f-display);font-size:19px;letter-spacing:-.02em;line-height:1.25}
+#vitrine .v-dif p{margin:0;font-size:14.5px;line-height:1.5}
+#vitrine .v3-oculto{display:none!important}
+#vitrine .v-mapa-tx .v3-bts{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+#vitrine .v-mapa-tx .v3-bts .btn{align-self:auto}
+#vitrine .v-mapa-tx .v3-zap{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+.v-cur:not(.big){opacity:0!important}
+@media (max-width:860px){#vitrine .v-nav3{display:none}}
+@media (max-width:520px){#vitrine .v-cta .btn{flex:1 1 100%;justify-content:center}}
 </style>
 
 </head>
@@ -1593,7 +1619,7 @@ function inkFor(hex){hex=/^#[0-9a-f]{6}$/i.test(hex||"")?hex:"#dc2626";const n=p
 function aplicaMarca(){if(!/^#[0-9a-f]{6}$/i.test(S.loja.cor||""))S.loja.cor="#dc2626";document.documentElement.style.setProperty("--brand",S.loja.cor);document.documentElement.style.setProperty("--brand-ink",inkFor(S.loja.cor))}
 const FOTOS={"Kwid": "Renault Kwid 1.0 Zen (2022) (52721423597).jpg", "T-Cross": "Volkswagen T-Cross IMG001.jpg", "Toro": "2021 Fiat Toro Freedom 1.8 4X2 - (2).jpg", "Onix": "Chevrolet Onix (second generation, front view).jpg", "HB20": "HB20X 2nd Generation Frontal View.jpg", "Corolla": "Toyota Corolla Limousine Hybrid Genf 2019 1Y7A5582.jpg", "Renegade": "Jeep Renegade 1.8 Sport 2018 (43134425314).jpg", "Gol": "VW Gol G8.jpg", "Fit": "Honda FIT 13G (DBA-GK3) front.JPG", "Argo": "Fiat Argo 1.3 Drive ELX 2018 (26635198997).jpg", "Tracker": "Chevrolet Tracker, Front Right, 05-12-2021.jpg"};
 const fotoURL=(f,w)=>"https://commons.wikimedia.org/wiki/Special:FilePath/"+encodeURIComponent(f.replace(/ /g,"_"))+"?width="+(w||800);
-function carSVG(c,big){const cor=PINTURA[c.pintura]||"#888";const f=NUVEM?null:FOTOS[c.modelo];const src=(c.fotos&&c.fotos[0])||(f?fotoURL(f,big?1200:640):"");return `<div class="pic" style="--paint:${cor}" role="img" aria-label="${esc(c.marca+" "+c.modelo)}"><span>${esc(c.modelo)}</span>${src?`<img class="pic-fundo" src="${src}" alt="" aria-hidden="true" loading="lazy" decoding="async" onerror="this.remove()"><img class="pic-carro" src="${src}" alt="" loading="lazy" decoding="async" onerror="this.remove()">`:""}<b></b></div>`}
+function carSVG(c,big){const cor=PINTURA[c.pintura]||"#888";const f=NUVEM?null:FOTOS[c.modelo];const src=(c.fotos&&c.fotos[0])||(f?fotoURL(f,big?1200:640):"");return `<div class="pic" style="--paint:${cor}" role="img" aria-label="${esc(c.marca+" "+c.modelo)}"><span>${esc(c.modelo)}</span>${src?`<img class="pic-fundo" src="${esc(src)}" alt="" aria-hidden="true" loading="lazy" decoding="async" onerror="this.remove()"><img class="pic-carro" src="${esc(src)}" alt="" loading="lazy" decoding="async" onerror="this.remove()">`:""}<b></b></div>`}
 function diasPill(c){const d=dias(c);if(c.venda)return `<span class="pill p-mut">vendeu em ${d} d</span>`;const k=d>90?"p-crit":d>60?"p-warn":"p-ok";return `<span class="pill ${k}">${d} dias</span>`}
 function stPill(s){return `<span class="pill ${{"Disponível":"p-ok","Reservado":"p-warn","Preparação":"p-info","Vendido":"p-mut"}[s]}">${s}</span>`}
 function hbars(el,rows,fmt){const max=Math.max(1,...rows.map(r=>r[1]));$(el).innerHTML=rows.map(r=>`<div class="r"><span>${esc(r[0])}</span><span class="trk"><i style="width:${Math.max(2,r[1]/max*100)}%;${r[2]?"background:"+r[2]:""}"></i></span><span class="num" style="text-align:right">${fmt(r[1])}</span></div>`).join("")||`<p class="muted">Sem dados ainda.</p>`}
@@ -1643,7 +1669,7 @@ function renderVitrine(){normLoja();
  const vt=$("#vitrine");vt.className=["topo-"+st.topo.estilo,st.topo.alinhar==="esquerda"?"alinha-esq":"","fonte-"+st.fonte,"cards-"+st.cards,st.mostrar.busca?"":"sem-busca",st.mostrar.parcela?"":"sem-parcela",st.mostrar.etiquetas?"":"sem-etiquetas",st.mostrar.sobre?"":"sem-sobre"].filter(Boolean).join(" ");
  vt.style.setProperty("--foto",st.topo.foto?`url("${st.topo.foto}")`:"none");
  $("#v-logo").classList.toggle("tem-img",!!st.logo);
- $("#v-logo").innerHTML=st.logo?`<img src="${st.logo}" alt="">`:esc(ini(L.nome));$("#v-nome").textContent=L.nome;$("#v-nome2").textContent=L.nome;$("#v-nome3").textContent=L.nome;
+ $("#v-logo").innerHTML=st.logo?`<img src="${esc(st.logo)}" alt="">`:esc(ini(L.nome));$("#v-nome").textContent=L.nome;$("#v-nome2").textContent=L.nome;$("#v-nome3").textContent=L.nome;
  $("#v-cid").textContent=L.cid;$("#v-eyebrow").textContent=st.topo.eyebrow.replace("{cidade}",L.cid);$("#v-subt").textContent=st.topo.subt;$("#v-subt").hidden=!st.topo.subt;$("#v-slogan").textContent=L.slogan;$("#v-sobre").textContent=L.sobre||"";$("#v-sobre").closest(".v-box").hidden=!L.sobre;fachadaMostra(st,L);setTimeout(()=>bnIni(st,L),0);$("#v-end").textContent=L.end||"";$("#v-end").parentElement.hidden=!L.end;$("#v-hor").textContent=L.hor||"";$("#v-hor").parentElement.hidden=!L.hor;$("#v-wpp").textContent=L.wpp;const zp="https://wa.me/55"+L.wpp.replace(/\D/g,"")+"?text="+encodeURIComponent(st.textos.zap.replace("{loja}",L.nome));$("#v-contato").href=zp;$("#v-contato-t").textContent=st.textos.contato||"Contato";$("#v-zap").href=zp;$("#v-zap").hidden=!st.mostrar.zap;$("#v-aviso").textContent=(st.textos.aviso||"").replace("{entrada}",st.fin.entrada).replace("{prazo}",st.fin.prazo);$("#v-rodape").textContent=st.textos.rodape;$("#v-redes").innerHTML=[st.redes.insta?`<a href="${esc(/^https?:/.test(st.redes.insta)?st.redes.insta:"https://instagram.com/"+st.redes.insta.replace("@",""))}" target="_blank" rel="noopener">Instagram</a>`:"",st.redes.face?`<a href="${esc(/^https?:/.test(st.redes.face)?st.redes.face:"https://facebook.com/"+st.redes.face)}" target="_blank" rel="noopener">Facebook</a>`:""].join("");$("#creditos").innerHTML=Object.entries(FOTOS).map(([m,f])=>`<li><a href="https://commons.wikimedia.org/wiki/File:${encodeURIComponent(f.replace(/ /g,"_"))}" target="_blank" rel="noopener">${esc(m)}: ${esc(f)}</a></li>`).join("");$("#l-loja").textContent=L.nome;vtExtras(st,L);
  const pub=S.carros.filter(c=>(c.status==="Disponível"||c.status==="Reservado")&&(LOJ||(PREVIA&&soRep())?true:noSite(c)));const LM=LOJ||(PREVIA&&soRep());document.documentElement.classList.toggle("modo-loj",LM);
  {const fq=(st.faq||FAQ_PADRAO).filter(f=>f.p&&f.r);$("#v-faq").hidden=st.mostrar.faq===false||!fq.length;$("#v-faq-l").innerHTML=fq.map(f=>`<details><summary>${esc(f.p)}</summary><p>${esc(faqTxt(f.r))}</p></details>`).join("");$("#v-procura").hidden=st.mostrar.procura===false||LM;$("#v-vende").hidden=!PF().compra||LM;if(LM){$("#v-faq").hidden=true;$("#v-eyebrow").textContent="Área do lojista · "+L.cid;$("#v-aviso").textContent="Preços para lojistas. "+nomeVeic(1).replace(/^./,x=>x.toUpperCase())+" no estado em que se encontram, sem garantia.";$("#v-subt").textContent="Estoque de repasse da "+L.nome+". Chame no WhatsApp para negociar.";$("#v-subt").hidden=false}if(!$("#vitrine").hidden&&$("#ov").hidden)seoSite()}
@@ -1664,7 +1690,7 @@ function verCarro(id){
  const LM=document.documentElement.classList.contains("modo-loj"),msg=encodeURIComponent(LM?`Olá! Sou lojista e tenho interesse no ${c.marca} ${c.modelo} ${c.versao} ${c.ano} (${R(c.preco)}) do repasse.`:`Olá! Vi no site o ${c.marca} ${c.modelo} ${c.versao} ${c.ano} (${R(c.preco)}) e tenho interesse.`);
  const tel=L.wpp.replace(/\D/g,"");
  $("#sheet").innerHTML=`<div class="sheet-head"><div><span class="lbl">${esc(c.marca)}</span><h2 style="font-size:30px">${esc(c.modelo)} ${esc(c.versao)}</h2></div><button class="x" data-close>Fechar</button></div>
- <div class="det"><div><div class="ph" id="gal-main">${carSVG(c,1)}</div>${(c.fotos||[]).length>1?`<div class="gal">${c.fotos.map((f,i)=>`<button type="button" class="gal-t" data-gal="${i}" aria-label="Foto ${i+1}" aria-pressed="${i===0}"><img src="${f}" alt=""></button>`).join("")}</div>`:""}
+ <div class="det"><div><div class="ph" id="gal-main">${carSVG(c,1)}</div>${(c.fotos||[]).length>1?`<div class="gal">${c.fotos.map((f,i)=>`<button type="button" class="gal-t" data-gal="${i}" aria-label="Foto ${i+1}" aria-pressed="${i===0}"><img src="${esc(f)}" alt=""></button>`).join("")}</div>`:""}
    <div class="specgrid"><div><span class="lbl">Ano</span><b>${c.ano}</b></div><div><span class="lbl">Km</span><b class="num">${c.km.toLocaleString("pt-BR")}</b></div><div><span class="lbl">Câmbio</span><b>${c.cambio}</b></div><div><span class="lbl">Combustível</span><b>${c.comb}</b></div><div><span class="lbl">Cor</span><b>${c.pintura}</b></div><div><span class="lbl">Final da placa</span><b>${c.placa.slice(-1)}</b></div>${tipoInfo(c).filter(x=>x[0]!=="Tipo").map(x=>`<div><span class="lbl">${x[0]}</span><b>${esc(String(x[1]))}</b></div>`).join("")}</div>
    ${(d=>d.d2v||d.d3v?`<p class="muted" style="margin-top:12px;font-size:13.5px">${[d.d2v&&esc(d.d2v+" "+d.d2t),d.d3v&&esc(d.d3v+" "+d.d3t)].filter(Boolean).join(" · ")}</p>`:"")(SITE(L).destaques)}</div>
   <div style="display:flex;flex-direction:column;gap:12px"><div><div class="pr num" style="font-size:38px;font-family:var(--f-display);font-weight:700">${R(c.preco)}</div><span class="muted" style="font-size:13px">${LM?"preço para lojista · no estado, sem garantia":"preço à vista"}</span></div>
@@ -1859,7 +1885,7 @@ function ficha(id,tab){
   <form class="form" id="f-gasto"><label class="field full">Novo gasto<input id="g-d" required placeholder="Ex.: troca de pastilhas"></label><label class="field">Valor (R$)<input id="g-v" type="number" inputmode="numeric" required min="1"></label><button class="btn" type="submit" style="align-self:end;justify-content:center">Adicionar gasto</button></form>`}
  if(TAB==="fotos")body=`<p class="muted" style="font-size:13.5px">A primeira foto é a capa no site. Dá para tirar pelo celular na hora ou escolher da galeria. Até 12 fotos por carro.</p>
   <label class="btn" style="justify-content:center;cursor:pointer"><svg class="i"><use href="#i-plus"/></svg>Adicionar fotos<input type="file" id="up-fotos" accept="image/*" multiple hidden></label>
-  ${(c.fotos||[]).length?`<div class="fgrid">${c.fotos.map((f,i)=>`<div class="fitem"><img src="${f}" alt="Foto ${i+1}">${i===0?'<span class="pill p-ok fcap">Capa</span>':""}<div class="fact">${i>0?`<button type="button" class="btn sm soft" data-capa="${i}">Usar como capa</button>`:""}<button type="button" class="btn sm danger" data-rmf="${i}">Remover</button></div></div>`).join("")}</div>`:`<div class="fempty"><b>Nenhuma foto ainda</b><span class="muted">Enquanto não tiver foto, o site mostra o nome do modelo${!NUVEM&&FOTOS[c.modelo]?" (nesta demonstração, uma foto ilustrativa)":""}.</span></div>`}`;
+  ${(c.fotos||[]).length?`<div class="fgrid">${c.fotos.map((f,i)=>`<div class="fitem"><img src="${esc(f)}" alt="Foto ${i+1}">${i===0?'<span class="pill p-ok fcap">Capa</span>':""}<div class="fact">${i>0?`<button type="button" class="btn sm soft" data-capa="${i}">Usar como capa</button>`:""}<button type="button" class="btn sm danger" data-rmf="${i}">Remover</button></div></div>`).join("")}</div>`:`<div class="fempty"><b>Nenhuma foto ainda</b><span class="muted">Enquanto não tiver foto, o site mostra o nome do modelo${!NUVEM&&FOTOS[c.modelo]?" (nesta demonstração, uma foto ilustrativa)":""}.</span></div>`}`;
  if(TAB==="docs")body=`<form class="form" id="f-doc"><label class="field">Placa<input id="d-placa" data-placa autocapitalize="characters" value="${esc(c.placa)}" maxlength="8"></label><label class="field">RENAVAM<input id="d-ren" value="${esc(c.renavam||"")}" inputmode="numeric"></label><label class="field full">Chassi<input id="d-cha" value="${esc(c.chassi||"")}" maxlength="17"></label><button class="btn full soft" type="submit" style="justify-content:center">Salvar dados do documento</button></form>
   <div class="checks">${[["laudo","Laudo cautelar aprovado"],["manual","Manual e livro de revisões"],["chave","Chave reserva"],["ipva","IPVA e licenciamento em dia"]].map(d=>`<label><input type="checkbox" data-doc="${d[0]}" ${(c.docs||{})[d[0]]?"checked":""}>${d[1]}</label>`).join("")}</div><p class="muted" style="font-size:12.5px">Itens pendentes aparecem em "Precisam de atenção" na visão geral.</p>`;
  if(TAB==="rnv")body=rnvHTML(c);
@@ -2250,7 +2276,7 @@ function formAval(id){const a0=id?S.aval.find(x=>x.id==id):null,a=a0?JSON.parse(
  <label class="field">Marca<input id="a-marca" required value="${esc(a.marca)}" placeholder="Fiat"></label><label class="field">Modelo<input id="a-modelo" required value="${esc(a.modelo)}" placeholder="Mobi"></label>
  <label class="field">Ano<input id="a-ano" type="number" inputmode="numeric" required value="${a.ano}"></label><label class="field">Km<input id="a-km" type="number" inputmode="numeric" required value="${a.km}"></label>
  <label class="field">Placa<input id="a-placa" data-placa autocapitalize="characters" maxlength="7" value="${esc(a.placa)}"></label><label class="field">Cor<select id="a-cor">${Object.keys(PINTURA).map(p=>`<option ${p===a.pintura?"selected":""}>${p}</option>`).join("")}</select></label>
- ${a.site?`<div class="full of-box"><b>Oferta que chegou pelo site</b><small>${a.quer?"O cliente quer "+R(a.quer)+". ":""}Coloque a FIPE e o estado do carro para ver quanto pagar.${a.tel?` <a target="_blank" rel="noopener" href="https://wa.me/55${String(a.tel).replace(/\D/g,"")}?text=${encodeURIComponent("Olá "+(a.cli||"").split(" ")[0]+"! Aqui é da "+S.loja.nome+". Recebemos os dados do seu "+a.marca+" "+a.modelo+" pelo site.")}">Chamar no WhatsApp</a>`:""}</small>${(a.fotos||[]).filter(Boolean).length?`<div class="of-fotos">${a.fotos.filter(Boolean).map(f=>`<a href="${f}" target="_blank" rel="noopener"><img src="${f}" alt=""></a>`).join("")}</div>`:""}</div>`:""}
+ ${a.site?`<div class="full of-box"><b>Oferta que chegou pelo site</b><small>${a.quer?"O cliente quer "+R(a.quer)+". ":""}Coloque a FIPE e o estado do carro para ver quanto pagar.${a.tel?` <a target="_blank" rel="noopener" href="https://wa.me/55${String(a.tel).replace(/\D/g,"")}?text=${encodeURIComponent("Olá "+(a.cli||"").split(" ")[0]+"! Aqui é da "+S.loja.nome+". Recebemos os dados do seu "+a.marca+" "+a.modelo+" pelo site.")}">Chamar no WhatsApp</a>`:""}</small>${(a.fotos||[]).filter(Boolean).length?`<div class="of-fotos">${a.fotos.filter(Boolean).map(f=>`<a href="${esc(f)}" target="_blank" rel="noopener"><img src="${esc(f)}" alt=""></a>`).join("")}</div>`:""}</div>`:""}
  <label class="field ${temRep()&&temVarejo()?"":"full"}">Tabela FIPE (R$)<input id="a-fipe" type="number" inputmode="numeric" required value="${a.fipe||""}"><button type="button" class="fipe-lnk" data-fipe="a-fipe">Buscar na tabela FIPE</button></label>${temRep()&&temVarejo()?`<label class="field">Destino do carro<select id="a-dest"><option value="varejo" ${a.dest!=="repasse"?"selected":""}>Vender no varejo</option><option value="repasse" ${a.dest==="repasse"?"selected":""}>Repassar para lojista</option></select></label>`:""}
  <div class="full"><b style="font-size:13px">Estado do carro</b><div class="av-itens" style="margin-top:8px">${AV_ITENS.map(([k,n])=>`<div class="av-item"><b>${n}</b><div class="seg" data-item="${k}">${COND.map(cn=>`<button type="button" data-c="${cn}" aria-pressed="${a.itens[k]===cn}">${cn}</button>`).join("")}</div></div>`).join("")}</div></div>
  <div class="full av-res" id="a-res"></div>
@@ -2511,14 +2537,14 @@ function renderLoja(){const d=edDraft(),st=d.site;
  </div></div></details>
  <details open><summary>Identidade</summary><div class="ed-in">
   ${inp("nome","Nome da loja","Auto Sul Veículos")}
-  <div class="field">Logotipo<div class="ed-img"><span class="mini" id="ed-logo-mini" style="${st.logo?`background-image:url('${st.logo}')`:""}">${st.logo?"":"sem logo"}</span><label class="btn sm soft" style="cursor:pointer">Enviar imagem<input type="file" accept="image/*" id="ed-logo" hidden></label>${st.logo?'<button type="button" class="btn sm ghost" id="ed-logo-rm">Remover</button>':""}</div><p class="dica">Sem logotipo, o site mostra as iniciais do nome.</p></div>
+  <div class="field">Logotipo<div class="ed-img"><span class="mini" id="ed-logo-mini" style="${st.logo?`background-image:url('${esc(st.logo)}')`:""}">${st.logo?"":"sem logo"}</span><label class="btn sm soft" style="cursor:pointer">Enviar imagem<input type="file" accept="image/*" id="ed-logo" hidden></label>${st.logo?'<button type="button" class="btn sm ghost" id="ed-logo-rm">Remover</button>':""}</div><p class="dica">Sem logotipo, o site mostra as iniciais do nome.</p></div>
   <div class="field">Cor da marca${(st.logoCores||[]).length?`<div class="ed-rec"><small>Cores do seu logotipo · <b>recomendado</b></small><div class="ed-sw">${st.logoCores.map(c=>`<button type="button" data-cor="${c}" style="background:${c}" aria-pressed="${c===d.cor}" aria-label="Cor ${c} do logotipo"></button>`).join("")}</div></div><small class="ed-rec-o">Outras cores</small>`:""}<div class="ed-sw" id="ed-sw">${["#dc2626","#1d4ed8","#0f766e","#111827","#c2410c","#6d28d9","#15803d","#a16207"].map(c=>`<button type="button" data-cor="${c}" style="background:${c}" aria-pressed="${c===d.cor}" aria-label="Cor ${c}"></button>`).join("")}<input type="color" data-k="cor" value="${d.cor}" aria-label="Outra cor"></div><p class="dica">Usada nos botões, no logotipo de iniciais e no topo, se você escolher "Cor da marca".</p></div>
   <div class="field">Letra dos títulos${seg("site.fonte",[["larga","Moderna"],["classica","Clássica"],["simples","Simples"]])}</div>
  </div></details>
  <details><summary>Topo do site</summary><div class="ed-in">
   <div class="field">Fundo do topo${seg("site.topo.estilo",[["claro","Claro"],["escuro","Escuro"],["marca","Cor da marca"],["foto","Foto"]])}</div>
-  <div class="field" ${st.topo.estilo==="foto"?"":"hidden"}>Foto do topo<div class="ed-img"><span class="mini" style="${st.topo.foto?`background-image:url('${st.topo.foto}')`:""}">${st.topo.foto?"":"sem foto"}</span><label class="btn sm soft" style="cursor:pointer">Enviar foto<input type="file" accept="image/*" id="ed-foto" hidden></label></div><p class="dica">Uma foto da fachada ou do pátio fica ótima. Ela escurece um pouco para o texto aparecer.</p></div>
-  <div class="field" ${st.topo.estilo==="foto"?"":"hidden"}>Mais fotos no topo (trocam sozinhas)<div class="bn-ed">${(st.banners||[]).map((b,i)=>`<div class="bn-it"><span class="mini" style="background-image:url('${b.foto}')"></span><div class="bn-tx"><input data-bn-t1="${i}" value="${esc(b.t1||"")}" placeholder="Título (opcional)"><input data-bn-t2="${i}" value="${esc(b.t2||"")}" placeholder="Texto de apoio (opcional)"></div><button type="button" class="btn xs ghost" data-bn-rm="${i}">Remover</button></div>`).join("")}</div>${(st.banners||[]).length<4?'<label class="btn sm soft" style="cursor:pointer;align-self:flex-start">Adicionar foto<input type="file" accept="image/*" id="ed-bn" hidden></label>':""}<p class="dica">Até 4 fotos a mais, além da foto do topo. Cada uma pode ter o próprio título. Sem título, vale o texto do topo.</p></div>
+  <div class="field" ${st.topo.estilo==="foto"?"":"hidden"}>Foto do topo<div class="ed-img"><span class="mini" style="${st.topo.foto?`background-image:url('${esc(st.topo.foto)}')`:""}">${st.topo.foto?"":"sem foto"}</span><label class="btn sm soft" style="cursor:pointer">Enviar foto<input type="file" accept="image/*" id="ed-foto" hidden></label></div><p class="dica">Uma foto da fachada ou do pátio fica ótima. Ela escurece um pouco para o texto aparecer.</p></div>
+  <div class="field" ${st.topo.estilo==="foto"?"":"hidden"}>Mais fotos no topo (trocam sozinhas)<div class="bn-ed">${(st.banners||[]).map((b,i)=>`<div class="bn-it"><span class="mini" style="background-image:url('${esc(b.foto)}')"></span><div class="bn-tx"><input data-bn-t1="${i}" value="${esc(b.t1||"")}" placeholder="Título (opcional)"><input data-bn-t2="${i}" value="${esc(b.t2||"")}" placeholder="Texto de apoio (opcional)"></div><button type="button" class="btn xs ghost" data-bn-rm="${i}">Remover</button></div>`).join("")}</div>${(st.banners||[]).length<4?'<label class="btn sm soft" style="cursor:pointer;align-self:flex-start">Adicionar foto<input type="file" accept="image/*" id="ed-bn" hidden></label>':""}<p class="dica">Até 4 fotos a mais, além da foto do topo. Cada uma pode ter o próprio título. Sem título, vale o texto do topo.</p></div>
   <div class="field">Alinhamento${seg("site.topo.alinhar",[["centro","Centralizado"],["esquerda","À esquerda"]])}</div>
   ${inp("site.topo.eyebrow","Texto pequeno acima do título","Seminovos em {cidade}")}
   ${inp("slogan","Frase de destaque (título)","Seminovos revisados em Pelotas")}
@@ -2563,7 +2589,7 @@ function renderLoja(){const d=edDraft(),st=d.site;
  <details><summary>Sobre a loja e endereço</summary><div class="ed-in">
   ${chk("site.mostrar.sobre","Mostrar a parte “Sobre a loja”")}
   ${area("sobre","Sobre a loja","Conte a história da loja")}
-  <div class="field">Foto da fachada<div class="ed-img"><span class="mini" style="${st.fachada?`background-image:url('${st.fachada}')`:""}">${st.fachada?"":"sem foto"}</span><label class="btn sm soft" style="cursor:pointer">Enviar foto<input type="file" accept="image/*" id="ed-fach" hidden></label>${st.fachada?'<button type="button" class="btn sm ghost" id="ed-fach-rm">Remover</button>':""}</div><p class="dica">Aparece junto do texto “Sobre a loja”. Passa confiança para quem ainda não conhece a loja.</p></div>
+  <div class="field">Foto da fachada<div class="ed-img"><span class="mini" style="${st.fachada?`background-image:url('${esc(st.fachada)}')`:""}">${st.fachada?"":"sem foto"}</span><label class="btn sm soft" style="cursor:pointer">Enviar foto<input type="file" accept="image/*" id="ed-fach" hidden></label>${st.fachada?'<button type="button" class="btn sm ghost" id="ed-fach-rm">Remover</button>':""}</div><p class="dica">Aparece junto do texto “Sobre a loja”. Passa confiança para quem ainda não conhece a loja.</p></div>
   ${inp("cid","Cidade","Pelotas/RS")}${inp("end","Endereço","Rua, número, bairro")}${inp("hor","Horário","Seg a sex 8h–18h")}
  </div></details>
  <details><summary>Rodapé e dados da empresa</summary><div class="ed-in">
@@ -2733,7 +2759,7 @@ function onbRender(){const b=$("#onb-body"),P=OB.p;$("#onb-erro").hidden=true;
   <div class="onb-vagas">${[["s","Showroom","carros na parte coberta ou na frente"],["p","Pátio","vagas no pátio externo"],["o","Preparação","carros sendo arrumados"]].map(([k,t,d])=>`<div><span><b>${t}</b><small>${d}</small></span><span class="stepper"><button type="button" data-ob-vg="${k}" data-d="-1" aria-label="Menos">−</button><output>${OB.vagas[k]}</output><button type="button" data-ob-vg="${k}" data-d="1" aria-label="Mais">+</button></span></div>`).join("")}</div>`;
  if(P===6)h=`<h1 class="onb-h">A cara do site</h1><p class="onb-p">Escolha a cor da marca e, se tiver, o logotipo. Em <b>Minha loja</b> dá para mudar tudo depois.</p><div class="form">
   <div class="field full">Cor da marca<div class="swatches" id="ob-cores" style="margin-top:6px">${[...new Set([...(OB.logoCores||[]),...OB_CORES])].map(c=>`<button type="button" data-ob-cor="${c}" style="background:${c}" aria-label="Cor ${c}" aria-pressed="${c===OB.cor}"></button>`).join("")}</div></div>
-  <div class="field full">Logotipo (opcional)<div class="onb-logo" style="margin-top:6px"><span class="lg" id="ob-lg">${OB.logo?`<img src="${OB.logo}" alt="">`:"sem logo"}</span><label class="btn soft sm">Enviar imagem<input type="file" id="ob-logo" accept="image/*" hidden></label>${OB.logo?'<button type="button" class="btn ghost sm" id="ob-logo-x">Tirar</button>':""}</div></div>
+  <div class="field full">Logotipo (opcional)<div class="onb-logo" style="margin-top:6px"><span class="lg" id="ob-lg">${OB.logo?`<img src="${esc(OB.logo)}" alt="">`:"sem logo"}</span><label class="btn soft sm">Enviar imagem<input type="file" id="ob-logo" accept="image/*" hidden></label>${OB.logo?'<button type="button" class="btn ghost sm" id="ob-logo-x">Tirar</button>':""}</div></div>
   ${obCampo("Frase de destaque do site","ob-slogan",OB.slogan||(OB.perfil.publico==="repasse"?"Repasse para lojistas em "+(OB.loja.cid.split("/")[0]||"sua cidade"):(OB.perfil.veic.moto&&!OB.perfil.veic.carro?"Motos seminovas em ":"Seminovos revisados em ")+(OB.loja.cid.split("/")[0]||"sua cidade")))}</div>`;
  if(P===7)h=`<h1 class="onb-h">Tudo pronto!</h1><p class="onb-p">A <b>${esc(OB.loja.nome)}</b> já está no Pátio. Guarde estes acessos:</p>
   <div class="onb-res"><div><span>${esc(OB.dono.nome)} (você)</span><span>usuário <code>${esc(OB.dono.usuario)}</code></span></div>${obVendUsers().map(v=>`<div><span>${esc(v.nome)}</span><span>usuário <code>${esc(v.usuario)}</code> · senha <code>1234</code></span></div>`).join("")}</div>
@@ -3445,7 +3471,7 @@ async function redesAbre(id){const c=carro(id);if(!c)return;const ov=$("#ov");ov
  <div class="acts-row">${navigator.share?'<button type="button" class="btn" id="rd-sh">Compartilhar</button>':""}<button type="button" class="btn soft" id="rd-dl">Baixar imagem</button><button type="button" class="btn soft" id="rd-cp">Copiar texto</button></div>
  <div class="docx">No celular, <b>Compartilhar</b> abre direto o Instagram, o Facebook ou o WhatsApp com a imagem. No Instagram, cole o texto na legenda. ${(c.fotos||[]).length?"":"<b>Dica:</b> coloque uma foto no carro para a imagem ficar muito melhor."}</div>`;
  ov.hidden=false;const img=await redesImg(c);const pv=$("#rd-prev");if(!pv)return;
- if(!img){pv.innerHTML='<span class="muted">Não consegui montar a imagem neste aparelho.</span>';return}pv.innerHTML=`<img src="${img}" alt="Imagem do anúncio">`;
+ if(!img){pv.innerHTML='<span class="muted">Não consegui montar a imagem neste aparelho.</span>';return}pv.innerHTML=`<img src="${esc(img)}" alt="Imagem do anúncio">`;
  const nome=(c.marca+"-"+c.modelo+"-"+c.ano).toLowerCase().replace(/[^a-z0-9]+/g,"-")+".jpg";
  const blob=()=>fetch(img).then(r=>r.blob());
  $("#rd-dl").onclick=async()=>{baixar(await blob(),nome)};$("#rd-cp").onclick=()=>copiar($("#rd-tx").value,"Texto copiado. Cole na legenda.");
@@ -3754,5 +3780,52 @@ tudo();
 })();
 </script>
 
+<script>
+/* ===== Vitrine v3: chamada no topo, menu, por que comprar, contato junto do mapa ===== */
+(function(){
+const V=document.getElementById("vitrine");if(!V)return;
+const q=s=>V.querySelector(s);
+const vai=sel=>{const e=q(sel);if(e)e.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"})};
+V.addEventListener("click",e=>{const b=e.target.closest("[data-v3go]");if(!b)return;e.preventDefault();vai(b.dataset.v3go)});
+function v3(){
+  if(typeof S==="undefined"||!S||!S.loja||V.hidden)return;
+  const L=S.loja,st=SITE(L),pf=PF(),LM=document.documentElement.classList.contains("modo-loj");
+  const zap=(q("#v-zap")&&q("#v-zap").getAttribute("href"))||"",temZap=!!(L.wpp&&zap&&zap!=="#");
+  const nv1=nomeVeic(1),nv=nomeVeic();
+  /* chamada no topo */
+  let cta=q("#v-cta");if(!cta){cta=document.createElement("div");cta.id="v-cta";cta.className="v-cta";const sb=q("#v-subt");sb.after(cta)}
+  cta.innerHTML=`<button type="button" class="btn v-cta-1" data-v3go="#cards">Ver os ${nv1}</button>`+(temZap?`<a class="btn v-cta-2" href="${esc(zap)}" target="_blank" rel="noopener"><svg class="i"><use href="#i-chat"/></svg>Chamar no WhatsApp</a>`:"");
+  cta.hidden=LM;
+  /* menu do topo */
+  let mn=q("#v-nav3");if(!mn){mn=document.createElement("span");mn.id="v-nav3";mn.className="v-nav3";q(".v-top nav").prepend(mn)}
+  const ln=[["#cards",nv1.charAt(0).toUpperCase()+nv1.slice(1)]];
+  if(!q("#v-vende").hidden)ln.push(["#v-vende","Vender meu "+nv]);
+  if(!q("#v-mapa").hidden)ln.push(["#v-mapa","Como chegar"]);else if(!q("#sobre-v").hidden)ln.push(["#sobre-v","A loja"]);
+  mn.innerHTML=ln.map(x=>`<button type="button" data-v3go="${x[0]}">${x[1]}</button>`).join("");
+  /* por que comprar com a gente (só o que a loja oferece) */
+  let df=q("#v-difs");if(!df){df=document.createElement("section");df.id="v-difs";df.className="v-difs";q("#v-procura").before(df)}
+  const it=[];
+  if(st.mostrar.simulador!==false)it.push(["Financiamento na hora","Escolha a entrada e o prazo e veja a parcela de cada "+nv+" aqui no site."]);
+  if(pf.compra)it.push(["Seu "+nv+" na troca","Aceitamos o seu usado. Mande os dados e umas fotos e a loja faz a proposta."]);
+  if(pf.consig)it.push(["Consignação","Deixe o seu "+nv+" com a gente e venda sem precisar atender ninguém."]);
+  if(temZap)it.push(["Atendimento no WhatsApp","Fale direto com a loja, peça mais fotos e marque a sua visita ou o test drive."]);
+  if(L.end&&it.length<4)it.push(["Venha conhecer",L.end+(L.cid?" · "+L.cid:"")]);
+  df.hidden=LM||it.length<3;
+  df.innerHTML=`<span class="lbl">Comprar aqui</span><h2>Por que comprar com a gente</h2><div class="v-difs-g">${it.slice(0,4).map((x,i)=>`<div class="v-dif"><span class="v-dif-n">${String(i+1).padStart(2,"0")}</span><h3>${esc(x[0])}</h3><p class="muted">${esc(x[1])}</p></div>`).join("")}</div>`;
+  /* contato junto do mapa: sem cartão solto */
+  const ab=q("#sobre-v"),mp=q("#v-mapa"),bx=ab?[...ab.querySelectorAll(".v-box")]:[];
+  if(mp&&!mp.hidden&&bx.length===2){bx[1].classList.add("v3-oculto");ab.classList.toggle("v3-oculto",!!bx[0].hidden);ab.style.gridTemplateColumns="1fr"}
+  else if(bx.length===2){bx[1].classList.remove("v3-oculto");ab.classList.remove("v3-oculto");ab.style.gridTemplateColumns=""}
+  if(mp&&!mp.hidden){const rota=q("#v-mapa-rota");let bt=q("#v3-bts");
+    if(!bt){bt=document.createElement("div");bt.id="v3-bts";bt.className="v3-bts";rota.before(bt);bt.appendChild(rota)}
+    let mz=q("#v3-mapa-zap");if(!mz){mz=document.createElement("a");mz.id="v3-mapa-zap";mz.className="btn v3-zap";mz.target="_blank";mz.rel="noopener";bt.appendChild(mz)}
+    mz.href=zap;mz.textContent="WhatsApp "+(L.wpp||"");mz.hidden=!temZap}
+}
+const rv=window.renderVitrine;
+if(typeof rv==="function"){window.renderVitrine=function(){const r=rv.apply(this,arguments);try{v3()}catch(e){console.warn("vitrine v3",e)}return r}}
+new MutationObserver(()=>{try{v3()}catch(e){}}).observe(V,{attributes:true,attributeFilter:["hidden"]});
+try{v3()}catch(e){}
+})();
+</script>
 </body>
 </html>

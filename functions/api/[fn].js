@@ -66,6 +66,16 @@ async function confere(senha, guardada) {
 async function embaralhaEquipe(eq) {
   return Promise.all((eq || []).map(async e => (e.senha && !ehHash(e.senha)) ? { ...e, senha: await hashSenha(e.senha) } : e));
 }
+// ---- imagem enviada: só png, jpeg, webp ou gif em base64 puro (nada de svg nem texto solto) ----
+const IMG_OK = /^data:image\/(png|jpeg|webp|gif);base64,[A-Za-z0-9+/]+={0,2}$/;
+const imgOk = f => typeof f === 'string' && IMG_OK.test(f);
+// em dados salvos, toda imagem já virou ref:<id>; qualquer data: ou ref: fora do padrão é recusado
+function imagensOk(o) {
+  if (typeof o === 'string') return !(/^\s*data:/i.test(o) && !imgOk(o)) && !(o.startsWith('ref:') && !/^ref:[0-9a-f-]{36}$/.test(o));
+  if (Array.isArray(o)) return o.every(imagensOk);
+  if (o && typeof o === 'object') return Object.values(o).every(imagensOk);
+  return true;
+}
 // ---- o que o vendedor não vê (custo, mínimo, financeiro, parceiros) ----
 const PRIV_CARRO = ['compra', 'gastos', 'parc', 'crvSeg'];
 const PRIV_LISTAS = ['contas', 'despesas', 'parceiros'];
@@ -77,11 +87,17 @@ function semPrivado(d) {
   const limpa = c => { const x = { ...c }; PRIV_CARRO.forEach(k => delete x[k]); return x; };
   o.carros = (d.carros || []).map(limpa);
   o.removidos = (d.removidos || []).map(limpa);
+  if (o.loja) { // vendedor não vê a senha do repasse nem os dados do contador
+    const { contador, ...loja } = o.loja;
+    if (loja.perfil) { const { senhaLoj, ...pf } = loja.perfil; loja.perfil = pf; }
+    o.loja = loja;
+  }
   return o;
 }
 function juntaVendedor(guardado, novo) {
   // o vendedor não recebeu os dados privados: mantém os guardados e só acrescenta o que ele criou
   const o = { ...novo, equipe: guardado.equipe };
+  if (guardado.loja) o.loja = guardado.loja; // Pix, juros, site e contador: só o dono muda
   PRIV_CAMPOS.forEach(k => { if (k in guardado) o[k] = guardado[k]; else delete o[k]; });
   PRIV_LISTAS.forEach(k => {
     const g = guardado[k] || [], ids = new Set(g.map(x => String(x.id)));
@@ -264,6 +280,7 @@ const F = {
   async criar(db, a) {
     const d = a.p_dados;
     if (!d || !Array.isArray(d.equipe) || !d.equipe.length) return { ok: false, erro: 'dados' };
+    if (!imagensOk(d)) return { ok: false, erro: 'foto' };
     d.equipe = await embaralhaEquipe(d.equipe);
     const json = JSON.stringify(d);
     if (json.length > MAX_DADOS) return { ok: false, erro: 'grande' };
@@ -325,6 +342,7 @@ const F = {
     if (!ativa(x.l)) return { ok: false, erro: 'expirado', ...resumo(x.l) };
     const nd = a.p_dados;
     if (!nd || !Array.isArray(nd.equipe)) return { ok: false, erro: 'dados' };
+    if (!imagensOk(nd)) return { ok: false, erro: 'foto' };
     if (x.l.versao !== +a.p_base) return { ok: false, conflito: true, dados: dadosPara(x.p, x.d), ...resumo(x.l) };
     let dados = nd;
     if (x.p.papel === 'Suporte') {
@@ -354,7 +372,7 @@ const F = {
     const x = await sessao(db, a.p_token);
     if (!x) return { ok: false, erro: 'sessao' };
     const f = String(a.p_dados || '');
-    if (!f.startsWith('data:image/') || f.length > 1500000) return { ok: false, erro: 'foto' };
+    if (!imgOk(f) || f.length > 1500000) return { ok: false, erro: 'foto' };
     const n = await db.prepare('SELECT COUNT(*) n FROM fotos WHERE loja_id = ?').bind(x.l.id).first();
     if (n.n >= 600) return { ok: false, erro: 'limite' };
     const id = crypto.randomUUID();
@@ -413,7 +431,7 @@ const F = {
     const hoje = hojeBR();
     if ((d0.aval || []).filter(x => x.site && x.data === hoje).length >= 40) return { ok: false, erro: 'limite' };
     const nf = await db.prepare('SELECT COUNT(*) n FROM fotos WHERE loja_id = ?').bind(l0.id).first();
-    const fotos = (Array.isArray(a.p_fotos) ? a.p_fotos : []).slice(0, 4).map(String).filter(f => f.startsWith('data:image/') && f.length < 700000);
+    const fotos = (Array.isArray(a.p_fotos) ? a.p_fotos : []).slice(0, 4).map(String).filter(f => imgOk(f) && f.length < 700000);
     const ids = [];
     if (nf.n + fotos.length <= 600) {
       for (const f of fotos) { const id = crypto.randomUUID(); await db.prepare('INSERT INTO fotos(id,loja_id,dados,criado) VALUES(?,?,?,?)').bind(id, l0.id, f, agora()).run(); ids.push(id); }
