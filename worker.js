@@ -1,5 +1,6 @@
 // Pátio · ponto de entrada do Worker: /api/* vai para o servidor; o resto é o site.
 import { onRequestPost, onRequestGet } from './functions/api/[fn].js';
+import { seo } from './seo.js';
 
 export default {
   async fetch(request, env, ctx) {
@@ -12,6 +13,9 @@ export default {
       }
       return onRequestPost({ request, env, params: { fn: m[1] }, waitUntil: p => ctx.waitUntil(p) });
     }
+    // título, prévia e arquivos que buscadores, WhatsApp e IAs leem sem rodar o JavaScript
+    const s = await seo(request, env).catch(() => null);
+    if (s) return s;
     return env.ASSETS.fetch(request);
   },
 };
