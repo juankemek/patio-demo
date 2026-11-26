@@ -44,7 +44,7 @@ const ativa = l => !!l.liberado || l.expira > agora();
 const resumo = l => ({ versao: l.versao, expira: l.expira, liberado: !!l.liberado, ativa: ativa(l), codigo: l.codigo });
 const semSenhas = d => ({ ...d, equipe: (d.equipe || []).map(({ senha, ...e }) => e) });
 // ---- senhas embaralhadas (PBKDF2) ----
-const ITER = 5000;
+const ITER = 100000; // senhas novas; as antigas (5000) continuam valendo e são refeitas no próximo login
 const b64 = u8 => btoa(String.fromCharCode(...u8));
 const deB64 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
 async function derivar(senha, sal, iter) {
@@ -65,6 +65,8 @@ async function confere(senha, guardada) {
   for (let i = 0; i < Math.min(x.length, h.length); i++) dif |= x.charCodeAt(i) ^ h.charCodeAt(i);
   return dif === 0;
 }
+// senha nova escrita em texto (ainda não embaralhada) com menos de 6 caracteres
+const senhaCurta = eq => (eq || []).some(e => e && e.senha && !ehHash(e.senha) && String(e.senha).length < 6);
 async function embaralhaEquipe(eq) {
   return Promise.all((eq || []).map(async e => (e.senha && !ehHash(e.senha)) ? { ...e, senha: await hashSenha(e.senha) } : e));
 }
@@ -272,8 +274,8 @@ async function sessao(db, tk) {
   if (!tk) return null;
   const s = await db.prepare('SELECT * FROM sessoes WHERE token = ?').bind(String(tk)).first();
   if (!s) return null;
-  // acesso de suporte vale só por 4 horas
-  if (String(s.token).startsWith('sp_') && agora() - s.criado > 4 * 3600000) {
+  // acesso de suporte vale só por 4 horas; os outros caem depois de 60 dias sem uso
+  if ((String(s.token).startsWith('sp_') && agora() - s.criado > 4 * 3600000) || agora() - (s.visto || s.criado) > 60 * 86400000) {
     await db.prepare('DELETE FROM sessoes WHERE token = ?').bind(s.token).run();
     return null;
   }
@@ -304,6 +306,7 @@ const F = {
     const d = a.p_dados;
     if (!d || !Array.isArray(d.equipe) || !d.equipe.length) return { ok: false, erro: 'dados' };
     if (!imagensOk(d)) return { ok: false, erro: 'foto' };
+    if (senhaCurta(d.equipe)) return { ok: false, erro: 'senha-curta' };
     d.equipe = await embaralhaEquipe(d.equipe);
     const json = JSON.stringify(d);
     if (json.length > MAX_DADOS) return { ok: false, erro: 'grande' };
@@ -337,6 +340,13 @@ const F = {
     if (!e) { await anota(db, ipk); await anota(db, uk); await dormir(400); return { ok: false, erro: 'senha' }; }
     if (e.ativo === false) return { ok: false, erro: 'bloqueado' };
     if (!ativa(l)) return { ok: false, erro: 'expirado', nome: l.nome };
+    // senha guardada do jeito antigo (texto ou poucas voltas): refaz com o embaralhamento novo, sem atrapalhar o login
+    if (!ehHash(e.senha) || +String(e.senha).split('$')[1] < ITER) {
+      try {
+        const nd = JSON.parse(l.dados), q = (nd.equipe || []).find(x => String(x.id) === String(e.id));
+        if (q) { q.senha = await hashSenha(String(a.p_senha || '')); await db.prepare('UPDATE lojas SET dados = ?, versao = versao + 1 WHERE id = ? AND versao = ?').bind(JSON.stringify(nd), l.id, l.versao).run(); l.versao++; }
+      } catch (er) { /* fica para o próximo login */ }
+    }
     const tk = token(), t = agora();
     await db.batch([
       db.prepare('INSERT INTO sessoes(token,loja_id,pessoa_id,papel,criado,visto) VALUES(?,?,?,?,?,?)').bind(tk, l.id, +e.id, e.papel, t, t),
@@ -370,6 +380,7 @@ const F = {
     const nd = a.p_dados;
     if (!nd || !Array.isArray(nd.equipe)) return { ok: false, erro: 'dados' };
     if (!imagensOk(nd)) return { ok: false, erro: 'foto' };
+    if (senhaCurta(nd.equipe)) return { ok: false, erro: 'senha-curta' };
     if (x.l.versao !== +a.p_base) return { ok: false, conflito: true, dados: dadosPara(x.p, x.d), ...resumo(x.l) };
     let dados = nd;
     if (x.p.papel === 'Suporte') {
@@ -435,7 +446,7 @@ const F = {
     const d = JSON.parse(l.dados), pf = (d.loja && d.loja.perfil) || {};
     if (!pf.publico || pf.publico === 'varejo') return { ok: false, erro: 'sem', codigo: l.codigo };
     const loja = lojaPublica(d);
-    if (pf.senhaLoj && String(a.p_senha || '') !== String(pf.senhaLoj)) {
+    if (pf.senhaLoj && !(await igualSeguro(String(pf.senhaLoj), String(a.p_senha || '')))) {
       await dormir(400);
       return { ok: false, erro: 'senha', codigo: l.codigo, loja: { nome: loja.nome, cid: loja.cid, wpp: loja.wpp, cor: loja.cor, slogan: loja.slogan, perfil: loja.perfil } };
     }
@@ -602,7 +613,7 @@ const F = {
   async admin(db, a, env, extra) {
     const ak = 'admin:' + await resumoIp(ipDe(extra));
     if (await contagem(db, ak, MIN15) >= 5) return { ok: false, erro: 'muitas' };
-    if (!adminOk(env, a.p_senha, a.p_chave)) { await anota(db, ak); await dormir(1000); return { ok: false, erro: env.ADMIN_SENHA ? 'senha' : 'config' }; }
+    if (!(await adminOk(env, a.p_senha, a.p_chave))) { await anota(db, ak); await dormir(1000); return { ok: false, erro: env.ADMIN_SENHA ? 'senha' : 'config' }; }
     const ls = (await db.prepare('SELECT * FROM lojas ORDER BY criado DESC').all()).results || [];
     const ops = (await db.prepare('SELECT * FROM feedbacks ORDER BY criado DESC').all()).results || [];
     const fts = (await db.prepare('SELECT loja_id, COUNT(*) n FROM fotos GROUP BY loja_id').all()).results || [];
@@ -620,7 +631,7 @@ const F = {
   async admin_acao(db, a, env, extra) {
     const ak = 'admin:' + await resumoIp(ipDe(extra));
     if (await contagem(db, ak, MIN15) >= 5) return { ok: false, erro: 'muitas' };
-    if (!adminOk(env, a.p_senha, a.p_chave)) { await anota(db, ak); await dormir(1000); return { ok: false, erro: 'senha' }; }
+    if (!(await adminOk(env, a.p_senha, a.p_chave))) { await anota(db, ak); await dormir(1000); return { ok: false, erro: 'senha' }; }
     const id = String(a.p_loja || ''), t = agora();
     if (a.p_acao === 'tempo') {
       const h = Math.max(1, Math.min(720, parseInt(a.p_horas, 10) || 24));
@@ -698,14 +709,17 @@ async function buscaFotos(db, lojaId, ids) {
 }
 
 // Entra quem tem a senha de administrador ou a chave da central da Atende Já (useatendeja.com.br/admin).
-function adminOk(env, senha, chave) {
-  return igualSeguro(env.ADMIN_SENHA, senha) || igualSeguro(env.CHAVE_CENTRAL, chave);
+async function adminOk(env, senha, chave) {
+  return (await igualSeguro(env.ADMIN_SENHA, senha)) || (await igualSeguro(env.CHAVE_CENTRAL, chave));
 }
-function igualSeguro(certo, dado) {
+// compara resumos de tamanho fixo: o tempo não revela o conteúdo nem o tamanho do segredo
+async function igualSeguro(certo, dado) {
   const s = String(certo || ''), p = String(dado || '');
-  if (!s || s.length !== p.length) return false;
+  if (!s) return false;
+  const k = await crypto.subtle.importKey('raw', crypto.getRandomValues(new Uint8Array(32)), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
+  const [x, y] = await Promise.all([s, p].map(async t => new Uint8Array(await crypto.subtle.sign('HMAC', k, new TextEncoder().encode(t)))));
   let dif = 0;
-  for (let i = 0; i < s.length; i++) dif |= s.charCodeAt(i) ^ p.charCodeAt(i);
+  for (let i = 0; i < x.length; i++) dif |= x[i] ^ y[i];
   return dif === 0;
 }
 

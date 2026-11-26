@@ -8,3 +8,4 @@ _routes.json
 node_modules
 .git
 .wrangler
+.gitignore

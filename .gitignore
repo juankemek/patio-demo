@@ -1,0 +1,9 @@
+# segredos e arquivos locais: nunca vão para o GitHub
+.env
+.env.*
+.dev.vars
+*.pem
+*.key
+*-log.txt
+.wrangler/
+node_modules/

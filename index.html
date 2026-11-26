@@ -2135,7 +2135,7 @@ function formPessoa(id){const p=id?S.equipe.find(x=>x.id==id):null,eu=p&&USER&&U
  $("#sheet").innerHTML=`<div class="sheet-head"><div><span class="lbl">Equipe e acessos</span><h2 style="font-size:26px;margin-top:4px">${p?"Editar "+esc(p.nome.split(" ")[0]):"Adicionar pessoa"}</h2></div><button class="x" data-close>Fechar</button></div>
  <form class="form" id="fp"><label class="field full">Nome completo<input id="p-nome" required value="${p?esc(p.nome):""}"></label>
  <label class="field">Usuário (para entrar)<input id="p-user" required autocapitalize="none" spellcheck="false" autocomplete="off" value="${p?esc(p.usuario):""}" placeholder="ex.: joao"></label>
- <label class="field">Senha<span style="display:flex;gap:6px"><input id="p-senha" type="password" ${p?"":"required"} autocomplete="new-password" value="${p&&p.senha?esc(p.senha):""}" style="flex:1;min-width:0" placeholder="${p?"em branco = manter a atual":"mínimo 4 caracteres"}"><button type="button" class="btn xs soft" id="p-ver" style="flex:none">Mostrar</button></span></label>
+ <label class="field">Senha<span style="display:flex;gap:6px"><input id="p-senha" type="password" ${p?"":"required"} autocomplete="new-password" value="${p&&p.senha?esc(p.senha):""}" style="flex:1;min-width:0" placeholder="${p?"em branco = manter a atual":"mínimo 6 caracteres"}"><button type="button" class="btn xs soft" id="p-ver" style="flex:none">Mostrar</button></span></label>
  <label class="field">Papel<select id="p-papel" ${eu?"disabled":""}>${PAPEIS.filter(x=>!(isSup()&&x==="Dono")).map(x=>`<option ${p&&p.papel===x?"selected":""}>${x}</option>`).join("")}</select></label>
  <label class="field">${COMLBL}<input id="p-com" type="number" inputmode="decimal" step="0.5" min="0" value="${p?p.com:"1.5"}"></label>
  <label class="field full">Acesso ao painel<select id="p-ativo" ${eu?"disabled":""}><option value="1" ${!p||p.ativo!==false?"selected":""}>Liberado</option><option value="0" ${p&&p.ativo===false?"selected":""}>Bloqueado (não consegue entrar)</option></select></label>
@@ -2149,7 +2149,7 @@ function formPessoa(id){const p=id?S.equipe.find(x=>x.id==id):null,eu=p&&USER&&U
  $("#fp").onsubmit=e=>{e.preventDefault();const nome=$("#p-nome").value.trim(),u=$("#p-user").value.trim().toLowerCase(),sn=$("#p-senha").value,papel=eu?p.papel:$("#p-papel").value,ativo=eu?true:$("#p-ativo").value==="1",com=+$("#p-com").value||0;
   if(!/^[a-z0-9._-]{3,20}$/.test(u))return err("O usuário precisa ter de 3 a 20 letras ou números, sem espaço e sem acento.");
   if(S.equipe.some(x=>x.usuario===u&&(!p||x.id!==p.id)&&!x.removido))return err("Já existe alguém com o usuário \""+u+"\". Escolha outro.");
-  if((!p||sn)&&sn.length<4)return err("A senha precisa ter pelo menos 4 caracteres.");
+  if((!p||sn)&&sn.length<6)return err("A senha precisa ter pelo menos 6 caracteres.");
   if(p&&p.papel==="Dono"&&(papel!=="Dono"||!ativo)&&donosAtivos().length<2)return err("A loja precisa ter pelo menos um dono com acesso liberado.");
   marca();
   if(p){Object.assign(p,{nome,usuario:u,papel,ativo,com});if(sn)p.senha=sn;if(eu){USER.nome=nome;try{USTORE.setItem(UKEY,JSON.stringify(USER))}catch(e){}}}
@@ -2839,7 +2839,7 @@ function onbRender(){const b=$("#onb-body"),P=OB.p;$("#onb-erro").hidden=true;
  if(P===3)h=`<h1 class="onb-h">Seu acesso</h1><p class="onb-p">É com isso que você entra no painel. <b>Anote</b> o usuário e a senha.</p><div class="form">
   ${obCampo("Seu nome","ob-dnome",OB.dono.nome,'required placeholder="Ex.: Marcos Silva"')}
   <label class="field">Usuário<input id="ob-user" required autocapitalize="none" spellcheck="false" value="${esc(OB.dono.usuario)}" placeholder="ex.: marcos"></label>
-  <label class="field">Senha (mínimo 4)<span style="display:flex;gap:6px"><input id="ob-senha" type="password" required minlength="4" autocomplete="new-password" value="${esc(OB.dono.senha)}" style="flex:1;min-width:0"><button type="button" class="btn xs soft" id="ob-ver" style="flex:none">Mostrar</button></span></label></div>`;
+  <label class="field">Senha (mínimo 6)<span style="display:flex;gap:6px"><input id="ob-senha" type="password" required minlength="6" autocomplete="new-password" value="${esc(OB.dono.senha)}" style="flex:1;min-width:0"><button type="button" class="btn xs soft" id="ob-ver" style="flex:none">Mostrar</button></span></label></div>`;
  if(P===4)h=`<h1 class="onb-h">Sua equipe</h1><p class="onb-p">Quantos vendedores trabalham com você? Cada um ganha um acesso próprio, que só mostra o que vendedor precisa.</p>
   <div class="stepper"><button type="button" data-ob-q="-1" aria-label="Menos">−</button><output id="ob-q">${OB.vend.length}</output><button type="button" data-ob-q="1" aria-label="Mais">+</button><span class="muted" style="font-size:14px">${OB.vend.length===1?"vendedor":"vendedores"}</span></div>
   <div class="form" style="margin-top:14px">${OB.vend.map((v,i)=>`<label class="field full">Nome do vendedor ${i+1}<input data-ob-v="${i}" value="${esc(v)}" placeholder="Nome e sobrenome" required></label>`).join("")}</div>
@@ -2873,7 +2873,7 @@ $("#onb-f").addEventListener("input",()=>{$("#onb-erro").hidden=true});
 function onbErro(t){const e=$("#onb-erro");e.textContent=t;e.hidden=false}
 function onbValida(){const P=OB.p;
  if(P===1){if(!OB.loja.nome)return "Coloque o nome da loja.";if(!OB.loja.cid)return "Coloque a cidade.";if(OB.loja.wpp.replace(/\D/g,"").length<10)return "Coloque o WhatsApp com DDD."}
- if(P===3){if(!OB.dono.nome)return "Coloque o seu nome.";if(OB.dono.usuario.length<3)return "O usuário precisa ter pelo menos 3 letras, sem espaço.";if(OB.dono.senha.length<4)return "A senha precisa ter pelo menos 4 caracteres."}
+ if(P===3){if(!OB.dono.nome)return "Coloque o seu nome.";if(OB.dono.usuario.length<3)return "O usuário precisa ter pelo menos 3 letras, sem espaço.";if(OB.dono.senha.length<6)return "A senha precisa ter pelo menos 6 caracteres."}
  if(P===2&&!OB.perfil.veic.carro&&!OB.perfil.veic.moto&&!OB.perfil.veic.pesado)return "Marque pelo menos um tipo de veículo.";
  if(P===4&&OB.vend.some(v=>!v.trim()))return "Coloque o nome de cada vendedor (ou diminua a quantidade).";
  if(P===7&&!OB.aceite)return "Para começar, marque que aceita os Termos de uso e a Política de privacidade.";
@@ -3729,7 +3729,7 @@ document.addEventListener("click",e=>{if(e.target.closest("#adm-copia-msg")){con
 document.addEventListener("input",e=>{if(e.target.id==="adm-txt"){const a=$("#adm-wa-msg");if(a)a.href="https://wa.me/?text="+encodeURIComponent(e.target.value)}});
 document.addEventListener("click",async e=>{const b=e.target.closest("[data-adm-senha]");if(!b)return;const [id,usuario,nome,wpp]=b.dataset.admSenha.split("|");
  if(!b.dataset.arm){b.dataset.arm=1;b.textContent="Gerar nova senha?";setTimeout(()=>{if(b.isConnected){delete b.dataset.arm;b.textContent="Nova senha"}},3500);return}
- const nova=String(Math.floor(100000+Math.random()*900000));b.disabled=true;
+ const nova=[...crypto.getRandomValues(new Uint8Array(10))].map(x=>"abcdefghjkmnpqrstuvwxyz23456789"[x%31]).join("");b.disabled=true;
  try{const r=await api("admin_acao",{p_senha:ADM_S,p_loja:id,p_acao:"senha",p_usuario:usuario,p_nova:nova});
   if(!r.ok){b.disabled=false;toast("Não deu certo.");return}
   const msg=`Oi ${nome.split(" ")[0]}! Aqui é o Juan, do Pátio. Sua nova senha é ${nova} (usuário: ${usuario}). Se quiser, troque depois em Equipe.`;
