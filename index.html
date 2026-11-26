@@ -1319,9 +1319,9 @@ html.modo-loj #cards .parc.num{display:none}
 <div class="onb" id="fim" hidden><div class="onb-card" style="text-align:center">
  <div class="onb-top" style="justify-content:center"><span class="onb-k"><i></i>Pátio</span></div>
  <h1 class="onb-h">Seu teste de 48 horas terminou</h1>
- <p class="onb-p">Gostou? Fale com o Juan para continuar usando o Pátio na sua loja, com tudo o que você já cadastrou.</p>
+ <p class="onb-p">Gostou? Fale com o suporte para continuar usando o Pátio na sua loja, com tudo o que você já cadastrou.</p>
  <div id="fim-op" hidden></div>
- <a class="btn full wa-btn" id="fim-wa" target="_blank" rel="noopener" style="justify-content:center;margin-top:18px">Falar com o Juan no WhatsApp</a>
+ <a class="btn full wa-btn" id="fim-wa" target="_blank" rel="noopener" style="justify-content:center;margin-top:18px">Falar com o suporte no WhatsApp</a>
  <p class="muted" style="font-size:13px;margin-top:14px">Seus dados continuam guardados neste aparelho.</p>
 </div></div>
 <div class="vid" id="vid" hidden><div class="vid-box" role="dialog" aria-modal="true" aria-labelledby="vid-t"><div class="vid-h"><b id="vid-t">Vídeos de ajuda</b><span style="display:flex;gap:8px"><button type="button" class="btn xs soft" id="vid-lista" hidden>Todos os vídeos</button><button type="button" class="x" id="vid-x">Fechar</button></span></div><div class="vid-c" id="vid-c"></div></div></div>
@@ -2820,7 +2820,7 @@ function testeAcabou(){if(NUVEM)return !!NV.token&&!NV.liberado&&!!NV.expira&&NV
 function waJuan(t){return "https://wa.me/"+CONTATO.wpp+"?text="+encodeURIComponent(t)}
 function faixaTeste(){const f=$("#teste-faixa");if(!f)return;if(!TESTE||(NUVEM?(!NV.token||NV.liberado||$("#painel").hidden):(!S.teste||!S.teste.inicio))){f.hidden=true;return}
  const ms=testeRestaMs();if(ms<=0){fimTeste();return}const h=Math.floor(ms/36e5),m=Math.floor(ms%36e5/6e4);
- f.hidden=false;f.innerHTML=`<span><b>Teste grátis</b> · faltam ${h?h+" h e ":""}${m} min${NUVEM?` <span class="nv-st" id="nv-st">${NV.stTxt||""}</span>`:""}</span><span class="tf-acts"><button type="button" class="btn xs ghost" data-tour>Fazer o tour</button><button type="button" class="btn xs ghost" data-vids>Vídeos</button>${NUVEM?'<button type="button" class="btn xs ghost" data-nv-links>Links da loja</button><button type="button" class="btn xs ghost" data-avisos>Avisos no celular</button><button type="button" class="btn xs ghost" data-opiniao>Dar opinião</button>':""}<a class="btn xs" href="${waJuan("Oi Juan! Estou testando o Pátio"+(S.loja.nome?" na "+S.loja.nome:"")+" e quero saber mais.")}" target="_blank" rel="noopener">Falar com o ${CONTATO.nome}</a></span>`}
+ f.hidden=false;f.innerHTML=`<span><b>Teste grátis</b> · faltam ${h?h+" h e ":""}${m} min${NUVEM?` <span class="nv-st" id="nv-st">${NV.stTxt||""}</span>`:""}</span><span class="tf-acts"><button type="button" class="btn xs ghost" data-tour>Fazer o tour</button><button type="button" class="btn xs ghost" data-vids>Vídeos</button>${NUVEM?'<button type="button" class="btn xs ghost" data-nv-links>Links da loja</button><button type="button" class="btn xs ghost" data-avisos>Avisos no celular</button><button type="button" class="btn xs ghost" data-opiniao>Dar opinião</button>':""}<a class="btn xs" href="${waJuan("Oi Juan! Estou testando o Pátio"+(S.loja.nome?" na "+S.loja.nome:"")+" e quero saber mais.")}" target="_blank" rel="noopener">Falar com o suporte</a></span>`}
 function fimTeste(){tourFim(true);if(NUVEM){$$("#fim .muted").forEach(x=>{if(/neste aparelho/.test(x.textContent))x.textContent="Seus dados continuam guardados."});clearInterval(NV.poll);$("#nv-load").hidden=true;const fo=$("#fim-op");if(NV.token&&!NV.opinou){fo.hidden=false;fo.innerHTML=opHTML("fim")}else fo.hidden=true}$("#fim-wa").href=waJuan("Oi Juan! Meu teste do Pátio"+(S.loja.nome?" na "+S.loja.nome:"")+" terminou e quero continuar.");$("#fim").hidden=false;document.documentElement.classList.add("travado")}
 setInterval(()=>{if(!TESTE)return;if(testeAcabou())fimTeste();else faixaTeste()},30000);
 document.addEventListener("click",e=>{if(e.target.closest("[data-tour]")){e.preventDefault();ajAbre&&ajAbre(false);tourStart()}});
