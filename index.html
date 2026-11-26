@@ -3968,6 +3968,8 @@ function premium(){
 const rv=window.renderVitrine;
 if(typeof rv==="function"){window.renderVitrine=function(){const r=rv.apply(this,arguments);try{premium()}catch(e){console.warn("vitrine premium",e)}return r}}
 new MutationObserver(()=>{try{premium()}catch(e){}}).observe(V,{attributes:true,attributeFilter:["hidden"]});
+/* a faixa de números fica colada embaixo da foto, mesmo quando a faixa de marcas aparece depois */
+new MutationObserver(()=>{const h=q(".v-hero"),b=q("#v-numeros");if(h&&b&&V.classList.contains("premium")&&h.nextElementSibling!==b)h.after(b)}).observe(V,{childList:true});
 try{premium()}catch(e){}
 })();
 </script>
