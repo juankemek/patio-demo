@@ -11,7 +11,7 @@
 <script>(function(){var t="";try{t=localStorage.getItem("tema")||""}catch(e){}document.documentElement.setAttribute("data-theme",t==="escuro"?"dark":"light")})()</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght@500;600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght@500;600;700&family=Source+Sans+3:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&family=Montserrat:wght@400;500;600;700&display=swap">
 <style>
 /* Sistema UI UX Pro Max (revenda de carros): ardósia escura #1E293B + vermelho de ação #DC2626, Lexend (títulos) + Source Sans 3 (texto), números alinhados; cinzas neutros, sem maiúsculas largas. Herói escuro em tela cheia, movimento leve.
    Layout: três telas na mesma página. Vitrine pública (cor da loja, sem login) → Login do lojista → Painel (menu lateral fixo + conteúdo com resumo antes do detalhe). */
@@ -1129,6 +1129,95 @@ html.modo-loj #cards .parc.num{display:none}
 .v-cur:not(.big){opacity:0!important}
 @media (max-width:860px){#vitrine .v-nav3{display:none}}
 @media (max-width:520px){#vitrine .v-cta .btn{flex:1 1 100%;justify-content:center}}
+/* ===== Vitrine premium: preto e dourado (padrão; SITE.tema="classico" volta ao visual antigo) ===== */
+:root.vpremium{--bg:#060606;--surface:#101011;--sunk:#18181a;--ink:#f3efe6;--muted:#a9a39a;--line:rgba(255,255,255,.09);--primary:#0a0a0a;--primary-2:#141414;--on-primary:#f6f1e7;--on-primary-mut:#bdb6aa;--accent:#cfa646;--accent-ink:#141414;--accent-soft:rgba(207,166,70,.14);--shadow:0 1px 2px rgba(0,0,0,.4),0 18px 40px -18px rgba(0,0,0,.8);color-scheme:dark}
+:root.vpremium body{background:#060606}
+#vitrine.premium{--ouro:#cfa646;--brand:#cfa646;--brand-ink:#141414;--b:#0a0a0a;--bi:#f6f1e7;--f-serif:"Playfair Display",Georgia,serif;--f-mont:"Montserrat",system-ui,sans-serif;background:#060606;color:var(--ink);font-family:var(--f-mont)}
+#vitrine.premium .silk,#vitrine.premium .v-dest,#vitrine.premium .v-dots,#vitrine.premium .tema-btn,#vitrine.premium .v-faixa{display:none!important}
+#vitrine .v-ouro{background:linear-gradient(90deg,#b8902f,#e9cf7c 50%,#b8902f);color:#1a1405;font:500 13px var(--f-mont)}
+#vitrine .v-ouro .in{max-width:1180px;margin:0 auto;padding:8px 16px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+#vitrine .v-ouro a{color:inherit;text-decoration:none}
+#vitrine .v-ouro a:hover{text-decoration:underline}
+#vitrine .v-ouro .sep{opacity:.4}
+#vitrine .v-ouro .dir{margin-left:auto;display:flex;gap:16px}
+#vitrine.premium .v-top{background:rgba(6,6,6,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(207,166,70,.2);position:sticky;top:0;z-index:40;color:#f6f1e7}
+#vitrine.premium .v-top .in{padding-block:16px}
+#vitrine.premium .v-name,#vitrine.premium .v-name span{font-family:var(--f-serif)!important;color:#f6f1e7;letter-spacing:.01em}
+#vitrine.premium .v-name small{color:var(--ouro)}
+#vitrine.premium .v-logo:not(.tem-img){background:transparent!important;border:1px solid var(--ouro);color:var(--ouro)!important;font-family:var(--f-serif)}
+#vitrine.premium .v-top nav .v-nav3 button{font:500 13px var(--f-serif);letter-spacing:.14em;text-transform:uppercase;color:#f6f1e7;opacity:.85}
+#vitrine.premium .v-top nav .v-nav3 button:hover{color:var(--ouro);opacity:1}
+#vitrine.premium #v-contato{background:transparent!important;border:1px solid rgba(246,241,231,.85)!important;color:#f6f1e7!important;border-radius:0!important;font:600 13px var(--f-serif)!important;letter-spacing:.14em;text-transform:uppercase;padding:10px 22px!important;box-shadow:none!important}
+#vitrine.premium #v-contato:hover{border-color:var(--ouro)!important;color:var(--ouro)!important}
+#vitrine.premium .v-hero{background:linear-gradient(90deg,rgba(0,0,0,.9),rgba(0,0,0,.62) 48%,rgba(0,0,0,.28)),var(--hero-img,#0b0b0b) center/cover no-repeat!important;border:0!important;min-height:min(86vh,820px);display:flex;align-items:center;padding:64px 0 48px!important}
+#vitrine.premium .v-hero::before,#vitrine.premium .v-hero::after{display:none!important}
+#vitrine.premium .v-hero .in{display:block!important;text-align:left!important;color:#f6f1e7!important;width:100%;max-width:1180px;margin:0 auto!important;padding:0 16px!important}
+#vitrine.premium #v-eyebrow{color:var(--ouro)!important;opacity:1!important;letter-spacing:.22em;font:600 12px var(--f-mont)!important;text-transform:uppercase;display:block}
+#vitrine.premium #v-eyebrow::before{content:"";display:block;width:80px;height:3px;background:var(--ouro);margin-bottom:24px}
+#vitrine.premium .v-hero h1{font-family:var(--f-serif)!important;font-weight:500!important;font-size:clamp(40px,6vw,76px)!important;line-height:1.06!important;letter-spacing:-.01em!important;max-width:13ch!important;margin:18px 0 0!important;color:#fff!important}
+#vitrine.premium .v-hero p{color:#e7e1d4!important;font-size:18px;margin:18px 0 0!important;max-width:46ch!important;opacity:1!important}
+#vitrine.premium .v-cta{margin-top:34px}
+#vitrine.premium .v-cta .btn{border-radius:0;font:600 13px var(--f-serif);letter-spacing:.16em;text-transform:uppercase;padding:17px 32px}
+#vitrine.premium .v-cta .v-cta-1{background:transparent;color:#fff;border:1px solid #fff}
+#vitrine.premium .v-cta .v-cta-1:hover{border-color:var(--ouro);color:var(--ouro)}
+#vitrine.premium .v-cta .v-cta-2{background:rgba(0,0,0,.4);color:#fff;border:1px solid rgba(255,255,255,.35)}
+#vitrine.premium .v-cta .v-cta-2:hover{border-color:var(--ouro);color:var(--ouro)}
+#vitrine.premium .v-hero .v-search{margin-top:48px!important;background:rgba(12,12,12,.8)!important;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(207,166,70,.28)!important;border-radius:0!important;max-width:none!important;box-shadow:none!important}
+#vitrine.premium .v-search input,#vitrine.premium .v-search select{background:#121212!important;border:1px solid rgba(255,255,255,.1)!important;color:#f3efe6!important;border-radius:0!important}
+#vitrine .v-numeros{background:linear-gradient(90deg,#b8902f,#e6c96f 50%,#b8902f)}
+#vitrine .v-numeros .v-stats{max-width:1180px;margin:0 auto!important;padding:24px 16px!important;display:grid!important;grid-template-columns:repeat(auto-fit,minmax(150px,1fr))!important;gap:0!important;text-align:center!important;color:#3b2f10!important;opacity:1!important;transform:none!important}
+#vitrine .v-numeros .v-stats>div{padding:4px 12px;border-left:1px solid rgba(26,20,5,.2);font:600 11px var(--f-mont);letter-spacing:.14em;text-transform:uppercase;color:#3b2f10}
+#vitrine .v-numeros .v-stats>div:first-child{border-left:0}
+#vitrine .v-numeros .v-stats b{font:600 34px var(--f-mont)!important;color:#1a1405!important;letter-spacing:-.01em;margin-bottom:6px;text-transform:none;display:block}
+#vitrine.premium .v-mq{background:#0a0a0a;border-color:rgba(207,166,70,.14)}
+#vitrine.premium .v-mq span{color:#4a4436}
+#vitrine.premium .v-res h2,#vitrine.premium .v-difs h2,#vitrine.premium .v-procura h2,#vitrine.premium .v-vende h2,#vitrine.premium .v-faq h2,#vitrine.premium .v-mapa-tx h2,#vitrine.premium .v-about h2,#vitrine.premium .v-final h2{font-family:var(--f-serif)!important;font-weight:600;color:#fff;letter-spacing:-.01em}
+#vitrine.premium .lbl{color:var(--ouro)!important;letter-spacing:.22em;opacity:1!important}
+#vitrine.premium .muted{color:#a9a39a}
+#vitrine.premium .v-chips b{color:var(--ouro)}
+#vitrine.premium .v-chips button{background:transparent;border-color:rgba(255,255,255,.14);color:#e9e3d6;border-radius:0}
+#vitrine.premium .v-chips button:hover{border-color:var(--ouro)}
+#vitrine.premium .v-chips button[aria-pressed="true"]{background:var(--ouro);color:#141414;border-color:var(--ouro)}
+#vitrine.premium .card{background:#0f0f10!important;border:1px solid rgba(255,255,255,.07)!important;border-radius:4px!important;color:#f3efe6}
+#vitrine.premium .card:hover{border-color:rgba(207,166,70,.55)!important;box-shadow:0 30px 60px -30px rgba(0,0,0,.95)!important}
+#vitrine.premium .card .ph{position:relative}
+#vitrine.premium .v-ano{position:absolute;left:12px;top:12px;z-index:3;background:var(--ouro);color:#141414;font:700 11px var(--f-mont);padding:4px 9px;border-radius:2px;letter-spacing:.04em}
+#vitrine.premium .card .ph .tags{left:auto;right:10px}
+#vitrine.premium .v-marca{display:block;font:600 11px var(--f-mont);letter-spacing:.16em;text-transform:uppercase;color:var(--ouro);margin-bottom:4px}
+#vitrine.premium .card .nm{font:700 16px var(--f-mont)!important;text-transform:uppercase;letter-spacing:.02em;color:#fff}
+#vitrine.premium .card .vs,#vitrine.premium .card .spec,#vitrine.premium .card .spec span{color:#9e978a}
+#vitrine.premium .card .pr{color:var(--ouro)!important;font-family:var(--f-mont)!important;font-weight:700}
+#vitrine.premium .card .b::after{color:var(--ouro)}
+#vitrine.premium .v-dif,#vitrine.premium .v-procura,#vitrine.premium .v-vende,#vitrine.premium .v-box,#vitrine.premium .v-mapa,#vitrine.premium .v-faq details{background:#0f0f10!important;border:1px solid rgba(255,255,255,.07)!important;border-radius:4px!important;color:#f3efe6}
+#vitrine.premium .v-dif-n{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:rgba(207,166,70,.12);border:1px solid rgba(207,166,70,.4);color:var(--ouro);letter-spacing:0;font-size:14px}
+#vitrine.premium .v-dif h3{font-family:var(--f-serif);color:#fff;font-size:20px}
+#vitrine.premium .v-difs,#vitrine.premium .v-faq{text-align:center}
+#vitrine.premium .v-difs-g,#vitrine.premium .v-faq details{text-align:left}
+#vitrine.premium .field input,#vitrine.premium .field select,#vitrine.premium .field textarea{background:#151516!important;border-color:rgba(255,255,255,.1)!important;color:#f3efe6!important;border-radius:2px!important}
+#vitrine.premium .field{color:#cfc8ba}
+#vitrine.premium .v-procura .btn,#vitrine.premium .v-vende .btn,#vitrine.premium #v-mapa-rota{background:var(--ouro)!important;color:#141414!important;border:0!important;border-radius:2px!important;font-weight:700;letter-spacing:.04em}
+#vitrine.premium .v-vende .btn.ghost,#vitrine.premium .v-vende label.btn{background:transparent!important;color:#f3efe6!important;border:1px solid rgba(255,255,255,.2)!important}
+#vitrine.premium .v3-zap{color:#f3efe6!important;border-color:rgba(255,255,255,.22)!important;border-radius:2px!important;background:transparent!important}
+#vitrine.premium .v-faq summary{color:#f3efe6}
+#vitrine.premium .v-faq details[open]{border-color:rgba(207,166,70,.45)!important}
+#vitrine .v-final{margin-top:clamp(56px,7vw,96px);padding:clamp(52px,7vw,88px) 24px;text-align:center;background:radial-gradient(ellipse at 50% 0%,rgba(207,166,70,.22),transparent 62%),#0b0a08;border:1px solid rgba(207,166,70,.2);border-radius:4px}
+#vitrine .v-final h2{font-size:clamp(30px,4vw,48px)!important;margin:8px 0 0}
+#vitrine .v-final p{color:#bdb6aa;margin:14px auto 0;max-width:52ch}
+#vitrine .v-final .bts{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:28px}
+#vitrine .v-final .btn{border-radius:0;font:600 13px var(--f-serif);letter-spacing:.16em;text-transform:uppercase;padding:17px 32px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center}
+#vitrine .v-final .a{background:var(--ouro);color:#141414;border:1px solid var(--ouro)}
+#vitrine .v-final .b{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.5)}
+#vitrine .v-final .b:hover{border-color:var(--ouro);color:var(--ouro)}
+#vitrine .v-rod{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:32px;padding:56px 0 30px;margin-top:56px;border-top:1px solid rgba(255,255,255,.07)}
+#vitrine .v-rod h4{font:600 13px var(--f-serif);letter-spacing:.16em;text-transform:uppercase;color:#fff;margin:0 0 16px}
+#vitrine .v-rod a,#vitrine .v-rod p,#vitrine .v-rod button{display:block;color:#a9a39a;font:400 14px/1.6 var(--f-mont);margin:0 0 9px;text-decoration:none;background:none;border:0;padding:0;cursor:pointer;text-align:left}
+#vitrine .v-rod a:hover,#vitrine .v-rod button:hover{color:var(--ouro)}
+#vitrine .v-rod .nm{font:600 22px var(--f-serif);color:#fff;margin-bottom:10px}
+#vitrine.premium .v-foot{border-top:1px solid rgba(255,255,255,.07);color:#6f6a61}
+#vitrine.premium .v-foot a{color:#8c867c}
+:root.vpremium #sheet .pr{color:#cfa646}
+@media (max-width:860px){#vitrine .v-rod{grid-template-columns:1fr 1fr}#vitrine .v-ouro .dir{display:none}}
+@media (max-width:520px){#vitrine .v-rod{grid-template-columns:1fr}#vitrine.premium .v-hero{min-height:auto;padding:44px 0 32px!important}#vitrine.premium .v-hero p{font-size:16px}#vitrine .v-numeros .v-stats{grid-template-columns:repeat(3,1fr)!important;padding:18px 8px!important}#vitrine .v-ouro .sep,#vitrine .v-ouro .hor{display:none}#vitrine .v-numeros .v-stats>div{padding:2px 6px;font-size:9.5px;letter-spacing:.08em}#vitrine .v-numeros .v-stats b{font-size:22px!important}#vitrine.premium .v-top nav{gap:6px}}
 </style>
 
 </head>
@@ -3825,6 +3914,61 @@ const rv=window.renderVitrine;
 if(typeof rv==="function"){window.renderVitrine=function(){const r=rv.apply(this,arguments);try{v3()}catch(e){console.warn("vitrine v3",e)}return r}}
 new MutationObserver(()=>{try{v3()}catch(e){}}).observe(V,{attributes:true,attributeFilter:["hidden"]});
 try{v3()}catch(e){}
+})();
+</script>
+<script>
+/* ===== Vitrine premium: preto e dourado ===== */
+(function(){
+const V=document.getElementById("vitrine");if(!V)return;
+const q=s=>V.querySelector(s);
+const OURO="#cfa646";
+const ativo=()=>{try{return SITE(S.loja).tema!=="classico"}catch(e){return true}};
+const rede=(v,base)=>v?(/^https?:/.test(v)?v:base+String(v).replace("@","")):"";
+function premium(){
+  if(typeof S==="undefined"||!S||!S.loja)return;
+  const liga=ativo(),on=liga&&!V.hidden,root=document.documentElement;
+  V.classList.toggle("premium",liga);
+  root.classList.toggle("vpremium",on);
+  const hero=q(".v-hero"),stv=q("#v-stats");
+  if(!liga){const b=q("#v-numeros");if(b&&stv&&stv.parentElement===b)q(".v-hero .in").insertBefore(stv,q("#estoque-v"));["#v-ouro","#v-numeros","#v-final","#v-rod"].forEach(s=>{const e=q(s);if(e)e.remove()});return}
+  if(!on)return;
+  root.style.setProperty("--brand",OURO);root.style.setProperty("--brand-ink","#141414");
+  const L=S.loja,st=SITE(L),LM=root.classList.contains("modo-loj");
+  const nv1=nomeVeic(1),nv=nomeVeic(),Nv1=nv1.charAt(0).toUpperCase()+nv1.slice(1);
+  const zap=(q("#v-zap")&&q("#v-zap").getAttribute("href"))||"",temZap=!!(L.wpp&&zap&&zap!=="#");
+  const rd0=st.redes||{},insta=rede(rd0.insta,"https://instagram.com/"),face=rede(rd0.face,"https://facebook.com/");
+  /* faixa dourada no alto */
+  let ou=q("#v-ouro");if(!ou){ou=document.createElement("div");ou.id="v-ouro";ou.className="v-ouro";q(".v-top").before(ou)}
+  ou.innerHTML=`<div class="in">${temZap?`<a href="${esc(zap)}" target="_blank" rel="noopener">WhatsApp ${esc(L.wpp)}</a>`:""}${L.hor?`${temZap?'<span class="sep">|</span>':""}<span class="hor">${esc(L.hor)}</span>`:""}<span class="dir">${insta?`<a href="${esc(insta)}" target="_blank" rel="noopener">Instagram</a>`:""}${face?`<a href="${esc(face)}" target="_blank" rel="noopener">Facebook</a>`:""}</span></div>`;
+  ou.hidden=!ou.textContent.trim();
+  /* foto grande no topo: a do topo, a da fachada ou a do primeiro carro */
+  const c0=(()=>{const cd=q("#cards .card");return cd?carro(cd.dataset.ver):null})();
+  const pic=q("#cards .card img.pic-carro"),img=(st.topo&&st.topo.foto)||st.fachada||(c0&&c0.fotos&&c0.fotos[0])||(pic&&pic.getAttribute("src"))||"";
+  if(img&&/^(data:image\/|https?:\/\/|\/)/.test(img))hero.style.setProperty("--hero-img",`url("${img.replace(/["\\\n\r]/g,"")}")`);else hero.style.removeProperty("--hero-img");
+  /* botões do topo */
+  const b1=q("#v-cta .v-cta-1"),b2=q("#v-cta .v-cta-2");if(b1)b1.textContent="Explorar estoque";if(b2)b2.textContent="Agendar visita";
+  /* faixa dourada de números */
+  let band=q("#v-numeros");if(!band){band=document.createElement("div");band.id="v-numeros";band.className="v-numeros"}
+  if(stv&&stv.parentElement!==band)band.appendChild(stv);
+  if(band.previousElementSibling!==hero)hero.after(band);
+  band.hidden=LM||!stv||!stv.children.length;
+  /* cartões: selo do ano e marca em cima do modelo */
+  V.querySelectorAll("#cards .card").forEach(cd=>{const c=carro(cd.dataset.ver);if(!c)return;
+    const ph=cd.querySelector(".ph");if(ph&&!ph.querySelector(".v-ano")){const s=document.createElement("span");s.className="v-ano";s.textContent=c.ano;ph.appendChild(s)}
+    const nm=cd.querySelector(".nm");if(nm&&!cd.querySelector(".v-marca")){const m=document.createElement("span");m.className="v-marca";m.textContent=c.marca;nm.before(m);nm.textContent=c.modelo}});
+  /* chamada final e rodapé */
+  const foot=q(".v-foot");
+  let fin=q("#v-final");if(!fin){fin=document.createElement("section");fin.id="v-final";fin.className="v-final";foot.before(fin)}
+  fin.hidden=LM;
+  fin.innerHTML=`<span class="lbl">${esc(L.nome)}</span><h2>Seu próximo ${nv} está aqui</h2><p>Fale com a nossa equipe, tire as suas dúvidas e venha ver de perto.</p><div class="bts"><button type="button" class="btn a" data-v3go="#cards">Ver o estoque completo</button>${temZap?`<a class="btn b" href="${esc(zap)}" target="_blank" rel="noopener">Tenho interesse</a>`:""}</div>`;
+  let rd=q("#v-rod");if(!rd){rd=document.createElement("div");rd.id="v-rod";rd.className="v-rod";foot.before(rd)}
+  const nav=[["#cards",Nv1]];if(!q("#v-vende").hidden)nav.push(["#v-vende","Vender meu "+nv]);if(!q("#v-faq").hidden)nav.push(["#v-faq","Perguntas frequentes"]);if(!q("#v-mapa").hidden)nav.push(["#v-mapa","Como chegar"]);
+  rd.innerHTML=`<div><div class="nm">${esc(L.nome)}</div><p>${esc(L.sobre||(st.topo&&st.topo.subt)||"")}</p></div><div><h4>Navegação</h4>${nav.map(x=>`<button type="button" data-v3go="${x[0]}">${x[1]}</button>`).join("")}</div><div><h4>Contato</h4>${temZap?`<a href="${esc(zap)}" target="_blank" rel="noopener">WhatsApp ${esc(L.wpp)}</a>`:""}${L.end?`<p>${esc(L.end)}${L.cid?"<br>"+esc(L.cid):""}</p>`:""}${L.hor?`<p>${esc(L.hor)}</p>`:""}</div>${insta||face?`<div><h4>Redes sociais</h4>${insta?`<a href="${esc(insta)}" target="_blank" rel="noopener">Instagram</a>`:""}${face?`<a href="${esc(face)}" target="_blank" rel="noopener">Facebook</a>`:""}</div>`:""}`;
+}
+const rv=window.renderVitrine;
+if(typeof rv==="function"){window.renderVitrine=function(){const r=rv.apply(this,arguments);try{premium()}catch(e){console.warn("vitrine premium",e)}return r}}
+new MutationObserver(()=>{try{premium()}catch(e){}}).observe(V,{attributes:true,attributeFilter:["hidden"]});
+try{premium()}catch(e){}
 })();
 </script>
 </body>
