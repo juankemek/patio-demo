@@ -26,6 +26,8 @@ async function prepara(db) {
     db.prepare(`CREATE TABLE IF NOT EXISTS avisos(id INTEGER PRIMARY KEY AUTOINCREMENT, loja_id TEXT NOT NULL, titulo TEXT, corpo TEXT, url TEXT, criado INTEGER NOT NULL)`),
     db.prepare(`CREATE INDEX IF NOT EXISTS avisos_loja ON avisos(loja_id, criado)`),
     db.prepare(`CREATE TABLE IF NOT EXISTS suporte(id INTEGER PRIMARY KEY AUTOINCREMENT, loja_id TEXT NOT NULL, criado INTEGER NOT NULL)`),
+    db.prepare(`CREATE TABLE IF NOT EXISTS tentativas(chave TEXT NOT NULL, criado INTEGER NOT NULL)`),
+    db.prepare(`CREATE INDEX IF NOT EXISTS tentativas_chave ON tentativas(chave, criado)`),
   ]);
   try { await db.prepare('ALTER TABLE lojas ADD COLUMN dominio TEXT').run(); } catch (e) { /* já existe */ }
   try { await db.prepare('ALTER TABLE lojas ADD COLUMN suporte_off INTEGER').run(); } catch (e) { /* já existe */ }
@@ -66,6 +68,27 @@ async function confere(senha, guardada) {
 async function embaralhaEquipe(eq) {
   return Promise.all((eq || []).map(async e => (e.senha && !ehHash(e.senha)) ? { ...e, senha: await hashSenha(e.senha) } : e));
 }
+// ---- freio contra robô e força bruta: conta pedidos ou erros por chave (o IP entra só como resumo embaralhado) ----
+async function resumoIp(ip) {
+  const b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode('patio-freio:' + String(ip || '')));
+  return [...new Uint8Array(b)].map(x => x.toString(16).padStart(2, '0')).join('').slice(0, 32);
+}
+async function contagem(db, chave, janela) {
+  const r = await db.prepare('SELECT COUNT(*) n FROM tentativas WHERE chave = ? AND criado > ?').bind(chave, agora() - janela).first();
+  return (r && r.n) || 0;
+}
+async function anota(db, chave) {
+  await db.prepare('INSERT INTO tentativas(chave, criado) VALUES(?, ?)').bind(chave, agora()).run();
+  if (Math.random() < 0.02) await db.prepare('DELETE FROM tentativas WHERE criado < ?').bind(agora() - 2 * 86400000).run();
+}
+// true = passou do teto; quando passa, conta mais um
+async function passou(db, chave, max, janela) {
+  if (await contagem(db, chave, janela) >= max) return true;
+  await anota(db, chave);
+  return false;
+}
+const ipDe = extra => (extra && extra.ip) || '';
+const MIN15 = 15 * 60 * 1000, HORA = 3600 * 1000, DIA = 86400000;
 // ---- imagem enviada: só png, jpeg, webp ou gif em base64 puro (nada de svg nem texto solto) ----
 const IMG_OK = /^data:image\/(png|jpeg|webp|gif);base64,[A-Za-z0-9+/]+={0,2}$/;
 const imgOk = f => typeof f === 'string' && IMG_OK.test(f);
@@ -277,7 +300,7 @@ const dadosPara = (p, d) => (p && p.papel === 'Dono' ? semSenhas(d) : p && p.pap
 
 // ------------------------------------------------------------------
 const F = {
-  async criar(db, a) {
+  async criar(db, a, env, extra) {
     const d = a.p_dados;
     if (!d || !Array.isArray(d.equipe) || !d.equipe.length) return { ok: false, erro: 'dados' };
     if (!imagensOk(d)) return { ok: false, erro: 'foto' };
@@ -285,7 +308,9 @@ const F = {
     const json = JSON.stringify(d);
     if (json.length > MAX_DADOS) return { ok: false, erro: 'grande' };
     const recentes = await db.prepare('SELECT COUNT(*) n FROM lojas WHERE criado > ?').bind(agora() - 3600000).first();
-    if (recentes.n >= 40) return { ok: false, erro: 'limite' };
+    if (recentes.n >= 300) return { ok: false, erro: 'limite' };
+    const ipc = 'criar:' + await resumoIp(ipDe(extra));
+    if (await contagem(db, ipc, DIA) >= 10 || await passou(db, ipc, 3, HORA)) return { ok: false, erro: 'limite' };
     let base = String(a.p_codigo || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '').slice(0, 24);
     if (base.length < 3) base = 'loja' + base;
     if (RESERVADOS.includes(base)) base += 'loja';
@@ -301,13 +326,15 @@ const F = {
     return { ok: true, token: tk, pessoa: { id: +dono.id, nome: dono.nome, papel: dono.papel }, ...resumo(l) };
   },
 
-  async entrar(db, a) {
+  async entrar(db, a, env, extra) {
+    const ipk = 'entrar-ip:' + await resumoIp(ipDe(extra)), uk = 'entrar:' + String(a.p_codigo || '').toLowerCase().slice(0, 80) + ':' + String(a.p_usuario || '').toLowerCase().trim().slice(0, 80);
+    if (await contagem(db, ipk, MIN15) >= 20 || await contagem(db, uk, MIN15) >= 8) return { ok: false, erro: 'muitas' };
     const l = await lojaPorCodigo(db, a.p_codigo);
     if (!l) { await dormir(400); return { ok: false, erro: 'loja' }; }
     const d = JSON.parse(l.dados), u = String(a.p_usuario || '').toLowerCase().trim();
     const c = (d.equipe || []).find(x => String(x.usuario || '').toLowerCase() === u && !x.removido);
     const e = c && await confere(String(a.p_senha || ''), c.senha) ? c : null;
-    if (!e) { await dormir(400); return { ok: false, erro: 'senha' }; }
+    if (!e) { await anota(db, ipk); await anota(db, uk); await dormir(400); return { ok: false, erro: 'senha' }; }
     if (e.ativo === false) return { ok: false, erro: 'bloqueado' };
     if (!ativa(l)) return { ok: false, erro: 'expirado', nome: l.nome };
     const tk = token(), t = agora();
@@ -428,12 +455,13 @@ const F = {
     if (!l0 || !ativa(l0)) return { ok: false, erro: 'loja' };
     const d0 = JSON.parse(l0.dados);
     if (!(d0.loja && d0.loja.perfil && d0.loja.perfil.compra)) return { ok: false, erro: 'sem' };
+    if (await passou(db, 'oferta:' + await resumoIp(ipDe(extra)), 5, HORA)) return { ok: false, erro: 'limite' };
     const hoje = hojeBR();
     if ((d0.aval || []).filter(x => x.site && x.data === hoje).length >= 40) return { ok: false, erro: 'limite' };
     const nf = await db.prepare('SELECT COUNT(*) n FROM fotos WHERE loja_id = ?').bind(l0.id).first();
     const fotos = (Array.isArray(a.p_fotos) ? a.p_fotos : []).slice(0, 4).map(String).filter(f => imgOk(f) && f.length < 700000);
     const ids = [];
-    if (nf.n + fotos.length <= 600) {
+    if (nf.n + fotos.length <= 450) { // as últimas 150 vagas de foto ficam para a loja, não para visitante
       for (const f of fotos) { const id = crypto.randomUUID(); await db.prepare('INSERT INTO fotos(id,loja_id,dados,criado) VALUES(?,?,?,?)').bind(id, l0.id, f, agora()).run(); ids.push(id); }
     }
     for (let tentativa = 0; tentativa < 6; tentativa++) {
@@ -444,6 +472,7 @@ const F = {
         itens: { pneus: 'Bom', pintura: 'Bom', mecanica: 'Bom', interior: 'Bom', docs: 'Bom' }, obs: txt(o.obs, 500), status: 'Oferta do site', site: true,
         quer: Math.max(0, parseInt(o.valor, 10) || 0), fotos: ids.map(i => 'ref:' + i), quem: 'Site' };
       d.aval = (d.aval || []).concat(av);
+      if (JSON.stringify(d).length > MAX_DADOS - 200000) return { ok: false, erro: 'limite' };
       const r = await db.prepare('UPDATE lojas SET dados = ?, versao = versao + 1 WHERE id = ? AND versao = ?').bind(JSON.stringify(d), l.id, l.versao).run();
       if (r.meta && r.meta.changes) {
         const donos = (d.equipe || []).filter(e => e.papel === 'Dono').map(e => +e.id);
@@ -459,6 +488,7 @@ const F = {
   async pedido(db, a, env, extra) {
     const lead = a.p_lead || {}, vis = a.p_visita;
     if (!txt(lead.nome, 80) || !txt(lead.tel, 30)) return { ok: false, erro: 'dados' };
+    if (await passou(db, 'pedido:' + await resumoIp(ipDe(extra)), 10, HORA)) return { ok: false, erro: 'limite' };
     for (let tentativa = 0; tentativa < 6; tentativa++) {
       const l = await lojaPorCodigo(db, a.p_codigo);
       if (!l || !ativa(l)) return { ok: false, erro: 'loja' };
@@ -477,6 +507,7 @@ const F = {
           tipo: vis.tipo === 'Visita' ? 'Visita' : 'Test drive', vend: vid, site: true });
       }
       d.fila = fila;
+      if (JSON.stringify(d).length > MAX_DADOS - 200000) return { ok: false, erro: 'limite' };
       const r = await db.prepare('UPDATE lojas SET dados = ?, versao = versao + 1 WHERE id = ? AND versao = ?')
         .bind(JSON.stringify(d), l.id, l.versao).run();
       if (r.meta && r.meta.changes) {
@@ -568,8 +599,10 @@ const F = {
     return { ok: true };
   },
 
-  async admin(db, a, env) {
-    if (!adminOk(env, a.p_senha, a.p_chave)) { await dormir(1000); return { ok: false, erro: env.ADMIN_SENHA ? 'senha' : 'config' }; }
+  async admin(db, a, env, extra) {
+    const ak = 'admin:' + await resumoIp(ipDe(extra));
+    if (await contagem(db, ak, MIN15) >= 5) return { ok: false, erro: 'muitas' };
+    if (!adminOk(env, a.p_senha, a.p_chave)) { await anota(db, ak); await dormir(1000); return { ok: false, erro: env.ADMIN_SENHA ? 'senha' : 'config' }; }
     const ls = (await db.prepare('SELECT * FROM lojas ORDER BY criado DESC').all()).results || [];
     const ops = (await db.prepare('SELECT * FROM feedbacks ORDER BY criado DESC').all()).results || [];
     const fts = (await db.prepare('SELECT loja_id, COUNT(*) n FROM fotos GROUP BY loja_id').all()).results || [];
@@ -585,7 +618,9 @@ const F = {
   },
 
   async admin_acao(db, a, env, extra) {
-    if (!adminOk(env, a.p_senha, a.p_chave)) { await dormir(1000); return { ok: false, erro: 'senha' }; }
+    const ak = 'admin:' + await resumoIp(ipDe(extra));
+    if (await contagem(db, ak, MIN15) >= 5) return { ok: false, erro: 'muitas' };
+    if (!adminOk(env, a.p_senha, a.p_chave)) { await anota(db, ak); await dormir(1000); return { ok: false, erro: 'senha' }; }
     const id = String(a.p_loja || ''), t = agora();
     if (a.p_acao === 'tempo') {
       const h = Math.max(1, Math.min(720, parseInt(a.p_horas, 10) || 24));
@@ -684,7 +719,7 @@ export async function onRequestPost({ request, env, params, waitUntil }) {
   try { a = await request.json(); } catch (e) { return resp({ ok: false, erro: 'json' }, 400); }
   try {
     await prepara(env.DB);
-    return resp(await F[fn](env.DB, a || {}, env, { espera: typeof waitUntil === 'function' ? waitUntil : null }));
+    return resp(await F[fn](env.DB, a || {}, env, { espera: typeof waitUntil === 'function' ? waitUntil : null, ip: request.headers.get('CF-Connecting-IP') || '' }));
   } catch (e) {
     return resp({ ok: false, erro: 'servidor', detalhe: String(e && e.message || e).slice(0, 200) }, 500);
   }
