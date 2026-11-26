@@ -8,7 +8,7 @@
 <title>Painel Pátio</title>
 <meta name="color-scheme" content="light dark">
 <script>/* Endereço novo: quem chega pelo endereço antigo (.pages.dev) e não tem loja aberta neste navegador vai para patio.useatendeja.com.br. Quem está no meio de um teste continua onde está. */(function(){try{if(!/\.pages\.dev$/.test(location.hostname))return;var tem=false,i;for(i=0;i<localStorage.length;i++){if(/^patio-(teste|demo)-/.test(localStorage.key(i)))tem=true}for(i=0;i<sessionStorage.length;i++){if(/^patio-/.test(sessionStorage.key(i)))tem=true}if(!tem)location.replace("https://patio.useatendeja.com.br"+location.pathname+location.search+location.hash)}catch(e){}})()</script>
-<script>(function(){var t="";try{t=localStorage.getItem("tema")||""}catch(e){}document.documentElement.setAttribute("data-theme",t==="escuro"?"dark":"light")})()</script>
+<script>(function(){var t="";try{t=localStorage.getItem("tema")||""}catch(e){}var p=location.pathname.replace(/\/+$/,""),h=location.hostname,site=/^\/l\/[a-z0-9-]+$/.test(p)||(!/useatendeja\.com\.br$|pages\.dev$|^localhost$|^127\./.test(h)&&!/^\/(painel|lojistas)/.test(p));document.documentElement.setAttribute("data-theme",!site&&t==="escuro"?"dark":"light")})()</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght@500;600;700&family=Source+Sans+3:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&family=Montserrat:wght@400;500;600;700&display=swap">
@@ -1127,20 +1127,30 @@ html.modo-loj #cards .parc.num{display:none}
 #vitrine .v-mapa-tx .v3-bts .btn{align-self:auto}
 #vitrine .v-mapa-tx .v3-zap{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
 .v-cur:not(.big){opacity:0!important}
+/* paleta própria de cada loja: tons derivados da cor da marca (o site tem um modo só, o claro) */
+#vitrine{--v-tom:color-mix(in srgb,var(--brand) 6%,#fff);--v-borda:color-mix(in srgb,var(--brand) 16%,#e5e7eb);--v-texto-marca:color-mix(in srgb,var(--brand) 82%,#000)}
+#vitrine.premium{--v-tom:color-mix(in srgb,var(--brand) 10%,#0d0d0f);--v-borda:color-mix(in srgb,var(--brand) 24%,#2a2a30);--v-texto-marca:color-mix(in srgb,var(--brand) 65%,#fff)}
+#vitrine .v-main .lbl,#vitrine .v-chips b,#vitrine .v-dif-n{color:var(--v-texto-marca)!important}
+#vitrine .v-difs{background:var(--v-tom);border-radius:28px;padding:clamp(22px,4vw,40px)}
+#vitrine .v-dif,#vitrine .v-procura,#vitrine .v-vende,#vitrine .v-faq details,#vitrine .v-mapa,#vitrine .v-box,#vitrine .card{border-color:var(--v-borda)}
+#vitrine .v-procura,#vitrine .v-vende{background:linear-gradient(180deg,var(--v-tom),var(--surface) 70%)}
+#vitrine .v-chips button[aria-pressed="true"]{background:var(--brand);border-color:var(--brand);color:var(--brand-ink)}
+#vitrine .v-chips button:hover{border-color:var(--brand)}
+#vitrine .v-faq details[open] summary{color:var(--v-texto-marca)}
 @media (max-width:860px){#vitrine .v-nav3{display:none}}
 @media (max-width:520px){#vitrine .v-cta .btn{flex:1 1 100%;justify-content:center}}
 /* ===== Vitrine premium: preto e dourado (padrão; SITE.tema="classico" volta ao visual antigo) ===== */
-:root.vpremium{--bg:#060606;--surface:#101011;--sunk:#18181a;--ink:#f3efe6;--muted:#a9a39a;--line:rgba(255,255,255,.09);--primary:#0a0a0a;--primary-2:#141414;--on-primary:#f6f1e7;--on-primary-mut:#bdb6aa;--accent:#cfa646;--accent-ink:#141414;--accent-soft:rgba(207,166,70,.14);--shadow:0 1px 2px rgba(0,0,0,.4),0 18px 40px -18px rgba(0,0,0,.8);color-scheme:dark}
+:root.vpremium{--bg:#060606;--surface:#101011;--sunk:#18181a;--ink:#f3efe6;--muted:#a9a39a;--line:rgba(255,255,255,.09);--primary:#0a0a0a;--primary-2:#141414;--on-primary:#f6f1e7;--on-primary-mut:#bdb6aa;--accent:var(--ouro,#cfa646);--accent-ink:#141414;--accent-soft:color-mix(in srgb,var(--ouro,#cfa646) 14%,transparent);--shadow:0 1px 2px rgba(0,0,0,.4),0 18px 40px -18px rgba(0,0,0,.8);color-scheme:dark}
 :root.vpremium body{background:#060606}
 #vitrine.premium{--ouro:#cfa646;--brand:#cfa646;--brand-ink:#141414;--b:#0a0a0a;--bi:#f6f1e7;--f-serif:"Playfair Display",Georgia,serif;--f-mont:"Montserrat",system-ui,sans-serif;background:#060606;color:var(--ink);font-family:var(--f-mont)}
 #vitrine.premium .silk,#vitrine.premium .v-dest,#vitrine.premium .v-dots,#vitrine.premium .tema-btn,#vitrine.premium .v-faixa{display:none!important}
-#vitrine .v-ouro{background:linear-gradient(90deg,#b8902f,#e9cf7c 50%,#b8902f);color:#1a1405;font:500 13px var(--f-mont)}
+#vitrine .v-ouro{background:linear-gradient(90deg,color-mix(in srgb,var(--ouro,#cfa646) 82%,#000),color-mix(in srgb,var(--ouro,#cfa646) 70%,#fff) 50%,color-mix(in srgb,var(--ouro,#cfa646) 82%,#000));color:#141414;font:500 13px var(--f-mont)}
 #vitrine .v-ouro .in{max-width:1180px;margin:0 auto;padding:8px 16px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
 #vitrine .v-ouro a{color:inherit;text-decoration:none}
 #vitrine .v-ouro a:hover{text-decoration:underline}
 #vitrine .v-ouro .sep{opacity:.4}
 #vitrine .v-ouro .dir{margin-left:auto;display:flex;gap:16px}
-#vitrine.premium .v-top{background:rgba(6,6,6,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(207,166,70,.2);position:sticky;top:0;z-index:40;color:#f6f1e7}
+#vitrine.premium .v-top{background:rgba(6,6,6,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid color-mix(in srgb,var(--ouro,#cfa646) 20%,transparent);position:sticky;top:0;z-index:40;color:#f6f1e7}
 #vitrine.premium .v-top .in{padding-block:16px}
 #vitrine.premium .v-name,#vitrine.premium .v-name span{font-family:var(--f-serif)!important;color:#f6f1e7;letter-spacing:.01em}
 #vitrine.premium .v-name small{color:var(--ouro)}
@@ -1162,14 +1172,14 @@ html.modo-loj #cards .parc.num{display:none}
 #vitrine.premium .v-cta .v-cta-1:hover{border-color:var(--ouro);color:var(--ouro)}
 #vitrine.premium .v-cta .v-cta-2{background:rgba(0,0,0,.4);color:#fff;border:1px solid rgba(255,255,255,.35)}
 #vitrine.premium .v-cta .v-cta-2:hover{border-color:var(--ouro);color:var(--ouro)}
-#vitrine.premium .v-hero .v-search{margin-top:48px!important;background:rgba(12,12,12,.8)!important;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(207,166,70,.28)!important;border-radius:0!important;max-width:none!important;box-shadow:none!important}
+#vitrine.premium .v-hero .v-search{margin-top:48px!important;background:rgba(12,12,12,.8)!important;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid color-mix(in srgb,var(--ouro,#cfa646) 28%,transparent)!important;border-radius:0!important;max-width:none!important;box-shadow:none!important}
 #vitrine.premium .v-search input,#vitrine.premium .v-search select{background:#121212!important;border:1px solid rgba(255,255,255,.1)!important;color:#f3efe6!important;border-radius:0!important}
 #vitrine .v-numeros{background:linear-gradient(90deg,#b8902f,#e6c96f 50%,#b8902f)}
 #vitrine .v-numeros .v-stats{max-width:1180px;margin:0 auto!important;padding:24px 16px!important;display:grid!important;grid-template-columns:repeat(auto-fit,minmax(150px,1fr))!important;gap:0!important;text-align:center!important;color:#3b2f10!important;opacity:1!important;transform:none!important}
 #vitrine .v-numeros .v-stats>div{padding:4px 12px;border-left:1px solid rgba(26,20,5,.2);font:600 11px var(--f-mont);letter-spacing:.14em;text-transform:uppercase;color:#3b2f10}
 #vitrine .v-numeros .v-stats>div:first-child{border-left:0}
 #vitrine .v-numeros .v-stats b{font:600 34px var(--f-mont)!important;color:#1a1405!important;letter-spacing:-.01em;margin-bottom:6px;text-transform:none;display:block}
-#vitrine.premium .v-mq{background:#0a0a0a;border-color:rgba(207,166,70,.14)}
+#vitrine.premium .v-mq{background:#0a0a0a;border-color:color-mix(in srgb,var(--ouro,#cfa646) 14%,transparent)}
 #vitrine.premium .v-mq span{color:#4a4436}
 #vitrine.premium .v-res h2,#vitrine.premium .v-difs h2,#vitrine.premium .v-procura h2,#vitrine.premium .v-vende h2,#vitrine.premium .v-faq h2,#vitrine.premium .v-mapa-tx h2,#vitrine.premium .v-about h2,#vitrine.premium .v-final h2{font-family:var(--f-serif)!important;font-weight:600;color:#fff;letter-spacing:-.01em}
 #vitrine.premium .lbl{color:var(--ouro)!important;letter-spacing:.22em;opacity:1!important}
@@ -1179,7 +1189,7 @@ html.modo-loj #cards .parc.num{display:none}
 #vitrine.premium .v-chips button:hover{border-color:var(--ouro)}
 #vitrine.premium .v-chips button[aria-pressed="true"]{background:var(--ouro);color:#141414;border-color:var(--ouro)}
 #vitrine.premium .card{background:#0f0f10!important;border:1px solid rgba(255,255,255,.07)!important;border-radius:4px!important;color:#f3efe6}
-#vitrine.premium .card:hover{border-color:rgba(207,166,70,.55)!important;box-shadow:0 30px 60px -30px rgba(0,0,0,.95)!important}
+#vitrine.premium .card:hover{border-color:color-mix(in srgb,var(--ouro,#cfa646) 55%,transparent)!important;box-shadow:0 30px 60px -30px rgba(0,0,0,.95)!important}
 #vitrine.premium .card .ph{position:relative}
 #vitrine.premium .v-ano{position:absolute;left:12px;top:12px;z-index:3;background:var(--ouro);color:#141414;font:700 11px var(--f-mont);padding:4px 9px;border-radius:2px;letter-spacing:.04em}
 #vitrine.premium .card .ph .tags{left:auto;right:10px}
@@ -1189,7 +1199,7 @@ html.modo-loj #cards .parc.num{display:none}
 #vitrine.premium .card .pr{color:var(--ouro)!important;font-family:var(--f-mont)!important;font-weight:700}
 #vitrine.premium .card .b::after{color:var(--ouro)}
 #vitrine.premium .v-dif,#vitrine.premium .v-procura,#vitrine.premium .v-vende,#vitrine.premium .v-box,#vitrine.premium .v-mapa,#vitrine.premium .v-faq details{background:#0f0f10!important;border:1px solid rgba(255,255,255,.07)!important;border-radius:4px!important;color:#f3efe6}
-#vitrine.premium .v-dif-n{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:rgba(207,166,70,.12);border:1px solid rgba(207,166,70,.4);color:var(--ouro);letter-spacing:0;font-size:14px}
+#vitrine.premium .v-dif-n{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:color-mix(in srgb,var(--ouro,#cfa646) 12%,transparent);border:1px solid color-mix(in srgb,var(--ouro,#cfa646) 40%,transparent);color:var(--ouro);letter-spacing:0;font-size:14px}
 #vitrine.premium .v-dif h3{font-family:var(--f-serif);color:#fff;font-size:20px}
 #vitrine.premium .v-difs,#vitrine.premium .v-faq{text-align:center}
 #vitrine.premium .v-difs-g,#vitrine.premium .v-faq details{text-align:left}
@@ -1199,8 +1209,8 @@ html.modo-loj #cards .parc.num{display:none}
 #vitrine.premium .v-vende .btn.ghost,#vitrine.premium .v-vende label.btn{background:transparent!important;color:#f3efe6!important;border:1px solid rgba(255,255,255,.2)!important}
 #vitrine.premium .v3-zap{color:#f3efe6!important;border-color:rgba(255,255,255,.22)!important;border-radius:2px!important;background:transparent!important}
 #vitrine.premium .v-faq summary{color:#f3efe6}
-#vitrine.premium .v-faq details[open]{border-color:rgba(207,166,70,.45)!important}
-#vitrine .v-final{margin-top:clamp(56px,7vw,96px);padding:clamp(52px,7vw,88px) 24px;text-align:center;background:radial-gradient(ellipse at 50% 0%,rgba(207,166,70,.22),transparent 62%),#0b0a08;border:1px solid rgba(207,166,70,.2);border-radius:4px}
+#vitrine.premium .v-faq details[open]{border-color:color-mix(in srgb,var(--ouro,#cfa646) 45%,transparent)!important}
+#vitrine .v-final{margin-top:clamp(56px,7vw,96px);padding:clamp(52px,7vw,88px) 24px;text-align:center;background:radial-gradient(ellipse at 50% 0%,color-mix(in srgb,var(--ouro,#cfa646) 22%,transparent),transparent 62%),#0b0a08;border:1px solid color-mix(in srgb,var(--ouro,#cfa646) 20%,transparent);border-radius:4px}
 #vitrine .v-final h2{font-size:clamp(30px,4vw,48px)!important;margin:8px 0 0}
 #vitrine .v-final p{color:#bdb6aa;margin:14px auto 0;max-width:52ch}
 #vitrine .v-final .bts{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:28px}
@@ -1215,7 +1225,7 @@ html.modo-loj #cards .parc.num{display:none}
 #vitrine .v-rod .nm{font:600 22px var(--f-serif);color:#fff;margin-bottom:10px}
 #vitrine.premium .v-foot{border-top:1px solid rgba(255,255,255,.07);color:#6f6a61}
 #vitrine.premium .v-foot a{color:#8c867c}
-:root.vpremium #sheet .pr{color:#cfa646}
+:root.vpremium #sheet .pr{color:var(--ouro,#cfa646)}
 @media (max-width:860px){#vitrine .v-rod{grid-template-columns:1fr 1fr}#vitrine .v-ouro .dir{display:none}}
 @media (max-width:520px){#vitrine .v-rod{grid-template-columns:1fr}#vitrine.premium .v-hero{min-height:auto;padding:44px 0 32px!important}#vitrine.premium .v-hero p{font-size:16px}#vitrine .v-numeros .v-stats{grid-template-columns:repeat(3,1fr)!important;padding:18px 8px!important}#vitrine .v-ouro .sep,#vitrine .v-ouro .hor{display:none}#vitrine .v-numeros .v-stats>div{padding:2px 6px;font-size:9.5px;letter-spacing:.08em}#vitrine .v-numeros .v-stats b{font-size:22px!important}#vitrine.premium .v-top nav{gap:6px}}
 </style>
@@ -1258,7 +1268,7 @@ html.modo-loj #cards .parc.num{display:none}
   <header class="v-top"><div class="in">
     <div class="v-logo" id="v-logo">AS</div>
     <div class="v-name"><span id="v-nome">Auto Sul Veículos</span><small id="v-cid">Pelotas/RS</small></div>
-    <nav><button type="button" class="tema-btn" data-tema aria-label="Alternar modo escuro"><svg><use href="#i-moon"/></svg><span class="tema-txt">Escuro</span></button><a id="v-contato" href="#sobre-v" target="_blank" rel="noopener"><svg class="i" style="width:16px;height:16px;vertical-align:-3px;margin-right:6px"><use href="#i-chat"/></svg><span id="v-contato-t">Contato</span></a></nav>
+    <nav><a id="v-contato" href="#sobre-v" target="_blank" rel="noopener"><svg class="i" style="width:16px;height:16px;vertical-align:-3px;margin-right:6px"><use href="#i-chat"/></svg><span id="v-contato-t">Contato</span></a></nav>
     
   </div></header>
   <div class="v-hero"><div class="in">
@@ -3912,7 +3922,9 @@ function v3(){
 }
 const rv=window.renderVitrine;
 if(typeof rv==="function"){window.renderVitrine=function(){const r=rv.apply(this,arguments);try{v3()}catch(e){console.warn("vitrine v3",e)}return r}}
-new MutationObserver(()=>{try{v3()}catch(e){}}).observe(V,{attributes:true,attributeFilter:["hidden"]});
+const modo=()=>{let t="";try{t=localStorage.getItem("tema")||""}catch(e){}document.documentElement.setAttribute("data-theme",!V.hidden?"light":(t==="escuro"?"dark":"light"))};
+new MutationObserver(()=>{try{modo();v3()}catch(e){}}).observe(V,{attributes:true,attributeFilter:["hidden"]});
+try{modo()}catch(e){}
 try{v3()}catch(e){}
 })();
 </script>
@@ -3922,6 +3934,14 @@ try{v3()}catch(e){}
 const V=document.getElementById("vitrine");if(!V)return;
 const q=s=>V.querySelector(s);
 const OURO="#cfa646";
+/* paleta de cada loja: o destaque é a cor da marca da loja; se ela for escura demais para aparecer no fundo preto, usa um tom mais claro dela */
+function destaque(cor){
+  if(!/^#[0-9a-f]{6}$/i.test(cor||""))return OURO;
+  const c=[1,3,5].map(i=>parseInt(cor.slice(i,i+2),16));
+  const lum=x=>{const [r,g,b]=x.map(v=>{v/=255;return v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4)});return .2126*r+.7152*g+.0722*b};
+  let t=0,x=c;while(lum(x)<.24&&t<.85){t+=.05;x=c.map(v=>Math.round(v+(255-v)*t))}
+  return "#"+x.map(v=>v.toString(16).padStart(2,"0")).join("");
+}
 const ativo=()=>{try{return SITE(S.loja).tema!=="classico"}catch(e){return true}};
 const rede=(v,base)=>v?(/^https?:/.test(v)?v:base+String(v).replace("@","")):"";
 function premium(){
@@ -3932,7 +3952,8 @@ function premium(){
   const hero=q(".v-hero"),stv=q("#v-stats");
   if(!liga){const b=q("#v-numeros");if(b&&stv&&stv.parentElement===b)q(".v-hero .in").insertBefore(stv,q("#estoque-v"));["#v-ouro","#v-numeros","#v-final","#v-rod"].forEach(s=>{const e=q(s);if(e)e.remove()});return}
   if(!on)return;
-  root.style.setProperty("--brand",OURO);root.style.setProperty("--brand-ink","#141414");
+  const acc=destaque(S.loja.cor);
+  [root,V].forEach(e=>{e.style.setProperty("--ouro",acc);e.style.setProperty("--brand",acc);e.style.setProperty("--brand-ink","#141414")});
   const L=S.loja,st=SITE(L),LM=root.classList.contains("modo-loj");
   const nv1=nomeVeic(1),nv=nomeVeic(),Nv1=nv1.charAt(0).toUpperCase()+nv1.slice(1);
   const zap=(q("#v-zap")&&q("#v-zap").getAttribute("href"))||"",temZap=!!(L.wpp&&zap&&zap!=="#");
